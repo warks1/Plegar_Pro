@@ -110,7 +110,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div class="app">
 <aside class="side">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v49.0 · Visión IA de planos · base acumulativa v43</div>
+  <div class="version">v49.1 · Visión IA de planos · base acumulativa v43</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -700,10 +700,33 @@ function loader(){
  let steps=['Inicializando núcleo','Cargando proyecto','Preparando Programar','Preparando vistas 2D','Preparando vistas 3D','Cargando Curva Perfecta','Conectando IA técnica','Verificando botones','Sincronizando módulos','Programa listo'];
  let i=0,t=setInterval(()=>{$('loadState').textContent=steps[i]+'...';$('loadFill').style.width=((i+1)/steps.length*100)+'%';i++;if(i===steps.length){clearInterval(t);setTimeout(()=>$('loader').classList.add('hidden'),350)}},120);
 }
-bind();renderSettings();syncAll();let saved=localStorage.getItem(STORAGE);if(saved){try{state=migrateState(JSON.parse(saved));renderSettings();syncAll()}catch(e){console.error(e)}}
-let issues=audit();if(issues.length)console.warn('Auditoría:',issues);else console.info('Auditoría funcional: sin botones huérfanos ni IDs duplicados.');
-
-$('photoInput').addEventListener('change',photoSelected);$('analyzePhoto').onclick=analyzePhotoLocal;['visionContrast','visionClean','visionMode','visionDeskew'].forEach(id=>$(id).addEventListener('change',()=>processPlanVision(false)));$('visionRotateLeft').onclick=()=>{visionRotation=(visionRotation-90)%360;processPlanVision()};$('visionRotateRight').onclick=()=>{visionRotation=(visionRotation+90)%360;processPlanVision()};$('visionReprocess').onclick=()=>processPlanVision();$('visionUseResult').onclick=analyzePhotoLocal;
-loader();
+function forceFinishBoot(message='Programa listo'){
+ const ld=$('loader'),st=$('loadState'),fill=$('loadFill');
+ if(st)st.textContent=message;if(fill)fill.style.width='100%';
+ if(ld)setTimeout(()=>ld.classList.add('hidden'),180);
+}
+function safeRun(name,fn){try{return fn()}catch(e){console.error('[Inicio] '+name,e);return null}}
+function startApplication(){
+ // Safari/iPhone: ninguna función aislada puede bloquear todo el inicio.
+ safeRun('enlaces y controles',bind);
+ safeRun('ajustes',renderSettings);
+ safeRun('sincronización inicial',syncAll);
+ safeRun('proyecto guardado',()=>{let saved=null;try{saved=localStorage.getItem(STORAGE)}catch(e){console.warn('Almacenamiento no disponible',e)}if(saved){try{state=migrateState(JSON.parse(saved));renderSettings();syncAll()}catch(e){console.warn('Proyecto guardado incompatible; se abre un proyecto limpio',e)}}});
+ safeRun('auditoría',()=>{let issues=audit();if(issues.length)console.warn('Auditoría:',issues);else console.info('Auditoría funcional correcta')});
+ safeRun('visión IA',()=>{
+   const on=(id,event,fn)=>{const el=$(id);if(el)el.addEventListener(event,fn)};
+   on('photoInput','change',photoSelected);on('analyzePhoto','click',analyzePhotoLocal);
+   ['visionContrast','visionClean','visionMode','visionDeskew'].forEach(id=>on(id,'change',()=>processPlanVision(false)));
+   on('visionRotateLeft','click',()=>{visionRotation=(visionRotation-90)%360;processPlanVision()});
+   on('visionRotateRight','click',()=>{visionRotation=(visionRotation+90)%360;processPlanVision()});
+   on('visionReprocess','click',()=>processPlanVision());on('visionUseResult','click',analyzePhotoLocal);
+ });
+ safeRun('pantalla de carga',loader);
+ // Salida de emergencia: aunque falle una función o Safari pause un temporizador, abre la aplicación.
+ setTimeout(()=>forceFinishBoot('Programa listo'),2600);
+}
+window.addEventListener('error',e=>{console.error('Error controlado de ejecución',e.error||e.message);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
+window.addEventListener('unhandledrejection',e=>{console.error('Promesa rechazada',e.reason);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startApplication,{once:true});else startApplication();
 </script>
 </body></html>

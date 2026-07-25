@@ -1,0 +1,7 @@
+Plegar Pro v49.1 — Reparación de arranque iPhone/Safari
+- Inicio encapsulado por fases independientes.
+- Un error de un módulo ya no bloquea toda la aplicación.
+- Salida automática de emergencia de la pantalla de carga.
+- Eventos de Visión IA enlazados con comprobación de existencia.
+- Recuperación ante localStorage no disponible o datos incompatibles.
+- Sintaxis JavaScript validada con Node.js.
