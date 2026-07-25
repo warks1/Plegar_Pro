@@ -1,0 +1,7 @@
+PLEGAR PRO v49.3 — REPARACIÓN REAL DE EVENTOS EN IPHONE
+
+- Navegación por delegación global independiente del enlace principal.
+- Cada control esencial se enlaza de forma aislada.
+- Un error en un módulo ya no desactiva los demás botones.
+- La pantalla de carga se oculta y se retira físicamente para no bloquear pulsaciones.
+- Compatibilidad acumulativa con v43-v49.2.

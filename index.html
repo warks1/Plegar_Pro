@@ -16,7 +16,7 @@ body.light{--bg:#edf3f7;--panel:#fff;--panel2:#f4f8fa;--line:#b8c9d5;--text:#142
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 #loader{position:fixed;inset:0;z-index:1000;background:radial-gradient(circle at 50% 35%,#15354d,#050b11 65%);display:grid;place-items:center;transition:.35s}
-#loader.hidden{opacity:0;pointer-events:none}
+#loader.hidden{opacity:0;pointer-events:none;visibility:hidden} body.boot-complete #loader{display:none!important}
 .loadBox{width:min(460px,88vw);text-align:center}
 .logoMark{width:94px;height:94px;margin:0 auto 16px;border:3px solid var(--accent);border-radius:22px;display:grid;place-items:center;transform:rotate(45deg);box-shadow:0 0 35px #48d8ff55}
 .logoMark span{transform:rotate(-45deg);font-size:30px;font-weight:1000}
@@ -110,7 +110,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div class="app">
 <aside class="side">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v49.2 · Botones reparados · Visión IA · base acumulativa v43</div>
+  <div class="version">v49.3 · Botones reparados · Visión IA · base acumulativa v43</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -768,6 +768,42 @@ function bind(){
 }
 
 
+
+// v49.3: sistema de eventos tolerante a fallos para Safari/iPhone.
+function safeElement(id){return document.getElementById(id)}
+function safeBind(id,event,handler,options){
+ const el=safeElement(id);if(!el||typeof handler!=='function')return false;
+ try{el.addEventListener(event,handler,options||false);return true}catch(e){console.warn('No se pudo enlazar '+id,e);return false}
+}
+function installNavigationFallback(){
+ if(document.documentElement.dataset.navFallback==='1')return;
+ document.documentElement.dataset.navFallback='1';
+ document.addEventListener('click',function(e){
+   const trigger=e.target&&e.target.closest?e.target.closest('[data-page],[data-go]'):null;
+   if(!trigger)return;
+   const page=trigger.dataset.page||trigger.dataset.go;
+   if(page&&typeof go==='function'){
+     e.preventDefault();
+     try{go(page)}catch(err){console.error('Navegación recuperada',err)}
+     const side=document.querySelector('.side');if(side)side.classList.remove('open');
+   }
+ },true);
+ safeBind('mobileMenuBtn','click',function(){const side=document.querySelector('.side');if(side)side.classList.toggle('open')});
+}
+function installEssentialFallbacks(){
+ installNavigationFallback();
+ // Acciones esenciales enlazadas una a una: un error nunca cancela las demás.
+ safeBind('backBtn','click',()=>typeof back==='function'&&back());
+ safeBind('undoBtn','click',()=>typeof undo==='function'&&undo());
+ safeBind('redoBtn','click',()=>typeof redo==='function'&&redo());
+ safeBind('saveProject','click',()=>typeof saveProject==='function'&&saveProject());
+ safeBind('loadProject','click',()=>typeof loadProject==='function'&&loadProject());
+ safeBind('addBend','click',()=>{if(typeof commit==='function')commit('Añadido pliegue',()=>state.bends.push({leg:100,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:100,direction:1}))});
+ safeBind('analyzeFile','click',()=>{const input=safeElement('fileInput'),result=safeElement('fileResult'),f=input&&input.files&&input.files[0];if(result)result.innerHTML=f?`Archivo registrado: <b>${f.name}</b><br>Preparado para análisis.`:'Selecciona primero un archivo.'});
+ safeBind('photoInput','change',e=>typeof photoSelected==='function'&&photoSelected(e));
+ safeBind('analyzePhoto','click',()=>typeof analyzePhotoLocal==='function'&&analyzePhotoLocal());
+}
+
 function audit(){
  let issues=[];
  document.querySelectorAll('button').forEach(b=>{let functional=b.dataset.page||b.dataset.go||b.onclick||b.id||b.classList.contains('rowDelete');if(!functional)issues.push('Botón sin acción: '+b.textContent.trim())});
@@ -780,13 +816,15 @@ function loader(){
  let i=0,t=setInterval(()=>{$('loadState').textContent=steps[i]+'...';$('loadFill').style.width=((i+1)/steps.length*100)+'%';i++;if(i===steps.length){clearInterval(t);setTimeout(()=>$('loader').classList.add('hidden'),350)}},120);
 }
 function forceFinishBoot(message='Programa listo'){
- const ld=$('loader'),st=$('loadState'),fill=$('loadFill');
+ const ld=safeElement('loader'),st=safeElement('loadState'),fill=safeElement('loadFill');
  if(st)st.textContent=message;if(fill)fill.style.width='100%';
- if(ld)setTimeout(()=>ld.classList.add('hidden'),180);
+ document.body.classList.add('boot-complete');
+ if(ld){ld.classList.add('hidden');ld.setAttribute('aria-hidden','true');setTimeout(()=>{ld.style.display='none'},80)}
 }
 function safeRun(name,fn){try{return fn()}catch(e){console.error('[Inicio] '+name,e);return null}}
 function startApplication(){
- // Safari/iPhone: ninguna función aislada puede bloquear todo el inicio.
+ // Safari/iPhone: navegación mínima disponible incluso si falla un módulo secundario.
+ safeRun('navegación de emergencia',installEssentialFallbacks);
  safeRun('enlaces y controles',bind);
  safeRun('ajustes',renderSettings);
  safeRun('sincronización inicial',syncAll);
@@ -794,8 +832,9 @@ function startApplication(){
  safeRun('auditoría',()=>{let issues=audit();if(issues.length)console.warn('Auditoría:',issues);else console.info('Auditoría funcional correcta')});
  safeRun('visión IA',()=>{if(visionImage)processPlanVision(false)});
  safeRun('pantalla de carga',loader);
+ safeRun('segunda verificación de eventos',installEssentialFallbacks);
  // Salida de emergencia: aunque falle una función o Safari pause un temporizador, abre la aplicación.
- setTimeout(()=>forceFinishBoot('Programa listo'),2600);
+ setTimeout(()=>forceFinishBoot('Programa listo'),1800);
 }
 window.addEventListener('error',e=>{console.error('Error controlado de ejecución',e.error||e.message);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
 window.addEventListener('unhandledrejection',e=>{console.error('Promesa rechazada',e.reason);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});

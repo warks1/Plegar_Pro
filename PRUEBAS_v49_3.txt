@@ -1,0 +1,8 @@
+COMPROBACIONES v49.3
+
+- Sintaxis JavaScript validada con Node.
+- Todos los IDs referenciados existen.
+- Navegación data-page/data-go dispone de controlador global de respaldo.
+- Menú móvil dispone de enlace independiente.
+- Loader pasa a display:none y pointer-events:none tras el inicio.
+- Los controles esenciales no dependen de una única función bind.
