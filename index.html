@@ -110,7 +110,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div class="app">
 <aside class="side">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v49.1 · Visión IA de planos · base acumulativa v43</div>
+  <div class="version">v49.2 · Botones reparados · Visión IA · base acumulativa v43</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -670,8 +670,8 @@ function selectCRM(i){ensureCRM();crmSelected=i;let c=state.clients[i];if(!c)ret
 function saveCRM(){ensureCRM();let c={name:crmName.value.trim(),contact:crmContact.value.trim(),phone:crmPhone.value.trim(),whatsapp:crmWhatsapp.value.trim(),email:crmEmail.value.trim(),reference:crmReference.value.trim(),notes:crmNotes.value.trim()};if(!c.name)return toast('Indica el nombre del cliente');if(crmSelected<0){state.clients.push(c);crmSelected=state.clients.length-1}else state.clients[crmSelected]=c;autoSave();renderCRM();selectCRM(crmSelected);toast('Cliente guardado')}
 function clearCRM(){crmSelected=-1;['crmName','crmContact','crmPhone','crmWhatsapp','crmEmail','crmReference','crmNotes'].forEach(id=>$(id).value='');$('crmActive').textContent='Nuevo cliente preparado.'}
 function crmContact(kind){ensureCRM();let c=state.clients[crmSelected];if(!c)return toast('Selecciona un cliente');if(kind==='wa'){let n=(c.whatsapp||c.phone||'').replace(/\D/g,'');if(!n)return toast('El cliente no tiene WhatsApp');window.open(`https://wa.me/${n}?text=${encodeURIComponent('Hola '+(c.contact||c.name)+', te contacto desde Oficina Técnica sobre la referencia '+(state.project.ref||c.reference||''))}`,'_blank')}else{if(!c.email)return toast('El cliente no tiene correo');let body=`Hola ${c.contact||c.name},\n\nTe contacto desde Oficina Técnica.\n\nReferencia: ${state.project.ref||c.reference||''}\nMaterial: ${state.project.material}\nEspesor: ${state.project.thickness} mm`;location.href=`mailto:${c.email}?subject=${encodeURIComponent('Plegar Pro · '+(state.project.ref||c.reference||'Consulta técnica'))}&body=${encodeURIComponent(body)}`}}
-function assignCRM(){let c=state.clients&&state.clients[crmSelected];if(!c)return toast('Selecciona un cliente');commit('Cliente asignado al proyecto',()=>{state.project.client=c.name;if(c.reference&&!state.project.ref)state.project.ref=c.reference});renderAll();toast('Cliente asignado')}
-function exportCRM(){downloadText('clientes_oficina_tecnica.json',JSON.stringify(state.clients||[],null,2))}
+function assignCRM(){let c=state.clients&&state.clients[crmSelected];if(!c)return toast('Selecciona un cliente');commit('Cliente asignado al proyecto',()=>{state.project.client=c.name;if(c.reference&&!state.project.ref)state.project.ref=c.reference});syncAll();toast('Cliente asignado')}
+function exportCRM(){download('clientes_oficina_tecnica.json',JSON.stringify(state.clients||[],null,2))}
 let visionImage=null,visionRotation=0,visionDetection=null;
 function photoSelected(){let f=photoInput.files[0];if(!f)return;let img=new Image();img.onload=()=>{visionImage=img;visionRotation=0;photoPreview.innerHTML=`<b>${f.name}</b><br>${Math.round(f.size/1024)} KB · ${img.naturalWidth} × ${img.naturalHeight}px`;processPlanVision(false)};img.src=URL.createObjectURL(f)}
 function visionGray(data,contrast,mode){let out=new Uint8ClampedArray(data.length),sum=0;for(let i=0;i<data.length;i+=4){let g=.299*data[i]+.587*data[i+1]+.114*data[i+2];if(mode==='dark')g=255-g;g=(g-128)*(contrast/100)+128;g=Math.max(0,Math.min(255,g));sum+=g;out[i]=out[i+1]=out[i+2]=g;out[i+3]=255}return {data:out,mean:sum/(data.length/4)}}
@@ -688,6 +688,85 @@ function renderSettings(){
 function readSettings(){state.settings={...state.settings,theme:$('theme').value,showDims:$('showDims').value,visualQuality:$('visualQuality').value,autosave:$('autosave').value,dimensionScale:+$('dimensionScale').value,simulationSpeed:+$('simulationSpeed').value,sheetColor:$('sheetColor').value,machineVisible:$('machineVisible').value,fitMargin:+$('fitMargin').value,visualThickness:+$('visualThickness').value,showGrid:$('showGrid').value,showAxes:$('showAxes').value,machineOpacity:+$('machineOpacity').value,cameraSensitivity:+$('cameraSensitivity').value,decimals:+$('decimals').value,default3DView:$('default3DView').value,units:$('units').value,angleTolerance:+$('angleTolerance').value,linearTolerance:+$('linearTolerance').value,confirmDelete:$('confirmDelete').value,uiSounds:$('uiSounds').value,compactMobile:$('compactMobile').value,backupFrequency:$('backupFrequency').value,aiAssistLevel:$('aiAssistLevel').value,owner:{name:$('ownerName').value,company:$('ownerCompany').value,phone:$('ownerPhone').value,whatsapp:$('ownerWhatsapp').value,email:$('ownerEmail').value,website:$('ownerWebsite').value}}}
 function renderAbout(){let o=(state.settings&&state.settings.owner)||{},year=new Date().getFullYear(),holder=o.name||o.company||'Propietario no configurado';if($('aboutOwner'))$('aboutOwner').innerHTML=`<b>${o.name||'Nombre pendiente'}</b>${o.company?'<br>'+o.company:''}${o.phone?'<br>Teléfono: '+o.phone:''}${o.whatsapp?'<br>WhatsApp: '+o.whatsapp:''}${o.email?'<br>Correo: '+o.email:''}${o.website?'<br>Web: '+o.website:''}`;if($('legalFooter'))$('legalFooter').innerHTML=`© ${year} ${holder}. Todos los derechos reservados. Plegar Pro es software propietario. Prohibida su reproducción, modificación, distribución o ingeniería inversa sin autorización. Los cálculos y simulaciones deben verificarse por personal cualificado antes de fabricar.`}
 function applyCameraPreset(v,target='S3'){let m={iso:[-.35,.5],front:[0,0],rear:[0,Math.PI],side:[0,Math.PI/2],top:[-Math.PI/2,0],operator:[-.12,Math.PI],free:[sim['rotX'+target]??-.35,sim['rotY'+target]??.5]};[sim['rotX'+target],sim['rotY'+target]]=m[v]||m.iso}
+
+function bind(){
+ document.querySelectorAll('.nav button[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+ document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+ $('backBtn').onclick=back;$('undoBtn').onclick=undo;$('redoBtn').onclick=redo;bindProjectInputs();
+ $('addBend').onclick=()=>commit('Añadido pliegue',()=>state.bends.push({leg:100,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:100,direction:1}));
+ $('p2Add').onclick=$('addBend').onclick;$('autoSequence').onclick=()=>commit('Secuencia ordenada automáticamente',()=>state.bends.sort((a,b)=>b.leg-a.leg));
+ $('sendSim').onclick=()=>{sim.s3Step=0;go('sim3d')};$('saveProgramNotes').onclick=()=>commit('Guardadas notas del programa',()=>state.programNotes=$('programNotes').value);
+ $('p2Fit').onclick=drawAll;$('p3Active').onchange=()=>{sim.p3Active=+$('p3Active').value;loadP3Fields();drawAll()};
+ $('p3Apply').onclick=()=>{let i=sim.p3Active;commit('Editado pliegue desde Programación 3D',()=>Object.assign(state.bends[i],{leg:+$('p3Leg').value,angle:+$('p3Angle').value,radius:+$('p3Radius').value,v:+$('p3V').value,gauge:+$('p3Gauge').value}))};
+ $('p3Prev').onclick=()=>{$('p3Active').value=Math.max(0,--sim.p3Active);loadP3Fields();drawAll()};$('p3Next').onclick=()=>{$('p3Active').value=Math.min(state.bends.length-1,++sim.p3Active);loadP3Fields();drawAll()};
+ $('freeAnalyze').onclick=()=>{let p=parseTechnical($('freeInput').value);commit('Entrada libre interpretada',()=>{state.project=p.project;state.bends=p.bends});$('freeResult').innerHTML=`Interpretado: ${p.bends.length} pliegues. Enviado a Programar, 2D y 3D.`;go('program')};
+ $('freeToAI').onclick=()=>{$('aiInput').value=$('freeInput').value;go('ai')};$('loadExample').onclick=()=>commit('Cargado ejemplo Omega',()=>{state.project.ref='OMEGA-DEMO';state.bends=[{leg:120,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:120,direction:1},{leg:85,angle:90,radius:2,v:16,punch:'Pata de cabra 90°',gauge:85,direction:-1},{leg:85,angle:90,radius:2,v:16,punch:'Pata de cabra 90°',gauge:85,direction:-1},{leg:120,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:120,direction:1}]});
+ $('analyzeFile').onclick=()=>{let f=$('fileInput').files[0];$('fileResult').innerHTML=f?`Archivo registrado: <b>${f.name}</b><br>Se ha preparado el proyecto para completar geometría y datos.`:'Selecciona primero un archivo.'};
+ ['curveRadius','curveAngle','curveLength','curveHits','curveSpring','curveV','curveThickness','curveStrategy','curveMode'].forEach(id=>$(id).addEventListener('input',()=>{readCurveInputs();renderCurve()}));
+ $('curveCalculate').onclick=()=>commit('Recalculada Curva Perfecta',()=>readCurveInputs());
+ $('curveToProgram').onclick=()=>{readCurveInputs();let c=state.curve,r=calculateCurve();commit('Curva Perfecta enviada a Programar',()=>{state.bends=r.rows.map((x,i)=>({leg:+r.step.toFixed(2),angle:x.angle,radius:r.radius,v:c.v,punch:'Recto 30°',gauge:+x.x.toFixed(2),direction:1,curveGroup:'CP1',hit:i+1}))});go('program')};
+ $('compareVBtn').onclick=renderVCompare;
+ $('devCalculate').onclick=()=>commit('Recalculado desarrollo',()=>readDevelopmentInputs());
+ $('devToCompare').onclick=()=>{readDevelopmentInputs();autoSave();go('vcompare')};
+ $('devAddBend').onclick=()=>commit('Añadido pliegue a la calculadora',()=>state.development.bends.push({leg:100,angle:90,radius:2}));
+ $('devReset').onclick=()=>commit('Restablecida calculadora de desarrollo',()=>state.development={material:'S235',thickness:2,kfactor:.42,referenceV:16,punchRadius:1,punchAngle:88,bendLength:1000,tolerance:.5,dimensionType:'exterior',selectedVs:[12,16,22,24,32],bends:[{leg:100,angle:90,radius:2},{leg:100,angle:90,radius:2}]});
+ ['devMaterial','devThickness','devK','devReferenceV','devPunchRadius','devPunchAngle','devBendLength','devTolerance','devDimensionType'].forEach(id=>$(id).onchange=()=>commit('Actualizado dato de desarrollo',()=>readDevelopmentInputs()));
+ $('vSelectRecommended').onclick=()=>commit('Seleccionadas matrices V recomendadas',()=>{let t=state.development.thickness||1;state.development.selectedVs=STANDARD_VS.filter(v=>v>=t*5&&v<=t*14)});
+ $('toolMaker').onchange=renderTools;$('toolSearch').oninput=renderTools;
+ $('aiCalculate').onclick=calculateAI;$('aiToProgram').onclick=sendAIProgram;$('aiToCurve').onclick=sendAICurve;
+ $('woCreate').onclick=()=>commit('Guardada orden de trabajo',()=>state.workOrder={number:$('woNumber').value,state:$('woState').value,date:new Date().toLocaleString('es-ES')});
+ $('woStart').onclick=()=>commit('Orden iniciada',()=>{state.workOrder=state.workOrder||{number:$('woNumber').value};state.workOrder.state='Producción'});
+ $('woPause').onclick=()=>commit('Orden pausada',()=>{state.workOrder=state.workOrder||{number:$('woNumber').value};state.workOrder.state='Pausada'});
+ $('woFinish').onclick=()=>commit('Orden finalizada',()=>{state.workOrder=state.workOrder||{number:$('woNumber').value};state.workOrder.state='Finalizada'});
+ $('opPrev').onclick=()=>{sim.operatorStep=Math.max(0,sim.operatorStep-1);renderOperator()};$('opNext').onclick=()=>{sim.operatorStep=Math.min(state.bends.length-1,sim.operatorStep+1);renderOperator()};
+ $('qSave').onclick=()=>{let nominal=+$('qNominal').value,measured=+$('qMeasured').value,tol=+$('qTolerance').value,ok=Math.abs(measured-nominal)<=tol;commit('Registrado control de calidad',()=>state.quality.unshift({bend:+$('qBend').value,type:$('qType').value,nominal,measured,tol,inspector:$('qInspector').value,note:$('qNote').value,ok,date:new Date().toLocaleString('es-ES')}));$('qResult').textContent=ok?'Resultado conforme.':'NO CONFORME: fuera de tolerancia.'};
+ $('qNcr').onclick=()=>{$('qNote').value='NC-'+Date.now().toString().slice(-6)+': analizar causa y corrección.';toast('No conformidad preparada')};
+ $('qExport').onclick=()=>download(`calidad-${state.project.ref}.json`,JSON.stringify(state.quality,null,2));
+ $('saveGeneralNotes').onclick=()=>commit('Guardado bloc de notas general',()=>state.generalNotes=$('generalNotes').value);
+ $('stampNote').onclick=()=>{$('generalNotes').value+=`\n[${new Date().toLocaleString('es-ES')}] `;$('generalNotes').focus()};
+ $('clearHistory').onclick=()=>commit('Historial limpiado',()=>state.history=[]);
+ ['theme','showDims','visualQuality','autosave','dimensionScale','simulationSpeed','sheetColor','machineVisible','fitMargin','visualThickness','showGrid','showAxes','machineOpacity','cameraSensitivity','decimals','default3DView','ownerName','ownerCompany','ownerPhone','ownerWhatsapp','ownerEmail','ownerWebsite','creatorName','copyrightHolder'].forEach(id=>$(id).addEventListener('change',()=>{readSettings();applySettings();autoSave();renderAbout()}));
+ $('saveSettings').onclick=()=>{readSettings();applySettings();autoSave();renderAbout();toast('Ajustes guardados')};
+ $('resetSettings').onclick=()=>{state.settings={theme:'dark',showDims:'all',visualQuality:'Alta',autosave:'yes',dimensionScale:1.2,simulationSpeed:700,sheetColor:'#4fb3ff',machineVisible:'yes',fitMargin:150,visualThickness:1.6,showGrid:'yes',showAxes:'yes',machineOpacity:.9,cameraSensitivity:.01,decimals:2,default3DView:'iso',owner:{name:'',company:'AMS Engineering Solutions',phone:'',whatsapp:'',email:'',website:'',creatorName:'',copyrightHolder:'AMS Engineering Solutions'}};renderSettings();autoSave()};
+ $('saveProject').onclick=saveProject;$('loadProject').onclick=loadProject;$('exportProject').onclick=()=>download(`${state.project.ref}.json`,JSON.stringify(state,null,2));
+ $('clearProject').onclick=()=>{if(confirm('¿Borrar el proyecto guardado?')){localStorage.removeItem(STORAGE);toast('Proyecto guardado eliminado')}};
+ function simButtons(prefix,key){
+  $(prefix+'Play').onclick=()=>{clearInterval(sim[key+'Timer']);sim[key+'Timer']=setInterval(()=>{sim[key+'Step']++;if(sim[key+'Step']>state.bends.length){clearInterval(sim[key+'Timer']);sim[key+'Timer']=null;sim[key+'Step']=state.bends.length}drawAll()},state.settings.simulationSpeed||700)};
+  $(prefix+'Pause').onclick=()=>{clearInterval(sim[key+'Timer']);sim[key+'Timer']=null};
+  $(prefix+'Prev').onclick=()=>{sim[key+'Step']=Math.max(0,sim[key+'Step']-1);drawAll()};
+  $(prefix+'Next').onclick=()=>{sim[key+'Step']=Math.min(state.bends.length,sim[key+'Step']+1);drawAll()};
+  $(prefix+'Reset').onclick=()=>{sim[key+'Step']=0;drawAll()};
+ }
+ simButtons('s2','s2');simButtons('s3','s3');
+ $('p3Camera').onchange=()=>{applyCameraPreset($('p3Camera').value,'P3');drawAll()};$('s3Camera').onchange=()=>{applyCameraPreset($('s3Camera').value,'S3');drawAll()};$('s2Camera').onchange=drawAll;$('s3Machine').onchange=drawAll;$('s3Dims').onchange=drawAll;
+ $('p3Fit').onclick=()=>resetView('p3');$('s3Fit').onclick=()=>resetView('s3');$('s3RotateLeft').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)-.2;drawAll()};$('s3RotateRight').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)+.2;drawAll()};$('s3ZoomIn').onclick=()=>{sim.zoomS3=Math.min(3,sim.zoomS3*1.15);drawAll()};$('s3ZoomOut').onclick=()=>{sim.zoomS3=Math.max(.45,sim.zoomS3*.87);drawAll()};$('s2Fit').onclick=()=>reset2D('S2');$('s2ZoomIn').onclick=()=>zoom2D('S2',1.15);$('s2ZoomOut').onclick=()=>zoom2D('S2',.87);$('s2RotateLeft').onclick=()=>rotate2D('S2',-.15);$('s2RotateRight').onclick=()=>rotate2D('S2',.15);$('curveFit').onclick=()=>reset2D('Curve');$('curveZoomIn').onclick=()=>zoom2D('Curve',1.15);$('curveZoomOut').onclick=()=>zoom2D('Curve',.87);$('curveRotateLeft').onclick=()=>rotate2D('Curve',-.15);$('curveRotateRight').onclick=()=>rotate2D('Curve',.15);$('programFit').onclick=()=>reset2D('Program');$('programZoomIn').onclick=()=>zoom2D('Program',1.15);$('programZoomOut').onclick=()=>zoom2D('Program',.87);$('programRotateLeft').onclick=()=>rotate2D('Program',-.15);$('programRotateRight').onclick=()=>rotate2D('Program',.15);
+ function wire3D(id,target){let cv=$(id);cv.addEventListener('pointerdown',e=>{sim.drag=true;sim.dragTarget=target;sim.panMode=e.shiftKey||e.button===1;sim.lastX=e.clientX;sim.lastY=e.clientY;cv.setPointerCapture(e.pointerId)});cv.addEventListener('pointermove',e=>{if(!sim.drag||sim.dragTarget!==target)return;let dx=e.clientX-sim.lastX,dy=e.clientY-sim.lastY;if(sim.panMode){sim['pan'+target+'X']+=dx;sim['pan'+target+'Y']+=dy}else{let sens=state.settings.cameraSensitivity||.01;sim['rotY'+target]=(sim['rotY'+target]??.5)+dx*sens;sim['rotX'+target]=(sim['rotX'+target]??-.35)+dy*sens}sim.lastX=e.clientX;sim.lastY=e.clientY;drawAll()});cv.addEventListener('pointerup',()=>sim.drag=false);cv.addEventListener('wheel',e=>{e.preventDefault();let k='zoom'+target;sim[k]=Math.max(.45,Math.min(2.8,sim[k]*(e.deltaY>0?.9:1.1)));drawAll()},{passive:false})}
+ wire3D('canvasP3','P3');wire3D('canvasS3','S3');
+ function reset2D(t){sim['zoom'+t]=1;sim['rot'+t]=0;sim['pan'+t+'X']=0;sim['pan'+t+'Y']=0;drawAll()}
+ function zoom2D(t,f){sim['zoom'+t]=Math.max(.45,Math.min(3.5,(sim['zoom'+t]||1)*f));drawAll()}
+ function rotate2D(t,a){sim['rot'+t]=(sim['rot'+t]||0)+a;drawAll()}
+ function wire2D(id,t){let cv=$(id),drag=false,lx=0,ly=0;cv.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId)});cv.addEventListener('pointermove',e=>{if(!drag)return;sim['pan'+t+'X']=(sim['pan'+t+'X']||0)+(e.clientX-lx);sim['pan'+t+'Y']=(sim['pan'+t+'Y']||0)+(e.clientY-ly);lx=e.clientX;ly=e.clientY;drawAll()});cv.addEventListener('pointerup',()=>drag=false);cv.addEventListener('pointercancel',()=>drag=false);cv.addEventListener('wheel',e=>{e.preventDefault();zoom2D(t,e.deltaY>0?.9:1.1)},{passive:false})}
+ wire2D('canvasS2','S2');wire2D('canvasCurve','Curve');wire2D('canvasProgram','Program');
+ $('mobileMenuBtn').onclick=()=>document.querySelector('.side').classList.toggle('open');document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>document.querySelector('.side').classList.remove('open')));
+
+ // Oficina técnica / Clientes
+ const crmOn=(id,event,fn)=>{const el=$(id);if(el)el.addEventListener(event,fn)};
+ crmOn('crmNew','click',clearCRM);crmOn('crmSave','click',saveCRM);
+ crmOn('crmDelete','click',()=>{ensureCRM();if(crmSelected<0||!state.clients[crmSelected])return toast('Selecciona un cliente');if(!confirm('¿Eliminar este cliente?'))return;state.clients.splice(crmSelected,1);crmSelected=-1;autoSave();clearCRM();renderCRM();toast('Cliente eliminado')});
+ crmOn('crmSearch','input',()=>renderCRM($('crmSearch').value));
+ crmOn('crmWhatsApp','click',()=>crmContact('wa'));crmOn('crmEmailBtn','click',()=>crmContact('email'));
+ crmOn('crmAssign','click',assignCRM);crmOn('crmExport','click',exportCRM);
+ // Ajustes adicionales de v48/v49
+ ['units','angleTolerance','linearTolerance','confirmDelete','uiSounds','compactMobile','backupFrequency','aiAssistLevel'].forEach(id=>{const el=$(id);if(el)el.addEventListener('change',()=>{readSettings();applySettings();autoSave();renderAbout()})});
+ // Importación de archivos y fotografía
+ crmOn('photoInput','change',photoSelected);crmOn('analyzePhoto','click',analyzePhotoLocal);
+ ['visionContrast','visionClean','visionMode','visionDeskew'].forEach(id=>crmOn(id,'change',()=>processPlanVision(false)));
+ crmOn('visionRotateLeft','click',()=>{visionRotation=(visionRotation-90)%360;processPlanVision()});
+ crmOn('visionRotateRight','click',()=>{visionRotation=(visionRotation+90)%360;processPlanVision()});
+ crmOn('visionReprocess','click',()=>processPlanVision());crmOn('visionUseResult','click',analyzePhotoLocal);
+
+}
+
 
 function audit(){
  let issues=[];
@@ -713,14 +792,7 @@ function startApplication(){
  safeRun('sincronización inicial',syncAll);
  safeRun('proyecto guardado',()=>{let saved=null;try{saved=localStorage.getItem(STORAGE)}catch(e){console.warn('Almacenamiento no disponible',e)}if(saved){try{state=migrateState(JSON.parse(saved));renderSettings();syncAll()}catch(e){console.warn('Proyecto guardado incompatible; se abre un proyecto limpio',e)}}});
  safeRun('auditoría',()=>{let issues=audit();if(issues.length)console.warn('Auditoría:',issues);else console.info('Auditoría funcional correcta')});
- safeRun('visión IA',()=>{
-   const on=(id,event,fn)=>{const el=$(id);if(el)el.addEventListener(event,fn)};
-   on('photoInput','change',photoSelected);on('analyzePhoto','click',analyzePhotoLocal);
-   ['visionContrast','visionClean','visionMode','visionDeskew'].forEach(id=>on(id,'change',()=>processPlanVision(false)));
-   on('visionRotateLeft','click',()=>{visionRotation=(visionRotation-90)%360;processPlanVision()});
-   on('visionRotateRight','click',()=>{visionRotation=(visionRotation+90)%360;processPlanVision()});
-   on('visionReprocess','click',()=>processPlanVision());on('visionUseResult','click',analyzePhotoLocal);
- });
+ safeRun('visión IA',()=>{if(visionImage)processPlanVision(false)});
  safeRun('pantalla de carga',loader);
  // Salida de emergencia: aunque falle una función o Safari pause un temporizador, abre la aplicación.
  setTimeout(()=>forceFinishBoot('Programa listo'),2600);

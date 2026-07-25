@@ -1,0 +1,11 @@
+PLEGAR PRO v49.2 — PRUEBAS
+
+- Restaurada la función central bind() que conecta menú, botones y controles.
+- Menú lateral y accesos rápidos enlazados.
+- Controles Programar, 2D, 3D, simulaciones, Desarrollo, Curva Perfecta, IA, Producción y Calidad enlazados.
+- Oficina Técnica: nuevo, guardar, eliminar, buscar, WhatsApp, correo, asignar y exportar enlazados.
+- Importación fotográfica y Visión IA enlazadas.
+- Ajustes v48/v49 enlazados.
+- Corregidas referencias renderAll/downloadText inexistentes.
+- Inicio tolerante a errores conservado.
+- Sintaxis JavaScript validada con Node.
