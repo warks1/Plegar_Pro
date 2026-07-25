@@ -1,0 +1,6 @@
+PRUEBAS v49
+- Sintaxis JavaScript validada con Node.
+- IDs HTML sin duplicados.
+- Controles de visión presentes y enlazados.
+- ZIP verificado sin archivos dañados.
+- Flujo foto > preprocesado > detección > IA disponible.

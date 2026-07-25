@@ -1,0 +1,8 @@
+PLEGAR PRO v48.0
+- Acerca de muestra únicamente datos del propietario.
+- Importación explícita de planos por foto/cámara.
+- IA avanzada con confianza, revisión de colisiones, utillaje y secuencia.
+- Oficina Técnica/Clientes con fichas, búsqueda, asignación y exportación.
+- Contacto directo con clientes por WhatsApp y correo.
+- Ajustes adicionales de precisión, tolerancias, móvil, copias e IA.
+- Conserva todas las funciones acumuladas desde v43.

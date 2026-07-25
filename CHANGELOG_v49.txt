@@ -1,0 +1,10 @@
+PLEGAR PRO v49.0 — VISIÓN IA DE PLANOS
+
+- Preprocesado real de fotografías en Canvas.
+- Escala de grises, contraste configurable y umbral adaptativo.
+- Limpieza de ruido y fondos irregulares.
+- Rotación manual rápida.
+- Detección de líneas horizontales y verticales.
+- Indicadores de calidad, líneas, ángulos y confianza.
+- Propuesta editable enviada a IA antes de Programar.
+- Advertencia clara: la lectura numérica de cotas requiere OCR externo o confirmación manual.
