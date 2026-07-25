@@ -1,0 +1,9 @@
+PLEGAR PRO v49.4 — MENÚ Y EVENTOS REVISADOS
+
+- Corregido el fallo exacto del botón Menú: existían dos controladores que abrían y cerraban el panel en la misma pulsación.
+- Eliminados controladores duplicados de navegación y acciones esenciales.
+- Sistema único de navegación delegada.
+- Estado aria-expanded del menú.
+- Fondo táctil para cerrar el menú en smartphone.
+- Bloqueo de desplazamiento del fondo cuando el menú está abierto.
+- Conservadas todas las funciones acumuladas.

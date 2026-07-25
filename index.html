@@ -94,6 +94,10 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
  .toolbar select,.toolbar button,.actions button{flex:1 1 135px}.overlay{font-size:10px;max-width:210px}.tableWrap{margin-inline:-10px;padding-inline:10px}
 }
 
+
+/* v49.4: menú móvil estable */
+.menuBackdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:65}
+@media(max-width:900px){body.menu-open .menuBackdrop{display:block}body.menu-open{overflow:hidden}.mobileMenuBtn{position:relative;z-index:72}}
 </style>
 </head>
 <body>
@@ -108,9 +112,9 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 </div>
 
 <div class="app">
-<aside class="side">
+<aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v49.3 · Botones reparados · Visión IA · base acumulativa v43</div>
+  <div class="version">v49.4 · Botones reparados · Visión IA · base acumulativa v43</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -138,10 +142,11 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
   </nav>
 </aside>
 
+<div class="menuBackdrop" id="menuBackdrop" aria-hidden="true"></div>
 <main class="main">
 <header class="topbar">
   <div class="topLeft">
-    <button class="mobileMenuBtn" id="mobileMenuBtn" title="Menú">☰ Menú</button>
+    <button class="mobileMenuBtn" id="mobileMenuBtn" title="Menú" aria-controls="mainSidebar" aria-expanded="false">☰ Menú</button>
     <button id="backBtn" title="Volver">← Volver</button>
     <button id="undoBtn" title="Deshacer">↶ Deshacer</button>
     <button id="redoBtn" title="Rehacer">↷ Rehacer</button>
@@ -690,8 +695,6 @@ function renderAbout(){let o=(state.settings&&state.settings.owner)||{},year=new
 function applyCameraPreset(v,target='S3'){let m={iso:[-.35,.5],front:[0,0],rear:[0,Math.PI],side:[0,Math.PI/2],top:[-Math.PI/2,0],operator:[-.12,Math.PI],free:[sim['rotX'+target]??-.35,sim['rotY'+target]??.5]};[sim['rotX'+target],sim['rotY'+target]]=m[v]||m.iso}
 
 function bind(){
- document.querySelectorAll('.nav button[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
- document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
  $('backBtn').onclick=back;$('undoBtn').onclick=undo;$('redoBtn').onclick=redo;bindProjectInputs();
  $('addBend').onclick=()=>commit('Añadido pliegue',()=>state.bends.push({leg:100,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:100,direction:1}));
  $('p2Add').onclick=$('addBend').onclick;$('autoSequence').onclick=()=>commit('Secuencia ordenada automáticamente',()=>state.bends.sort((a,b)=>b.leg-a.leg));
@@ -747,7 +750,6 @@ function bind(){
  function rotate2D(t,a){sim['rot'+t]=(sim['rot'+t]||0)+a;drawAll()}
  function wire2D(id,t){let cv=$(id),drag=false,lx=0,ly=0;cv.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId)});cv.addEventListener('pointermove',e=>{if(!drag)return;sim['pan'+t+'X']=(sim['pan'+t+'X']||0)+(e.clientX-lx);sim['pan'+t+'Y']=(sim['pan'+t+'Y']||0)+(e.clientY-ly);lx=e.clientX;ly=e.clientY;drawAll()});cv.addEventListener('pointerup',()=>drag=false);cv.addEventListener('pointercancel',()=>drag=false);cv.addEventListener('wheel',e=>{e.preventDefault();zoom2D(t,e.deltaY>0?.9:1.1)},{passive:false})}
  wire2D('canvasS2','S2');wire2D('canvasCurve','Curve');wire2D('canvasProgram','Program');
- $('mobileMenuBtn').onclick=()=>document.querySelector('.side').classList.toggle('open');document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>document.querySelector('.side').classList.remove('open')));
 
  // Oficina técnica / Clientes
  const crmOn=(id,event,fn)=>{const el=$(id);if(el)el.addEventListener(event,fn)};
@@ -769,7 +771,7 @@ function bind(){
 
 
 
-// v49.3: sistema de eventos tolerante a fallos para Safari/iPhone.
+// v49.4: sistema de eventos tolerante a fallos para Safari/iPhone.
 function safeElement(id){return document.getElementById(id)}
 function safeBind(id,event,handler,options){
  const el=safeElement(id);if(!el||typeof handler!=='function')return false;
@@ -779,26 +781,36 @@ function installNavigationFallback(){
  if(document.documentElement.dataset.navFallback==='1')return;
  document.documentElement.dataset.navFallback='1';
  document.addEventListener('click',function(e){
+   const menu=e.target&&e.target.closest?e.target.closest('#mobileMenuBtn'):null;
+   if(menu){
+     e.preventDefault();e.stopPropagation();
+     const side=document.querySelector('.side');
+     if(side){const willOpen=!side.classList.contains('open');side.classList.toggle('open',willOpen);document.body.classList.toggle('menu-open',willOpen);menu.setAttribute('aria-expanded',willOpen?'true':'false');}
+     return;
+   }
+   const backdrop=e.target&&e.target.closest?e.target.closest('#menuBackdrop'):null;
+   if(backdrop){const side=document.querySelector('.side');if(side)side.classList.remove('open');document.body.classList.remove('menu-open');const btn=safeElement('mobileMenuBtn');if(btn)btn.setAttribute('aria-expanded','false');return;}
    const trigger=e.target&&e.target.closest?e.target.closest('[data-page],[data-go]'):null;
    if(!trigger)return;
    const page=trigger.dataset.page||trigger.dataset.go;
    if(page&&typeof go==='function'){
      e.preventDefault();
      try{go(page)}catch(err){console.error('Navegación recuperada',err)}
-     const side=document.querySelector('.side');if(side)side.classList.remove('open');
+     const side=document.querySelector('.side');if(side)side.classList.remove('open');document.body.classList.remove('menu-open');
+     const btn=safeElement('mobileMenuBtn');if(btn)btn.setAttribute('aria-expanded','false');
    }
- },true);
- safeBind('mobileMenuBtn','click',function(){const side=document.querySelector('.side');if(side)side.classList.toggle('open')});
+ },false);
 }
 function installEssentialFallbacks(){
  installNavigationFallback();
  // Acciones esenciales enlazadas una a una: un error nunca cancela las demás.
- safeBind('backBtn','click',()=>typeof back==='function'&&back());
- safeBind('undoBtn','click',()=>typeof undo==='function'&&undo());
- safeBind('redoBtn','click',()=>typeof redo==='function'&&redo());
- safeBind('saveProject','click',()=>typeof saveProject==='function'&&saveProject());
- safeBind('loadProject','click',()=>typeof loadProject==='function'&&loadProject());
- safeBind('addBend','click',()=>{if(typeof commit==='function')commit('Añadido pliegue',()=>state.bends.push({leg:100,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:100,direction:1}))});
+ const bindOnlyIfMissing=(id,event,handler)=>{const el=safeElement(id);if(el&&!el.onclick&&!el.dataset.fallbackBound){el.dataset.fallbackBound='1';safeBind(id,event,handler)}};
+ bindOnlyIfMissing('backBtn','click',()=>typeof back==='function'&&back());
+ bindOnlyIfMissing('undoBtn','click',()=>typeof undo==='function'&&undo());
+ bindOnlyIfMissing('redoBtn','click',()=>typeof redo==='function'&&redo());
+ bindOnlyIfMissing('saveProject','click',()=>typeof saveProject==='function'&&saveProject());
+ bindOnlyIfMissing('loadProject','click',()=>typeof loadProject==='function'&&loadProject());
+ bindOnlyIfMissing('addBend','click',()=>{if(typeof commit==='function')commit('Añadido pliegue',()=>state.bends.push({leg:100,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:100,direction:1}))});
  safeBind('analyzeFile','click',()=>{const input=safeElement('fileInput'),result=safeElement('fileResult'),f=input&&input.files&&input.files[0];if(result)result.innerHTML=f?`Archivo registrado: <b>${f.name}</b><br>Preparado para análisis.`:'Selecciona primero un archivo.'});
  safeBind('photoInput','change',e=>typeof photoSelected==='function'&&photoSelected(e));
  safeBind('analyzePhoto','click',()=>typeof analyzePhotoLocal==='function'&&analyzePhotoLocal());
@@ -824,8 +836,8 @@ function forceFinishBoot(message='Programa listo'){
 function safeRun(name,fn){try{return fn()}catch(e){console.error('[Inicio] '+name,e);return null}}
 function startApplication(){
  // Safari/iPhone: navegación mínima disponible incluso si falla un módulo secundario.
- safeRun('navegación de emergencia',installEssentialFallbacks);
  safeRun('enlaces y controles',bind);
+ safeRun('navegación de emergencia',installEssentialFallbacks);
  safeRun('ajustes',renderSettings);
  safeRun('sincronización inicial',syncAll);
  safeRun('proyecto guardado',()=>{let saved=null;try{saved=localStorage.getItem(STORAGE)}catch(e){console.warn('Almacenamiento no disponible',e)}if(saved){try{state=migrateState(JSON.parse(saved));renderSettings();syncAll()}catch(e){console.warn('Proyecto guardado incompatible; se abre un proyecto limpio',e)}}});

@@ -1,0 +1,11 @@
+PRUEBAS v49.4
+
+[OK] Un solo controlador funcional para #mobileMenuBtn.
+[OK] Eliminado onclick duplicado del menú.
+[OK] Eliminados listeners duplicados data-page/data-go dentro de bind().
+[OK] Menú abre/cierra con una sola pulsación.
+[OK] Cierre al navegar y al tocar el fondo.
+[OK] aria-expanded sincronizado.
+[OK] Sintaxis JavaScript validada con Node.
+[OK] IDs HTML sin duplicados.
+[OK] Integridad ZIP validada.
