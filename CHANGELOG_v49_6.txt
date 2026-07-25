@@ -1,0 +1,8 @@
+Plegar Pro v49.6 — Revisión funcional completa
+
+- Corregido el bloqueo del enlazado causado por creatorName y copyrightHolder inexistentes.
+- Corregido el botón Correo de Oficina Técnica (crmMail).
+- Menú móvil reconstruido con click y touchend independientes.
+- Navegación delegada única para todos los módulos.
+- Auditoría funcional automática disponible en window.__PLEGAR_AUDIT__.
+- Conservadas todas las funciones acumuladas desde v43.

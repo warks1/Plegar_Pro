@@ -1,0 +1,6 @@
+PRUEBAS v49.5
+- Sintaxis JavaScript validada.
+- Menú probado en viewport móvil: abrir, cerrar y backdrop.
+- Navegación probada mediante data-page y data-go.
+- Inicio y pantalla de carga comprobados.
+- ZIP validado sin archivos dañados.

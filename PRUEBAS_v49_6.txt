@@ -1,0 +1,24 @@
+Plegar Pro v49.6 — Informe de revisión funcional
+
+Pruebas ejecutadas sobre el HTML real mediante Chromium y Chrome DevTools Protocol, cargando el documento completo en modo smartphone 390 × 844 px.
+
+RESULTADOS SUPERADOS
+- Inicio completo y retirada de la pantalla de carga.
+- Menú móvil: apertura y estado visible.
+- Navegación por los 20 módulos.
+- Ejecución de todos los botones internos no destructivos.
+- 0 errores JavaScript durante la prueba funcional final.
+- 0 identificadores HTML duplicados.
+- 0 referencias literales a elementos HTML inexistentes.
+- 122 botones estáticos revisados y 144 botones presentes tras renderizar filas dinámicas.
+- Programar, Programación 2D/3D, Simulación 2D/3D, Desarrollo, Curva Perfecta, Comparador V, IA, Oficina Técnica, Producción, Calidad, Ajustes y guardado enlazados.
+
+ERRORES CORREGIDOS
+- El enlazado se detenía por dos campos eliminados: creatorName y copyrightHolder.
+- El botón de correo buscaba crmEmailBtn, pero el HTML usa crmMail.
+- Los botones Centrar 3D llamaban a resetView, que no existía.
+- Oficina Técnica e importación por foto dependían de variables globales automáticas de los IDs, comportamiento no fiable en Safari.
+- Guardado local podía interrumpir acciones cuando el almacenamiento no estaba disponible.
+- Menú móvil simplificado a un único evento click para evitar dobles pulsaciones táctiles.
+
+Los enlaces externos WhatsApp/correo y los selectores de archivo no se activaron automáticamente durante la auditoría para evitar abrir aplicaciones o diálogos, pero sus controladores y elementos fueron verificados.

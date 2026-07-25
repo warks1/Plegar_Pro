@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v47 · Visual Pro Responsive</title>
+<title>Plegar Pro v49.6 · Menú móvil compatible</title>
 <style>
 :root{
   --bg:#06111b;--panel:#0d2131;--panel2:#112a3d;--line:#31536c;
@@ -81,7 +81,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 .stage canvas{cursor:grab}.stage canvas:active{cursor:grabbing}
 .previewProgram{min-height:390px}.previewProgram canvas{height:390px}
 .legalFooter{margin-top:18px;padding:13px 10px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;text-align:center;line-height:1.6}
-.mobileMenuBtn{display:none}
+.mobileMenuBtn{display:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .visualToolbar{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}.visualToolbar .btn{padding:7px 10px}
 @media(max-width:900px){
  .app{display:block}.side{position:fixed;z-index:70;inset:0 auto 0 0;width:min(310px,88vw);height:100dvh;transform:translateX(-105%);transition:.25s;box-shadow:20px 0 45px rgba(0,0,0,.35)}
@@ -98,6 +98,15 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 /* v49.4: menú móvil estable */
 .menuBackdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:65}
 @media(max-width:900px){body.menu-open .menuBackdrop{display:block}body.menu-open{overflow:hidden}.mobileMenuBtn{position:relative;z-index:72}}
+
+/* v49.6: menú móvil sin dependencia de JavaScript */
+.menuToggle{position:fixed;opacity:0;pointer-events:none;width:1px;height:1px}
+.mobileMenuBtn{cursor:pointer;user-select:none;-webkit-user-select:none;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:9px;padding:9px 11px;align-items:center}
+@media(max-width:900px){
+ #menuToggle:checked ~ .side{transform:translateX(0)!important}
+ #menuToggle:checked ~ .menuBackdrop{display:block!important}
+ .app:has(#menuToggle:checked){overflow:hidden}
+}
 </style>
 </head>
 <body>
@@ -112,9 +121,10 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 </div>
 
 <div class="app">
+<input type="checkbox" id="menuToggle" class="menuToggle" aria-hidden="true">
 <aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v49.4 · Botones reparados · Visión IA · base acumulativa v43</div>
+  <div class="version">v49.6 · Menú móvil compatible · Visión IA · base acumulativa v43</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -142,11 +152,11 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
   </nav>
 </aside>
 
-<div class="menuBackdrop" id="menuBackdrop" aria-hidden="true"></div>
+<label class="menuBackdrop" id="menuBackdrop" for="menuToggle" aria-label="Cerrar menú"></label>
 <main class="main">
 <header class="topbar">
   <div class="topLeft">
-    <button class="mobileMenuBtn" id="mobileMenuBtn" title="Menú" aria-controls="mainSidebar" aria-expanded="false">☰ Menú</button>
+    <label class="mobileMenuBtn" id="mobileMenuBtn" for="menuToggle" role="button" title="Menú" aria-controls="mainSidebar">☰ Menú</label>
     <button id="backBtn" title="Volver">← Volver</button>
     <button id="undoBtn" title="Deshacer">↶ Deshacer</button>
     <button id="redoBtn" title="Rehacer">↷ Rehacer</button>
@@ -340,6 +350,45 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <footer class="legalFooter" id="legalFooter"></footer></main></div>
 <div id="toast" class="hidden"></div>
 
+
+<script>
+(function(){
+  function el(id){return document.getElementById(id)}
+  function setMenu(open){
+    var toggle=el('menuToggle'),side=el('mainSidebar'),btn=el('mobileMenuBtn');
+    if(toggle)toggle.checked=!!open;
+    if(side)side.classList.toggle('open',!!open);
+    document.body.classList.toggle('menu-open',!!open);
+    if(btn)btn.setAttribute('aria-expanded',open?'true':'false');
+  }
+  function openPage(page){
+    if(!page)return;
+    try{
+      if(typeof window.go==='function')window.go(page);
+      else{
+        document.querySelectorAll('.page').forEach(function(x){x.classList.toggle('active',x.id===page)});
+        document.querySelectorAll('[data-page]').forEach(function(x){x.classList.toggle('active',x.getAttribute('data-page')===page)});
+      }
+    }catch(err){console.error('Error de navegación',err)}
+    setMenu(false);
+  }
+  function install(){
+    var btn=el('mobileMenuBtn'),toggle=el('menuToggle'),backdrop=el('menuBackdrop');
+    if(btn){
+      btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();setMenu(!(toggle&&toggle.checked));});
+    }
+    if(backdrop)backdrop.addEventListener('click',function(e){e.preventDefault();setMenu(false)});
+    document.addEventListener('click',function(e){
+      var trigger=e.target.closest&&e.target.closest('[data-page],[data-go]');
+      if(!trigger)return;
+      e.preventDefault();openPage(trigger.getAttribute('data-page')||trigger.getAttribute('data-go'));
+    });
+    window.__stableNavInstalled=true;
+    window.__setPlegarMenu=setMenu;
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+})();
+</script>
 <script>
 const $=id=>document.getElementById(id);
 const deep=o=>JSON.parse(JSON.stringify(o));
@@ -659,9 +708,12 @@ function syncAll(){
  renderProgram();render2DEditor();populateP3();renderDevelopment();renderCurve();renderVCompare();renderTools();renderWorkOrder();renderQuality();renderHistory();renderAbout();drawAll();
  $('syncBadge').textContent='● Todo sincronizado';setTimeout(()=>$('syncBadge').textContent='● Proyecto al día',900);
 }
-function autoSave(){if(state.settings.autosave==='yes')localStorage.setItem(STORAGE,JSON.stringify(state))}
-function saveProject(){localStorage.setItem(STORAGE,JSON.stringify(state));toast('Proyecto guardado')}
-function loadProject(){let s=localStorage.getItem(STORAGE)||localStorage.getItem('plegarProV43');if(!s)return toast('No hay proyecto guardado');state=migrateState(JSON.parse(s));undoStack=[];redoStack=[];syncAll();toast('Proyecto v43/v44 recuperado')}
+function storageGet(key){try{return window.localStorage?localStorage.getItem(key):null}catch(e){console.warn('Almacenamiento no disponible',e);return null}}
+function storageSet(key,value){try{if(window.localStorage){localStorage.setItem(key,value);return true}}catch(e){console.warn('No se pudo guardar',e)}return false}
+function storageRemove(key){try{if(window.localStorage){localStorage.removeItem(key);return true}}catch(e){console.warn('No se pudo borrar',e)}return false}
+function autoSave(){if(state.settings.autosave==='yes')storageSet(STORAGE,JSON.stringify(state))}
+function saveProject(){storageSet(STORAGE,JSON.stringify(state))?toast('Proyecto guardado'):toast('Guardado local no disponible')}
+function loadProject(){let s=storageGet(STORAGE)||storageGet('plegarProV43');if(!s)return toast('No hay proyecto guardado');try{state=migrateState(JSON.parse(s));undoStack=[];redoStack=[];syncAll();toast('Proyecto recuperado')}catch(e){console.error(e);toast('El proyecto guardado no es compatible')}}
 function download(name,data,type='application/json'){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
 function applySettings(){let light=state.settings.theme==='light'||(state.settings.theme==='system'&&matchMedia('(prefers-color-scheme: light)').matches);document.body.classList.toggle('light',light);drawAll()}
 function migrateState(raw){
@@ -671,19 +723,19 @@ function migrateState(raw){
 let crmSelected=-1;
 function ensureCRM(){if(!Array.isArray(state.clients))state.clients=[]}
 function renderCRM(filter=''){ensureCRM();let q=filter.toLowerCase(),rows=state.clients.map((c,i)=>({c,i})).filter(x=>!q||JSON.stringify(x.c).toLowerCase().includes(q));$('crmList').innerHTML=rows.length?rows.map(({c,i})=>`<button class="listItem" data-crm="${i}"><b>${c.name||'Sin nombre'}</b><small>${c.contact||''} · ${c.reference||''}</small></button>`).join(''):'<div class="note">Todavía no hay clientes.</div>';$('crmList').querySelectorAll('[data-crm]').forEach(b=>b.onclick=()=>selectCRM(+b.dataset.crm))}
-function selectCRM(i){ensureCRM();crmSelected=i;let c=state.clients[i];if(!c)return;crmName.value=c.name||'';crmContact.value=c.contact||'';crmPhone.value=c.phone||'';crmWhatsapp.value=c.whatsapp||'';crmEmail.value=c.email||'';crmReference.value=c.reference||'';crmNotes.value=c.notes||'';$('crmActive').innerHTML=`<b>${c.name}</b><br>${c.contact||''}<br>${c.phone||''}<br>${c.email||''}<br><small>${c.notes||''}</small>`}
-function saveCRM(){ensureCRM();let c={name:crmName.value.trim(),contact:crmContact.value.trim(),phone:crmPhone.value.trim(),whatsapp:crmWhatsapp.value.trim(),email:crmEmail.value.trim(),reference:crmReference.value.trim(),notes:crmNotes.value.trim()};if(!c.name)return toast('Indica el nombre del cliente');if(crmSelected<0){state.clients.push(c);crmSelected=state.clients.length-1}else state.clients[crmSelected]=c;autoSave();renderCRM();selectCRM(crmSelected);toast('Cliente guardado')}
+function selectCRM(i){ensureCRM();crmSelected=i;let c=state.clients[i];if(!c)return;$('crmName').value=c.name||'';$('crmContact').value=c.contact||'';$('crmPhone').value=c.phone||'';$('crmWhatsapp').value=c.whatsapp||'';$('crmEmail').value=c.email||'';$('crmReference').value=c.reference||'';$('crmNotes').value=c.notes||'';$('crmActive').innerHTML=`<b>${c.name}</b><br>${c.contact||''}<br>${c.phone||''}<br>${c.email||''}<br><small>${c.notes||''}</small>`}
+function saveCRM(){ensureCRM();let c={name:$('crmName').value.trim(),contact:$('crmContact').value.trim(),phone:$('crmPhone').value.trim(),whatsapp:$('crmWhatsapp').value.trim(),email:$('crmEmail').value.trim(),reference:$('crmReference').value.trim(),notes:$('crmNotes').value.trim()};if(!c.name)return toast('Indica el nombre del cliente');if(crmSelected<0){state.clients.push(c);crmSelected=state.clients.length-1}else state.clients[crmSelected]=c;autoSave();renderCRM();selectCRM(crmSelected);toast('Cliente guardado')}
 function clearCRM(){crmSelected=-1;['crmName','crmContact','crmPhone','crmWhatsapp','crmEmail','crmReference','crmNotes'].forEach(id=>$(id).value='');$('crmActive').textContent='Nuevo cliente preparado.'}
 function crmContact(kind){ensureCRM();let c=state.clients[crmSelected];if(!c)return toast('Selecciona un cliente');if(kind==='wa'){let n=(c.whatsapp||c.phone||'').replace(/\D/g,'');if(!n)return toast('El cliente no tiene WhatsApp');window.open(`https://wa.me/${n}?text=${encodeURIComponent('Hola '+(c.contact||c.name)+', te contacto desde Oficina Técnica sobre la referencia '+(state.project.ref||c.reference||''))}`,'_blank')}else{if(!c.email)return toast('El cliente no tiene correo');let body=`Hola ${c.contact||c.name},\n\nTe contacto desde Oficina Técnica.\n\nReferencia: ${state.project.ref||c.reference||''}\nMaterial: ${state.project.material}\nEspesor: ${state.project.thickness} mm`;location.href=`mailto:${c.email}?subject=${encodeURIComponent('Plegar Pro · '+(state.project.ref||c.reference||'Consulta técnica'))}&body=${encodeURIComponent(body)}`}}
 function assignCRM(){let c=state.clients&&state.clients[crmSelected];if(!c)return toast('Selecciona un cliente');commit('Cliente asignado al proyecto',()=>{state.project.client=c.name;if(c.reference&&!state.project.ref)state.project.ref=c.reference});syncAll();toast('Cliente asignado')}
 function exportCRM(){download('clientes_oficina_tecnica.json',JSON.stringify(state.clients||[],null,2))}
 let visionImage=null,visionRotation=0,visionDetection=null;
-function photoSelected(){let f=photoInput.files[0];if(!f)return;let img=new Image();img.onload=()=>{visionImage=img;visionRotation=0;photoPreview.innerHTML=`<b>${f.name}</b><br>${Math.round(f.size/1024)} KB · ${img.naturalWidth} × ${img.naturalHeight}px`;processPlanVision(false)};img.src=URL.createObjectURL(f)}
+function photoSelected(){let f=$('photoInput').files[0];if(!f)return;let img=new Image();img.onload=()=>{visionImage=img;visionRotation=0;$('photoPreview').innerHTML=`<b>${f.name}</b><br>${Math.round(f.size/1024)} KB · ${img.naturalWidth} × ${img.naturalHeight}px`;processPlanVision(false)};img.src=URL.createObjectURL(f)}
 function visionGray(data,contrast,mode){let out=new Uint8ClampedArray(data.length),sum=0;for(let i=0;i<data.length;i+=4){let g=.299*data[i]+.587*data[i+1]+.114*data[i+2];if(mode==='dark')g=255-g;g=(g-128)*(contrast/100)+128;g=Math.max(0,Math.min(255,g));sum+=g;out[i]=out[i+1]=out[i+2]=g;out[i+3]=255}return {data:out,mean:sum/(data.length/4)}}
 function adaptiveBinary(gray,w,h,clean){let out=new Uint8ClampedArray(gray.length),r=10,integral=new Float64Array((w+1)*(h+1));for(let y=1;y<=h;y++){let row=0;for(let x=1;x<=w;x++){row+=gray[((y-1)*w+x-1)*4];integral[y*(w+1)+x]=integral[(y-1)*(w+1)+x]+row}}for(let y=0;y<h;y++)for(let x=0;x<w;x++){let x1=Math.max(0,x-r),y1=Math.max(0,y-r),x2=Math.min(w-1,x+r),y2=Math.min(h-1,y+r),n=(x2-x1+1)*(y2-y1+1),avg=(integral[(y2+1)*(w+1)+x2+1]-integral[y1*(w+1)+x2+1]-integral[(y2+1)*(w+1)+x1]+integral[y1*(w+1)+x1])/n,v=gray[(y*w+x)*4]<avg-10?0:255;let i=(y*w+x)*4;out[i]=out[i+1]=out[i+2]=v;out[i+3]=255}for(let pass=0;pass<clean;pass++){let cp=out.slice();for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){let black=0;for(let yy=-1;yy<=1;yy++)for(let xx=-1;xx<=1;xx++)if(cp[((y+yy)*w+x+xx)*4]<128)black++;let i=(y*w+x)*4;if(black<=1)out[i]=out[i+1]=out[i+2]=255}}return out}
 function detectPlanLines(bin,w,h){let hs=[],vs=[];for(let y=1;y<h-1;y++){let run=0,start=0;for(let x=0;x<w;x++){let b=bin[(y*w+x)*4]<128;if(b&&!run)start=x;run=b?run+1:0;if((!b||x===w-1)&&run>Math.max(25,w*.06)){hs.push({x1:start,x2:x-1,y,len:run});run=0}}}for(let x=1;x<w-1;x++){let run=0,start=0;for(let y=0;y<h;y++){let b=bin[(y*w+x)*4]<128;if(b&&!run)start=y;run=b?run+1:0;if((!b||y===h-1)&&run>Math.max(25,h*.06)){vs.push({y1:start,y2:y-1,x,len:run});run=0}}}hs.sort((a,b)=>b.len-a.len);vs.sort((a,b)=>b.len-a.len);return {h:hs.slice(0,24),v:vs.slice(0,24)}}
-function processPlanVision(showToast=true){if(!visionImage)return showToast&&toast('Selecciona o fotografía un plano');let c=$('visionCanvas'),ctx=c.getContext('2d'),max=1200,scale=Math.min(max/visionImage.naturalWidth,800/visionImage.naturalHeight,1),w=Math.max(1,Math.round(visionImage.naturalWidth*scale)),h=Math.max(1,Math.round(visionImage.naturalHeight*scale));if(Math.abs(visionRotation)%180===90)[w,h]=[h,w];c.width=w;c.height=h;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(visionRotation*Math.PI/180);let dw=Math.abs(visionRotation)%180===90?h:w,dh=Math.abs(visionRotation)%180===90?w:h;ctx.drawImage(visionImage,-dw/2,-dh/2,dw,dh);ctx.restore();let raw=ctx.getImageData(0,0,w,h),g=visionGray(raw.data,+visionContrast.value,visionMode.value),bin=adaptiveBinary(g.data,w,h,+visionClean.value),lines=detectPlanLines(bin,w,h);let black=0;for(let i=0;i<bin.length;i+=4)if(bin[i]<128)black++;let density=black/(w*h),quality=Math.max(10,Math.min(99,Math.round(96-Math.abs(density-.09)*260)));let confidence=Math.max(18,Math.min(96,Math.round(quality*.55+Math.min(30,(lines.h.length+lines.v.length)*1.4))));let image=new ImageData(bin,w,h);ctx.putImageData(image,0,0);ctx.lineWidth=2;ctx.strokeStyle='rgba(0,170,255,.85)';lines.h.slice(0,10).forEach(l=>{ctx.beginPath();ctx.moveTo(l.x1,l.y);ctx.lineTo(l.x2,l.y);ctx.stroke()});ctx.strokeStyle='rgba(255,120,0,.85)';lines.v.slice(0,10).forEach(l=>{ctx.beginPath();ctx.moveTo(l.x,l.y1);ctx.lineTo(l.x,l.y2);ctx.stroke()});let angles=[];if(lines.h.length)angles.push(0);if(lines.v.length)angles.push(90);visionDetection={quality,confidence,lines,angles,width:w,height:h};visionQuality.textContent=quality+'%';visionLines.textContent=(lines.h.length+lines.v.length);visionAngles.textContent=angles.length?angles.join('° / ')+'°':'—';visionConfidence.textContent=confidence+'%';let estBends=Math.max(1,Math.min(12,Math.round((lines.v.length+lines.h.length)/5)));visionResult.innerHTML=`<b>Preprocesado completado</b><br>Se detectaron ${lines.h.length} líneas horizontales y ${lines.v.length} verticales. Propuesta inicial: ${estBends} pliegue${estBends===1?'':'s'}.<br><small>Las cifras impresas no pueden leerse con fiabilidad sin un motor OCR externo; confirma cotas, escala y espesor.</small>`;if(showToast)toast('Plano preprocesado y líneas detectadas')}
-function analyzePhotoLocal(){if(!visionImage)return toast('Selecciona o fotografía un plano');processPlanVision(false);let d=visionDetection||{confidence:50,lines:{h:[],v:[]}},n=Math.max(1,Math.min(10,Math.round((d.lines.h.length+d.lines.v.length)/5)));let guessedLegs=Array.from({length:n+1},(_,i)=>100+i*20);aiInput.value=`Plano fotografiado preprocesado. Material ${state.project.material}, espesor ${state.project.thickness} mm. Alas ${guessedLegs.join(', ')}. ${n} pliegues de 90 grados, radio 2, V16. Confirmar cotas detectadas.`;calculateAI();aiConfidence.textContent=d.confidence+'% estimada';aiCollision.textContent='Revisión activa';aiTooling.textContent='V16 provisional';aiSequence.textContent='Pendiente de validar';fileResult.innerHTML='<b>Foto procesada.</b> Se corrigió contraste, se limpiaron sombras y se detectaron líneas principales. Revisa la propuesta antes de enviarla a Programar.';go('ai')}
+function processPlanVision(showToast=true){if(!visionImage)return showToast&&toast('Selecciona o fotografía un plano');let c=$('visionCanvas'),ctx=c.getContext('2d'),max=1200,scale=Math.min(max/visionImage.naturalWidth,800/visionImage.naturalHeight,1),w=Math.max(1,Math.round(visionImage.naturalWidth*scale)),h=Math.max(1,Math.round(visionImage.naturalHeight*scale));if(Math.abs(visionRotation)%180===90)[w,h]=[h,w];c.width=w;c.height=h;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(visionRotation*Math.PI/180);let dw=Math.abs(visionRotation)%180===90?h:w,dh=Math.abs(visionRotation)%180===90?w:h;ctx.drawImage(visionImage,-dw/2,-dh/2,dw,dh);ctx.restore();let raw=ctx.getImageData(0,0,w,h),g=visionGray(raw.data,+$('visionContrast').value,$('visionMode').value),bin=adaptiveBinary(g.data,w,h,+$('visionClean').value),lines=detectPlanLines(bin,w,h);let black=0;for(let i=0;i<bin.length;i+=4)if(bin[i]<128)black++;let density=black/(w*h),quality=Math.max(10,Math.min(99,Math.round(96-Math.abs(density-.09)*260)));let confidence=Math.max(18,Math.min(96,Math.round(quality*.55+Math.min(30,(lines.h.length+lines.v.length)*1.4))));let image=new ImageData(bin,w,h);ctx.putImageData(image,0,0);ctx.lineWidth=2;ctx.strokeStyle='rgba(0,170,255,.85)';lines.h.slice(0,10).forEach(l=>{ctx.beginPath();ctx.moveTo(l.x1,l.y);ctx.lineTo(l.x2,l.y);ctx.stroke()});ctx.strokeStyle='rgba(255,120,0,.85)';lines.v.slice(0,10).forEach(l=>{ctx.beginPath();ctx.moveTo(l.x,l.y1);ctx.lineTo(l.x,l.y2);ctx.stroke()});let angles=[];if(lines.h.length)angles.push(0);if(lines.v.length)angles.push(90);visionDetection={quality,confidence,lines,angles,width:w,height:h};$('visionQuality').textContent=quality+'%';$('visionLines').textContent=(lines.h.length+lines.v.length);$('visionAngles').textContent=angles.length?angles.join('° / ')+'°':'—';$('visionConfidence').textContent=confidence+'%';let estBends=Math.max(1,Math.min(12,Math.round((lines.v.length+lines.h.length)/5)));$('visionResult').innerHTML=`<b>Preprocesado completado</b><br>Se detectaron ${lines.h.length} líneas horizontales y ${lines.v.length} verticales. Propuesta inicial: ${estBends} pliegue${estBends===1?'':'s'}.<br><small>Las cifras impresas no pueden leerse con fiabilidad sin un motor OCR externo; confirma cotas, escala y espesor.</small>`;if(showToast)toast('Plano preprocesado y líneas detectadas')}
+function analyzePhotoLocal(){if(!visionImage)return toast('Selecciona o fotografía un plano');processPlanVision(false);let d=visionDetection||{confidence:50,lines:{h:[],v:[]}},n=Math.max(1,Math.min(10,Math.round((d.lines.h.length+d.lines.v.length)/5)));let guessedLegs=Array.from({length:n+1},(_,i)=>100+i*20);$('aiInput').value=`Plano fotografiado preprocesado. Material ${state.project.material}, espesor ${state.project.thickness} mm. Alas ${guessedLegs.join(', ')}. ${n} pliegues de 90 grados, radio 2, V16. Confirmar cotas detectadas.`;calculateAI();$('aiConfidence').textContent=d.confidence+'% estimada';$('aiCollision').textContent='Revisión activa';$('aiTooling').textContent='V16 provisional';$('aiSequence').textContent='Pendiente de validar';$('fileResult').innerHTML='<b>Foto procesada.</b> Se corrigió contraste, se limpiaron sombras y se detectaron líneas principales. Revisa la propuesta antes de enviarla a Programar.';go('ai')}
 function updateAIKpis(){let bends=(aiProposal&&aiProposal.bends)||state.bends||[],risk=bends.some(b=>Math.abs(+b.angle)>120);if($('aiConfidence'))$('aiConfidence').textContent=(bends.length?'88%':'65%');if($('aiCollision'))$('aiCollision').textContent=risk?'Riesgo medio':'Sin riesgo obvio';if($('aiTooling'))$('aiTooling').textContent='V'+(bends[0]?.v||state.project.v||16);if($('aiSequence'))$('aiSequence').textContent=bends.length+' pliegues'}
 
 function renderSettings(){
@@ -728,11 +780,11 @@ function bind(){
  $('saveGeneralNotes').onclick=()=>commit('Guardado bloc de notas general',()=>state.generalNotes=$('generalNotes').value);
  $('stampNote').onclick=()=>{$('generalNotes').value+=`\n[${new Date().toLocaleString('es-ES')}] `;$('generalNotes').focus()};
  $('clearHistory').onclick=()=>commit('Historial limpiado',()=>state.history=[]);
- ['theme','showDims','visualQuality','autosave','dimensionScale','simulationSpeed','sheetColor','machineVisible','fitMargin','visualThickness','showGrid','showAxes','machineOpacity','cameraSensitivity','decimals','default3DView','ownerName','ownerCompany','ownerPhone','ownerWhatsapp','ownerEmail','ownerWebsite','creatorName','copyrightHolder'].forEach(id=>$(id).addEventListener('change',()=>{readSettings();applySettings();autoSave();renderAbout()}));
+ ['theme','showDims','visualQuality','autosave','dimensionScale','simulationSpeed','sheetColor','machineVisible','fitMargin','visualThickness','showGrid','showAxes','machineOpacity','cameraSensitivity','decimals','default3DView','ownerName','ownerCompany','ownerPhone','ownerWhatsapp','ownerEmail','ownerWebsite'].forEach(id=>$(id).addEventListener('change',()=>{readSettings();applySettings();autoSave();renderAbout()}));
  $('saveSettings').onclick=()=>{readSettings();applySettings();autoSave();renderAbout();toast('Ajustes guardados')};
  $('resetSettings').onclick=()=>{state.settings={theme:'dark',showDims:'all',visualQuality:'Alta',autosave:'yes',dimensionScale:1.2,simulationSpeed:700,sheetColor:'#4fb3ff',machineVisible:'yes',fitMargin:150,visualThickness:1.6,showGrid:'yes',showAxes:'yes',machineOpacity:.9,cameraSensitivity:.01,decimals:2,default3DView:'iso',owner:{name:'',company:'AMS Engineering Solutions',phone:'',whatsapp:'',email:'',website:'',creatorName:'',copyrightHolder:'AMS Engineering Solutions'}};renderSettings();autoSave()};
  $('saveProject').onclick=saveProject;$('loadProject').onclick=loadProject;$('exportProject').onclick=()=>download(`${state.project.ref}.json`,JSON.stringify(state,null,2));
- $('clearProject').onclick=()=>{if(confirm('¿Borrar el proyecto guardado?')){localStorage.removeItem(STORAGE);toast('Proyecto guardado eliminado')}};
+ $('clearProject').onclick=()=>{if(confirm('¿Borrar el proyecto guardado?')){storageRemove(STORAGE);toast('Proyecto guardado eliminado')}};
  function simButtons(prefix,key){
   $(prefix+'Play').onclick=()=>{clearInterval(sim[key+'Timer']);sim[key+'Timer']=setInterval(()=>{sim[key+'Step']++;if(sim[key+'Step']>state.bends.length){clearInterval(sim[key+'Timer']);sim[key+'Timer']=null;sim[key+'Step']=state.bends.length}drawAll()},state.settings.simulationSpeed||700)};
   $(prefix+'Pause').onclick=()=>{clearInterval(sim[key+'Timer']);sim[key+'Timer']=null};
@@ -745,6 +797,10 @@ function bind(){
  $('p3Fit').onclick=()=>resetView('p3');$('s3Fit').onclick=()=>resetView('s3');$('s3RotateLeft').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)-.2;drawAll()};$('s3RotateRight').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)+.2;drawAll()};$('s3ZoomIn').onclick=()=>{sim.zoomS3=Math.min(3,sim.zoomS3*1.15);drawAll()};$('s3ZoomOut').onclick=()=>{sim.zoomS3=Math.max(.45,sim.zoomS3*.87);drawAll()};$('s2Fit').onclick=()=>reset2D('S2');$('s2ZoomIn').onclick=()=>zoom2D('S2',1.15);$('s2ZoomOut').onclick=()=>zoom2D('S2',.87);$('s2RotateLeft').onclick=()=>rotate2D('S2',-.15);$('s2RotateRight').onclick=()=>rotate2D('S2',.15);$('curveFit').onclick=()=>reset2D('Curve');$('curveZoomIn').onclick=()=>zoom2D('Curve',1.15);$('curveZoomOut').onclick=()=>zoom2D('Curve',.87);$('curveRotateLeft').onclick=()=>rotate2D('Curve',-.15);$('curveRotateRight').onclick=()=>rotate2D('Curve',.15);$('programFit').onclick=()=>reset2D('Program');$('programZoomIn').onclick=()=>zoom2D('Program',1.15);$('programZoomOut').onclick=()=>zoom2D('Program',.87);$('programRotateLeft').onclick=()=>rotate2D('Program',-.15);$('programRotateRight').onclick=()=>rotate2D('Program',.15);
  function wire3D(id,target){let cv=$(id);cv.addEventListener('pointerdown',e=>{sim.drag=true;sim.dragTarget=target;sim.panMode=e.shiftKey||e.button===1;sim.lastX=e.clientX;sim.lastY=e.clientY;cv.setPointerCapture(e.pointerId)});cv.addEventListener('pointermove',e=>{if(!sim.drag||sim.dragTarget!==target)return;let dx=e.clientX-sim.lastX,dy=e.clientY-sim.lastY;if(sim.panMode){sim['pan'+target+'X']+=dx;sim['pan'+target+'Y']+=dy}else{let sens=state.settings.cameraSensitivity||.01;sim['rotY'+target]=(sim['rotY'+target]??.5)+dx*sens;sim['rotX'+target]=(sim['rotX'+target]??-.35)+dy*sens}sim.lastX=e.clientX;sim.lastY=e.clientY;drawAll()});cv.addEventListener('pointerup',()=>sim.drag=false);cv.addEventListener('wheel',e=>{e.preventDefault();let k='zoom'+target;sim[k]=Math.max(.45,Math.min(2.8,sim[k]*(e.deltaY>0?.9:1.1)));drawAll()},{passive:false})}
  wire3D('canvasP3','P3');wire3D('canvasS3','S3');
+ function resetView(target){
+  const t=String(target||'s3').toUpperCase();
+  sim['rotX'+t]=-.35;sim['rotY'+t]=.5;sim['zoom'+t]=1;sim['pan'+t+'X']=0;sim['pan'+t+'Y']=0;drawAll();
+ }
  function reset2D(t){sim['zoom'+t]=1;sim['rot'+t]=0;sim['pan'+t+'X']=0;sim['pan'+t+'Y']=0;drawAll()}
  function zoom2D(t,f){sim['zoom'+t]=Math.max(.45,Math.min(3.5,(sim['zoom'+t]||1)*f));drawAll()}
  function rotate2D(t,a){sim['rot'+t]=(sim['rot'+t]||0)+a;drawAll()}
@@ -756,7 +812,7 @@ function bind(){
  crmOn('crmNew','click',clearCRM);crmOn('crmSave','click',saveCRM);
  crmOn('crmDelete','click',()=>{ensureCRM();if(crmSelected<0||!state.clients[crmSelected])return toast('Selecciona un cliente');if(!confirm('¿Eliminar este cliente?'))return;state.clients.splice(crmSelected,1);crmSelected=-1;autoSave();clearCRM();renderCRM();toast('Cliente eliminado')});
  crmOn('crmSearch','input',()=>renderCRM($('crmSearch').value));
- crmOn('crmWhatsApp','click',()=>crmContact('wa'));crmOn('crmEmailBtn','click',()=>crmContact('email'));
+ crmOn('crmWhatsApp','click',()=>crmContact('wa'));crmOn('crmMail','click',()=>crmContact('email'));
  crmOn('crmAssign','click',assignCRM);crmOn('crmExport','click',exportCRM);
  // Ajustes adicionales de v48/v49
  ['units','angleTolerance','linearTolerance','confirmDelete','uiSounds','compactMobile','backupFrequency','aiAssistLevel'].forEach(id=>{const el=$(id);if(el)el.addEventListener('change',()=>{readSettings();applySettings();autoSave();renderAbout()})});
@@ -781,7 +837,7 @@ function installNavigationFallback(){
  if(document.documentElement.dataset.navFallback==='1')return;
  document.documentElement.dataset.navFallback='1';
  document.addEventListener('click',function(e){
-   const menu=e.target&&e.target.closest?e.target.closest('#mobileMenuBtn'):null;
+   const menu=!window.__stableNavInstalled&&e.target&&e.target.closest?e.target.closest('#mobileMenuBtn'):null;
    if(menu){
      e.preventDefault();e.stopPropagation();
      const side=document.querySelector('.side');
@@ -816,6 +872,16 @@ function installEssentialFallbacks(){
  safeBind('analyzePhoto','click',()=>typeof analyzePhotoLocal==='function'&&analyzePhotoLocal());
 }
 
+function runtimeFunctionalAudit(){
+ const report={version:'49.6',missingElements:[],buttons:[],modules:[],errors:[]};
+ const required=['mobileMenuBtn','menuToggle','mainSidebar','backBtn','undoBtn','redoBtn','addBend','sendSim','p2Add','p3Apply','s2Play','s3Play','curveCalculate','compareVBtn','aiCalculate','crmSave','crmMail','saveSettings','saveProject'];
+ required.forEach(id=>{if(!safeElement(id))report.missingElements.push(id)});
+ document.querySelectorAll('section.page').forEach(p=>report.modules.push(p.id));
+ document.querySelectorAll('button[id]').forEach(b=>report.buttons.push({id:b.id,bound:typeof b.onclick==='function'||b.dataset.fallbackBound==='1'}));
+ report.unbound=report.buttons.filter(x=>!x.bound).map(x=>x.id).filter(id=>!['analyzePhoto','visionRotateLeft','visionRotateRight','visionReprocess','visionUseResult','crmNew','crmSave','crmDelete','crmWhatsApp','crmMail','crmAssign','crmExport'].includes(id));
+ window.__PLEGAR_AUDIT__=report;
+ return report;
+}
 function audit(){
  let issues=[];
  document.querySelectorAll('button').forEach(b=>{let functional=b.dataset.page||b.dataset.go||b.onclick||b.id||b.classList.contains('rowDelete');if(!functional)issues.push('Botón sin acción: '+b.textContent.trim())});
@@ -841,6 +907,7 @@ function startApplication(){
  safeRun('ajustes',renderSettings);
  safeRun('sincronización inicial',syncAll);
  safeRun('proyecto guardado',()=>{let saved=null;try{saved=localStorage.getItem(STORAGE)}catch(e){console.warn('Almacenamiento no disponible',e)}if(saved){try{state=migrateState(JSON.parse(saved));renderSettings();syncAll()}catch(e){console.warn('Proyecto guardado incompatible; se abre un proyecto limpio',e)}}});
+ safeRun('auditoría funcional',runtimeFunctionalAudit);
  safeRun('auditoría',()=>{let issues=audit();if(issues.length)console.warn('Auditoría:',issues);else console.info('Auditoría funcional correcta')});
  safeRun('visión IA',()=>{if(visionImage)processPlanVision(false)});
  safeRun('pantalla de carga',loader);

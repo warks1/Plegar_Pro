@@ -1,0 +1,6 @@
+PLEGAR PRO v49.5
+- Menú móvil reconstruido con control CSS nativo mediante checkbox.
+- El botón Menú funciona aunque falle el JavaScript principal.
+- Fondo del menú actúa como cierre táctil.
+- Navegación principal independiente y compatible con Safari/iPhone.
+- Eliminada la dependencia de controladores duplicados.
