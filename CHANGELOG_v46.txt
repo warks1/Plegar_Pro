@@ -1,0 +1,10 @@
+PLEGAR PRO v46.0 — RÉPLICA 3D ROTABLE
+
+- Plegadora reconstruida como escena pseudo-3D con volumen.
+- Bastidor, montantes, travesaño, trancha, portapunzón, punzón, matriz, bancada, mesa, topes y control.
+- Máquina y pieza rotan conjuntamente con ratón o dedo.
+- Arrastre normal: rotación orbital.
+- Mayúsculas/Shift + arrastre: desplazamiento.
+- Rueda o gesto equivalente: zoom.
+- Disponible tanto en Programación 3D como en Simulación 3D.
+- Conserva toda la base acumulativa procedente de v43.

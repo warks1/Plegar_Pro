@@ -1,0 +1,8 @@
+Plegar Pro v44.0
+- Reconstrucción acumulativa desde v43.
+- Se descarta la entrega v44 anterior.
+- No se cambia la base de almacenamiento.
+- Se conectan Desarrollo y Programar al modelo común.
+- Se amplían Programación y Simulación 2D/3D.
+- Se amplía Curva Perfecta y se genera tabla de operaciones.
+- Se amplían Ajustes y Acerca de.

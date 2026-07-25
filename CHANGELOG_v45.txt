@@ -1,0 +1,11 @@
+PLEGAR PRO v45.0 — CORRECCIÓN ACUMULATIVA DESDE v43
+
+- Programar mantiene accesos directos a Vista 2D, Vista 3D, Simular 2D y Simular 3D.
+- Las medidas se actualizan al escribir y redibujan inmediatamente todas las vistas.
+- Programación 2D y Simulación 2D: nuevo autoencuadre, margen configurable, rejilla, contorno y cotas legibles.
+- Programación 3D y Simulación 3D: proyección mejorada, pieza más gruesa, ejes, zoom, desplazamiento y rotación independientes.
+- Simulación 3D: plegadora visual ampliada con bastidor, trancha, punzón, matriz, bancada y control.
+- Curva Perfecta: Longitud + ángulo calcula número recomendado de golpes, distancia, posición X, ángulo por golpe y acumulado.
+- Ajustes ampliados con 8 parámetros nuevos.
+- Acerca de muestra cada dato del propietario/taller y señala claramente los campos pendientes.
+- Se conserva compatibilidad con guardados v43.

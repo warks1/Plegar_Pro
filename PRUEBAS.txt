@@ -1,9 +1,29 @@
-PRUEBAS REALIZADAS
-1. Sintaxis JavaScript con Node.js.
-2. IDs HTML sin duplicados.
-3. Funciones onclick disponibles.
-4. Calculadora independiente del estado de Programar.
-5. Envío Calculadora -> Comparador V.
-6. Cambio en Comparador no altera módulos restantes.
-7. Persistencia LocalStorage con clave v43.
-8. ZIP creado y comprobado.
+PRUEBAS REALIZADAS — PLEGAR PRO v44.0
+=====================================
+
+SUPERADAS
+- Archivo derivado directamente de la v43 original.
+- Sintaxis JavaScript validada con Node.js.
+- 207 identificadores HTML revisados.
+- 178 referencias JavaScript a elementos HTML revisadas.
+- Ningún identificador duplicado.
+- Ningún elemento referenciado desde JavaScript ausente.
+- Módulos de v43 conservados.
+- Botones integrados en Programar presentes.
+- Campos nuevos de Programación 3D presentes.
+- Tabla de Curva Perfecta presente.
+- Ajustes ampliados presentes.
+- Datos de propietario y Acerca de presentes.
+- Clave de almacenamiento plegarProV43 conservada.
+- Función de migración de proyectos v43 presente.
+
+COMPROBACIONES DE CÓDIGO
+- Sincronización proyecto -> Desarrollo.
+- Sincronización cambios de pliegue -> 2D/3D/simulaciones.
+- Curva Perfecta -> tabla de golpes -> Programar.
+- Cámara 3D: rotación, pan y zoom enlazados.
+- Persistencia de ajustes y propietario.
+
+NO EJECUTADA EN ESTE ENTORNO
+- Prueba visual automatizada con Chromium: el entorno bloquea navegación local y localhost mediante política administrativa.
+- Pruebas físicas en iPhone, Android y plegadora real.

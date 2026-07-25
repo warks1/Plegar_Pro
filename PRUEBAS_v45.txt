@@ -1,0 +1,18 @@
+PLEGAR PRO v45.0 — COMPROBACIONES
+
+Base: v43 Desarrollo + Comparador V, manteniendo almacenamiento plegarProV43.
+
+SUPERADO:
+- Sintaxis JavaScript completa mediante Node.js VM.
+- Sin identificadores HTML duplicados.
+- Sin referencias JavaScript a elementos inexistentes.
+- Presencia de Programar, Programación 2D/3D, Simulación 2D/3D, Curva Perfecta, Ajustes y Acerca de.
+- Accesos Vista 2D, Vista 3D, Simular 2D y Simular 3D dentro de Programar.
+- Actualización de medidas durante escritura y sincronización con desarrollo/vistas.
+- Curva Perfecta: modo Longitud + ángulo calcula automáticamente golpes, paso, posiciones y ángulos.
+- Controles de cámara 3D: vistas, arrastre, zoom, centrado y botones de rotación.
+- Datos de propietario editables y visibles como tabla en Acerca de.
+- Ajustes ampliados de centrado, rejilla, grosor, ejes, opacidad, sensibilidad y decimales.
+
+LIMITACIÓN HONESTA:
+- La vista utiliza renderizado Canvas 2D con proyección pseudo-3D; no es todavía un motor CAD WebGL ni una réplica geométrica exacta del modelo Bystronic.

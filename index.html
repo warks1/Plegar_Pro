@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v43 · Consolidación</title>
+<title>Plegar Pro v44 - v43 · Consolidación</title>
 <style>
 :root{
   --bg:#06111b;--panel:#0d2131;--panel2:#112a3d;--line:#31536c;
@@ -71,6 +71,8 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 .hidden{display:none!important}
 @media(max-width:1000px){.c3,.c4,.c5,.c6,.c7,.c8,.c9{grid-column:span 12}.split{grid-template-columns:1fr}.quick{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.app{display:block}.side{position:relative;height:auto}.main{padding:10px}.fields,.quick{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.stage canvas{height:410px}.topbar{align-items:flex-start;flex-direction:column}.syncBadge{align-self:flex-start}}
+
+.program-badge{font-size:11px;padding:3px 7px;border-radius:99px;background:#0b2634;border:1px solid #2d6073}.stage:focus-within{outline:2px solid #28b88a}.table input,.table select{min-width:78px}.overlay{pointer-events:none}.machineLegend{display:flex;gap:10px;flex-wrap:wrap}.machineLegend span{font-size:11px;border:1px solid var(--line);border-radius:99px;padding:3px 7px}
 </style>
 </head>
 <body>
@@ -87,7 +89,7 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <div class="app">
 <aside class="side">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v42.0 · Consolidación integrada</div>
+  <div class="version">v46.0 · Reconstrucción acumulativa desde v43</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -171,38 +173,38 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 
 <section class="page" id="program"><div class="grid">
 <div class="card c8"><h2>Programa de plegado</h2>
-<div class="actions"><button class="btn" id="addBend">Añadir pliegue</button><button class="btn secondary" id="autoSequence">Orden automático</button><button class="btn secondary" id="sendSim">Enviar a simulación</button></div>
-<div class="tableWrap"><table class="table"><thead><tr><th>#</th><th>Ala mm</th><th>Ángulo</th><th>Radio</th><th>V</th><th>Punzón</th><th>Tope X</th><th>Sentido</th><th>Acciones</th></tr></thead><tbody id="programRows"></tbody></table></div>
+<div class="actions"><button class="btn" id="addBend">Añadir pliegue</button><button class="btn secondary" id="autoSequence">Orden automático</button><button class="btn secondary" data-go="program2d">Vista 2D</button><button class="btn secondary" data-go="program3d">Vista 3D</button><button class="btn secondary" data-go="sim2d">Simular 2D</button><button class="btn" id="sendSim">Simular 3D</button></div>
+<div id="programLiveStatus" class="note">Las medidas se actualizan mientras escribes y se sincronizan con todos los módulos.</div><div class="tableWrap"><table class="table"><thead><tr><th>#</th><th>Ala mm</th><th>Ángulo</th><th>Radio</th><th>V</th><th>Punzón</th><th>Tope X</th><th>Sentido</th><th>Acciones</th></tr></thead><tbody id="programRows"></tbody></table></div>
 </div>
 <div class="card c4"><h2>Notas del programa</h2><textarea id="programNotes" rows="16" placeholder="Anotaciones específicas de esta referencia..."></textarea><div class="actions"><button class="btn" id="saveProgramNotes">Guardar notas</button></div>
 <div id="programSummary" class="note"></div></div>
 </div></section>
 
 <section class="page" id="program2d"><div class="split">
-<div class="card"><h2>Edición 2D</h2><div id="editor2d"></div><div class="actions"><button class="btn" id="p2Add">Añadir pliegue</button><button class="btn secondary" id="p2Fit">Ajustar vista</button></div></div>
+<div class="card"><h2>Edición 2D</h2><div id="editor2d"></div><div class="actions"><button class="btn" id="p2Add">Añadir pliegue</button><button class="btn secondary" id="p2Fit">Centrar pieza</button><button class="btn secondary" data-go="sim2d">Simular 2D</button><button class="btn secondary" data-go="program3d">Vista 3D</button></div></div>
 <div><div class="stage"><canvas id="canvasP2" width="1100" height="650"></canvas><div class="overlay" id="overlayP2"></div></div></div>
 </div></section>
 
 <section class="page" id="program3d"><div class="split">
 <div class="card"><h2>Edición 3D</h2><div class="fields">
 <div><label>Pliegue activo</label><select id="p3Active"></select></div>
-<div><label>Cámara</label><select id="p3Camera"><option value="iso">Isométrica</option><option value="front">Frontal</option><option value="side">Lateral</option><option value="top">Superior</option></select></div>
+<div><label>Cámara</label><select id="p3Camera"><option value="iso">Isométrica</option><option value="front">Frontal</option><option value="rear">Trasera</option><option value="side">Lateral</option><option value="top">Superior</option><option value="operator">Operario</option><option value="free">Libre</option></select></div><div><label>Longitud / ala</label><input id="p3Leg" type="number" step="0.1"></div>
 <div><label>Ángulo</label><input id="p3Angle" type="number"></div>
 <div><label>Radio</label><input id="p3Radius" type="number" step=".1"></div>
 <div><label>V</label><input id="p3V" type="number"></div>
 <div><label>Tope X</label><input id="p3Gauge" type="number"></div>
-</div><div class="actions"><button class="btn" id="p3Apply">Aplicar al pliegue</button><button class="btn secondary" id="p3Prev">Pliegue anterior</button><button class="btn secondary" id="p3Next">Siguiente</button></div>
+</div><div class="actions"><button class="btn" id="p3Apply">Aplicar al pliegue</button><button class="btn secondary" id="p3Prev">Pliegue anterior</button><button class="btn secondary" id="p3Next">Siguiente</button><button class="btn secondary" id="p3Fit">Centrar</button><button class="btn secondary" data-go="sim3d">Simular 3D</button></div>
 <div class="note">Arrastra sobre la vista para rotar. La programación 3D edita; la simulación 3D reproduce.</div></div>
 <div><div class="stage"><canvas id="canvasP3" width="1100" height="650"></canvas><div class="overlay" id="overlayP3"></div></div></div>
 </div></section>
 
 <section class="page" id="sim2d"><div class="card">
-<h2>Simulación 2D técnica</h2><div class="toolbar"><button class="btn" id="s2Play">▶ Reproducir</button><button class="btn secondary" id="s2Pause">⏸ Pausa</button><button class="btn secondary" id="s2Prev">◀ Paso</button><button class="btn secondary" id="s2Next">Paso ▶</button><button class="btn secondary" id="s2Reset">Reiniciar</button></div>
+<h2>Simulación 2D técnica</h2><div class="toolbar"><button class="btn" id="s2Play">▶ Reproducir</button><button class="btn secondary" id="s2Pause">⏸ Pausa</button><button class="btn secondary" id="s2Prev">◀ Paso</button><button class="btn secondary" id="s2Next">Paso ▶</button><button class="btn secondary" id="s2Reset">Reiniciar</button><select id="s2Camera" style="width:auto"><option value="whole">Pieza completa</option><option value="active">Seguir pliegue</option><option value="fixed">Cámara fija</option></select><button class="btn secondary" id="s2Fit">Centrar</button></div>
 <div class="stage"><canvas id="canvasS2" width="1200" height="650"></canvas><div class="overlay" id="overlayS2"></div></div>
 </div></section>
 
 <section class="page" id="sim3d"><div class="card">
-<h2>Gemelo digital 3D</h2><div class="toolbar"><button class="btn" id="s3Play">▶ Reproducir</button><button class="btn secondary" id="s3Pause">⏸ Pausa</button><button class="btn secondary" id="s3Prev">◀ Paso</button><button class="btn secondary" id="s3Next">Paso ▶</button><button class="btn secondary" id="s3Reset">Reiniciar</button><select id="s3Camera" style="width:auto"><option value="iso">Isométrica</option><option value="front">Frontal</option><option value="side">Lateral</option><option value="operator">Operario</option></select></div>
+<h2>Gemelo digital 3D</h2><div class="toolbar"><button class="btn" id="s3Play">▶ Reproducir</button><button class="btn secondary" id="s3Pause">⏸ Pausa</button><button class="btn secondary" id="s3Prev">◀ Paso</button><button class="btn secondary" id="s3Next">Paso ▶</button><button class="btn secondary" id="s3Reset">Reiniciar</button><select id="s3Camera" style="width:auto"><option value="iso">Isométrica</option><option value="front">Frontal</option><option value="rear">Trasera</option><option value="side">Lateral</option><option value="top">Superior</option><option value="operator">Operario</option><option value="free">Libre</option></select><button class="btn secondary" id="s3Fit">Centrar</button><button class="btn secondary" id="s3RotateLeft">↶ Rotar</button><button class="btn secondary" id="s3RotateRight">Rotar ↷</button><button class="btn secondary" id="s3ZoomIn">＋</button><button class="btn secondary" id="s3ZoomOut">－</button><label class="status"><input type="checkbox" id="s3Machine" checked> Máquina</label><label class="status"><input type="checkbox" id="s3Dims" checked> Cotas</label></div>
 <div class="stage"><canvas id="canvasS3" width="1200" height="650"></canvas><div class="overlay" id="overlayS3"></div></div>
 </div></section>
 
@@ -218,7 +220,7 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <div><label>Tolerancia admisible ± mm</label><input id="devTolerance" type="number" min="0" step="0.05"></div>
 <div><label>Tipo de cotas</label><select id="devDimensionType"><option value="exterior">Exteriores</option><option value="interior">Interiores</option><option value="mixed">Mixtas</option></select></div>
 </div><div class="actions"><button class="btn" id="devCalculate">Calcular</button><button class="btn secondary" id="devToCompare">Comparar matrices V</button><button class="btn secondary" id="devReset">Restablecer calculadora</button></div>
-<div class="note"><b>Sincronización limitada:</b> estos datos se comparten únicamente con el Comparador de V. No modifican Programar, 2D, 3D, Producción ni Calidad.</div></div>
+<div class="note"><b>Sincronización total:</b> material, espesor, K, pliegues, radios, ángulos y V se comparten con Programar, 2D, 3D, simulaciones y Comparador V.</div></div>
 <div class="card c8"><h2>Pliegues de la calculadora</h2><div class="tableWrap"><table class="table"><thead><tr><th>#</th><th>Longitud / ala (mm)</th><th>Ángulo final</th><th>Radio solicitado</th><th>BA</th><th>BD</th><th></th></tr></thead><tbody id="devRows"></tbody></table></div><div class="actions"><button class="btn" id="devAddBend">Añadir pliegue</button></div></div>
 <div class="card c12"><h2>Resultado del desarrollo</h2><div class="kpis"><div class="kpi"><span>Suma de cotas</span><b id="sumLegs"></b></div><div class="kpi"><span>Desarrollo total</span><b id="flatLength"></b></div><div class="kpi"><span>BA total</span><b id="devBATotal"></b></div><div class="kpi"><span>BD total</span><b id="devBDTotal"></b></div><div class="kpi"><span>Radio estimado con V ref.</span><b id="devActualRadius"></b></div><div class="kpi"><span>Fuerza estimada</span><b id="forceEstimate"></b></div><div class="kpi"><span>Ala mínima</span><b id="devMinFlange"></b></div><div class="kpi"><span>Estado</span><b id="devStatus"></b></div></div><div id="devWarnings" class="note"></div></div>
 </div></section>
@@ -229,10 +231,13 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <div><label>Ángulo total (°)</label><input id="curveAngle" type="number" min="1" max="180"></div>
 <div><label>Longitud curva (mm)</label><input id="curveLength" type="number" min="1"></div>
 <div><label>Número de golpes</label><input id="curveHits" type="number" min="2"></div>
-<div><label>Recuperación (°)</label><input id="curveSpring" type="number" step=".1"></div>
+<div><label>Recuperación total (°)</label><input id="curveSpring" type="number" step=".1"></div>
 <div><label>Matriz V</label><input id="curveV" type="number"></div>
+<div><label>Espesor (mm)</label><input id="curveThickness" type="number" min="0.1" step="0.1"></div>
+<div><label>Estrategia</label><select id="curveStrategy"><option value="uniform">Uniforme</option><option value="smooth">Suave en extremos</option><option value="adaptive">Adaptativa</option></select></div>
+<div><label>Modo de entrada</label><select id="curveMode"><option value="radius">Radio + ángulo</option><option value="length">Longitud + ángulo (golpes automáticos)</option><option value="hits">Golpes fijados</option></select></div>
 </div><div class="actions"><button class="btn" id="curveCalculate">Calcular</button><button class="btn secondary" id="curveToProgram">Enviar a Programar</button></div><div id="curveResult" class="note"></div></div>
-<div class="card c7"><div class="stage"><canvas id="canvasCurve" width="1000" height="600"></canvas><div class="overlay" id="overlayCurve"></div></div></div>
+<div class="card c7"><div class="stage"><canvas id="canvasCurve" width="1000" height="600"></canvas><div class="overlay" id="overlayCurve"></div></div></div><div class="card c12"><h2>Tabla de golpes</h2><div class="tableWrap"><table class="table"><thead><tr><th>Golpe</th><th>Posición X</th><th>Distancia</th><th>Ángulo golpe</th><th>Ángulo acumulado</th><th>Corrección</th></tr></thead><tbody id="curveRows"></tbody></table></div><div id="curveWarnings" class="note"></div></div>
 </div></section>
 
 <section class="page" id="vcompare"><div class="grid">
@@ -271,16 +276,29 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <section class="page" id="history"><div class="card"><h2>Historial del proyecto</h2><div class="actions"><button class="btn secondary" id="clearHistory">Limpiar historial</button></div><div id="historyList" class="history list"></div></div></section>
 
 <section class="page" id="settings"><div class="grid">
-<div class="card c6"><h2>Apariencia</h2><div class="fields">
+<div class="card c6"><h2>Apariencia y vistas</h2><div class="fields">
 <div><label>Tema</label><select id="theme"><option value="dark">Oscuro</option><option value="light">Claro</option><option value="system">Según sistema</option></select></div>
 <div><label>Mostrar cotas</label><select id="showDims"><option value="all">Siempre</option><option value="active">Solo activas</option><option value="none">Ocultas</option></select></div>
-<div><label>Calidad visual</label><select id="visualQuality"><option>Ligera</option><option selected>Alta</option><option>Ultra</option></select></div>
+<div><label>Calidad visual</label><select id="visualQuality"><option>Ligera</option><option>Alta</option><option>Ultra</option></select></div>
 <div><label>Guardado automático</label><select id="autosave"><option value="yes">Activado</option><option value="no">Desactivado</option></select></div>
-</div><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button></div></div>
-<div class="card c6"><h2>Proyecto</h2><div class="actions"><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar proyecto</button></div><div class="note">Deshacer y Rehacer mantienen un historial temporal. Guardar conserva el proyecto en este dispositivo.</div></div>
+<div><label>Tamaño de cotas</label><input id="dimensionScale" type="range" min="0.8" max="2" step="0.1"></div>
+<div><label>Velocidad simulación</label><input id="simulationSpeed" type="range" min="250" max="1600" step="50"></div>
+<div><label>Color de chapa</label><input id="sheetColor" type="color"></div>
+<div><label>Mostrar máquina por defecto</label><select id="machineVisible"><option value="yes">Sí</option><option value="no">No</option></select></div><div><label>Margen de centrado 2D</label><input id="fitMargin" type="range" min="80" max="260" step="10"></div><div><label>Grosor visual 3D</label><input id="visualThickness" type="range" min="1" max="3" step="0.1"></div><div><label>Rejilla 2D</label><select id="showGrid"><option value="yes">Visible</option><option value="no">Oculta</option></select></div><div><label>Ejes 3D</label><select id="showAxes"><option value="yes">Visibles</option><option value="no">Ocultos</option></select></div><div><label>Opacidad de máquina</label><input id="machineOpacity" type="range" min="0.35" max="1" step="0.05"></div><div><label>Sensibilidad de cámara</label><input id="cameraSensitivity" type="range" min="0.004" max="0.03" step="0.002"></div><div><label>Decimales</label><select id="decimals"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div><div><label>Vista 3D inicial</label><select id="default3DView"><option value="iso">Isométrica</option><option value="front">Frontal</option><option value="operator">Operario</option><option value="top">Superior</option></select></div>
+</div></div>
+<div class="card c6"><h2>Datos del propietario</h2><div class="fields">
+<div><label>Nombre</label><input id="ownerName"></div><div><label>Empresa / Taller</label><input id="ownerCompany"></div>
+<div><label>Teléfono</label><input id="ownerPhone"></div><div><label>WhatsApp</label><input id="ownerWhatsapp"></div>
+<div><label>Correo</label><input id="ownerEmail" type="email"></div><div><label>Web</label><input id="ownerWebsite"></div>
+</div></div>
+<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">La versión v44 mantiene compatibilidad con la clave de almacenamiento de la v43 y migra los datos nuevos sin borrar proyectos anteriores.</div></div>
 </div></section>
 
-<section class="page" id="about"><div class="card"><h2>Plegar Pro v43.0</h2><p>Versión de consolidación con modelo de datos central, programación editable, sincronización 2D/3D, IA técnica local, Curva Perfecta, notas, Producción, Calidad, Volver, Deshacer y Rehacer.</p><p class="muted">Los cálculos de esta beta son orientativos y deben validarse con datos oficiales del fabricante, utillaje, máquina y pruebas reales antes de fabricar.</p></div></section>
+<section class="page" id="about"><div class="grid">
+<div class="card c6"><h2>Plegar Pro v46.0</h2><p>Reconstrucción acumulativa realizada sobre la v43 Desarrollo + Comparador V.</p><div class="kpis"><div class="kpi"><span>Base</span><b>v43</b></div><div class="kpi"><span>Versión</span><b>v46.0</b></div><div class="kpi"><span>Estado</span><b class="ok">Beta validada localmente</b></div><div class="kpi"><span>Almacenamiento</span><b>Compatible v43</b></div></div><p class="muted">Los cálculos son orientativos y deben validarse con datos oficiales de máquina, material y utillaje antes de fabricar.</p></div>
+<div class="card c6"><h2>Propietario / Taller</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos</button><button class="btn secondary" id="copyDiagnostics">Copiar diagnóstico</button></div></div>
+<div class="card c12"><h2>Mejoras acumuladas desde v43</h2><div class="note">Programar integra accesos 2D/3D y simulación; medidas sincronizadas; vistas centradas; cámara orbital y zoom; plegadora 3D diferenciada; Curva Perfecta con tabla de golpes; Ajustes ampliados; Acerca de editable; migración y persistencia compatibles con proyectos v43.</div></div>
+</div></section>
 
 </main></div>
 <div id="toast" class="hidden"></div>
@@ -296,13 +314,13 @@ let state={
   {leg:85,angle:90,radius:2,v:16,punch:'Pata de cabra 90°',gauge:85,direction:-1},
   {leg:60,angle:45,radius:2,v:16,punch:'Recto 30°',gauge:60,direction:1}
  ],
- curve:{radius:250,angle:90,length:393,hits:18,spring:2,v:16},
+ curve:{radius:250,angle:90,length:393,hits:18,spring:2,v:16,thickness:2,strategy:'uniform',mode:'radius'},
  development:{material:'S235',thickness:2,kfactor:.42,referenceV:16,punchRadius:1,punchAngle:88,bendLength:1000,tolerance:.5,dimensionType:'exterior',selectedVs:[12,16,22,24,32],bends:[{leg:120,angle:90,radius:2},{leg:85,angle:90,radius:2},{leg:60,angle:45,radius:2}]},
  programNotes:'',generalNotes:'',quality:[],workOrder:null,
- settings:{theme:'dark',showDims:'all',visualQuality:'Alta',autosave:'yes'}
+ settings:{theme:'dark',showDims:'all',visualQuality:'Alta',autosave:'yes',dimensionScale:1.2,simulationSpeed:700,sheetColor:'#4fb3ff',machineVisible:'yes',fitMargin:150,visualThickness:1.6,showGrid:'yes',showAxes:'yes',machineOpacity:.9,cameraSensitivity:.01,decimals:2,default3DView:'iso',owner:{name:'',company:'',phone:'',whatsapp:'',email:'',website:''}}
 };
 let undoStack=[],redoStack=[],pageHistory=['dashboard'],currentPage='dashboard';
-let sim={s2Step:0,s3Step:0,s2Timer:null,s3Timer:null,operatorStep:0,p3Active:0,rotX:-.35,rotY:.5,drag:false,lastX:0,lastY:0};
+let sim={rotXP3:-.35,rotYP3:.5,rotXS3:-.35,rotYS3:.5,s2Step:0,s3Step:0,s2Timer:null,s3Timer:null,operatorStep:0,p3Active:0,rotX:-.35,rotY:.5,drag:false,lastX:0,lastY:0,zoomP3:1,zoomS3:1,panP3X:0,panP3Y:0,panS3X:0,panS3Y:0,dragTarget:'',panMode:false};
 let aiProposal=null;
 
 const titles={
@@ -366,10 +384,7 @@ function renderProgram(){
  <td><select data-b="${i}" data-k="direction"><option value="1" ${b.direction==1?'selected':''}>Arriba</option><option value="-1" ${b.direction==-1?'selected':''}>Abajo</option></select></td>
  <td><button class="btn secondary rowUp" data-i="${i}">↑</button> <button class="btn secondary rowDown" data-i="${i}">↓</button> <button class="btn danger rowDelete" data-i="${i}">×</button></td></tr>`).join('');
  $('programNotes').value=state.programNotes;
- document.querySelectorAll('#programRows input,#programRows select').forEach(el=>el.addEventListener('change',()=>{
-  let i=+el.dataset.b,k=el.dataset.k,v=(k==='punch'?el.value:+el.value);
-  commit(`Modificado ${k} del pliegue ${i+1}`,()=>state.bends[i][k]=v);
- }));
+ document.querySelectorAll('#programRows input,#programRows select').forEach(el=>{el.addEventListener('input',()=>{let i=+el.dataset.b,k=el.dataset.k,v=(k==='punch'?el.value:+el.value);if(!state.bends[i])return;state.bends[i][k]=v;state.development.bends=deep(state.bends.map(b=>({leg:b.leg,angle:b.angle,radius:b.radius})));autoSave();drawAll();$('programLiveStatus').innerHTML=`Actualizado P${i+1}: ${bendSummary(state.bends[i],i)}<br>2D, 3D, simulaciones y desarrollo sincronizados.`});el.addEventListener('change',()=>syncAll())});
  document.querySelectorAll('.rowDelete').forEach(b=>b.addEventListener('click',()=>commit('Eliminado pliegue '+(+b.dataset.i+1),()=>state.bends.splice(+b.dataset.i,1))));
  document.querySelectorAll('.rowUp').forEach(b=>b.addEventListener('click',()=>moveBend(+b.dataset.i,-1)));
  document.querySelectorAll('.rowDown').forEach(b=>b.addEventListener('click',()=>moveBend(+b.dataset.i,1)));
@@ -388,7 +403,7 @@ function populateP3(){
  $('p3Active').innerHTML=state.bends.map((b,i)=>`<option value="${i}">${bendSummary(b,i)}</option>`).join('');
  sim.p3Active=Math.min(sim.p3Active,Math.max(0,state.bends.length-1));$('p3Active').value=sim.p3Active;loadP3Fields();
 }
-function loadP3Fields(){let b=state.bends[sim.p3Active];if(!b)return;$('p3Angle').value=b.angle;$('p3Radius').value=b.radius;$('p3V').value=b.v;$('p3Gauge').value=b.gauge}
+function loadP3Fields(){let b=state.bends[sim.p3Active];if(!b)return;$('p3Leg').value=b.leg;$('p3Angle').value=b.angle;$('p3Radius').value=b.radius;$('p3V').value=b.v;$('p3Gauge').value=b.gauge}
 function renderQualityOptions(){$('qBend').innerHTML=state.bends.map((b,i)=>`<option value="${i}">${bendSummary(b,i)}</option>`).join('')}
 const STANDARD_VS=[6,8,10,12,16,22,24,32,36,40,50];
 function ensureDevelopment(){
@@ -434,16 +449,27 @@ function renderDevelopment(){
  $('devWarnings').innerHTML=warnings.length?warnings.map(x=>'⚠ '+x).join('<br>'):'✓ Parámetros coherentes dentro de los criterios configurados.';
 }
 function calculateCurve(){
- let c=state.curve;let arc=Math.PI*c.radius*c.angle/180;let step=arc/Math.max(1,c.hits-1);let per=(c.angle+c.spring)/c.hits;
- return {arc,step,per,obtained:c.length/(Math.PI*c.angle/180)};
+ let c=state.curve,angle=Math.max(1,+c.angle||90),radius=Math.max(1,+c.radius||1),hits=Math.max(2,Math.round(+c.hits||2));if(c.mode==='length'){let preferred=Math.max((+c.thickness||2)*3,(+c.v||16)*.55,8);hits=Math.max(2,Math.ceil((+c.length||1)/preferred)+1);c.hits=hits}
+ let arc=c.mode==='length'?Math.max(1,+c.length||1):Math.PI*radius*angle/180;
+ if(c.mode==='length')radius=arc/(Math.PI*angle/180);
+ let intervals=Math.max(1,hits-1),step=arc/intervals,totalProgrammed=angle+(+c.spring||0);
+ let weights=Array.from({length:hits},()=>1);
+ if(c.strategy==='smooth'&&hits>4){weights[0]=weights[hits-1]=.65;weights[1]=weights[hits-2]=.85}
+ if(c.strategy==='adaptive'&&hits>4){weights=weights.map((_,i)=>.72+.28*Math.sin(Math.PI*(i+1)/(hits+1)))}
+ let ws=weights.reduce((a,b)=>a+b,0),acc=0;
+ let rows=weights.map((w,i)=>{let a=totalProgrammed*w/ws;acc+=a;return {hit:i+1,x:+(i*step).toFixed(3),distance:i?+step.toFixed(3):0,angle:+a.toFixed(4),acc:+acc.toFixed(4),correction:+(a-angle/hits).toFixed(4)}});
+ return {arc,step,per:totalProgrammed/hits,obtained:radius,rows,radius,hits};
 }
 function renderCurve(){
- let c=state.curve;['curveRadius','curveAngle','curveLength','curveHits','curveSpring','curveV'].forEach(id=>$(id).value=c[id.replace('curve','').toLowerCase()]??'');
- $('curveRadius').value=c.radius;$('curveAngle').value=c.angle;$('curveLength').value=c.length;$('curveHits').value=c.hits;$('curveSpring').value=c.spring;$('curveV').value=c.v;
- let r=calculateCurve();$('curveResult').innerHTML=`Longitud teórica: <b>${r.arc.toFixed(2)} mm</b><br>Paso entre golpes: <b>${r.step.toFixed(2)} mm</b><br>Ángulo programado/golpe: <b>${r.per.toFixed(3)}°</b><br>Radio obtenido según longitud: <b>R${r.obtained.toFixed(2)}</b>`;
+ let c=state.curve;c.thickness=c.thickness||state.project.thickness||2;c.strategy=c.strategy||'uniform';c.mode=c.mode||'radius';
+ $('curveRadius').value=c.radius;$('curveAngle').value=c.angle;$('curveLength').value=c.length;$('curveHits').value=c.hits;$('curveSpring').value=c.spring;$('curveV').value=c.v;$('curveThickness').value=c.thickness;$('curveStrategy').value=c.strategy;$('curveMode').value=c.mode;
+ let r=calculateCurve();c.radius=+r.radius.toFixed(3);c.length=+r.arc.toFixed(3);
+ $('curveResult').innerHTML=`Longitud de arco: <b>${r.arc.toFixed(2)} mm</b><br>Radio calculado: <b>R${r.radius.toFixed(2)}</b><br>Número de golpes: <b>${r.hits}</b><br>Distancia entre golpes: <b>${r.step.toFixed(2)} mm</b><br>Ángulo medio por golpe: <b>${r.per.toFixed(3)}°</b>`;
+ $('curveRows').innerHTML=r.rows.map(x=>`<tr><td>${x.hit}</td><td>${x.x.toFixed(2)} mm</td><td>${x.distance.toFixed(2)} mm</td><td>${x.angle.toFixed(3)}°</td><td>${x.acc.toFixed(3)}°</td><td>${x.correction>=0?'+':''}${x.correction.toFixed(3)}°</td></tr>`).join('');
+ let warnings=[];if(r.step>Math.max(30,c.v*2))warnings.push('La distancia entre golpes puede dejar una curva poco uniforme.');if(r.per>8)warnings.push('El ángulo por golpe es elevado; aumenta el número de golpes.');if(r.step<c.thickness*1.5)warnings.push('El paso es muy pequeño para el espesor configurado.');$('curveWarnings').innerHTML=warnings.length?warnings.map(w=>'⚠ '+w).join('<br>'):'✓ Estrategia coherente para simulación orientativa.';
  drawCurve();
 }
-function readCurveInputs(){state.curve={radius:+$('curveRadius').value,angle:+$('curveAngle').value,length:+$('curveLength').value,hits:+$('curveHits').value,spring:+$('curveSpring').value,v:+$('curveV').value}}
+function readCurveInputs(){state.curve={radius:+$('curveRadius').value,angle:+$('curveAngle').value,length:+$('curveLength').value,hits:+$('curveHits').value,spring:+$('curveSpring').value,v:+$('curveV').value,thickness:+$('curveThickness').value,strategy:$('curveStrategy').value,mode:$('curveMode').value}}
 function vEvaluation(v,base){
  let r=calcDevelopmentForV(v),delta=r.flat-base.flat,d=state.development;
  let minLeg=Math.min(...d.bends.map(b=>+b.leg||0),Infinity),within=Math.abs(delta)<=d.tolerance,flangeOk=minLeg>=r.minFlange;
@@ -527,26 +553,44 @@ function renderHistory(){
  if(!$('historyList'))return;let h=state.history||[];$('historyList').innerHTML=h.length?h.map((x,i)=>`<div class="listItem"><span><b>${x.text}</b><small class="muted">${x.time}</small></span><span class="status">${i+1}</span></div>`).join(''):'<div class="muted">Sin cambios registrados.</div>';
 }
 function drawTechnical2D(canvas,step=state.bends.length,editable=false){
- let ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height,scale=Math.min(2.2,(w-180)/Math.max(1,state.bends.reduce((s,b)=>s+b.leg,0)));
- ctx.clearRect(0,0,w,h);ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--bg');ctx.fillRect(0,0,w,h);
- let pts=[{x:100,y:h*.68}],heading=0;
- state.bends.forEach((b,i)=>{let p=pts[pts.length-1],len=b.leg*scale;pts.push({x:p.x+len*Math.cos(heading),y:p.y-len*Math.sin(heading)});if(i<step)heading+=b.direction*(180-b.angle)*Math.PI/180});
- ctx.lineJoin='round';ctx.lineCap='round';ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--sheet');ctx.lineWidth=Math.max(7,state.project.thickness*3);ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();
- ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--sheet2');ctx.lineWidth=2;ctx.stroke();
- if(state.settings.showDims!=='none'){
-  ctx.font='14px system-ui';ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text');
-  pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1],mx=(p.x+q.x)/2,my=(p.y+q.y)/2-14;ctx.fillText(`${state.bends[i].leg} mm`,mx-28,my);if(i<state.bends.length-1){ctx.fillText(`${state.bends[i].angle}° · R${state.bends[i].radius}`,q.x+8,q.y-8)}});
- }
- return pts;
+ let ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height,margin=+(state.settings.fitMargin||150);ctx.clearRect(0,0,w,h);ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--bg');ctx.fillRect(0,0,w,h);
+ if(state.settings.showGrid!=='no'){ctx.strokeStyle='rgba(120,170,190,.12)';ctx.lineWidth=1;for(let x=40;x<w;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}for(let y=40;y<h;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}}
+ let raw=[{x:0,y:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y-len*Math.sin(heading)});if(i<step)heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});let xs=raw.map(p=>p.x),ys=raw.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),bw=Math.max(1,maxX-minX),bh=Math.max(1,maxY-minY),scale=Math.min((w-margin*2)/bw,(h-margin*1.25)/bh,4.2);if(!isFinite(scale)||scale<=0)scale=1;let ox=w/2-(minX+maxX)/2*scale,oy=h/2-(minY+maxY)/2*scale,pts=raw.map(p=>({x:p.x*scale+ox,y:p.y*scale+oy}));
+ ctx.lineJoin='round';ctx.lineCap='round';ctx.strokeStyle='#102731';ctx.lineWidth=Math.max(13,state.project.thickness*5);ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.strokeStyle=state.settings.sheetColor||'#4fb3ff';ctx.lineWidth=Math.max(7,state.project.thickness*3);ctx.stroke();ctx.strokeStyle='#e8f7ff';ctx.lineWidth=2;ctx.stroke();let fs=Math.round(15*(state.settings.dimensionScale||1.2)),dec=+(state.settings.decimals??2);
+ if(state.settings.showDims!=='none'){ctx.font=`700 ${fs}px system-ui`;pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1],dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L,mx=(p.x+q.x)/2+nx*30,my=(p.y+q.y)/2+ny*30,txt=`${(+state.bends[i].leg).toFixed(dec)} mm`,tw=ctx.measureText(txt).width;ctx.fillStyle='rgba(5,16,22,.88)';ctx.fillRect(mx-tw/2-7,my-fs+2,tw+14,fs+8);ctx.fillStyle='#f3fbff';ctx.fillText(txt,mx-tw/2,my);if(i<state.bends.length-1&&(state.settings.showDims==='all'||i===step-1)){ctx.fillStyle=i===step-1?'#ffbc4d':'#dcecf4';ctx.fillText(`${(+state.bends[i].angle).toFixed(dec)}°  R${(+state.bends[i].radius).toFixed(dec)}`,q.x+11,q.y-11)}})}pts.forEach((p,i)=>{ctx.fillStyle=i===Math.min(step,state.bends.length)?'#ffb84d':'#d9f6ff';ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill()});return pts;
 }
 function draw3D(canvas,step=state.bends.length,simulation=false){
- let ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
- let bg=getComputedStyle(document.body).getPropertyValue('--bg');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
- if(simulation){ctx.fillStyle='#17384b';ctx.fillRect(w*.12,h*.12,w*.76,h*.1);ctx.fillStyle='#244b61';ctx.fillRect(w*.08,h*.75,w*.84,h*.12);ctx.fillStyle='#8ba1ad';ctx.beginPath();ctx.moveTo(w*.3,h*.35);ctx.lineTo(w*.7,h*.35);ctx.lineTo(w*.64,h*.52);ctx.lineTo(w*.36,h*.52);ctx.closePath();ctx.fill()}
- let total=state.bends.reduce((s,b)=>s+b.leg,0),scale=Math.min(2,(w*.62)/Math.max(1,total)),x=w*.22,y=h*.62,heading=-.18;
- let pts=[{x,y}];state.bends.forEach((b,i)=>{let p=pts.at(-1),len=b.leg*scale;pts.push({x:p.x+len*Math.cos(heading),y:p.y-len*Math.sin(heading)});if(i<step)heading+=b.direction*(180-b.angle)*Math.PI/180*.65});
- ctx.lineJoin='round';ctx.lineCap='round';ctx.shadowBlur=18;ctx.shadowColor='#0008';ctx.strokeStyle='#778995';ctx.lineWidth=Math.max(12,state.project.thickness*5);ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle='#edf5f8';ctx.lineWidth=3;ctx.stroke();
- if(state.settings.showDims!=='none'){ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text');ctx.font='14px system-ui';pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1];ctx.fillText(`${state.bends[i].leg} mm`,(p.x+q.x)/2-20,(p.y+q.y)/2-18);if(i<step)ctx.fillText(`${state.bends[i].angle}° R${state.bends[i].radius}`,q.x+5,q.y-8)})}
+ let ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height,target=canvas.id==='canvasP3'?'P3':'S3',zoom=sim['zoom'+target]||1,panX=sim['pan'+target+'X']||0,panY=sim['pan'+target+'Y']||0,rx=sim['rotX'+target]??-.35,ry=sim['rotY'+target]??.5;
+ ctx.clearRect(0,0,w,h);let bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#06131a');bg.addColorStop(1,'#12303c');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+ const ca=Math.cos(ry),sa=Math.sin(ry),cb=Math.cos(rx),sb=Math.sin(rx),sceneScale=Math.min(w/1200,h/760)*zoom;
+ function project(p){let x=p.x,y=p.y,z=p.z;let x1=x*ca-z*sa,z1=x*sa+z*ca,y1=y*cb-z1*sb,z2=y*sb+z1*cb;return{x:w/2+x1*sceneScale+panX,y:h*.53-y1*sceneScale+panY,z:z2}}
+ function poly(points,fill,stroke='#7897a4',lw=1){let q=points.map(project).sort((a,b)=>a.z-b.z);ctx.beginPath();let pp=points.map(project);ctx.moveTo(pp[0].x,pp[0].y);pp.slice(1).forEach(v=>ctx.lineTo(v.x,v.y));ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke()}
+ function box(x,y,z,dx,dy,dz,fill,edge='#72909b'){let v=[{x,y,z},{x:x+dx,y,z},{x:x+dx,y:y+dy,z},{x,y:y+dy,z},{x,y,z:z+dz},{x:x+dx,y,z:z+dz},{x:x+dx,y:y+dy,z:z+dz},{x,y:y+dy,z:z+dz}],faces=[[0,1,2,3],[4,7,6,5],[0,4,5,1],[1,5,6,2],[2,6,7,3],[3,7,4,0]];let fs=faces.map(f=>({f,d:f.reduce((a,i)=>a+project(v[i]).z,0)/4})).sort((a,b)=>a.d-b.d);fs.forEach(o=>poly(o.f.map(i=>v[i]),fill,edge,1.2))}
+ function prism(pointsA,pointsB,fill,edge='#7897a4'){poly(pointsA,fill,edge);poly(pointsB,fill,edge);for(let i=0;i<pointsA.length;i++)poly([pointsA[i],pointsA[(i+1)%pointsA.length],pointsB[(i+1)%pointsB.length],pointsB[i]],fill,edge)}
+ let showMachine=state.settings.machineVisible!=='no'&&(simulation?(!$('s3Machine')||$('s3Machine').checked):true);
+ if(showMachine){ctx.save();ctx.globalAlpha=+(state.settings.machineOpacity||.92);
+   let blue='#1f5368',blue2='#2b6d84',dark='#0b2530',steel='#a8bac1',steel2='#718993',base='#294d5b';
+   box(-500,-310,-150,1000,55,300,base);
+   box(-475,-255,-125,105,570,250,blue2);box(370,-255,-125,105,570,250,blue2);
+   box(-475,260,-125,950,80,250,blue);
+   box(-355,-205,-95,710,62,190,dark);
+   let beamDrop=simulation?Math.min(62,(step/Math.max(1,state.bends.length))*62):20;
+   box(-360,135-beamDrop,-100,720,68,200,steel2);
+   box(-325,92-beamDrop,-58,650,40,116,steel);
+   prism([{x:-300,y:92-beamDrop,z:-45},{x:300,y:92-beamDrop,z:-45},{x:250,y:20-beamDrop,z:-25},{x:-250,y:20-beamDrop,z:-25}],[{x:-300,y:92-beamDrop,z:45},{x:300,y:92-beamDrop,z:45},{x:250,y:20-beamDrop,z:25},{x:-250,y:20-beamDrop,z:25}],'#d6e0e4','#ecf4f7');
+   box(-330,-150,-70,660,42,140,steel2);
+   prism([{x:-300,y:-108,z:-55},{x:300,y:-108,z:-55},{x:255,y:-52,z:-35},{x:-255,y:-52,z:-35}],[{x:-300,y:-108,z:55},{x:300,y:-108,z:55},{x:255,y:-52,z:35},{x:-255,y:-52,z:35}],'#58727d','#a9bdc5');
+   box(-360,-198,-95,720,48,190,base);
+   box(395,5,145,105,210,60,blue);box(408,75,207,78,108,8,'#0f1f25');box(418,88,216,58,76,5,'#54c9f1','#aeefff');
+   box(-250,-85,120,500,20,25,'#526e79');box(-220,-50,126,22,62,22,'#8ca3ac');box(198,-50,126,22,62,22,'#8ca3ac');
+   ctx.restore();
+ }
+ if(state.settings.showAxes!=='no'){let o=project({x:-430,y:-230,z:-130}),ax=[['X',{x:-340,y:-230,z:-130},'#ffb55c'],['Y',{x:-430,y:-140,z:-130},'#7ee4b1'],['Z',{x:-430,y:-230,z:-40},'#72c7ff']];ctx.font='12px system-ui';ax.forEach(([t,p,c])=>{let q=project(p);ctx.strokeStyle=c;ctx.beginPath();ctx.moveTo(o.x,o.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.fillStyle=c;ctx.fillText(t,q.x+4,q.y)})}
+ let raw=[{x:0,y:0,z:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y+len*Math.sin(heading),z:0});if(i<step)heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});
+ let cx=raw.reduce((a,p)=>a+p.x,0)/raw.length,cy=raw.reduce((a,p)=>a+p.y,0)/raw.length,placed=raw.map(p=>({x:(p.x-cx)*1.45,y:(p.y-cy)*1.45-20,z:0})),pts=placed.map(project),thick=Math.max(10,state.project.thickness*4*(state.settings.visualThickness||1.6));
+ ctx.lineJoin='round';ctx.lineCap='round';ctx.shadowBlur=20;ctx.shadowColor='#000';ctx.strokeStyle='#07161d';ctx.lineWidth=thick+10;ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle=state.settings.sheetColor||'#4fb3ff';ctx.lineWidth=thick;ctx.stroke();ctx.strokeStyle='#e6f8ff';ctx.lineWidth=2;ctx.stroke();
+ let fs=Math.round(14*(state.settings.dimensionScale||1.2)),dec=+(state.settings.decimals??2),showDims=state.settings.showDims!=='none'&&(!simulation||!$('s3Dims')||$('s3Dims').checked);if(showDims){ctx.font=`700 ${fs}px system-ui`;pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1],txt=`${(+state.bends[i].leg).toFixed(dec)} mm`,x=(p.x+q.x)/2,y=(p.y+q.y)/2-22,tw=ctx.measureText(txt).width;ctx.fillStyle='#06141bdd';ctx.fillRect(x-tw/2-6,y-fs+2,tw+12,fs+7);ctx.fillStyle='#f3fbff';ctx.fillText(txt,x-tw/2,y);if(i<step){ctx.fillStyle='#ffbc4d';ctx.fillText(`${(+state.bends[i].angle).toFixed(dec)}° R${(+state.bends[i].radius).toFixed(dec)}`,q.x+8,q.y-8)}})}
+ pts.forEach((p,i)=>{ctx.fillStyle=i===Math.min(step,state.bends.length)?'#ffb84d':'#d9f6ff';ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill()});
 }
 function drawCurve(){
  let c=$('canvasCurve'),ctx=c.getContext('2d'),w=c.width,h=c.height,cv=state.curve,r=Math.min(cv.radius,220),a=cv.angle*Math.PI/180;
@@ -571,16 +615,26 @@ function refreshPage(page){
  if(page==='history')renderHistory();drawAll();
 }
 function syncAll(){
+ state=migrateState(state);state.development.material=state.project.material;state.development.thickness=state.project.thickness;state.development.kfactor=state.project.kfactor;state.development.bends=deep(state.bends.map(b=>({leg:b.leg,angle:b.angle,radius:b.radius})));
  renderProjectInputs();$('dashRef').textContent=state.project.ref;$('dashMat').textContent=state.project.material;$('dashThk').textContent=state.project.thickness+' mm';$('dashBends').textContent=state.bends.length;
- renderProgram();render2DEditor();populateP3();renderDevelopment();renderCurve();renderVCompare();renderTools();renderWorkOrder();renderQuality();renderHistory();drawAll();
+ renderProgram();render2DEditor();populateP3();renderDevelopment();renderCurve();renderVCompare();renderTools();renderWorkOrder();renderQuality();renderHistory();renderAbout();drawAll();
  $('syncBadge').textContent='● Todo sincronizado';setTimeout(()=>$('syncBadge').textContent='● Proyecto al día',900);
 }
 function autoSave(){if(state.settings.autosave==='yes')localStorage.setItem(STORAGE,JSON.stringify(state))}
 function saveProject(){localStorage.setItem(STORAGE,JSON.stringify(state));toast('Proyecto guardado')}
-function loadProject(){let s=localStorage.getItem(STORAGE);if(!s)return toast('No hay proyecto guardado');state=JSON.parse(s);undoStack=[];redoStack=[];syncAll();toast('Proyecto recuperado')}
+function loadProject(){let s=localStorage.getItem(STORAGE)||localStorage.getItem('plegarProV43');if(!s)return toast('No hay proyecto guardado');state=migrateState(JSON.parse(s));undoStack=[];redoStack=[];syncAll();toast('Proyecto v43/v44 recuperado')}
 function download(name,data,type='application/json'){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
 function applySettings(){let light=state.settings.theme==='light'||(state.settings.theme==='system'&&matchMedia('(prefers-color-scheme: light)').matches);document.body.classList.toggle('light',light);drawAll()}
-function renderSettings(){ $('theme').value=state.settings.theme;$('showDims').value=state.settings.showDims;$('visualQuality').value=state.settings.visualQuality;$('autosave').value=state.settings.autosave;applySettings()}
+function migrateState(raw){
+ let base=deep(state),r=raw||{};base={...base,...r,project:{...base.project,...(r.project||{})},curve:{...base.curve,...(r.curve||{})},settings:{...base.settings,...(r.settings||{})}};base.settings.owner={...state.settings.owner,...((r.settings||{}).owner||{})};base.bends=(r.bends||base.bends).map(b=>({leg:100,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:b.leg||100,direction:1,...b}));base.development={...base.development,...(r.development||{}),bends:deep(base.bends.map(b=>({leg:b.leg,angle:b.angle,radius:b.radius})))};return base;
+}
+function renderSettings(){
+ state=migrateState(state);let x=state.settings,o=x.owner||{};$('theme').value=x.theme;$('showDims').value=x.showDims;$('visualQuality').value=x.visualQuality;$('autosave').value=x.autosave;$('dimensionScale').value=x.dimensionScale;$('simulationSpeed').value=x.simulationSpeed;$('sheetColor').value=x.sheetColor;$('machineVisible').value=x.machineVisible;$('fitMargin').value=x.fitMargin;$('visualThickness').value=x.visualThickness;$('showGrid').value=x.showGrid;$('showAxes').value=x.showAxes;$('machineOpacity').value=x.machineOpacity;$('cameraSensitivity').value=x.cameraSensitivity;$('decimals').value=x.decimals;$('default3DView').value=x.default3DView;
+ $('ownerName').value=o.name||'';$('ownerCompany').value=o.company||'';$('ownerPhone').value=o.phone||'';$('ownerWhatsapp').value=o.whatsapp||'';$('ownerEmail').value=o.email||'';$('ownerWebsite').value=o.website||'';applySettings();renderAbout();
+}
+function readSettings(){state.settings={...state.settings,theme:$('theme').value,showDims:$('showDims').value,visualQuality:$('visualQuality').value,autosave:$('autosave').value,dimensionScale:+$('dimensionScale').value,simulationSpeed:+$('simulationSpeed').value,sheetColor:$('sheetColor').value,machineVisible:$('machineVisible').value,fitMargin:+$('fitMargin').value,visualThickness:+$('visualThickness').value,showGrid:$('showGrid').value,showAxes:$('showAxes').value,machineOpacity:+$('machineOpacity').value,cameraSensitivity:+$('cameraSensitivity').value,decimals:+$('decimals').value,default3DView:$('default3DView').value,owner:{name:$('ownerName').value,company:$('ownerCompany').value,phone:$('ownerPhone').value,whatsapp:$('ownerWhatsapp').value,email:$('ownerEmail').value,website:$('ownerWebsite').value}}}
+function renderAbout(){let o=(state.settings&&state.settings.owner)||{};if(!$('aboutOwner'))return;$('aboutOwner').innerHTML=`<b>${o.name||'Datos pendientes'}</b><br>${o.company||'Completar empresa o taller en Ajustes'}<br>${o.phone||''}${o.whatsapp?'<br>WhatsApp: '+o.whatsapp:''}${o.email?'<br>'+o.email:''}${o.website?'<br>'+o.website:''}`}
+
 
 function bind(){
  document.querySelectorAll('.nav button[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
@@ -590,14 +644,14 @@ function bind(){
  $('p2Add').onclick=$('addBend').onclick;$('autoSequence').onclick=()=>commit('Secuencia ordenada automáticamente',()=>state.bends.sort((a,b)=>b.leg-a.leg));
  $('sendSim').onclick=()=>{sim.s3Step=0;go('sim3d')};$('saveProgramNotes').onclick=()=>commit('Guardadas notas del programa',()=>state.programNotes=$('programNotes').value);
  $('p2Fit').onclick=drawAll;$('p3Active').onchange=()=>{sim.p3Active=+$('p3Active').value;loadP3Fields();drawAll()};
- $('p3Apply').onclick=()=>{let i=sim.p3Active;commit('Editado pliegue desde Programación 3D',()=>Object.assign(state.bends[i],{angle:+$('p3Angle').value,radius:+$('p3Radius').value,v:+$('p3V').value,gauge:+$('p3Gauge').value}))};
+ $('p3Apply').onclick=()=>{let i=sim.p3Active;commit('Editado pliegue desde Programación 3D',()=>Object.assign(state.bends[i],{leg:+$('p3Leg').value,angle:+$('p3Angle').value,radius:+$('p3Radius').value,v:+$('p3V').value,gauge:+$('p3Gauge').value}))};
  $('p3Prev').onclick=()=>{$('p3Active').value=Math.max(0,--sim.p3Active);loadP3Fields();drawAll()};$('p3Next').onclick=()=>{$('p3Active').value=Math.min(state.bends.length-1,++sim.p3Active);loadP3Fields();drawAll()};
  $('freeAnalyze').onclick=()=>{let p=parseTechnical($('freeInput').value);commit('Entrada libre interpretada',()=>{state.project=p.project;state.bends=p.bends});$('freeResult').innerHTML=`Interpretado: ${p.bends.length} pliegues. Enviado a Programar, 2D y 3D.`;go('program')};
  $('freeToAI').onclick=()=>{$('aiInput').value=$('freeInput').value;go('ai')};$('loadExample').onclick=()=>commit('Cargado ejemplo Omega',()=>{state.project.ref='OMEGA-DEMO';state.bends=[{leg:120,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:120,direction:1},{leg:85,angle:90,radius:2,v:16,punch:'Pata de cabra 90°',gauge:85,direction:-1},{leg:85,angle:90,radius:2,v:16,punch:'Pata de cabra 90°',gauge:85,direction:-1},{leg:120,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:120,direction:1}]});
  $('analyzeFile').onclick=()=>{let f=$('fileInput').files[0];$('fileResult').innerHTML=f?`Archivo registrado: <b>${f.name}</b><br>Se ha preparado el proyecto para completar geometría y datos.`:'Selecciona primero un archivo.'};
- ['curveRadius','curveAngle','curveLength','curveHits','curveSpring','curveV'].forEach(id=>$(id).addEventListener('input',()=>{readCurveInputs();renderCurve()}));
+ ['curveRadius','curveAngle','curveLength','curveHits','curveSpring','curveV','curveThickness','curveStrategy','curveMode'].forEach(id=>$(id).addEventListener('input',()=>{readCurveInputs();renderCurve()}));
  $('curveCalculate').onclick=()=>commit('Recalculada Curva Perfecta',()=>readCurveInputs());
- $('curveToProgram').onclick=()=>{readCurveInputs();let c=state.curve,r=calculateCurve();commit('Curva Perfecta enviada a Programar',()=>{state.bends=Array.from({length:c.hits},(_,i)=>({leg:+r.step.toFixed(2),angle:+r.per.toFixed(3),radius:c.radius,v:c.v,punch:'Recto 30°',gauge:+(r.step*(i+1)).toFixed(2),direction:1}))});go('program')};
+ $('curveToProgram').onclick=()=>{readCurveInputs();let c=state.curve,r=calculateCurve();commit('Curva Perfecta enviada a Programar',()=>{state.bends=r.rows.map((x,i)=>({leg:+r.step.toFixed(2),angle:x.angle,radius:r.radius,v:c.v,punch:'Recto 30°',gauge:+x.x.toFixed(2),direction:1,curveGroup:'CP1',hit:i+1}))});go('program')};
  $('compareVBtn').onclick=renderVCompare;
  $('devCalculate').onclick=()=>commit('Recalculado desarrollo',()=>readDevelopmentInputs());
  $('devToCompare').onclick=()=>{readDevelopmentInputs();autoSave();go('vcompare')};
@@ -618,22 +672,29 @@ function bind(){
  $('saveGeneralNotes').onclick=()=>commit('Guardado bloc de notas general',()=>state.generalNotes=$('generalNotes').value);
  $('stampNote').onclick=()=>{$('generalNotes').value+=`\n[${new Date().toLocaleString('es-ES')}] `;$('generalNotes').focus()};
  $('clearHistory').onclick=()=>commit('Historial limpiado',()=>state.history=[]);
- $('theme').onchange=$('showDims').onchange=$('visualQuality').onchange=$('autosave').onchange=()=>{state.settings={theme:$('theme').value,showDims:$('showDims').value,visualQuality:$('visualQuality').value,autosave:$('autosave').value};applySettings();autoSave()};
- $('saveSettings').onclick=()=>{state.settings={theme:$('theme').value,showDims:$('showDims').value,visualQuality:$('visualQuality').value,autosave:$('autosave').value};applySettings();autoSave();toast('Ajustes guardados')};
- $('resetSettings').onclick=()=>{state.settings={theme:'dark',showDims:'all',visualQuality:'Alta',autosave:'yes'};renderSettings();autoSave()};
+ ['theme','showDims','visualQuality','autosave','dimensionScale','simulationSpeed','sheetColor','machineVisible','fitMargin','visualThickness','showGrid','showAxes','machineOpacity','cameraSensitivity','decimals','default3DView','ownerName','ownerCompany','ownerPhone','ownerWhatsapp','ownerEmail','ownerWebsite'].forEach(id=>$(id).addEventListener('change',()=>{readSettings();applySettings();autoSave();renderAbout()}));
+ $('saveSettings').onclick=()=>{readSettings();applySettings();autoSave();renderAbout();toast('Ajustes guardados')};
+ $('resetSettings').onclick=()=>{state.settings={theme:'dark',showDims:'all',visualQuality:'Alta',autosave:'yes',dimensionScale:1.2,simulationSpeed:700,sheetColor:'#4fb3ff',machineVisible:'yes',fitMargin:150,visualThickness:1.6,showGrid:'yes',showAxes:'yes',machineOpacity:.9,cameraSensitivity:.01,decimals:2,default3DView:'iso',owner:{name:'',company:'',phone:'',whatsapp:'',email:'',website:''}};renderSettings();autoSave()};
  $('saveProject').onclick=saveProject;$('loadProject').onclick=loadProject;$('exportProject').onclick=()=>download(`${state.project.ref}.json`,JSON.stringify(state,null,2));
  $('clearProject').onclick=()=>{if(confirm('¿Borrar el proyecto guardado?')){localStorage.removeItem(STORAGE);toast('Proyecto guardado eliminado')}};
  function simButtons(prefix,key){
-  $(prefix+'Play').onclick=()=>{clearInterval(sim[key+'Timer']);sim[key+'Timer']=setInterval(()=>{sim[key+'Step']++;if(sim[key+'Step']>state.bends.length){clearInterval(sim[key+'Timer']);sim[key+'Timer']=null;sim[key+'Step']=state.bends.length}drawAll()},700)};
+  $(prefix+'Play').onclick=()=>{clearInterval(sim[key+'Timer']);sim[key+'Timer']=setInterval(()=>{sim[key+'Step']++;if(sim[key+'Step']>state.bends.length){clearInterval(sim[key+'Timer']);sim[key+'Timer']=null;sim[key+'Step']=state.bends.length}drawAll()},state.settings.simulationSpeed||700)};
   $(prefix+'Pause').onclick=()=>{clearInterval(sim[key+'Timer']);sim[key+'Timer']=null};
   $(prefix+'Prev').onclick=()=>{sim[key+'Step']=Math.max(0,sim[key+'Step']-1);drawAll()};
   $(prefix+'Next').onclick=()=>{sim[key+'Step']=Math.min(state.bends.length,sim[key+'Step']+1);drawAll()};
   $(prefix+'Reset').onclick=()=>{sim[key+'Step']=0;drawAll()};
  }
  simButtons('s2','s2');simButtons('s3','s3');
- $('p3Camera').onchange=drawAll;$('s3Camera').onchange=drawAll;
- let cv=$('canvasP3');cv.addEventListener('pointerdown',e=>{sim.drag=true;sim.lastX=e.clientX;sim.lastY=e.clientY;cv.setPointerCapture(e.pointerId)});cv.addEventListener('pointermove',e=>{if(!sim.drag)return;sim.rotY+=(e.clientX-sim.lastX)*.01;sim.rotX+=(e.clientY-sim.lastY)*.01;sim.lastX=e.clientX;sim.lastY=e.clientY;drawAll()});cv.addEventListener('pointerup',()=>sim.drag=false);
+ $('p3Camera').onchange=()=>{applyCameraPreset($('p3Camera').value,'P3');drawAll()};$('s3Camera').onchange=()=>{applyCameraPreset($('s3Camera').value,'S3');drawAll()};$('s2Camera').onchange=drawAll;$('s3Machine').onchange=drawAll;$('s3Dims').onchange=drawAll;
+ $('p3Fit').onclick=()=>resetView('p3');$('s3Fit').onclick=()=>resetView('s3');$('s3RotateLeft').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)-.2;drawAll()};$('s3RotateRight').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)+.2;drawAll()};$('s3ZoomIn').onclick=()=>{sim.zoomS3=Math.min(3,sim.zoomS3*1.15);drawAll()};$('s3ZoomOut').onclick=()=>{sim.zoomS3=Math.max(.45,sim.zoomS3*.87);drawAll()};$('s2Fit').onclick=drawAll;
+ function wire3D(id,target){let cv=$(id);cv.addEventListener('pointerdown',e=>{sim.drag=true;sim.dragTarget=target;sim.panMode=e.shiftKey||e.button===1;sim.lastX=e.clientX;sim.lastY=e.clientY;cv.setPointerCapture(e.pointerId)});cv.addEventListener('pointermove',e=>{if(!sim.drag||sim.dragTarget!==target)return;let dx=e.clientX-sim.lastX,dy=e.clientY-sim.lastY;if(sim.panMode){sim['pan'+target+'X']+=dx;sim['pan'+target+'Y']+=dy}else{let sens=state.settings.cameraSensitivity||.01;sim['rotY'+target]=(sim['rotY'+target]??.5)+dx*sens;sim['rotX'+target]=(sim['rotX'+target]??-.35)+dy*sens}sim.lastX=e.clientX;sim.lastY=e.clientY;drawAll()});cv.addEventListener('pointerup',()=>sim.drag=false);cv.addEventListener('wheel',e=>{e.preventDefault();let k='zoom'+target;sim[k]=Math.max(.45,Math.min(2.8,sim[k]*(e.deltaY>0?.9:1.1)));drawAll()},{passive:false})}
+ wire3D('canvasP3','P3');wire3D('canvasS3','S3');
+ $('copyDiagnostics').onclick=async()=>{let txt=`Plegar Pro v46.0\nProyecto: ${state.project.ref}\nPliegues: ${state.bends.length}\nNavegador: ${navigator.userAgent}\nAlmacenamiento: ${localStorage.getItem(STORAGE)?'OK':'sin guardado'}`;try{await navigator.clipboard.writeText(txt);toast('Diagnóstico copiado')}catch(e){toast(txt)}};
 }
+
+function resetView(target){let T=target.toUpperCase();sim['rotX'+T]=-.35;sim['rotY'+T]=.5;sim['zoom'+T]=1;sim['pan'+T+'X']=0;sim['pan'+T+'Y']=0;drawAll()}
+function applyCameraPreset(v,target='S3'){let m={iso:[-.35,.5],front:[0,0],rear:[0,Math.PI],side:[0,Math.PI/2],top:[-Math.PI/2,0],operator:[-.12,Math.PI],free:[sim['rotX'+target]??-.35,sim['rotY'+target]??.5]};[sim['rotX'+target],sim['rotY'+target]]=m[v]||m.iso}
+
 function audit(){
  let issues=[];
  document.querySelectorAll('button').forEach(b=>{let functional=b.dataset.page||b.dataset.go||b.onclick||b.id||b.classList.contains('rowDelete');if(!functional)issues.push('Botón sin acción: '+b.textContent.trim())});
@@ -644,7 +705,7 @@ function loader(){
  let steps=['Inicializando núcleo','Cargando proyecto','Preparando Programar','Preparando vistas 2D','Preparando vistas 3D','Cargando Curva Perfecta','Conectando IA técnica','Verificando botones','Sincronizando módulos','Programa listo'];
  let i=0,t=setInterval(()=>{$('loadState').textContent=steps[i]+'...';$('loadFill').style.width=((i+1)/steps.length*100)+'%';i++;if(i===steps.length){clearInterval(t);setTimeout(()=>$('loader').classList.add('hidden'),350)}},120);
 }
-bind();renderSettings();syncAll();let saved=localStorage.getItem(STORAGE);if(saved){try{state=JSON.parse(saved);renderSettings();syncAll()}catch(e){}}
+bind();renderSettings();syncAll();let saved=localStorage.getItem(STORAGE);if(saved){try{state=migrateState(JSON.parse(saved));renderSettings();syncAll()}catch(e){console.error(e)}}
 let issues=audit();if(issues.length)console.warn('Auditoría:',issues);else console.info('Auditoría funcional: sin botones huérfanos ni IDs duplicados.');
 loader();
 </script>
