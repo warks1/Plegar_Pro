@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v44 - v43 · Consolidación</title>
+<title>Plegar Pro v47 · Visual Pro Responsive</title>
 <style>
 :root{
   --bg:#06111b;--panel:#0d2131;--panel2:#112a3d;--line:#31536c;
@@ -73,6 +73,27 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 @media(max-width:720px){.app{display:block}.side{position:relative;height:auto}.main{padding:10px}.fields,.quick{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.stage canvas{height:410px}.topbar{align-items:flex-start;flex-direction:column}.syncBadge{align-self:flex-start}}
 
 .program-badge{font-size:11px;padding:3px 7px;border-radius:99px;background:#0b2634;border:1px solid #2d6073}.stage:focus-within{outline:2px solid #28b88a}.table input,.table select{min-width:78px}.overlay{pointer-events:none}.machineLegend{display:flex;gap:10px;flex-wrap:wrap}.machineLegend span{font-size:11px;border:1px solid var(--line);border-radius:99px;padding:3px 7px}
+
+/* v47 Visual Pro Responsive */
+body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 34%),var(--bg)}
+.card{background:linear-gradient(150deg,color-mix(in srgb,var(--panel) 95%,#fff 5%),var(--panel));box-shadow:0 12px 34px rgba(0,0,0,.16)}
+.stage{box-shadow:inset 0 0 55px rgba(0,0,0,.36),0 12px 30px rgba(0,0,0,.18)}
+.stage canvas{cursor:grab}.stage canvas:active{cursor:grabbing}
+.previewProgram{min-height:390px}.previewProgram canvas{height:390px}
+.legalFooter{margin-top:18px;padding:13px 10px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;text-align:center;line-height:1.6}
+.mobileMenuBtn{display:none}
+.visualToolbar{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}.visualToolbar .btn{padding:7px 10px}
+@media(max-width:900px){
+ .app{display:block}.side{position:fixed;z-index:70;inset:0 auto 0 0;width:min(310px,88vw);height:100dvh;transform:translateX(-105%);transition:.25s;box-shadow:20px 0 45px rgba(0,0,0,.35)}
+ .side.open{transform:translateX(0)}.mobileMenuBtn{display:inline-flex}.main{padding:10px}.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(14px);padding:8px 0}
+ .stage canvas{height:360px}.previewProgram canvas{height:330px}.toolbar,.actions{gap:6px}.btn{min-height:42px}.fields{grid-template-columns:1fr 1fr}.table{min-width:820px}
+}
+@media(max-width:560px){
+ .main{padding:7px}.heading h1{font-size:18px}.heading p{font-size:11px}.topLeft{flex-wrap:wrap}.syncBadge{display:none}
+ .fields,.quick,.kpis{grid-template-columns:1fr}.card{padding:10px;border-radius:12px}.stage canvas{height:300px}.previewProgram canvas{height:280px}
+ .toolbar select,.toolbar button,.actions button{flex:1 1 135px}.overlay{font-size:10px;max-width:210px}.tableWrap{margin-inline:-10px;padding-inline:10px}
+}
+
 </style>
 </head>
 <body>
@@ -89,7 +110,7 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <div class="app">
 <aside class="side">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v46.0 · Reconstrucción acumulativa desde v43</div>
+  <div class="version">v47.0 · Visual Pro Responsive · base acumulativa v43</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -119,6 +140,7 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <main class="main">
 <header class="topbar">
   <div class="topLeft">
+    <button class="mobileMenuBtn" id="mobileMenuBtn" title="Menú">☰ Menú</button>
     <button id="backBtn" title="Volver">← Volver</button>
     <button id="undoBtn" title="Deshacer">↶ Deshacer</button>
     <button id="redoBtn" title="Rehacer">↷ Rehacer</button>
@@ -176,8 +198,7 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <div class="actions"><button class="btn" id="addBend">Añadir pliegue</button><button class="btn secondary" id="autoSequence">Orden automático</button><button class="btn secondary" data-go="program2d">Vista 2D</button><button class="btn secondary" data-go="program3d">Vista 3D</button><button class="btn secondary" data-go="sim2d">Simular 2D</button><button class="btn" id="sendSim">Simular 3D</button></div>
 <div id="programLiveStatus" class="note">Las medidas se actualizan mientras escribes y se sincronizan con todos los módulos.</div><div class="tableWrap"><table class="table"><thead><tr><th>#</th><th>Ala mm</th><th>Ángulo</th><th>Radio</th><th>V</th><th>Punzón</th><th>Tope X</th><th>Sentido</th><th>Acciones</th></tr></thead><tbody id="programRows"></tbody></table></div>
 </div>
-<div class="card c4"><h2>Notas del programa</h2><textarea id="programNotes" rows="16" placeholder="Anotaciones específicas de esta referencia..."></textarea><div class="actions"><button class="btn" id="saveProgramNotes">Guardar notas</button></div>
-<div id="programSummary" class="note"></div></div>
+<div class="card c4"><h2>Vista de la pieza en tiempo real</h2><div class="visualToolbar"><button class="btn secondary" id="programFit">Centrar</button><button class="btn secondary" id="programZoomIn">＋</button><button class="btn secondary" id="programZoomOut">－</button><button class="btn secondary" id="programRotateLeft">↶</button><button class="btn secondary" id="programRotateRight">↷</button></div><div class="stage previewProgram"><canvas id="canvasProgram" width="850" height="520"></canvas><div class="overlay" id="overlayProgram"></div></div><div id="programSummary" class="note"></div><h3>Notas del programa</h3><textarea id="programNotes" rows="6" placeholder="Anotaciones específicas de esta referencia..."></textarea><div class="actions"><button class="btn" id="saveProgramNotes">Guardar notas</button></div></div>
 </div></section>
 
 <section class="page" id="program2d"><div class="split">
@@ -199,7 +220,7 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 </div></section>
 
 <section class="page" id="sim2d"><div class="card">
-<h2>Simulación 2D técnica</h2><div class="toolbar"><button class="btn" id="s2Play">▶ Reproducir</button><button class="btn secondary" id="s2Pause">⏸ Pausa</button><button class="btn secondary" id="s2Prev">◀ Paso</button><button class="btn secondary" id="s2Next">Paso ▶</button><button class="btn secondary" id="s2Reset">Reiniciar</button><select id="s2Camera" style="width:auto"><option value="whole">Pieza completa</option><option value="active">Seguir pliegue</option><option value="fixed">Cámara fija</option></select><button class="btn secondary" id="s2Fit">Centrar</button></div>
+<h2>Simulación 2D técnica</h2><div class="toolbar"><button class="btn" id="s2Play">▶ Reproducir</button><button class="btn secondary" id="s2Pause">⏸ Pausa</button><button class="btn secondary" id="s2Prev">◀ Paso</button><button class="btn secondary" id="s2Next">Paso ▶</button><button class="btn secondary" id="s2Reset">Reiniciar</button><select id="s2Camera" style="width:auto"><option value="whole">Pieza completa</option><option value="active">Seguir pliegue</option><option value="fixed">Cámara fija</option></select><button class="btn secondary" id="s2Fit">Centrar</button><button class="btn secondary" id="s2ZoomIn">＋</button><button class="btn secondary" id="s2ZoomOut">－</button><button class="btn secondary" id="s2RotateLeft">↶ Rotar</button><button class="btn secondary" id="s2RotateRight">Rotar ↷</button></div>
 <div class="stage"><canvas id="canvasS2" width="1200" height="650"></canvas><div class="overlay" id="overlayS2"></div></div>
 </div></section>
 
@@ -237,7 +258,7 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <div><label>Estrategia</label><select id="curveStrategy"><option value="uniform">Uniforme</option><option value="smooth">Suave en extremos</option><option value="adaptive">Adaptativa</option></select></div>
 <div><label>Modo de entrada</label><select id="curveMode"><option value="radius">Radio + ángulo</option><option value="length">Longitud + ángulo (golpes automáticos)</option><option value="hits">Golpes fijados</option></select></div>
 </div><div class="actions"><button class="btn" id="curveCalculate">Calcular</button><button class="btn secondary" id="curveToProgram">Enviar a Programar</button></div><div id="curveResult" class="note"></div></div>
-<div class="card c7"><div class="stage"><canvas id="canvasCurve" width="1000" height="600"></canvas><div class="overlay" id="overlayCurve"></div></div></div><div class="card c12"><h2>Tabla de golpes</h2><div class="tableWrap"><table class="table"><thead><tr><th>Golpe</th><th>Posición X</th><th>Distancia</th><th>Ángulo golpe</th><th>Ángulo acumulado</th><th>Corrección</th></tr></thead><tbody id="curveRows"></tbody></table></div><div id="curveWarnings" class="note"></div></div>
+<div class="card c7"><h2>Vista avanzada de la curva</h2><div class="visualToolbar"><button class="btn secondary" id="curveFit">Centrar</button><button class="btn secondary" id="curveZoomIn">＋</button><button class="btn secondary" id="curveZoomOut">－</button><button class="btn secondary" id="curveRotateLeft">↶ Rotar</button><button class="btn secondary" id="curveRotateRight">Rotar ↷</button></div><div class="stage"><canvas id="canvasCurve" width="1000" height="600"></canvas><div class="overlay" id="overlayCurve"></div></div></div><div class="card c12"><h2>Tabla de golpes</h2><div class="tableWrap"><table class="table"><thead><tr><th>Golpe</th><th>Posición X</th><th>Distancia</th><th>Ángulo golpe</th><th>Ángulo acumulado</th><th>Corrección</th></tr></thead><tbody id="curveRows"></tbody></table></div><div id="curveWarnings" class="note"></div></div>
 </div></section>
 
 <section class="page" id="vcompare"><div class="grid">
@@ -289,7 +310,7 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <div class="card c6"><h2>Datos del propietario</h2><div class="fields">
 <div><label>Nombre</label><input id="ownerName"></div><div><label>Empresa / Taller</label><input id="ownerCompany"></div>
 <div><label>Teléfono</label><input id="ownerPhone"></div><div><label>WhatsApp</label><input id="ownerWhatsapp"></div>
-<div><label>Correo</label><input id="ownerEmail" type="email"></div><div><label>Web</label><input id="ownerWebsite"></div>
+<div><label>Correo</label><input id="ownerEmail" type="email"></div><div><label>Web</label><input id="ownerWebsite"></div><div><label>Nombre público del creador</label><input id="creatorName" placeholder="Tu nombre o marca"></div><div><label>Titular del copyright</label><input id="copyrightHolder" placeholder="Nombre o empresa"></div>
 </div></div>
 <div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">La versión v44 mantiene compatibilidad con la clave de almacenamiento de la v43 y migra los datos nuevos sin borrar proyectos anteriores.</div></div>
 </div></section>
@@ -300,7 +321,7 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <div class="card c12"><h2>Mejoras acumuladas desde v43</h2><div class="note">Programar integra accesos 2D/3D y simulación; medidas sincronizadas; vistas centradas; cámara orbital y zoom; plegadora 3D diferenciada; Curva Perfecta con tabla de golpes; Ajustes ampliados; Acerca de editable; migración y persistencia compatibles con proyectos v43.</div></div>
 </div></section>
 
-</main></div>
+<footer class="legalFooter" id="legalFooter"></footer></main></div>
 <div id="toast" class="hidden"></div>
 
 <script>
@@ -317,10 +338,10 @@ let state={
  curve:{radius:250,angle:90,length:393,hits:18,spring:2,v:16,thickness:2,strategy:'uniform',mode:'radius'},
  development:{material:'S235',thickness:2,kfactor:.42,referenceV:16,punchRadius:1,punchAngle:88,bendLength:1000,tolerance:.5,dimensionType:'exterior',selectedVs:[12,16,22,24,32],bends:[{leg:120,angle:90,radius:2},{leg:85,angle:90,radius:2},{leg:60,angle:45,radius:2}]},
  programNotes:'',generalNotes:'',quality:[],workOrder:null,
- settings:{theme:'dark',showDims:'all',visualQuality:'Alta',autosave:'yes',dimensionScale:1.2,simulationSpeed:700,sheetColor:'#4fb3ff',machineVisible:'yes',fitMargin:150,visualThickness:1.6,showGrid:'yes',showAxes:'yes',machineOpacity:.9,cameraSensitivity:.01,decimals:2,default3DView:'iso',owner:{name:'',company:'',phone:'',whatsapp:'',email:'',website:''}}
+ settings:{theme:'dark',showDims:'all',visualQuality:'Alta',autosave:'yes',dimensionScale:1.2,simulationSpeed:700,sheetColor:'#4fb3ff',machineVisible:'yes',fitMargin:150,visualThickness:1.6,showGrid:'yes',showAxes:'yes',machineOpacity:.9,cameraSensitivity:.01,decimals:2,default3DView:'iso',owner:{name:'',company:'AMS Engineering Solutions',phone:'',whatsapp:'',email:'',website:'',creatorName:'',copyrightHolder:'AMS Engineering Solutions'}}
 };
 let undoStack=[],redoStack=[],pageHistory=['dashboard'],currentPage='dashboard';
-let sim={rotXP3:-.35,rotYP3:.5,rotXS3:-.35,rotYS3:.5,s2Step:0,s3Step:0,s2Timer:null,s3Timer:null,operatorStep:0,p3Active:0,rotX:-.35,rotY:.5,drag:false,lastX:0,lastY:0,zoomP3:1,zoomS3:1,panP3X:0,panP3Y:0,panS3X:0,panS3Y:0,dragTarget:'',panMode:false};
+let sim={rotXP3:-.35,rotYP3:.5,rotXS3:-.35,rotYS3:.5,s2Step:0,s3Step:0,s2Timer:null,s3Timer:null,operatorStep:0,p3Active:0,rotX:-.35,rotY:.5,drag:false,lastX:0,lastY:0,zoomP3:1,zoomS3:1,panP3X:0,panP3Y:0,panS3X:0,panS3Y:0,dragTarget:'',panMode:false,zoomS2:1,rotS2:0,panS2X:0,panS2Y:0,zoomCurve:1,rotCurve:0,panCurveX:0,panCurveY:0,zoomProgram:1,rotProgram:0,panProgramX:0,panProgramY:0};
 let aiProposal=null;
 
 const titles={
@@ -332,7 +353,7 @@ const titles={
  vcompare:['Comparador V','Selección orientativa de matriz'],tooling:['Utillaje','Biblioteca de punzones y matrices'],
  ai:['IA técnica','Cálculo y envío a módulos'],production:['Producción','Órdenes y modo operario'],
  quality:['Calidad','Medición y trazabilidad'],notes:['Bloc de notas','Anotaciones generales'],
- history:['Historial','Cambios y restauración'],settings:['Ajustes','Apariencia y datos'],about:['Acerca de','Información de versión']
+ history:['Historial','Cambios y restauración'],settings:['Ajustes','Apariencia y datos'],about:['Acerca de','Información legal, autoría y versión']
 };
 
 function toast(msg){
@@ -403,7 +424,7 @@ function populateP3(){
  $('p3Active').innerHTML=state.bends.map((b,i)=>`<option value="${i}">${bendSummary(b,i)}</option>`).join('');
  sim.p3Active=Math.min(sim.p3Active,Math.max(0,state.bends.length-1));$('p3Active').value=sim.p3Active;loadP3Fields();
 }
-function loadP3Fields(){let b=state.bends[sim.p3Active];if(!b)return;$('p3Leg').value=b.leg;$('p3Angle').value=b.angle;$('p3Radius').value=b.radius;$('p3V').value=b.v;$('p3Gauge').value=b.gauge}
+function loadP3Fields(){if($('overlayProgram'))$('overlayProgram').innerHTML=`VISTA EN TIEMPO REAL<br>${state.project.material} · ${(+state.project.thickness).toFixed(2)} mm<br>${state.bends.length} pliegues · Desarrollo ${calcDevelopment().flat.toFixed(2)} mm`;let b=state.bends[sim.p3Active];if(!b)return;$('p3Leg').value=b.leg;$('p3Angle').value=b.angle;$('p3Radius').value=b.radius;$('p3V').value=b.v;$('p3Gauge').value=b.gauge}
 function renderQualityOptions(){$('qBend').innerHTML=state.bends.map((b,i)=>`<option value="${i}">${bendSummary(b,i)}</option>`).join('')}
 const STANDARD_VS=[6,8,10,12,16,22,24,32,36,40,50];
 function ensureDevelopment(){
@@ -555,7 +576,7 @@ function renderHistory(){
 function drawTechnical2D(canvas,step=state.bends.length,editable=false){
  let ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height,margin=+(state.settings.fitMargin||150);ctx.clearRect(0,0,w,h);ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--bg');ctx.fillRect(0,0,w,h);
  if(state.settings.showGrid!=='no'){ctx.strokeStyle='rgba(120,170,190,.12)';ctx.lineWidth=1;for(let x=40;x<w;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}for(let y=40;y<h;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}}
- let raw=[{x:0,y:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y-len*Math.sin(heading)});if(i<step)heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});let xs=raw.map(p=>p.x),ys=raw.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),bw=Math.max(1,maxX-minX),bh=Math.max(1,maxY-minY),scale=Math.min((w-margin*2)/bw,(h-margin*1.25)/bh,4.2);if(!isFinite(scale)||scale<=0)scale=1;let ox=w/2-(minX+maxX)/2*scale,oy=h/2-(minY+maxY)/2*scale,pts=raw.map(p=>({x:p.x*scale+ox,y:p.y*scale+oy}));
+ let raw=[{x:0,y:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y-len*Math.sin(heading)});if(i<step)heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});let xs=raw.map(p=>p.x),ys=raw.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),bw=Math.max(1,maxX-minX),bh=Math.max(1,maxY-minY),scale=Math.min((w-margin*2)/bw,(h-margin*1.25)/bh,4.2);if(!isFinite(scale)||scale<=0)scale=1;let target=canvas.id==='canvasS2'?'S2':canvas.id==='canvasProgram'?'Program':'P2',z=sim['zoom'+target]||1,rot=sim['rot'+target]||0,px=sim['pan'+target+'X']||0,py=sim['pan'+target+'Y']||0;scale*=z;let ox=w/2-(minX+maxX)/2*scale+px,oy=h/2-(minY+maxY)/2*scale+py,cx=w/2+px,cy=h/2+py,cr=Math.cos(rot),sr=Math.sin(rot),pts=raw.map(p=>{let x=p.x*scale+ox,y=p.y*scale+oy,dx=x-cx,dy=y-cy;return{x:cx+dx*cr-dy*sr,y:cy+dx*sr+dy*cr}});
  ctx.lineJoin='round';ctx.lineCap='round';ctx.strokeStyle='#102731';ctx.lineWidth=Math.max(13,state.project.thickness*5);ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.strokeStyle=state.settings.sheetColor||'#4fb3ff';ctx.lineWidth=Math.max(7,state.project.thickness*3);ctx.stroke();ctx.strokeStyle='#e8f7ff';ctx.lineWidth=2;ctx.stroke();let fs=Math.round(15*(state.settings.dimensionScale||1.2)),dec=+(state.settings.decimals??2);
  if(state.settings.showDims!=='none'){ctx.font=`700 ${fs}px system-ui`;pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1],dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L,mx=(p.x+q.x)/2+nx*30,my=(p.y+q.y)/2+ny*30,txt=`${(+state.bends[i].leg).toFixed(dec)} mm`,tw=ctx.measureText(txt).width;ctx.fillStyle='rgba(5,16,22,.88)';ctx.fillRect(mx-tw/2-7,my-fs+2,tw+14,fs+8);ctx.fillStyle='#f3fbff';ctx.fillText(txt,mx-tw/2,my);if(i<state.bends.length-1&&(state.settings.showDims==='all'||i===step-1)){ctx.fillStyle=i===step-1?'#ffbc4d':'#dcecf4';ctx.fillText(`${(+state.bends[i].angle).toFixed(dec)}°  R${(+state.bends[i].radius).toFixed(dec)}`,q.x+11,q.y-11)}})}pts.forEach((p,i)=>{ctx.fillStyle=i===Math.min(step,state.bends.length)?'#ffb84d':'#d9f6ff';ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill()});return pts;
 }
@@ -593,17 +614,19 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
  pts.forEach((p,i)=>{ctx.fillStyle=i===Math.min(step,state.bends.length)?'#ffb84d':'#d9f6ff';ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill()});
 }
 function drawCurve(){
- let c=$('canvasCurve'),ctx=c.getContext('2d'),w=c.width,h=c.height,cv=state.curve,r=Math.min(cv.radius,220),a=cv.angle*Math.PI/180;
- ctx.clearRect(0,0,w,h);ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--bg');ctx.fillRect(0,0,w,h);
- ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--sheet');ctx.lineWidth=Math.max(9,state.project.thickness*4);ctx.beginPath();
- for(let i=0;i<=cv.hits;i++){let t=a*i/cv.hits,x=w*.65-r*Math.sin(t),y=h*.78-r*(1-Math.cos(t));i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke();
- ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--accent');ctx.lineWidth=1;for(let i=0;i<=cv.hits;i++){let t=a*i/cv.hits,x=w*.65-r*Math.sin(t),y=h*.78-r*(1-Math.cos(t));ctx.beginPath();ctx.moveTo(x-5,y-5);ctx.lineTo(x+5,y+5);ctx.stroke()}
- $('overlayCurve').innerHTML=`R${cv.radius} · ${cv.angle}° · ${cv.hits} golpes<br>Paso ${calculateCurve().step.toFixed(2)} mm · V${cv.v}`;
+ let c=$('canvasCurve'),ctx=c.getContext('2d'),w=c.width,h=c.height,cv=state.curve,calc=calculateCurve(),z=sim.zoomCurve||1,rot=sim.rotCurve||0,panX=sim.panCurveX||0,panY=sim.panCurveY||0;
+ ctx.clearRect(0,0,w,h);let g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,'#071822');g.addColorStop(1,'#02070b');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+ ctx.save();ctx.translate(w/2+panX,h/2+panY);ctx.rotate(rot);ctx.scale(z,z);let radius=Math.min(Math.max(cv.radius*1.45,95),250),a=cv.angle*Math.PI/180,pts=[];
+ for(let i=0;i<=cv.hits;i++){let t=a*i/cv.hits;pts.push({x:-radius*Math.sin(t)+radius*.48,y:radius*Math.cos(t)-radius*.55})}
+ ctx.lineJoin='round';ctx.lineCap='round';ctx.shadowBlur=24;ctx.shadowColor='rgba(0,0,0,.55)';ctx.strokeStyle='#07141b';ctx.lineWidth=Math.max(20,state.project.thickness*9);ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();ctx.shadowBlur=0;
+ let sg=ctx.createLinearGradient(-radius,0,radius,0);sg.addColorStop(0,'#70bdd8');sg.addColorStop(.45,state.settings.sheetColor||'#4fb3ff');sg.addColorStop(1,'#d9f4ff');ctx.strokeStyle=sg;ctx.lineWidth=Math.max(12,state.project.thickness*6);ctx.stroke();ctx.strokeStyle='rgba(255,255,255,.8)';ctx.lineWidth=2;ctx.stroke();
+ pts.forEach((p,i)=>{ctx.fillStyle=i===0||i===pts.length-1?'#ffd166':'#eaf8ff';ctx.beginPath();ctx.arc(p.x,p.y,i===0||i===pts.length-1?5:3,0,Math.PI*2);ctx.fill();if(i>0&&i<pts.length-1&&i%Math.max(1,Math.ceil(cv.hits/12))===0){ctx.fillStyle='rgba(5,18,25,.86)';ctx.font='11px system-ui';ctx.fillText(String(i),p.x+6,p.y-6)}});
+ ctx.restore();$('overlayCurve').innerHTML=`CURVA PERFECTA<br>R${(+cv.radius).toFixed(2)} · ${(+cv.angle).toFixed(2)}° · ${cv.hits} golpes<br>Paso ${calc.step.toFixed(3)} mm · Longitud ${(+cv.length).toFixed(2)} mm · V${cv.v}<br>Arrastra para mover · rueda/pellizco para zoom`;
 }
 function drawAll(){
- drawTechnical2D($('canvasP2'));draw3D($('canvasP3'));drawTechnical2D($('canvasS2'),sim.s2Step);draw3D($('canvasS3'),sim.s3Step,true);drawCurve();
+ drawTechnical2D($('canvasP2'));if($('canvasProgram'))drawTechnical2D($('canvasProgram'));draw3D($('canvasP3'));drawTechnical2D($('canvasS2'),sim.s2Step);draw3D($('canvasS3'),sim.s3Step,true);drawCurve();
  $('overlayP2').innerHTML=`PROGRAMACIÓN 2D<br>${state.project.material} ${state.project.thickness} mm<br>Cotas, radios y ángulos sincronizados`;
- let b=state.bends[sim.p3Active];$('overlayP3').innerHTML=b?`PLIEGUE ${sim.p3Active+1}<br>${b.leg} mm · ${b.angle}° · R${b.radius}<br>V${b.v} · X ${b.gauge} mm`:'Sin pliegues';
+ if($('overlayProgram'))$('overlayProgram').innerHTML=`VISTA EN TIEMPO REAL<br>${state.project.material} · ${(+state.project.thickness).toFixed(2)} mm<br>${state.bends.length} pliegues · Desarrollo ${calcDevelopment().flat.toFixed(2)} mm`;let b=state.bends[sim.p3Active];$('overlayP3').innerHTML=b?`PLIEGUE ${sim.p3Active+1}<br>${b.leg} mm · ${b.angle}° · R${b.radius}<br>V${b.v} · X ${b.gauge} mm`:'Sin pliegues';
  let s2=state.bends[Math.max(0,sim.s2Step-1)];$('overlayS2').innerHTML=s2?`PASO ${sim.s2Step}/${state.bends.length}<br>${s2.angle}° · R${s2.radius} · ${s2.leg} mm`:'Pieza plana · desarrollo '+calcDevelopment().flat.toFixed(2)+' mm';
  let s3=state.bends[Math.max(0,sim.s3Step-1)];$('overlayS3').innerHTML=s3?`PLIEGUE ${sim.s3Step}/${state.bends.length}<br>${s3.angle}° · R${s3.radius}<br>V${s3.v} · ${s3.punch}`:'Máquina preparada';
 }
@@ -630,10 +653,10 @@ function migrateState(raw){
 }
 function renderSettings(){
  state=migrateState(state);let x=state.settings,o=x.owner||{};$('theme').value=x.theme;$('showDims').value=x.showDims;$('visualQuality').value=x.visualQuality;$('autosave').value=x.autosave;$('dimensionScale').value=x.dimensionScale;$('simulationSpeed').value=x.simulationSpeed;$('sheetColor').value=x.sheetColor;$('machineVisible').value=x.machineVisible;$('fitMargin').value=x.fitMargin;$('visualThickness').value=x.visualThickness;$('showGrid').value=x.showGrid;$('showAxes').value=x.showAxes;$('machineOpacity').value=x.machineOpacity;$('cameraSensitivity').value=x.cameraSensitivity;$('decimals').value=x.decimals;$('default3DView').value=x.default3DView;
- $('ownerName').value=o.name||'';$('ownerCompany').value=o.company||'';$('ownerPhone').value=o.phone||'';$('ownerWhatsapp').value=o.whatsapp||'';$('ownerEmail').value=o.email||'';$('ownerWebsite').value=o.website||'';applySettings();renderAbout();
+ $('ownerName').value=o.name||'';$('ownerCompany').value=o.company||'';$('ownerPhone').value=o.phone||'';$('ownerWhatsapp').value=o.whatsapp||'';$('ownerEmail').value=o.email||'';$('ownerWebsite').value=o.website||'';$('creatorName').value=o.creatorName||o.name||'';$('copyrightHolder').value=o.copyrightHolder||o.company||'AMS Engineering Solutions';applySettings();renderAbout();
 }
-function readSettings(){state.settings={...state.settings,theme:$('theme').value,showDims:$('showDims').value,visualQuality:$('visualQuality').value,autosave:$('autosave').value,dimensionScale:+$('dimensionScale').value,simulationSpeed:+$('simulationSpeed').value,sheetColor:$('sheetColor').value,machineVisible:$('machineVisible').value,fitMargin:+$('fitMargin').value,visualThickness:+$('visualThickness').value,showGrid:$('showGrid').value,showAxes:$('showAxes').value,machineOpacity:+$('machineOpacity').value,cameraSensitivity:+$('cameraSensitivity').value,decimals:+$('decimals').value,default3DView:$('default3DView').value,owner:{name:$('ownerName').value,company:$('ownerCompany').value,phone:$('ownerPhone').value,whatsapp:$('ownerWhatsapp').value,email:$('ownerEmail').value,website:$('ownerWebsite').value}}}
-function renderAbout(){let o=(state.settings&&state.settings.owner)||{};if(!$('aboutOwner'))return;$('aboutOwner').innerHTML=`<b>${o.name||'Datos pendientes'}</b><br>${o.company||'Completar empresa o taller en Ajustes'}<br>${o.phone||''}${o.whatsapp?'<br>WhatsApp: '+o.whatsapp:''}${o.email?'<br>'+o.email:''}${o.website?'<br>'+o.website:''}`}
+function readSettings(){state.settings={...state.settings,theme:$('theme').value,showDims:$('showDims').value,visualQuality:$('visualQuality').value,autosave:$('autosave').value,dimensionScale:+$('dimensionScale').value,simulationSpeed:+$('simulationSpeed').value,sheetColor:$('sheetColor').value,machineVisible:$('machineVisible').value,fitMargin:+$('fitMargin').value,visualThickness:+$('visualThickness').value,showGrid:$('showGrid').value,showAxes:$('showAxes').value,machineOpacity:+$('machineOpacity').value,cameraSensitivity:+$('cameraSensitivity').value,decimals:+$('decimals').value,default3DView:$('default3DView').value,owner:{name:$('ownerName').value,company:$('ownerCompany').value,phone:$('ownerPhone').value,whatsapp:$('ownerWhatsapp').value,email:$('ownerEmail').value,website:$('ownerWebsite').value,creatorName:$('creatorName').value,copyrightHolder:$('copyrightHolder').value}}}
+function renderAbout(){let o=(state.settings&&state.settings.owner)||{},creator=o.creatorName||o.name||'Creador pendiente de completar',holder=o.copyrightHolder||o.company||'AMS Engineering Solutions',year=new Date().getFullYear();if($('aboutOwner'))$('aboutOwner').innerHTML=`<b>${creator}</b><br>${o.company||'AMS Engineering Solutions'}<br>${o.phone||''}${o.whatsapp?'<br>WhatsApp: '+o.whatsapp:''}${o.email?'<br>'+o.email:''}${o.website?'<br>'+o.website:''}<hr style="border-color:var(--line)"><small>Autor y creador del software: ${creator}<br>© ${year} ${holder}. Todos los derechos reservados.</small>`;if($('legalFooter'))$('legalFooter').innerHTML=`© ${year} ${holder}. Todos los derechos reservados. Plegar Pro es software propietario. Queda prohibida su reproducción, distribución, modificación o ingeniería inversa sin autorización expresa. Los cálculos son orientativos y deben ser verificados por personal cualificado antes de fabricar.`}
 
 
 function bind(){
@@ -672,9 +695,9 @@ function bind(){
  $('saveGeneralNotes').onclick=()=>commit('Guardado bloc de notas general',()=>state.generalNotes=$('generalNotes').value);
  $('stampNote').onclick=()=>{$('generalNotes').value+=`\n[${new Date().toLocaleString('es-ES')}] `;$('generalNotes').focus()};
  $('clearHistory').onclick=()=>commit('Historial limpiado',()=>state.history=[]);
- ['theme','showDims','visualQuality','autosave','dimensionScale','simulationSpeed','sheetColor','machineVisible','fitMargin','visualThickness','showGrid','showAxes','machineOpacity','cameraSensitivity','decimals','default3DView','ownerName','ownerCompany','ownerPhone','ownerWhatsapp','ownerEmail','ownerWebsite'].forEach(id=>$(id).addEventListener('change',()=>{readSettings();applySettings();autoSave();renderAbout()}));
+ ['theme','showDims','visualQuality','autosave','dimensionScale','simulationSpeed','sheetColor','machineVisible','fitMargin','visualThickness','showGrid','showAxes','machineOpacity','cameraSensitivity','decimals','default3DView','ownerName','ownerCompany','ownerPhone','ownerWhatsapp','ownerEmail','ownerWebsite','creatorName','copyrightHolder'].forEach(id=>$(id).addEventListener('change',()=>{readSettings();applySettings();autoSave();renderAbout()}));
  $('saveSettings').onclick=()=>{readSettings();applySettings();autoSave();renderAbout();toast('Ajustes guardados')};
- $('resetSettings').onclick=()=>{state.settings={theme:'dark',showDims:'all',visualQuality:'Alta',autosave:'yes',dimensionScale:1.2,simulationSpeed:700,sheetColor:'#4fb3ff',machineVisible:'yes',fitMargin:150,visualThickness:1.6,showGrid:'yes',showAxes:'yes',machineOpacity:.9,cameraSensitivity:.01,decimals:2,default3DView:'iso',owner:{name:'',company:'',phone:'',whatsapp:'',email:'',website:''}};renderSettings();autoSave()};
+ $('resetSettings').onclick=()=>{state.settings={theme:'dark',showDims:'all',visualQuality:'Alta',autosave:'yes',dimensionScale:1.2,simulationSpeed:700,sheetColor:'#4fb3ff',machineVisible:'yes',fitMargin:150,visualThickness:1.6,showGrid:'yes',showAxes:'yes',machineOpacity:.9,cameraSensitivity:.01,decimals:2,default3DView:'iso',owner:{name:'',company:'AMS Engineering Solutions',phone:'',whatsapp:'',email:'',website:'',creatorName:'',copyrightHolder:'AMS Engineering Solutions'}};renderSettings();autoSave()};
  $('saveProject').onclick=saveProject;$('loadProject').onclick=loadProject;$('exportProject').onclick=()=>download(`${state.project.ref}.json`,JSON.stringify(state,null,2));
  $('clearProject').onclick=()=>{if(confirm('¿Borrar el proyecto guardado?')){localStorage.removeItem(STORAGE);toast('Proyecto guardado eliminado')}};
  function simButtons(prefix,key){
@@ -686,9 +709,16 @@ function bind(){
  }
  simButtons('s2','s2');simButtons('s3','s3');
  $('p3Camera').onchange=()=>{applyCameraPreset($('p3Camera').value,'P3');drawAll()};$('s3Camera').onchange=()=>{applyCameraPreset($('s3Camera').value,'S3');drawAll()};$('s2Camera').onchange=drawAll;$('s3Machine').onchange=drawAll;$('s3Dims').onchange=drawAll;
- $('p3Fit').onclick=()=>resetView('p3');$('s3Fit').onclick=()=>resetView('s3');$('s3RotateLeft').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)-.2;drawAll()};$('s3RotateRight').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)+.2;drawAll()};$('s3ZoomIn').onclick=()=>{sim.zoomS3=Math.min(3,sim.zoomS3*1.15);drawAll()};$('s3ZoomOut').onclick=()=>{sim.zoomS3=Math.max(.45,sim.zoomS3*.87);drawAll()};$('s2Fit').onclick=drawAll;
+ $('p3Fit').onclick=()=>resetView('p3');$('s3Fit').onclick=()=>resetView('s3');$('s3RotateLeft').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)-.2;drawAll()};$('s3RotateRight').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)+.2;drawAll()};$('s3ZoomIn').onclick=()=>{sim.zoomS3=Math.min(3,sim.zoomS3*1.15);drawAll()};$('s3ZoomOut').onclick=()=>{sim.zoomS3=Math.max(.45,sim.zoomS3*.87);drawAll()};$('s2Fit').onclick=()=>reset2D('S2');$('s2ZoomIn').onclick=()=>zoom2D('S2',1.15);$('s2ZoomOut').onclick=()=>zoom2D('S2',.87);$('s2RotateLeft').onclick=()=>rotate2D('S2',-.15);$('s2RotateRight').onclick=()=>rotate2D('S2',.15);$('curveFit').onclick=()=>reset2D('Curve');$('curveZoomIn').onclick=()=>zoom2D('Curve',1.15);$('curveZoomOut').onclick=()=>zoom2D('Curve',.87);$('curveRotateLeft').onclick=()=>rotate2D('Curve',-.15);$('curveRotateRight').onclick=()=>rotate2D('Curve',.15);$('programFit').onclick=()=>reset2D('Program');$('programZoomIn').onclick=()=>zoom2D('Program',1.15);$('programZoomOut').onclick=()=>zoom2D('Program',.87);$('programRotateLeft').onclick=()=>rotate2D('Program',-.15);$('programRotateRight').onclick=()=>rotate2D('Program',.15);
  function wire3D(id,target){let cv=$(id);cv.addEventListener('pointerdown',e=>{sim.drag=true;sim.dragTarget=target;sim.panMode=e.shiftKey||e.button===1;sim.lastX=e.clientX;sim.lastY=e.clientY;cv.setPointerCapture(e.pointerId)});cv.addEventListener('pointermove',e=>{if(!sim.drag||sim.dragTarget!==target)return;let dx=e.clientX-sim.lastX,dy=e.clientY-sim.lastY;if(sim.panMode){sim['pan'+target+'X']+=dx;sim['pan'+target+'Y']+=dy}else{let sens=state.settings.cameraSensitivity||.01;sim['rotY'+target]=(sim['rotY'+target]??.5)+dx*sens;sim['rotX'+target]=(sim['rotX'+target]??-.35)+dy*sens}sim.lastX=e.clientX;sim.lastY=e.clientY;drawAll()});cv.addEventListener('pointerup',()=>sim.drag=false);cv.addEventListener('wheel',e=>{e.preventDefault();let k='zoom'+target;sim[k]=Math.max(.45,Math.min(2.8,sim[k]*(e.deltaY>0?.9:1.1)));drawAll()},{passive:false})}
  wire3D('canvasP3','P3');wire3D('canvasS3','S3');
+ function reset2D(t){sim['zoom'+t]=1;sim['rot'+t]=0;sim['pan'+t+'X']=0;sim['pan'+t+'Y']=0;drawAll()}
+ function zoom2D(t,f){sim['zoom'+t]=Math.max(.45,Math.min(3.5,(sim['zoom'+t]||1)*f));drawAll()}
+ function rotate2D(t,a){sim['rot'+t]=(sim['rot'+t]||0)+a;drawAll()}
+ function wire2D(id,t){let cv=$(id),drag=false,lx=0,ly=0;cv.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId)});cv.addEventListener('pointermove',e=>{if(!drag)return;sim['pan'+t+'X']=(sim['pan'+t+'X']||0)+(e.clientX-lx);sim['pan'+t+'Y']=(sim['pan'+t+'Y']||0)+(e.clientY-ly);lx=e.clientX;ly=e.clientY;drawAll()});cv.addEventListener('pointerup',()=>drag=false);cv.addEventListener('pointercancel',()=>drag=false);cv.addEventListener('wheel',e=>{e.preventDefault();zoom2D(t,e.deltaY>0?.9:1.1)},{passive:false})}
+ wire2D('canvasS2','S2');wire2D('canvasCurve','Curve');wire2D('canvasProgram','Program');
+ $('mobileMenuBtn').onclick=()=>document.querySelector('.side').classList.toggle('open');document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>document.querySelector('.side').classList.remove('open')));
+
  $('copyDiagnostics').onclick=async()=>{let txt=`Plegar Pro v46.0\nProyecto: ${state.project.ref}\nPliegues: ${state.bends.length}\nNavegador: ${navigator.userAgent}\nAlmacenamiento: ${localStorage.getItem(STORAGE)?'OK':'sin guardado'}`;try{await navigator.clipboard.writeText(txt);toast('Diagnóstico copiado')}catch(e){toast(txt)}};
 }
 

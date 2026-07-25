@@ -1,0 +1,14 @@
+COMPROBACIONES v47
+
+[OK] Sintaxis JavaScript validada con Node.js.
+[OK] Sin identificadores HTML duplicados.
+[OK] Todos los identificadores llamados mediante $() existen en el HTML.
+[OK] Vista en tiempo real presente en Programar.
+[OK] Controles de ampliar, reducir, rotar, centrar y desplazar en Simulación 2D.
+[OK] Controles equivalentes en Curva Perfecta.
+[OK] Menú móvil lateral y puntos de ruptura 900 px / 560 px.
+[OK] Pie legal dinámico visible en todas las páginas.
+[OK] Datos de creador y copyright editables desde Ajustes.
+[OK] Compatibilidad con almacenamiento plegarProV43.
+
+Nota: la validación incluida es estructural y de sintaxis. La calibración industrial final debe verificarse con piezas y utillaje reales antes de producción.

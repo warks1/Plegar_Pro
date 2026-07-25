@@ -1,0 +1,11 @@
+PLEGAR PRO v47.0 · VISUAL PRO RESPONSIVE
+
+- Vista previa dinámica integrada en Programar.
+- Actualización visual inmediata al editar pliegues y medidas.
+- Simulación 2D con zoom, rotación, centrado y desplazamiento táctil/ratón.
+- Curva Perfecta rediseñada con acabado visual, golpes numerados, zoom, rotación y desplazamiento.
+- Menú móvil lateral adaptable y diseño responsive para smartphone, tablet y PC.
+- Mejoras gráficas generales: fondos, volumen, sombras, contraste y legibilidad.
+- Datos públicos del creador y titular del copyright configurables en Ajustes.
+- Aviso legal y copyright dinámico en todas las pantallas.
+- Conservación de la base acumulativa v43-v46 y compatibilidad de almacenamiento.
