@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v42 · Consolidación</title>
+<title>Plegar Pro v43 · Consolidación</title>
 <style>
 :root{
   --bg:#06111b;--panel:#0d2131;--panel2:#112a3d;--line:#31536c;
@@ -207,8 +207,20 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 </div></section>
 
 <section class="page" id="development"><div class="grid">
-<div class="card c8"><h2>Cálculo de desarrollo</h2><div class="tableWrap"><table class="table"><thead><tr><th>Pliegue</th><th>Ala</th><th>Ángulo</th><th>R</th><th>BA</th><th>BD</th></tr></thead><tbody id="devRows"></tbody></table></div></div>
-<div class="card c4"><h2>Resultado</h2><div class="kpis" style="grid-template-columns:1fr 1fr"><div class="kpi"><span>Suma alas</span><b id="sumLegs"></b></div><div class="kpi"><span>Desarrollo</span><b id="flatLength"></b></div><div class="kpi"><span>Tonelaje est.</span><b id="forceEstimate"></b></div><div class="kpi"><span>Tiempo/pieza</span><b id="timeEstimate"></b></div></div><div class="note">Estimación orientativa. Validar con tablas oficiales, máquina y utillaje reales.</div></div>
+<div class="card c4"><h2>Calculadora de desarrollo</h2><div class="fields">
+<div><label>Material</label><select id="devMaterial"><option>S235</option><option>S275</option><option>S355</option><option>Inoxidable</option><option>Aluminio</option><option>Galvanizado</option><option>Zincor</option><option>Personalizado</option></select></div>
+<div><label>Espesor (mm)</label><input id="devThickness" type="number" min="0.1" step="0.1"></div>
+<div><label>Factor K</label><input id="devK" type="number" min="0.1" max="0.6" step="0.01"></div>
+<div><label>V de referencia</label><select id="devReferenceV"></select></div>
+<div><label>Radio punzón (mm)</label><input id="devPunchRadius" type="number" min="0" step="0.1"></div>
+<div><label>Ángulo punzón</label><input id="devPunchAngle" type="number" min="20" max="90"></div>
+<div><label>Longitud de plegado (mm)</label><input id="devBendLength" type="number" min="1"></div>
+<div><label>Tolerancia admisible ± mm</label><input id="devTolerance" type="number" min="0" step="0.05"></div>
+<div><label>Tipo de cotas</label><select id="devDimensionType"><option value="exterior">Exteriores</option><option value="interior">Interiores</option><option value="mixed">Mixtas</option></select></div>
+</div><div class="actions"><button class="btn" id="devCalculate">Calcular</button><button class="btn secondary" id="devToCompare">Comparar matrices V</button><button class="btn secondary" id="devReset">Restablecer calculadora</button></div>
+<div class="note"><b>Sincronización limitada:</b> estos datos se comparten únicamente con el Comparador de V. No modifican Programar, 2D, 3D, Producción ni Calidad.</div></div>
+<div class="card c8"><h2>Pliegues de la calculadora</h2><div class="tableWrap"><table class="table"><thead><tr><th>#</th><th>Longitud / ala (mm)</th><th>Ángulo final</th><th>Radio solicitado</th><th>BA</th><th>BD</th><th></th></tr></thead><tbody id="devRows"></tbody></table></div><div class="actions"><button class="btn" id="devAddBend">Añadir pliegue</button></div></div>
+<div class="card c12"><h2>Resultado del desarrollo</h2><div class="kpis"><div class="kpi"><span>Suma de cotas</span><b id="sumLegs"></b></div><div class="kpi"><span>Desarrollo total</span><b id="flatLength"></b></div><div class="kpi"><span>BA total</span><b id="devBATotal"></b></div><div class="kpi"><span>BD total</span><b id="devBDTotal"></b></div><div class="kpi"><span>Radio estimado con V ref.</span><b id="devActualRadius"></b></div><div class="kpi"><span>Fuerza estimada</span><b id="forceEstimate"></b></div><div class="kpi"><span>Ala mínima</span><b id="devMinFlange"></b></div><div class="kpi"><span>Estado</span><b id="devStatus"></b></div></div><div id="devWarnings" class="note"></div></div>
 </div></section>
 
 <section class="page" id="curve"><div class="grid">
@@ -223,7 +235,11 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <div class="card c7"><div class="stage"><canvas id="canvasCurve" width="1000" height="600"></canvas><div class="overlay" id="overlayCurve"></div></div></div>
 </div></section>
 
-<section class="page" id="vcompare"><div class="card"><h2>Comparador de matrices V</h2><div class="actions"><button class="btn" id="compareVBtn">Recalcular comparación</button></div><div class="tableWrap"><table class="table"><thead><tr><th>V</th><th>Radio estimado</th><th>Ala mínima</th><th>Fuerza relativa</th><th>Compatibilidad</th></tr></thead><tbody id="vRows"></tbody></table></div></div></section>
+<section class="page" id="vcompare"><div class="grid">
+<div class="card c4"><h2>Datos sincronizados</h2><div id="vSyncSummary" class="note"></div><h3>Matrices a comparar</h3><div id="vSelector" class="fields" style="grid-template-columns:repeat(3,1fr)"></div><div class="actions"><button class="btn" id="compareVBtn">Recalcular comparación</button><button class="btn secondary" id="vSelectRecommended">Selección recomendada</button><button class="btn secondary" data-go="development">Volver a Desarrollo</button></div></div>
+<div class="card c8"><h2>Comparador de matrices V</h2><div class="tableWrap"><table class="table"><thead><tr><th>V</th><th>Referencia</th><th>Radio estimado</th><th>Desarrollo</th><th>Δ desarrollo</th><th>Fuerza</th><th>Ala mín.</th><th>Estado</th></tr></thead><tbody id="vRows"></tbody></table></div><div id="vBestChoice" class="note"></div></div>
+<div class="card c12"><h2>Lectura rápida</h2><div class="kpis"><div class="kpi"><span>Menor variación</span><b id="vBestVariation"></b></div><div class="kpi"><span>Menor fuerza</span><b id="vLowestForce"></b></div><div class="kpi"><span>V de referencia</span><b id="vReferenceKpi"></b></div><div class="kpi"><span>Tolerancia</span><b id="vToleranceKpi"></b></div></div><canvas id="vChart" width="1200" height="300" style="width:100%;height:260px"></canvas></div>
+</div></section>
 
 <section class="page" id="tooling"><div class="grid"><div class="card c4"><h2>Filtros</h2><div class="fields"><div><label>Fabricante</label><select id="toolMaker"><option>Todos</option><option>Bystronic</option><option>Mecos</option><option>Amada</option><option>Trumpf</option><option>Corplec</option></select></div><div><label>Buscar</label><input id="toolSearch"></div></div></div><div class="card c8"><h2>Biblioteca</h2><div id="toolList" class="list"></div></div></div></section>
 
@@ -264,7 +280,7 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <div class="card c6"><h2>Proyecto</h2><div class="actions"><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar proyecto</button></div><div class="note">Deshacer y Rehacer mantienen un historial temporal. Guardar conserva el proyecto en este dispositivo.</div></div>
 </div></section>
 
-<section class="page" id="about"><div class="card"><h2>Plegar Pro v42.0</h2><p>Versión de consolidación con modelo de datos central, programación editable, sincronización 2D/3D, IA técnica local, Curva Perfecta, notas, Producción, Calidad, Volver, Deshacer y Rehacer.</p><p class="muted">Los cálculos de esta beta son orientativos y deben validarse con datos oficiales del fabricante, utillaje, máquina y pruebas reales antes de fabricar.</p></div></section>
+<section class="page" id="about"><div class="card"><h2>Plegar Pro v43.0</h2><p>Versión de consolidación con modelo de datos central, programación editable, sincronización 2D/3D, IA técnica local, Curva Perfecta, notas, Producción, Calidad, Volver, Deshacer y Rehacer.</p><p class="muted">Los cálculos de esta beta son orientativos y deben validarse con datos oficiales del fabricante, utillaje, máquina y pruebas reales antes de fabricar.</p></div></section>
 
 </main></div>
 <div id="toast" class="hidden"></div>
@@ -272,7 +288,7 @@ body.light .stage{background:linear-gradient(160deg,#eaf1f5,#dce7ed)}
 <script>
 const $=id=>document.getElementById(id);
 const deep=o=>JSON.parse(JSON.stringify(o));
-const STORAGE='plegarProV42';
+const STORAGE='plegarProV43';
 let state={
  project:{ref:'PP-001',client:'Cliente demo',qty:10,rev:'A',material:'S235',thickness:2,kfactor:.42,machine:'Bystronic Xpert 3100 × 100 T'},
  bends:[
@@ -281,6 +297,7 @@ let state={
   {leg:60,angle:45,radius:2,v:16,punch:'Recto 30°',gauge:60,direction:1}
  ],
  curve:{radius:250,angle:90,length:393,hits:18,spring:2,v:16},
+ development:{material:'S235',thickness:2,kfactor:.42,referenceV:16,punchRadius:1,punchAngle:88,bendLength:1000,tolerance:.5,dimensionType:'exterior',selectedVs:[12,16,22,24,32],bends:[{leg:120,angle:90,radius:2},{leg:85,angle:90,radius:2},{leg:60,angle:45,radius:2}]},
  programNotes:'',generalNotes:'',quality:[],workOrder:null,
  settings:{theme:'dark',showDims:'all',visualQuality:'Alta',autosave:'yes'}
 };
@@ -373,22 +390,48 @@ function populateP3(){
 }
 function loadP3Fields(){let b=state.bends[sim.p3Active];if(!b)return;$('p3Angle').value=b.angle;$('p3Radius').value=b.radius;$('p3V').value=b.v;$('p3Gauge').value=b.gauge}
 function renderQualityOptions(){$('qBend').innerHTML=state.bends.map((b,i)=>`<option value="${i}">${bendSummary(b,i)}</option>`).join('')}
-function calcDevelopment(){
- let sum=state.bends.reduce((s,b)=>s+b.leg,0),ba=0,bd=0;
- let rows=state.bends.map((b,i)=>{
-   let theta=(180-b.angle)*Math.PI/180;
-   let allowance=theta*(b.radius+state.project.kfactor*state.project.thickness);
-   let deduction=2*(b.radius+state.project.thickness)*Math.tan(theta/2)-allowance;
-   ba+=allowance;bd+=deduction;return {i,allowance,deduction};
+const STANDARD_VS=[6,8,10,12,16,22,24,32,36,40,50];
+function ensureDevelopment(){
+ if(!state.development)state.development={material:state.project.material||'S235',thickness:state.project.thickness||2,kfactor:state.project.kfactor||.42,referenceV:16,punchRadius:1,punchAngle:88,bendLength:1000,tolerance:.5,dimensionType:'exterior',selectedVs:[12,16,22,24,32],bends:deep(state.bends.map(b=>({leg:b.leg,angle:b.angle,radius:b.radius})))};
+ state.development.bends=state.development.bends||[];state.development.selectedVs=state.development.selectedVs||[state.development.referenceV||16];
+}
+function materialFactor(material){return {S235:1,S275:1.12,S355:1.3,Inoxidable:1.5,Aluminio:.55,Galvanizado:1.05,Zincor:1.05,Personalizado:1}[material]||1}
+function calcDevelopmentForV(v){
+ ensureDevelopment();let d=state.development,t=d.thickness||1,k=d.kfactor||.42;
+ let sum=d.bends.reduce((s,b)=>s+(+b.leg||0),0),ba=0,bd=0;
+ let actualRadius=Math.max(d.punchRadius||0,(+v||d.referenceV||16)*.16);
+ let rows=d.bends.map((b,i)=>{
+   let angle=Math.max(1,Math.min(179,+b.angle||90));let theta=(180-angle)*Math.PI/180;
+   let requested=+b.radius||actualRadius;let radius=Math.max(requested,actualRadius);
+   let allowance=theta*(radius+k*t);
+   let setback=(radius+t)*Math.tan(theta/2);
+   let deduction=2*setback-allowance;
+   ba+=allowance;bd+=deduction;return {i,allowance,deduction,setback,radius};
  });
- return {sum,ba,bd,flat:sum-bd,rows};
+ let flat=d.dimensionType==='interior'?sum+ba:sum-bd;
+ if(d.dimensionType==='mixed')flat=sum-(bd*.5)+(ba*.5);
+ let bendLength=Math.max(1,d.bendLength||1000);
+ let force=(1.42*materialFactor(d.material)*t*t*bendLength/Math.max(1,v))/10;
+ let minFlange=v*.7;
+ return {sum,ba,bd,flat,rows,actualRadius,force,minFlange,v};
+}
+function calcDevelopment(){return calcDevelopmentForV((state.development&&state.development.referenceV)||16)}
+function readDevelopmentInputs(){
+ ensureDevelopment();let d=state.development;
+ d.material=$('devMaterial').value;d.thickness=+$('devThickness').value||1;d.kfactor=+$('devK').value||.42;d.referenceV=+$('devReferenceV').value||16;d.punchRadius=+$('devPunchRadius').value||0;d.punchAngle=+$('devPunchAngle').value||88;d.bendLength=+$('devBendLength').value||1000;d.tolerance=Math.max(0,+$('devTolerance').value||0);d.dimensionType=$('devDimensionType').value;
 }
 function renderDevelopment(){
- let d=calcDevelopment();
- $('devRows').innerHTML=d.rows.map(r=>{let b=state.bends[r.i];return `<tr><td>${r.i+1}</td><td>${b.leg}</td><td>${b.angle}°</td><td>R${b.radius}</td><td>${r.allowance.toFixed(2)}</td><td>${r.deduction.toFixed(2)}</td></tr>`}).join('');
- $('sumLegs').textContent=d.sum.toFixed(1)+' mm';$('flatLength').textContent=d.flat.toFixed(2)+' mm';
- let force=state.bends.reduce((s,b)=>s+(state.project.thickness**2*1000/(b.v||16))*0.13,0);$('forceEstimate').textContent=force.toFixed(1)+' t';
- $('timeEstimate').textContent=(8+state.bends.length*7)+' s';
+ ensureDevelopment();let d=state.development;
+ $('devMaterial').value=d.material;$('devThickness').value=d.thickness;$('devK').value=d.kfactor;$('devPunchRadius').value=d.punchRadius;$('devPunchAngle').value=d.punchAngle;$('devBendLength').value=d.bendLength;$('devTolerance').value=d.tolerance;$('devDimensionType').value=d.dimensionType;
+ $('devReferenceV').innerHTML=STANDARD_VS.map(v=>`<option value="${v}" ${v==d.referenceV?'selected':''}>V${v}</option>`).join('');
+ let r=calcDevelopment();
+ $('devRows').innerHTML=d.bends.map((b,i)=>`<tr><td>${i+1}</td><td><input class="devBendInput" data-i="${i}" data-k="leg" type="number" step="0.1" value="${b.leg}"></td><td><input class="devBendInput" data-i="${i}" data-k="angle" type="number" min="1" max="179" value="${b.angle}"></td><td><input class="devBendInput" data-i="${i}" data-k="radius" type="number" min="0" step="0.1" value="${b.radius}"></td><td>${r.rows[i].allowance.toFixed(3)}</td><td>${r.rows[i].deduction.toFixed(3)}</td><td><button class="btn danger devDelete" data-i="${i}">×</button></td></tr>`).join('');
+ document.querySelectorAll('.devBendInput').forEach(el=>el.onchange=()=>commit('Modificado cálculo de desarrollo',()=>{state.development.bends[+el.dataset.i][el.dataset.k]=+el.value}));
+ document.querySelectorAll('.devDelete').forEach(el=>el.onclick=()=>commit('Eliminado pliegue de la calculadora',()=>state.development.bends.splice(+el.dataset.i,1)));
+ $('sumLegs').textContent=r.sum.toFixed(2)+' mm';$('flatLength').textContent=r.flat.toFixed(3)+' mm';$('devBATotal').textContent=r.ba.toFixed(3)+' mm';$('devBDTotal').textContent=r.bd.toFixed(3)+' mm';$('devActualRadius').textContent='R'+r.actualRadius.toFixed(2);$('forceEstimate').textContent=r.force.toFixed(1)+' t';$('devMinFlange').textContent=r.minFlange.toFixed(1)+' mm';
+ let short=d.bends.some(b=>(+b.leg||0)<r.minFlange);$('devStatus').textContent=short?'Revisar':'Calculado';$('devStatus').className=short?'error':'ok';
+ let warnings=[];if(short)warnings.push('Una o más alas son menores que la longitud mínima orientativa para V'+d.referenceV+'.');if(r.actualRadius>Math.max(...d.bends.map(b=>+b.radius||0),0)+d.tolerance)warnings.push('El radio generado por la V de referencia supera el radio solicitado.');
+ $('devWarnings').innerHTML=warnings.length?warnings.map(x=>'⚠ '+x).join('<br>'):'✓ Parámetros coherentes dentro de los criterios configurados.';
 }
 function calculateCurve(){
  let c=state.curve;let arc=Math.PI*c.radius*c.angle/180;let step=arc/Math.max(1,c.hits-1);let per=(c.angle+c.spring)/c.hits;
@@ -401,10 +444,28 @@ function renderCurve(){
  drawCurve();
 }
 function readCurveInputs(){state.curve={radius:+$('curveRadius').value,angle:+$('curveAngle').value,length:+$('curveLength').value,hits:+$('curveHits').value,spring:+$('curveSpring').value,v:+$('curveV').value}}
-function renderVCompare(){
- let vs=[6,12,16,22,24,32,36,40,50];
- $('vRows').innerHTML=vs.map(v=>{let r=v*.16,min=v*.7,rel=(16/v*100),ok=v>=state.project.thickness*6&&v<=state.project.thickness*12;return `<tr><td>V${v}</td><td>R${r.toFixed(1)}</td><td>${min.toFixed(1)} mm</td><td>${rel.toFixed(0)}%</td><td class="${ok?'ok':'error'}">${ok?'Recomendada':'Revisar'}</td></tr>`}).join('');
+function vEvaluation(v,base){
+ let r=calcDevelopmentForV(v),delta=r.flat-base.flat,d=state.development;
+ let minLeg=Math.min(...d.bends.map(b=>+b.leg||0),Infinity),within=Math.abs(delta)<=d.tolerance,flangeOk=minLeg>=r.minFlange;
+ let ratio=v/(d.thickness||1);let ratioOk=ratio>=5&&ratio<=14;
+ let status=within&&flangeOk&&ratioOk?'Óptima':(flangeOk&&ratioOk?'Compatible':'Revisar');
+ return {...r,delta,status,within,flangeOk,ratioOk};
 }
+function renderVSelector(){
+ ensureDevelopment();$('vSelector').innerHTML=STANDARD_VS.map(v=>`<label style="display:flex;gap:7px;align-items:center"><input class="vPick" type="checkbox" value="${v}" ${state.development.selectedVs.includes(v)?'checked':''}> V${v}</label>`).join('');
+ document.querySelectorAll('.vPick').forEach(x=>x.onchange=()=>{state.development.selectedVs=[...document.querySelectorAll('.vPick:checked')].map(e=>+e.value);autoSave();renderVCompare()});
+}
+function renderVCompare(){
+ ensureDevelopment();let d=state.development,base=calcDevelopmentForV(d.referenceV);renderVSelector();let selected=[...new Set([d.referenceV,...d.selectedVs])].sort((a,b)=>a-b);let rows=selected.map(v=>vEvaluation(v,base));
+ $('vSyncSummary').innerHTML=`<b>${d.material} · ${d.thickness} mm</b><br>${d.bends.length} pliegues · ${d.bendLength} mm de longitud<br>Factor K ${d.kfactor} · Cotas ${d.dimensionType}<br><b>Origen:</b> Calculadora de Desarrollo`;
+ $('vRows').innerHTML=rows.map(r=>`<tr><td><b>V${r.v}</b></td><td>${r.v==d.referenceV?'★ Sí':'—'}</td><td>R${r.actualRadius.toFixed(2)}</td><td>${r.flat.toFixed(3)} mm</td><td class="${Math.abs(r.delta)<=d.tolerance?'ok':'error'}">${r.delta>=0?'+':''}${r.delta.toFixed(3)} mm</td><td>${r.force.toFixed(1)} t</td><td>${r.minFlange.toFixed(1)} mm</td><td class="${r.status==='Óptima'?'ok':r.status==='Compatible'?'':'error'}">${r.status}</td></tr>`).join('');
+ let byVariation=[...rows].filter(r=>r.v!==d.referenceV).sort((a,b)=>Math.abs(a.delta)-Math.abs(b.delta))[0]||rows[0];let byForce=[...rows].sort((a,b)=>a.force-b.force)[0];let optimal=rows.filter(r=>r.status==='Óptima'&&r.v!==d.referenceV).sort((a,b)=>Math.abs(a.delta)-Math.abs(b.delta))[0];
+ $('vBestVariation').textContent=byVariation?'V'+byVariation.v+' · '+(byVariation.delta>=0?'+':'')+byVariation.delta.toFixed(3)+' mm':'—';$('vLowestForce').textContent=byForce?'V'+byForce.v+' · '+byForce.force.toFixed(1)+' t':'—';$('vReferenceKpi').textContent='V'+d.referenceV;$('vToleranceKpi').textContent='± '+d.tolerance.toFixed(2)+' mm';
+ $('vBestChoice').innerHTML=optimal?`Recomendación orientativa: <b>V${optimal.v}</b> mantiene la variación en ${optimal.delta>=0?'+':''}${optimal.delta.toFixed(3)} mm, con radio R${optimal.actualRadius.toFixed(2)} y fuerza estimada de ${optimal.force.toFixed(1)} t.`:'No hay una alternativa marcada que cumpla simultáneamente tolerancia, relación V/espesor y ala mínima. Mantén V'+d.referenceV+' o revisa la selección.';
+ drawVChart(rows);
+}
+function drawVChart(rows){let c=$('vChart');if(!c)return;let x=c.getContext('2d'),w=c.width,h=c.height;x.clearRect(0,0,w,h);x.strokeStyle=getComputedStyle(document.body).getPropertyValue('--line');x.fillStyle=getComputedStyle(document.body).getPropertyValue('--muted');x.font='24px sans-serif';x.fillText('Variación de desarrollo respecto a la V de referencia',35,38);let max=Math.max(.1,...rows.map(r=>Math.abs(r.delta)));let left=70,right=w-35,top=70,bottom=h-50;x.beginPath();x.moveTo(left,(top+bottom)/2);x.lineTo(right,(top+bottom)/2);x.stroke();rows.forEach((r,i)=>{let px=left+(right-left)*(i/(Math.max(1,rows.length-1)));let py=(top+bottom)/2-r.delta/max*(bottom-top)*.42;x.beginPath();x.arc(px,py,8,0,Math.PI*2);x.fill();x.fillText('V'+r.v,px-16,bottom+32);x.fillText((r.delta>=0?'+':'')+r.delta.toFixed(2),px-26,py-15)});}
+
 const tools=[
  {maker:'Bystronic',name:'Matriz V16 88°',type:'Matriz'},{maker:'Mecos',name:'Matriz V24 88°',type:'Matriz'},
  {maker:'Bystronic',name:'Punzón recto 88°',type:'Punzón'},{maker:'Mecos',name:'Pata de cabra 90°',type:'Punzón'},
@@ -537,7 +598,14 @@ function bind(){
  ['curveRadius','curveAngle','curveLength','curveHits','curveSpring','curveV'].forEach(id=>$(id).addEventListener('input',()=>{readCurveInputs();renderCurve()}));
  $('curveCalculate').onclick=()=>commit('Recalculada Curva Perfecta',()=>readCurveInputs());
  $('curveToProgram').onclick=()=>{readCurveInputs();let c=state.curve,r=calculateCurve();commit('Curva Perfecta enviada a Programar',()=>{state.bends=Array.from({length:c.hits},(_,i)=>({leg:+r.step.toFixed(2),angle:+r.per.toFixed(3),radius:c.radius,v:c.v,punch:'Recto 30°',gauge:+(r.step*(i+1)).toFixed(2),direction:1}))});go('program')};
- $('compareVBtn').onclick=renderVCompare;$('toolMaker').onchange=renderTools;$('toolSearch').oninput=renderTools;
+ $('compareVBtn').onclick=renderVCompare;
+ $('devCalculate').onclick=()=>commit('Recalculado desarrollo',()=>readDevelopmentInputs());
+ $('devToCompare').onclick=()=>{readDevelopmentInputs();autoSave();go('vcompare')};
+ $('devAddBend').onclick=()=>commit('Añadido pliegue a la calculadora',()=>state.development.bends.push({leg:100,angle:90,radius:2}));
+ $('devReset').onclick=()=>commit('Restablecida calculadora de desarrollo',()=>state.development={material:'S235',thickness:2,kfactor:.42,referenceV:16,punchRadius:1,punchAngle:88,bendLength:1000,tolerance:.5,dimensionType:'exterior',selectedVs:[12,16,22,24,32],bends:[{leg:100,angle:90,radius:2},{leg:100,angle:90,radius:2}]});
+ ['devMaterial','devThickness','devK','devReferenceV','devPunchRadius','devPunchAngle','devBendLength','devTolerance','devDimensionType'].forEach(id=>$(id).onchange=()=>commit('Actualizado dato de desarrollo',()=>readDevelopmentInputs()));
+ $('vSelectRecommended').onclick=()=>commit('Seleccionadas matrices V recomendadas',()=>{let t=state.development.thickness||1;state.development.selectedVs=STANDARD_VS.filter(v=>v>=t*5&&v<=t*14)});
+ $('toolMaker').onchange=renderTools;$('toolSearch').oninput=renderTools;
  $('aiCalculate').onclick=calculateAI;$('aiToProgram').onclick=sendAIProgram;$('aiToCurve').onclick=sendAICurve;
  $('woCreate').onclick=()=>commit('Guardada orden de trabajo',()=>state.workOrder={number:$('woNumber').value,state:$('woState').value,date:new Date().toLocaleString('es-ES')});
  $('woStart').onclick=()=>commit('Orden iniciada',()=>{state.workOrder=state.workOrder||{number:$('woNumber').value};state.workOrder.state='Producción'});

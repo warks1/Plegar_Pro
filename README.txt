@@ -1,26 +1,16 @@
-PLEGAR PRO v42.0 · CONSOLIDACIÓN INTEGRADA
+PLEGAR PRO v43 — DESARROLLO + COMPARADOR V
 
-NOVEDADES PRINCIPALES
-- Pantalla de inicio con identidad Plegar Pro y barra de carga funcional.
-- Botones globales Volver, Deshacer y Rehacer.
-- Modelo central sincronizado entre Programar, Programación 2D, Programación 3D,
-  Simulación 2D, Simulación 3D, Desarrollo, Curva Perfecta, IA, Producción y Calidad.
-- Nuevo módulo Programar editable.
-- Programación 2D y 3D con datos de pliegue y cotas.
-- IA local capaz de interpretar datos de plegado y enviarlos a Programar.
-- IA capaz de preparar y enviar Curva Perfecta.
-- Curva Perfecta recalcula al modificar datos y puede generar un programa por golpes.
-- Bloc de notas general y notas específicas de programa.
-- Historial de cambios.
-- Producción y Calidad funcionales.
-- Ajustes de tema claro/oscuro y visualización de cotas.
-- Auditoría automática básica de botones huérfanos e IDs duplicados.
+Actualización acumulativa sobre v42.
 
-USO
-1. Descomprime el ZIP.
-2. Abre index.html con Chrome, Edge, Safari o Firefox.
-3. También puede publicarse como archivo estático en GitHub Pages.
+NOVEDAD PRINCIPAL
+- Calculadora de Desarrollo independiente.
+- Sincronización exclusiva con el Comparador de V.
+- No modifica Programar, 2D, 3D, Simulación, Producción ni Calidad.
+- Parámetros: material, espesor, factor K, V de referencia, punzón, longitud de plegado, tolerancia y tipo de cotas.
+- Pliegues independientes y editables.
+- BA, BD, desarrollo, radio estimado, fuerza y ala mínima.
+- Comparación múltiple de V con variación dimensional, fuerza y compatibilidad.
+- Selección recomendada, resumen y gráfico.
 
-AVISO INDUSTRIAL
-Esta versión es una beta funcional. Los cálculos son orientativos y deben
-contrastarse con documentación oficial, máquina, herramientas y pruebas reales.
+Abrir index.html en un navegador moderno.
+Los cálculos son orientativos y deben validarse con tablas oficiales, ensayos reales y documentación de máquina/utillaje.

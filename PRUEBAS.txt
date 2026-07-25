@@ -1,15 +1,9 @@
-PRUEBAS AUTOMÁTICAS
-
-- Sintaxis JavaScript: OK
-- IDs duplicados: NINGUNO
-- Funciones inline no definidas: NINGUNA
-- Pantalla de carga: incluida
-- Botones Volver/Deshacer/Rehacer: incluidos
-- Programar: incluido
-- Programación 2D editable: incluida
-- Programación 3D editable: incluida
-- Sincronización central: incluida
-- IA -> Programar: incluida
-- IA -> Curva Perfecta: incluida
-- Bloc de notas general y de programa: incluidos
-- Producción y Calidad: incluidos
+PRUEBAS REALIZADAS
+1. Sintaxis JavaScript con Node.js.
+2. IDs HTML sin duplicados.
+3. Funciones onclick disponibles.
+4. Calculadora independiente del estado de Programar.
+5. Envío Calculadora -> Comparador V.
+6. Cambio en Comparador no altera módulos restantes.
+7. Persistencia LocalStorage con clave v43.
+8. ZIP creado y comprobado.
