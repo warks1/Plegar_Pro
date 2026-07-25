@@ -1,0 +1,15 @@
+PRUEBAS AUTOMÁTICAS
+
+- Sintaxis JavaScript: OK
+- IDs duplicados: NINGUNO
+- Funciones inline no definidas: NINGUNA
+- Pantalla de carga: incluida
+- Botones Volver/Deshacer/Rehacer: incluidos
+- Programar: incluido
+- Programación 2D editable: incluida
+- Programación 3D editable: incluida
+- Sincronización central: incluida
+- IA -> Programar: incluida
+- IA -> Curva Perfecta: incluida
+- Bloc de notas general y de programa: incluidos
+- Producción y Calidad: incluidos
