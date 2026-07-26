@@ -1,0 +1,9 @@
+PRUEBAS PLEGAR PRO v50.5
+
+- JavaScript validado con node --check: CORRECTO.
+- IDs HTML duplicados: NINGUNO.
+- 18 módulos/páginas conservados.
+- Marcador visible PP-505-REAL: PRESENTE.
+- Botones de navegación 2D/3D y simulación desde Programar: PRESENTES.
+- Campos dimensionales compartidos: PRESENTES.
+- Migración y almacenamiento acumulativo: CONSERVADOS.

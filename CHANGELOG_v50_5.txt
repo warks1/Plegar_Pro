@@ -1,0 +1,14 @@
+PLEGAR PRO v50.5 · CAMBIOS VISIBLES ACUMULATIVOS
+
+Base real: Plegar_Pro-main.zip aportado por el usuario.
+
+CAMBIOS IMPLEMENTADOS
+- Identificación visual inequívoca de la versión v50.5 en menú, panel y Acerca de.
+- Código de compilación visible: PP-505-REAL.
+- Metadatos anti-caché para reducir la carga de versiones antiguas en GitHub Pages.
+- Centrado automático al entrar en Programar, Programación 2D, Programación 3D, Simulación 2D y Simulación 3D.
+- Conservados los accesos Vista 2D, Vista 3D, Simular 2D y Simular 3D desde Programar.
+- Conservados y verificados Longitud de chapa, Longitud de plegado y Anchura opcional sincronizadas.
+- Pantalla Acerca de ampliada con versión instalada y datos del propietario configurables.
+- Informes de secuencia actualizados a v50.5.
+- Compatibilidad acumulativa con el almacenamiento de versiones anteriores.

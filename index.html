@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v50.2 · Programación Profesional acumulativa</title>
+<title>Plegar Pro v50.5 · Verificación visible acumulativa</title>
 <style>
 :root{
   --bg:#06111b;--panel:#0d2131;--panel2:#112a3d;--line:#31536c;
@@ -108,7 +108,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
  .app:has(#menuToggle:checked){overflow:hidden}
 }
 </style>
-<meta name="application-name" content="Plegar Pro v50.2 Programación Profesional Acumulativa"></head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v50.5 Verificación Visible Acumulativa"></head>
 <body>
 <div id="loader">
   <div class="loadBox">
@@ -124,7 +124,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <input type="checkbox" id="menuToggle" class="menuToggle" aria-hidden="true">
 <aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v50.4 · Dimensiones inteligentes · base acumulativa v50.3</div>
+  <div class="version">v50.5 · CAMBIOS VISIBLES · base real acumulativa</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -181,6 +181,8 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
     <div class="kpi"><span>Espesor</span><b id="dashThk"></b></div>
     <div class="kpi"><span>Pliegues</span><b id="dashBends"></b></div>
   </div><div class="note">Cualquier cambio realizado en Programar, 2D, 3D, IA o Curva Perfecta actualiza el mismo proyecto.</div></div>
+
+  <div class="card c12" id="buildVerification" style="border:2px solid #38d39f;box-shadow:0 0 0 1px rgba(56,211,159,.22) inset"><h2>✅ Plegar Pro v50.5 · versión verificada</h2><div class="kpis"><div class="kpi"><span>Base modificada</span><b>Proyecto real subido</b></div><div class="kpi"><span>Programar</span><b>Vista 2D + Simular</b></div><div class="kpi"><span>Dimensiones</span><b>Chapa + plegado</b></div><div class="kpi"><span>Compilación</span><b id="buildCode">PP-505-REAL</b></div></div><div class="note"><b>Comprobación visual:</b> si ves este recuadro verde, estás ejecutando la nueva beta. La aplicación centra automáticamente las vistas al abrir Programar, Programación 2D, Programación 3D y las simulaciones.</div><div class="actions"><button class="btn" data-go="program">Abrir Programar</button><button class="btn secondary" data-go="sim2d">Probar Simulación 2D</button><button class="btn secondary" data-go="sim3d">Probar Simulación 3D</button></div></div>
 </div>
 </section>
 
@@ -372,10 +374,10 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div><label>Correo</label><input id="ownerEmail" type="email"></div><div><label>Web</label><input id="ownerWebsite"></div>
 </div></div>
 <div class="card c6"><h2>Precisión y comportamiento</h2><div class="fields"><div><label>Unidades</label><select id="units"><option value="mm">Milímetros</option><option value="inch">Pulgadas</option></select></div><div><label>Tolerancia angular ±°</label><input id="angleTolerance" type="number" min="0.1" step="0.1"></div><div><label>Tolerancia lineal ±mm</label><input id="linearTolerance" type="number" min="0.05" step="0.05"></div><div><label>Confirmar antes de borrar</label><select id="confirmDelete"><option value="yes">Sí</option><option value="no">No</option></select></div><div><label>Sonidos de interfaz</label><select id="uiSounds"><option value="yes">Activados</option><option value="no">Desactivados</option></select></div><div><label>Modo compacto móvil</label><select id="compactMobile"><option value="auto">Automático</option><option value="yes">Siempre</option><option value="no">Nunca</option></select></div><div><label>Frecuencia de copia automática</label><select id="backupFrequency"><option value="change">En cada cambio</option><option value="5min">Cada 5 minutos</option><option value="manual">Manual</option></select></div><div><label>Nivel de ayuda IA</label><select id="aiAssistLevel"><option value="basic">Básico</option><option value="advanced">Avanzado</option><option value="expert">Experto</option></select></div></div></div>
-<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">La versión v44 mantiene compatibilidad con la clave de almacenamiento de la v43 y migra los datos nuevos sin borrar proyectos anteriores.</div></div>
+<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">v50.5 mantiene compatibilidad con los proyectos anteriores y añade comprobación visible de versión, sincronización dimensional y centrado automático sin borrar datos guardados.</div></div>
 </div></section>
 
-<section class="page" id="about"><div class="grid"><div class="card c12"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Esta pantalla muestra únicamente los datos públicos del propietario configurados en Ajustes.</p></div></div></section>
+<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v50.5</b><br>Código: PP-505-REAL<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
 
 <footer class="legalFooter" id="legalFooter"></footer></main></div>
 <div id="toast" class="hidden"></div>
@@ -439,6 +441,7 @@ let state={
 let undoStack=[],redoStack=[],pageHistory=['dashboard'],currentPage='dashboard';
 let sim={rotXP3:-.35,rotYP3:.5,rotXS3:-.35,rotYS3:.5,s2Step:0,s3Step:0,s2Timer:null,s3Timer:null,operatorStep:0,p3Active:0,rotX:-.35,rotY:.5,drag:false,lastX:0,lastY:0,zoomP3:1,zoomS3:1,panP3X:0,panP3Y:0,panS3X:0,panS3Y:0,dragTarget:'',panMode:false,zoomS2:1,rotS2:0,panS2X:0,panS2Y:0,zoomCurve:1,rotCurve:0,panCurveX:0,panCurveY:0,zoomProgram:1,rotProgram:0,panProgramX:0,panProgramY:0};
 let aiProposal=null;
+window.PLEGAR_PRO_BUILD={version:'50.5',code:'PP-505-REAL',source:'Plegar_Pro-main.zip',built:'2026-07-26'};
 
 const titles={
  dashboard:['Panel de control','Proyecto único y sincronizado'],import:['Entrada libre / Importar','Captura inicial del trabajo'],
@@ -471,6 +474,16 @@ function go(page,remember=true){
  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
  $('pageTitle').textContent=titles[page][0];$('pageSub').textContent=titles[page][1];
  refreshPage(page);
+ // v50.5: centrar y ajustar automáticamente las vistas al entrar.
+ requestAnimationFrame(()=>{
+  try{
+   if(page==='program'){sim.zoomProgram=1;sim.panProgramX=0;sim.panProgramY=0;drawAll()}
+   if(page==='program2d'){sim.zoomS2=1;sim.panS2X=0;sim.panS2Y=0;drawAll()}
+   if(page==='program3d'){sim.zoomP3=1;sim.panP3X=0;sim.panP3Y=0;drawAll()}
+   if(page==='sim2d'){sim.zoomS2=1;sim.panS2X=0;sim.panS2Y=0;drawAll()}
+   if(page==='sim3d'){sim.zoomS3=1;sim.panS3X=0;sim.panS3Y=0;drawAll()}
+  }catch(err){console.warn('Centrado automático',err)}
+ });
 }
 function back(){if(pageHistory.length<=1)return toast('Ya estás en la primera pantalla');pageHistory.pop();go(pageHistory[pageHistory.length-1],false)}
 
@@ -604,7 +617,7 @@ function optimizeSequence(){
 }
 function exportSequenceReport(){
  const a=analyzeBendSequence();
- const lines=[`PLEGAR PRO v50.3 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
+ const lines=[`PLEGAR PRO v50.5 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
  a.rows.forEach(r=>lines.push(`P${r.i+1}: ala ${r.leg.toFixed(1)} mm | ${r.angle.toFixed(1)}° | R${r.radius.toFixed(1)} | V${r.v} | ${r.force.toFixed(1)} t | ${r.issues.length?r.issues.join('; '):'OK'}`));
  if(a.warnings.length){lines.push('',...a.warnings.map(x=>'ADVERTENCIA: '+x))}
  download(`PlegarPro_${state.project.ref||'pieza'}_secuencia.txt`,lines.join('\n'),'text/plain');
@@ -920,7 +933,7 @@ function renderSettings(){
  $('ownerName').value=o.name||'';$('ownerCompany').value=o.company||'';$('ownerPhone').value=o.phone||'';$('ownerWhatsapp').value=o.whatsapp||'';$('ownerEmail').value=o.email||'';$('ownerWebsite').value=o.website||'';['units','angleTolerance','linearTolerance','confirmDelete','uiSounds','compactMobile','backupFrequency','aiAssistLevel'].forEach(id=>{if($(id))$(id).value=state.settings[id]});applySettings();renderAbout();
 }
 function readSettings(){state.settings={...state.settings,theme:$('theme').value,showDims:$('showDims').value,visualQuality:$('visualQuality').value,autosave:$('autosave').value,dimensionScale:+$('dimensionScale').value,simulationSpeed:+$('simulationSpeed').value,sheetColor:$('sheetColor').value,machineVisible:$('machineVisible').value,fitMargin:+$('fitMargin').value,visualThickness:+$('visualThickness').value,showGrid:$('showGrid').value,showAxes:$('showAxes').value,machineOpacity:+$('machineOpacity').value,cameraSensitivity:+$('cameraSensitivity').value,decimals:+$('decimals').value,default3DView:$('default3DView').value,units:$('units').value,angleTolerance:+$('angleTolerance').value,linearTolerance:+$('linearTolerance').value,confirmDelete:$('confirmDelete').value,uiSounds:$('uiSounds').value,compactMobile:$('compactMobile').value,backupFrequency:$('backupFrequency').value,aiAssistLevel:$('aiAssistLevel').value,owner:{name:$('ownerName').value,company:$('ownerCompany').value,phone:$('ownerPhone').value,whatsapp:$('ownerWhatsapp').value,email:$('ownerEmail').value,website:$('ownerWebsite').value}}}
-function renderAbout(){let o=(state.settings&&state.settings.owner)||{},year=new Date().getFullYear(),holder=o.name||o.company||'Propietario no configurado';if($('aboutOwner'))$('aboutOwner').innerHTML=`<b>${o.name||'Nombre pendiente'}</b>${o.company?'<br>'+o.company:''}${o.phone?'<br>Teléfono: '+o.phone:''}${o.whatsapp?'<br>WhatsApp: '+o.whatsapp:''}${o.email?'<br>Correo: '+o.email:''}${o.website?'<br>Web: '+o.website:''}`;if($('legalFooter'))$('legalFooter').innerHTML=`© ${year} ${holder}. Todos los derechos reservados. Plegar Pro es software propietario. Prohibida su reproducción, modificación, distribución o ingeniería inversa sin autorización. Los cálculos y simulaciones deben verificarse por personal cualificado antes de fabricar.`}
+function renderAbout(){let o=(state.settings&&state.settings.owner)||{},year=new Date().getFullYear(),holder=o.name||o.company||'Propietario no configurado';if($('aboutOwner'))$('aboutOwner').innerHTML=`<b>${o.name||'Nombre pendiente de configurar'}</b>${o.company?'<br>'+o.company:''}${o.phone?'<br>Teléfono: '+o.phone:''}${o.whatsapp?'<br>WhatsApp: '+o.whatsapp:''}${o.email?'<br>Correo: '+o.email:''}${o.website?'<br>Web: '+o.website:''}`;if($('legalFooter'))$('legalFooter').innerHTML=`© ${year} ${holder}. Todos los derechos reservados. Plegar Pro es software propietario. Prohibida su reproducción, modificación, distribución o ingeniería inversa sin autorización. Los cálculos y simulaciones deben verificarse por personal cualificado antes de fabricar.`}
 function applyCameraPreset(v,target='S3'){let m={iso:[-.35,.5],front:[0,0],rear:[0,Math.PI],side:[0,Math.PI/2],top:[-Math.PI/2,0],operator:[-.12,Math.PI],free:[sim['rotX'+target]??-.35,sim['rotY'+target]??.5]};[sim['rotX'+target],sim['rotY'+target]]=m[v]||m.iso}
 
 function bind(){
