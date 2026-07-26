@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v51.1 · IA Vision OCR técnico</title>
+<title>Plegar Pro v51.2 · Despliegue verificado y Visión Técnica</title>
 <style>
 :root{
   --bg:#06111b;--panel:#0d2131;--panel2:#112a3d;--line:#31536c;
@@ -108,11 +108,12 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
  .app:has(#menuToggle:checked){overflow:hidden}
 }
 </style>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v50.8 Recomendación de Utillaje e Importación Visible"></head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v51.2 · Despliegue verificado y Visión Técnica"></head>
 <body>
+<div id="buildStamp" style="position:fixed;right:8px;bottom:8px;z-index:99999;padding:6px 9px;border-radius:8px;background:#071522e8;color:#7ee7ff;border:1px solid #1b7894;font:700 11px system-ui;letter-spacing:.4px">v51.2 · PP-512-DEPLOY-VISION</div>
 <div id="loader">
   <div class="loadBox">
-    <div class="logoMark"><span>PP</span></div>
+    <div class="logoMark"><span style="font-size:15px;line-height:1.05;text-align:center">PLEGAR<br>PRO</span></div>
     <div class="logoText">PLEGAR <i>PRO</i></div>
     <div class="muted">AMS Engineering Solutions</div>
     <div class="loadBar"><i id="loadFill"></i></div>
@@ -124,11 +125,11 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <input type="checkbox" id="menuToggle" class="menuToggle" aria-hidden="true">
 <aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v50.8 · UTILLAJE AUTOMÁTICO E IMPORTAR PLANOS · base real acumulativa</div>
+  <div class="version">v51.2 · DESPLIEGUE VERIFICADO · VISIÓN TÉCNICA MULTIPASADA</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
-    <button data-page="import">Entrada libre / Importar</button>
+    <button data-page="import">Importar planos IA</button>
     <button data-page="technical">Datos generales</button>
     <button data-page="program">Programar</button>
     <button data-page="program2d">Programación 2D</button>
@@ -377,7 +378,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div><label>Correo</label><input id="ownerEmail" type="email"></div><div><label>Web</label><input id="ownerWebsite"></div>
 </div></div>
 <div class="card c6"><h2>Precisión y comportamiento</h2><div class="fields"><div><label>Unidades</label><select id="units"><option value="mm">Milímetros</option><option value="inch">Pulgadas</option></select></div><div><label>Tolerancia angular ±°</label><input id="angleTolerance" type="text" inputmode="decimal" min="0.1" step="0.1"></div><div><label>Tolerancia lineal ±mm</label><input id="linearTolerance" type="text" inputmode="decimal" min="0.05" step="0.05"></div><div><label>Confirmar antes de borrar</label><select id="confirmDelete"><option value="yes">Sí</option><option value="no">No</option></select></div><div><label>Sonidos de interfaz</label><select id="uiSounds"><option value="yes">Activados</option><option value="no">Desactivados</option></select></div><div><label>Modo compacto móvil</label><select id="compactMobile"><option value="auto">Automático</option><option value="yes">Siempre</option><option value="no">Nunca</option></select></div><div><label>Frecuencia de copia automática</label><select id="backupFrequency"><option value="change">En cada cambio</option><option value="5min">Cada 5 minutos</option><option value="manual">Manual</option></select></div><div><label>Nivel de ayuda IA</label><select id="aiAssistLevel"><option value="basic">Básico</option><option value="advanced">Avanzado</option><option value="expert">Experto</option></select></div></div></div>
-<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">v50.8 mantiene compatibilidad con los proyectos anteriores y añade comprobación visible de versión, sincronización dimensional y centrado automático sin borrar datos guardados.</div></div>
+<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">v51.2 conserva la base acumulativa, verifica el despliegue y mejora el reconocimiento fotográfico sin inventar cotas cuando el OCR no es fiable.</div></div>
 </div></section>
 
 <section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v50.9</b><br>Código: PP-509-REAL<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
@@ -447,7 +448,14 @@ let state={
 let undoStack=[],redoStack=[],pageHistory=['dashboard'],currentPage='dashboard';
 let sim={rotXP3:-.35,rotYP3:.5,rotXS3:-.35,rotYS3:.5,s2Step:0,s3Step:0,s2Timer:null,s3Timer:null,operatorStep:0,p3Active:0,rotX:-.35,rotY:.5,drag:false,lastX:0,lastY:0,zoomP3:1,zoomS3:1,panP3X:0,panP3Y:0,panS3X:0,panS3Y:0,dragTarget:'',panMode:false,zoomS2:1,rotS2:0,panS2X:0,panS2Y:0,zoomCurve:1,rotCurve:0,panCurveX:0,panCurveY:0,zoomProgram:1,rotProgram:0,panProgramX:0,panProgramY:0};
 let aiProposal=null,importDraft=null,importedFiles=[];
-window.PLEGAR_PRO_BUILD={version:'51.1',code:'PP-511-VISION-OCR',source:'Plegar_Pro-main.zip',built:'2026-07-26'};
+window.PLEGAR_PRO_BUILD={version:'51.2',code:'PP-512-DEPLOY-VISION',source:'Plegar_Pro_v51_2',built:'2026-07-26T18:30:00+02:00'};
+(function verifyDeployment(){
+ const expected='PP-512-DEPLOY-VISION';
+ document.documentElement.dataset.build=expected;
+ try{localStorage.setItem('plegarProLastBuild',expected)}catch(e){}
+ window.addEventListener('load',()=>{const badge=document.getElementById('buildStamp');if(badge)badge.textContent='v51.2 · '+expected+' · '+new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})});
+})();
+
 
 const titles={
  dashboard:['Panel de control','Proyecto único y sincronizado'],import:['Importar planos','CAD, PDF, fotografías e IA'],
@@ -644,7 +652,7 @@ function optimizeSequence(){
 }
 function exportSequenceReport(){
  const a=analyzeBendSequence();
- const lines=[`PLEGAR PRO v50.8 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
+ const lines=[`PLEGAR PRO v51.2 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
  a.rows.forEach(r=>lines.push(`P${r.i+1}: ala ${r.leg.toFixed(1)} mm | ${r.angle.toFixed(1)}° | R${r.radius.toFixed(1)} | V${r.v} | ${r.force.toFixed(1)} t | ${r.issues.length?r.issues.join('; '):'OK'}`));
  if(a.warnings.length){lines.push('',...a.warnings.map(x=>'ADVERTENCIA: '+x))}
  download(`PlegarPro_${state.project.ref||'pieza'}_secuencia.txt`,lines.join('\n'),'text/plain');
@@ -742,7 +750,7 @@ function renderSavedDevelopments(){
  document.querySelectorAll('.devDeleteSaved').forEach(b=>b.onclick=()=>commit('Eliminado cálculo guardado',()=>state.development.saved.splice(+b.dataset.i,1)));
 }
 function developmentSnapshot(){let r=calcDevelopment(),d=state.development;return {name:`${d.material} ${d.thickness} mm · V${d.referenceV}`,date:new Date().toLocaleString('es-ES'),material:d.material,thickness:d.thickness,referenceV:d.referenceV,flat:r.flat,data:deep({...d,saved:[]})}}
-function exportDevelopment(){let d=state.development,r=calcDevelopment(),payload={version:'50.8',generated:new Date().toISOString(),input:deep(d),result:r};download(`desarrollo-${d.material}-${d.thickness}mm-V${d.referenceV}.json`,JSON.stringify(payload,null,2))}
+function exportDevelopment(){let d=state.development,r=calcDevelopment(),payload={version:'51.2',generated:new Date().toISOString(),input:deep(d),result:r};download(`desarrollo-${d.material}-${d.thickness}mm-V${d.referenceV}.json`,JSON.stringify(payload,null,2))}
 
 function calculateCurve(){
  let c=state.curve,angle=Math.max(1,+c.angle||90),radius=Math.max(1,+c.radius||1),hits=Math.max(2,Math.round(+c.hits||2));if(c.mode==='length'){let preferred=Math.max((+c.thickness||2)*3,(+c.v||16)*.55,8);hits=Math.max(2,Math.ceil((+c.length||1)/preferred)+1);c.hits=hits}
@@ -789,7 +797,7 @@ function renderVCompare(){
 function drawVChart(rows){let c=$('vChart');if(!c)return;let x=c.getContext('2d'),w=c.width,h=c.height;x.clearRect(0,0,w,h);x.strokeStyle=getComputedStyle(document.body).getPropertyValue('--line');x.fillStyle=getComputedStyle(document.body).getPropertyValue('--muted');x.font='24px sans-serif';x.fillText('Variación de desarrollo respecto a la V de referencia',35,38);let max=Math.max(.1,...rows.map(r=>Math.abs(r.delta)));let left=70,right=w-35,top=70,bottom=h-50;x.beginPath();x.moveTo(left,(top+bottom)/2);x.lineTo(right,(top+bottom)/2);x.stroke();rows.forEach((r,i)=>{let px=left+(right-left)*(i/(Math.max(1,rows.length-1)));let py=(top+bottom)/2-r.delta/max*(bottom-top)*.42;x.beginPath();x.arc(px,py,8,0,Math.PI*2);x.fill();x.fillText('V'+r.v,px-16,bottom+32);x.fillText((r.delta>=0?'+':'')+r.delta.toFixed(2),px-26,py-15)});}
 function exportVComparison(format='csv'){
  let rows=window.__VCOMPARE_ROWS__||[],d=state.development;
- if(format==='json')return download(`comparador-V-${d.material}-${d.thickness}mm.json`,JSON.stringify({version:'50.8',development:deep(d),rows},null,2));
+ if(format==='json')return download(`comparador-V-${d.material}-${d.thickness}mm.json`,JSON.stringify({version:'51.2',development:deep(d),rows},null,2));
  let csv=['V;Referencia;Radio;Desarrollo;Variacion;Fuerza_t;Ala_minima;Estado',...rows.map(r=>[r.v,r.v==d.referenceV?'Sí':'No',r.actualRadius.toFixed(3),r.flat.toFixed(3),r.delta.toFixed(3),r.force.toFixed(2),r.minFlange.toFixed(2),r.status].join(';'))].join('\n');
  download(`comparador-V-${d.material}-${d.thickness}mm.csv`,csv,'text/csv;charset=utf-8');
 }
@@ -951,13 +959,61 @@ function photoSelected(){let f=$('photoInput').files[0];if(!f)return;let img=new
 function visionGray(data,contrast,mode){let out=new Uint8ClampedArray(data.length),sum=0;for(let i=0;i<data.length;i+=4){let g=.299*data[i]+.587*data[i+1]+.114*data[i+2];if(mode==='dark')g=255-g;g=(g-128)*(contrast/100)+128;g=Math.max(0,Math.min(255,g));out[i]=out[i+1]=out[i+2]=g;out[i+3]=255;sum+=g}return{data:out,mean:sum/(data.length/4)}}
 function adaptiveBinary(data,w,h,clean){let out=new Uint8ClampedArray(data.length),step=Math.max(8,Math.round(28-clean/3));for(let y=0;y<h;y++)for(let x=0;x<w;x++){let i=(y*w+x)*4,g=data[i],sum=0,n=0;for(let yy=Math.max(0,y-step);yy<=Math.min(h-1,y+step);yy+=step)for(let xx=Math.max(0,x-step);xx<=Math.min(w-1,x+step);xx+=step){sum+=data[(yy*w+xx)*4];n++}let v=g<(sum/n-10)?0:255;out[i]=out[i+1]=out[i+2]=v;out[i+3]=255}return out}
 function detectPlanLines(bin,w,h){let hs=[],vs=[],minH=Math.max(24,w*.07),minV=Math.max(24,h*.05);for(let y=1;y<h-1;y+=2){let run=0,start=0;for(let x=0;x<w;x++){if(bin[(y*w+x)*4]<80){if(!run)start=x;run++}else{if(run>=minH)hs.push({y,x1:start,x2:x-1,len:run});run=0}}}for(let x=1;x<w-1;x+=2){let run=0,start=0;for(let y=0;y<h;y++){if(bin[(y*w+x)*4]<80){if(!run)start=y;run++}else{if(run>=minV)vs.push({x,y1:start,y2:y-1,len:run});run=0}}}let dedupe=(arr,key)=>arr.sort((a,b)=>b.len-a.len).filter((a,i,self)=>self.findIndex(b=>Math.abs(a[key]-b[key])<5&&Math.abs(a.len-b.len)<20)===i).slice(0,40);return{h:dedupe(hs,'y'),v:dedupe(vs,'x')}}
-function processPlanVision(showToast=true){if(!visionImage)return showToast&&toast('Selecciona o fotografía un plano');let c=$('visionCanvas'),ctx=c.getContext('2d'),max=1500,scale=Math.min(max/visionImage.naturalWidth,1050/visionImage.naturalHeight,1),w=Math.max(1,Math.round(visionImage.naturalWidth*scale)),h=Math.max(1,Math.round(visionImage.naturalHeight*scale));if(Math.abs(visionRotation)%180===90)[w,h]=[h,w];c.width=w;c.height=h;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(visionRotation*Math.PI/180);let dw=Math.abs(visionRotation)%180===90?h:w,dh=Math.abs(visionRotation)%180===90?w:h;ctx.drawImage(visionImage,-dw/2,-dh/2,dw,dh);ctx.restore();let raw=ctx.getImageData(0,0,w,h),g=visionGray(raw.data,+$('visionContrast').value,$('visionMode').value),bin=adaptiveBinary(g.data,w,h,+$('visionClean').value),lines=detectPlanLines(bin,w,h);let black=0;for(let i=0;i<bin.length;i+=4)if(bin[i]<128)black++;let density=black/(w*h),quality=Math.max(10,Math.min(99,Math.round(96-Math.abs(density-.08)*230)));let confidence=Math.max(22,Math.min(96,Math.round(quality*.5+Math.min(38,(lines.h.length+lines.v.length)*1.35))));ctx.putImageData(new ImageData(bin,w,h),0,0);ctx.lineWidth=2;ctx.strokeStyle='rgba(0,170,255,.85)';lines.h.slice(0,18).forEach(l=>{ctx.beginPath();ctx.moveTo(l.x1,l.y);ctx.lineTo(l.x2,l.y);ctx.stroke()});ctx.strokeStyle='rgba(255,120,0,.85)';lines.v.slice(0,18).forEach(l=>{ctx.beginPath();ctx.moveTo(l.x,l.y1);ctx.lineTo(l.x,l.y2);ctx.stroke()});visionDetection={quality,confidence,lines,angles:[0,90],width:w,height:h,ocr:[]};$('visionQuality').textContent=quality+'%';$('visionLines').textContent=(lines.h.length+lines.v.length);$('visionAngles').textContent='0° / 90°';$('visionConfidence').textContent=confidence+'%';$('visionResult').innerHTML=`<b>Preprocesado técnico completado</b><br>${lines.h.length} líneas horizontales y ${lines.v.length} verticales detectadas. Iniciando lectura OCR de cotas…`;runTechnicalOCR();if(showToast)toast('Plano preparado para OCR técnico')}
+function buildVisionCanvases(){
+ if(!visionImage)return null;
+ const max=1800,scale=Math.min(max/visionImage.naturalWidth,1300/visionImage.naturalHeight,1);
+ let w=Math.max(1,Math.round(visionImage.naturalWidth*scale)),h=Math.max(1,Math.round(visionImage.naturalHeight*scale));
+ if(Math.abs(visionRotation)%180===90)[w,h]=[h,w];
+ const original=document.createElement('canvas');original.width=w;original.height=h;
+ const ox=original.getContext('2d',{willReadFrequently:true});ox.fillStyle='#fff';ox.fillRect(0,0,w,h);ox.save();ox.translate(w/2,h/2);ox.rotate(visionRotation*Math.PI/180);
+ const dw=Math.abs(visionRotation)%180===90?h:w,dh=Math.abs(visionRotation)%180===90?w:h;ox.drawImage(visionImage,-dw/2,-dh/2,dw,dh);ox.restore();
+ const raw=ox.getImageData(0,0,w,h),gray=visionGray(raw.data,+$('visionContrast').value,$('visionMode').value),bin=adaptiveBinary(gray.data,w,h,+$('visionClean').value);
+ const clean=document.createElement('canvas');clean.width=w;clean.height=h;clean.getContext('2d').putImageData(new ImageData(bin,w,h),0,0);
+ return{original,clean,raw,gray,bin,w,h};
+}
+function processPlanVision(showToast=true){
+ if(!visionImage)return showToast&&toast('Selecciona o fotografía un plano');
+ const pack=buildVisionCanvases();if(!pack)return;
+ const {original,clean,bin,w,h}=pack,lines=detectPlanLines(bin,w,h),c=$('visionCanvas'),ctx=c.getContext('2d');c.width=w;c.height=h;ctx.drawImage(clean,0,0);
+ let black=0;for(let i=0;i<bin.length;i+=4)if(bin[i]<128)black++;let density=black/(w*h),quality=Math.max(10,Math.min(99,Math.round(96-Math.abs(density-.08)*230)));
+ let confidence=Math.max(20,Math.min(92,Math.round(quality*.45+Math.min(40,(lines.h.length+lines.v.length)*1.25))));
+ ctx.lineWidth=2;ctx.strokeStyle='rgba(0,170,255,.78)';lines.h.slice(0,18).forEach(l=>{ctx.beginPath();ctx.moveTo(l.x1,l.y);ctx.lineTo(l.x2,l.y);ctx.stroke()});ctx.strokeStyle='rgba(255,120,0,.78)';lines.v.slice(0,18).forEach(l=>{ctx.beginPath();ctx.moveTo(l.x,l.y1);ctx.lineTo(l.x,l.y2);ctx.stroke()});
+ visionDetection={quality,confidence,lines,angles:[0,90],width:w,height:h,ocr:[],ocrSource:original,ocrClean:clean};
+ $('visionQuality').textContent=quality+'%';$('visionLines').textContent=(lines.h.length+lines.v.length);$('visionAngles').textContent='0° / 90°';$('visionConfidence').textContent=confidence+'%';
+ $('visionResult').innerHTML=`<b>Documento normalizado</b><br>${lines.h.length} líneas horizontales y ${lines.v.length} verticales. El OCR se ejecutará sobre varias versiones limpias de la fotografía, no sobre las marcas superpuestas.`;
+ runTechnicalOCR();if(showToast)toast('Plano preparado para análisis técnico multipasada');
+}
 function loadTesseract(){return new Promise((resolve,reject)=>{if(window.Tesseract)return resolve(window.Tesseract);let old=document.querySelector('script[data-tesseract]');if(old){old.addEventListener('load',()=>resolve(window.Tesseract));old.addEventListener('error',reject);return}let sc=document.createElement('script');sc.dataset.tesseract='1';sc.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';sc.onload=()=>resolve(window.Tesseract);sc.onerror=reject;document.head.appendChild(sc)})}
-function extractTechnicalNumbers(text){let m=(text||'').replace(/,/g,'.').match(/\b\d{1,4}(?:\.\d{1,2})?\b/g)||[];return m.map(Number).filter(n=>n>0&&n<10000)}
-function inferTechnicalDrawing(nums){let unique=[...new Set(nums.map(n=>Math.round(n*100)/100))].sort((a,b)=>a-b),max=unique.at(-1)||0;let length=unique.find(n=>n>=300)||max||500;let width=unique.find(n=>n>=100&&n<300)||123;let heights=unique.filter(n=>n>=20&&n<=100);let height=heights.find(n=>Math.abs(n-50)<4)||heights.at(-1)||50;let slotW=unique.find(n=>n>=5&&n<=20)||9;let slotH=unique.find(n=>n>20&&n<height)||27;return{unique,length,width,height,slotW,slotH,profile:'u_returns'}}
-async function runTechnicalOCR(){if(!visionImage)return;let st=$('ocrStatus');st.textContent='Cargando OCR técnico…';try{let T=await Promise.race([loadTesseract(),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),12000))]);st.textContent='Leyendo cotas y números del plano…';let c=$('visionCanvas');let result=await T.recognize(c,'eng',{logger:m=>{if(m.status==='recognizing text')st.textContent='OCR técnico '+Math.round((m.progress||0)*100)+'%'}});let text=result?.data?.text||'',nums=extractTechnicalNumbers(text),inf=inferTechnicalDrawing(nums);visionDetection.ocr=nums;visionDetection.inference=inf;$('ocrStatus').innerHTML=`Lectura terminada. Cotas reconocidas: <b>${inf.unique.join(' · ')||'ninguna fiable'}</b>`;$('ocrDimensions').innerHTML=`Longitud probable: <b>${inf.length} mm</b><br>Ancho exterior probable: <b>${inf.width} mm</b><br>Altura probable: <b>${inf.height} mm</b><br>Ranura probable: <b>${inf.slotW} × ${inf.slotH} mm</b>`;applyDrawingInference(inf,true)}catch(e){console.warn('OCR no disponible',e);st.innerHTML='OCR remoto no disponible. Se mantiene el análisis geométrico y la revisión manual.';$('ocrDimensions').innerHTML='Confirma las cotas visibles antes de transferir.'}}
+function extractTechnicalNumbers(text){let m=(text||'').replace(/,/g,'.').match(/(?:^|\s|[^\d])([1-9]\d{0,3}(?:\.\d{1,2})?)(?=$|\s|[^\d])/g)||[];return m.map(x=>Number((x.match(/[1-9]\d{0,3}(?:\.\d{1,2})?/)||[])[0])).filter(n=>Number.isFinite(n)&&n>0&&n<10000)}
+function inferTechnicalDrawing(nums){
+ const unique=[...new Set(nums.map(n=>Math.round(n*100)/100))].sort((a,b)=>a-b);
+ const candidates={length:unique.filter(n=>n>=250&&n<=5000),width:unique.filter(n=>n>=80&&n<250),height:unique.filter(n=>n>=20&&n<100),slot:unique.filter(n=>n>=4&&n<40)};
+ const length=candidates.length.at(-1)||null,width=candidates.width.at(-1)||null;
+ let height=candidates.height.find(n=>n>=40&&n<=70)||candidates.height.at(-1)||null;
+ let slotW=candidates.slot.find(n=>n<=15)||null,slotH=candidates.slot.find(n=>height&&n>slotW&&n<height)||null;
+ const reliable=!!(length&&width&&height&&unique.length>=3);
+ return{unique,length,width,height,slotW,slotH,profile:reliable?'u_returns':'unknown',reliable};
+}
+async function recognizePass(T,canvas,label,psm){
+ const r=await T.recognize(canvas,'eng',{logger:m=>{if(m.status==='recognizing text')$('ocrStatus').textContent=`${label} ${Math.round((m.progress||0)*100)}%`},tessedit_char_whitelist:'0123456789.,',preserve_interword_spaces:'1',tessedit_pageseg_mode:String(psm)});
+ return r?.data?.text||'';
+}
+async function runTechnicalOCR(){
+ if(!visionImage||!visionDetection)return;let st=$('ocrStatus');st.textContent='Cargando OCR técnico…';
+ try{
+  let T=await Promise.race([loadTesseract(),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),15000))]);
+  const texts=[];texts.push(await recognizePass(T,visionDetection.ocrSource,'OCR original',11));texts.push(await recognizePass(T,visionDetection.ocrClean,'OCR limpio',11));texts.push(await recognizePass(T,visionDetection.ocrSource,'OCR bloques',6));
+  const nums=extractTechnicalNumbers(texts.join('\n')),inf=inferTechnicalDrawing(nums);visionDetection.ocr=nums;visionDetection.inference=inf;
+  $('ocrStatus').innerHTML=`Lectura multipasada terminada. Cotas detectadas: <b>${inf.unique.join(' · ')||'ninguna fiable'}</b>`;
+  $('ocrDimensions').innerHTML=`Longitud probable: <b>${inf.length??'pendiente'} mm</b><br>Ancho exterior probable: <b>${inf.width??'pendiente'} mm</b><br>Altura probable: <b>${inf.height??'pendiente'} mm</b><br>Ranura probable: <b>${inf.slotW??'pendiente'} × ${inf.slotH??'pendiente'} mm</b>`;
+  if(inf.reliable)applyDrawingInference(inf,true);else{
+   $('importReady').textContent='Datos insuficientes';$('importToProgram').disabled=true;$('importSaveDraft').disabled=false;
+   $('fileResult').innerHTML='<b>No se ha creado una pieza automática.</b><br>El OCR no ha encontrado al menos longitud, ancho y altura con suficiente coherencia. Corrige las cotas detectadas o introduce las pendientes; Plegar Pro no inventará una geometría genérica.';
+  }
+ }catch(e){console.warn('OCR no disponible',e);st.innerHTML='OCR remoto no disponible. No se generará una pieza ficticia.';$('ocrDimensions').innerHTML='Introduce o confirma longitud, ancho, altura, espesor y pliegues antes de transferir.';$('importReady').textContent='Revisión manual';$('importToProgram').disabled=true;}
+}
 function applyDrawingInference(inf,fromOCR=false){if(!inf)return;let ret=Math.max(5,parseLocaleNumber($('importReturnLength').value)||15);$('importProfileType').value='u_returns';$('importSheetLength').value=String(inf.width);$('importBendLength').value=String(inf.length);$('importBendCount').value='4';$('importAngle').value='90';$('importRadius').value=String(Math.max(1,parseLocaleNumber($('importThickness').value)||2));let web=Math.max(10,inf.width-2*ret);$('importLegs').value=[ret,inf.height,web,inf.height,ret].join(', ');$('fileResult').innerHTML=`<b>Plano técnico reconstruido${fromOCR?' mediante OCR':''}.</b><br>Perfil detectado: canal U con retornos · 4 pliegues · longitud de plegado ${inf.length} mm · ancho exterior ${inf.width} mm · altura ${inf.height} mm.<br><small>La longitud de retorno (${ret} mm) es estimada porque no aparece acotada con claridad. Confírmala antes de fabricar.</small>`;let confidence=Math.min(96,(visionDetection?.confidence||65)+(fromOCR?12:0));$('importConfidence').textContent=confidence+'%';$('importReady').textContent='Revisión requerida';$('importToProgram').disabled=false;$('importSaveDraft').disabled=false;importDraft=readImportDraft();importDraft.confidence=confidence;importDraft.drawingFeatures={length:inf.length,width:inf.width,height:inf.height,slotWidth:inf.slotW,slotHeight:inf.slotH,profile:'u_returns',estimatedReturn:ret}}
-function analyzePhotoLocal(){if(!visionImage)return toast('Selecciona o fotografía un plano');processPlanVision(false);setTimeout(()=>{if(!visionDetection?.inference){let fallback=inferTechnicalDrawing([]);applyDrawingInference(fallback,false)}},1500)}
+function analyzePhotoLocal(){if(!visionImage)return toast('Selecciona o fotografía un plano');processPlanVision(false)}
 function importFilesSelected(){
  const input=$('fileInput');importedFiles=Array.from((input&&input.files)||[]);
  if(!importedFiles.length)return;
@@ -1176,7 +1232,7 @@ function installEssentialFallbacks(){
 }
 
 function runtimeFunctionalAudit(){
- const report={version:'50.8',missingElements:[],buttons:[],modules:[],errors:[]};
+ const report={version:'51.2',missingElements:[],buttons:[],modules:[],errors:[]};
  const required=['mobileMenuBtn','menuToggle','mainSidebar','backBtn','undoBtn','redoBtn','addBend','progThickness','progSheetLength','progBendLength','progSpecialGeometry','progCurveCreate','sequenceAnalyze','sequenceOptimize','sequenceExport','sendSim','p2Add','p2Thickness','p2SheetLength','p2BendLength','p3Apply','p3Thickness','p3SheetLength','p3BendLength','s2Play','s3Play','curveCalculate','compareVBtn','aiCalculate','crmSave','crmMail','saveSettings','saveProject'];
  required.forEach(id=>{if(!safeElement(id))report.missingElements.push(id)});
  document.querySelectorAll('section.page').forEach(p=>report.modules.push(p.id));

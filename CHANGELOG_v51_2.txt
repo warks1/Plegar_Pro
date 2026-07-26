@@ -1,0 +1,9 @@
+- Todas las referencias visibles de v50.8 actualizadas a v51.2.
+- Identificador fijo PP-512-DEPLOY-VISION visible en pantalla.
+- Logotipo de arranque muestra PLEGAR PRO completo.
+- Menú renombrado a Importar planos IA.
+- OCR técnico multipasada: original, binarizado y bloques.
+- OCR limitado a números y decimales para reducir falsos positivos.
+- Eliminada la geometría genérica de respaldo de 500/123/50.
+- El botón Añadir a Programar queda bloqueado si no hay cotas coherentes.
+- Conservada la base acumulativa y la migración de proyectos anteriores.
