@@ -1,0 +1,14 @@
+PLEGAR PRO v50.3 - SECUENCIA INTELIGENTE ACUMULATIVA
+
+Base: v50.2 Programación Profesional.
+No se elimina ningún módulo ni función heredada.
+
+NOVEDADES REALES
+- Asistente de secuencia integrado en Programar.
+- Análisis por pliegue de ala mínima, relación V/espesor, radio, ángulo y fuerza orientativa.
+- Estado técnico LISTA / REVISAR / NO VALIDADA y puntuación 0-100.
+- Cálculo de cambios de herramienta y manipulaciones de pieza.
+- Orden recomendado agrupando herramienta, V, sentido y longitud.
+- Aplicación acumulativa del orden recomendado a Programar, 2D, 3D y simulaciones.
+- Exportación del informe técnico en TXT.
+- El botón Orden automático usa ahora el motor inteligente.

@@ -1,0 +1,22 @@
+PLEGAR PRO v50.2 · PROGRAMACIÓN PROFESIONAL ACUMULATIVA
+
+Base: v50.0. No se elimina ningún módulo.
+
+IMPLEMENTADO
+- Campo Material y Espesor visible y editable en Programar.
+- Campo Material y Espesor visible y editable en Programar 2D.
+- Campo Material, Espesor y Longitud de plegado visible y editable en Programar 3D.
+- Sincronización inmediata del espesor entre Programar, 2D, 3D, vistas y simulaciones.
+- Recalculo en tiempo real de desarrollo y fuerza orientativa.
+- Recomendación automática de V según espesor.
+- Panel Curva Perfecta integrado dentro de Programar.
+- Cálculo en tiempo real de golpes, distancia, arco y ángulo por golpe.
+- Creación directa de la secuencia de golpes desde Programar.
+- Persistencia de la longitud de plegado mediante programMeta.
+
+CONSERVADO
+- Todos los módulos de v50.0.
+- Simulación 2D y 3D.
+- Programación 2D y 3D.
+- Desarrollo independiente y Comparador V.
+- IA, herramientas, producción, calidad, CRM, notas, historial y ajustes.

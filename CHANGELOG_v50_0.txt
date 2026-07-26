@@ -1,0 +1,18 @@
+PLEGAR PRO v50.0 — PRIMERA EVOLUCIÓN ACUMULATIVA
+
+Base preservada:
+- Plegar_Pro_v49_6_Revision_Funcional_Completa
+
+Cambios implementados:
+- La Calculadora de Desarrollo queda desacoplada de Programar, 2D, 3D, simulaciones, Producción y Calidad.
+- Sincronización exclusiva entre Calculadora de Desarrollo y Comparador de V.
+- Cálculo independiente del desarrollo mostrado en Programar y simulaciones.
+- Guardado y recuperación de cálculos de desarrollo.
+- Exportación de cálculos en JSON.
+- Ordenación del Comparador de V por apertura, variación, fuerza, radio o ala mínima.
+- Exportación de la comparación en CSV y JSON.
+- Persistencia de selección, orden y cálculos guardados.
+- Auditoría funcional actualizada a la versión 50.0.
+
+Aviso técnico:
+Los cálculos son orientativos y deben validarse con tablas del fabricante, máquina, material y utillaje reales antes de fabricar.

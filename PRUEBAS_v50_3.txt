@@ -1,0 +1,13 @@
+PRUEBAS PLEGAR PRO v50.3
+
+[OK] Copia acumulativa desde v50.2.
+[OK] Ningún archivo heredado eliminado.
+[OK] Validación de sintaxis JavaScript con Node.js.
+[OK] Verificación de IDs HTML sin duplicados.
+[OK] Controles nuevos presentes: sequenceAnalyze, sequenceOptimize, sequenceExport.
+[OK] Motor de análisis invocable desde Programar.
+[OK] Orden recomendado conserva todos los pliegues.
+[OK] Exportación de informe incluida.
+[OK] Auditoría interna actualizada a v50.3.
+
+Nota: fuerza, V mínima y colisiones son orientaciones técnicas y deben verificarse con catálogo y máquina real antes de fabricar.

@@ -38,3 +38,11 @@ Abrir index.html en un navegador moderno o publicar todo el contenido en GitHub 
 Limitación honesta
 ------------------
 Esta beta continúa siendo un prototipo web en un único archivo. La lectura industrial completa de STEP/DWG/DXF, una réplica CAD exacta de una máquina concreta y cálculos certificados requieren bibliotecas CAD, datos oficiales del fabricante y validación de taller.
+
+
+ACTUALIZACIÓN v50.0
+Primera evolución acumulativa basada en v49.6. Desarrollo sincroniza únicamente con Comparador V.
+
+
+ACTUALIZACIÓN v50.3
+Asistente de secuencia inteligente integrado en Programar, con informe, optimización y exportación.

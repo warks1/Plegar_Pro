@@ -1,0 +1,11 @@
+PRUEBAS AUTOMÁTICAS REALIZADAS
+
+- Archivo ZIP base extraído correctamente.
+- Sintaxis JavaScript validada con Node.js --check.
+- IDs HTML comprobados: sin duplicados.
+- Controles nuevos comprobados:
+  devSaveCalc, devExport, devSavedList, vSort, vExportCsv y vExportJson.
+- Se verificó que syncAll ya no copia Programar dentro de Desarrollo.
+- Se verificó que la edición de Programar no modifica state.development.bends.
+- Se verificó que el Comparador V sigue leyendo exclusivamente state.development.
+- Se preservaron los módulos y archivos heredados de la v49.6.

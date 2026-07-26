@@ -1,0 +1,18 @@
+PRUEBAS REALIZADAS v50.2
+
+1. Sintaxis JavaScript extraída y validada con Node.js.
+2. IDs HTML revisados: sin duplicados.
+3. Presencia de todos los módulos heredados verificada.
+4. Presencia de campos progThickness, p2Thickness y p3Thickness verificada.
+5. Presencia del panel Curva Perfecta en Programar verificada.
+6. Eventos de sincronización y creación de golpes revisados estáticamente.
+7. Archivo original v50.0 conservado sin modificar.
+
+NOTA DE SEGURIDAD INDUSTRIAL
+Los cálculos de fuerza, desarrollo, radio y utillaje son orientativos y deben verificarse con tablas de máquina, material y herramienta antes de fabricar.
+8. Prueba real en Chromium sin errores de consola:
+   - Navegación a Programar, Programar 2D y Programar 3D.
+   - Cambio de espesor de 2 a 3 mm sincronizado en las tres pantallas.
+   - Curva R300 / 90° / 20 golpes recalculada a 24,80 mm entre golpes.
+   - Creación real de 20 golpes en la tabla de Programar.
+   - Auditoría interna: 20 módulos presentes y 0 elementos obligatorios ausentes.
