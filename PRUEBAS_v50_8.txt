@@ -1,0 +1,8 @@
+COMPROBACIONES v50.8
+- HTML presente.
+- JavaScript extraído y validado sintácticamente con Node.js.
+- IDs nuevos únicos: topImportPlans, programImportPlans, progRecommendedV, progRecommendedPunch.
+- Acceso Importar planos visible desde barra superior, Panel y Programar.
+- Cambio de espesor llama a applyAutomaticToolRecommendation.
+- La recomendación no se aplica al tramo terminal sin plegado.
+- Se conservan los módulos y archivos acumulados.

@@ -1,0 +1,9 @@
+PLEGAR PRO v50.8 — UTILLAJE AUTOMÁTICO E IMPORTACIÓN VISIBLE
+
+- Al cambiar el espesor desde Programar, Programación 2D o Programación 3D se asigna automáticamente la V disponible más cercana a 8×espesor.
+- Se asigna automáticamente un punzón orientativo según espesor y ángulo de cada plegado.
+- Los datos generales de Programar muestran V y punzón recomendados en campos visibles.
+- Se añade botón "Importar planos" en la barra superior y dentro de Programar.
+- El acceso del panel principal pasa a llamarse "Importar planos" y enumera los formatos admitidos.
+- Se mantiene la entrada decimal con coma y punto de v50.7.
+- Código de compilación: PP-508-REAL.

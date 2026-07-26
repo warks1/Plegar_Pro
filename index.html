@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v50.7 · Verificación visible acumulativa</title>
+<title>Plegar Pro v50.8 · Verificación visible acumulativa</title>
 <style>
 :root{
   --bg:#06111b;--panel:#0d2131;--panel2:#112a3d;--line:#31536c;
@@ -108,7 +108,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
  .app:has(#menuToggle:checked){overflow:hidden}
 }
 </style>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v50.7 Verificación Visible Acumulativa"></head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v50.8 Recomendación de Utillaje e Importación Visible"></head>
 <body>
 <div id="loader">
   <div class="loadBox">
@@ -124,7 +124,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <input type="checkbox" id="menuToggle" class="menuToggle" aria-hidden="true">
 <aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v50.7 · CONTROL TÁCTIL Y DECIMALES · base real acumulativa</div>
+  <div class="version">v50.8 · UTILLAJE AUTOMÁTICO E IMPORTAR PLANOS · base real acumulativa</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -160,6 +160,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
     <button id="backBtn" title="Volver">← Volver</button>
     <button id="undoBtn" title="Deshacer">↶ Deshacer</button>
     <button id="redoBtn" title="Rehacer">↷ Rehacer</button>
+    <button class="btn secondary" data-go="import" id="topImportPlans" title="Importar planos, fotos o archivos CAD">📥 Importar planos</button>
   </div>
   <div class="heading"><h1 id="pageTitle">Panel de control</h1><p id="pageSub">Proyecto único y sincronizado</p></div>
   <span class="syncBadge" id="syncBadge">● Todo sincronizado</span>
@@ -168,7 +169,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <section class="page active" id="dashboard">
 <div class="grid">
   <div class="card c8"><h2>Flujo de trabajo</h2><div class="quick">
-    <button data-go="import"><b>📥 Entrada libre</b><small>Describir o importar la pieza</small></button>
+    <button data-go="import"><b>📥 Importar planos</b><small>PDF, DXF, SVG, CAD, imagen o fotografía</small></button>
     <button data-go="program"><b>🧾 Programar</b><small>Crear y ordenar pliegues</small></button>
     <button data-go="program2d"><b>📐 Programación 2D</b><small>Editar geometría y cotas</small></button>
     <button data-go="program3d"><b>🧊 Programación 3D</b><small>Editar pieza, herramientas y secuencia</small></button>
@@ -182,7 +183,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
     <div class="kpi"><span>Pliegues</span><b id="dashBends"></b></div>
   </div><div class="note">Cualquier cambio realizado en Programar, 2D, 3D, IA o Curva Perfecta actualiza el mismo proyecto.</div></div>
 
-  <div class="card c12" id="buildVerification" style="border:2px solid #38d39f;box-shadow:0 0 0 1px rgba(56,211,159,.22) inset"><h2>✅ Plegar Pro v50.7 · versión verificada</h2><div class="kpis"><div class="kpi"><span>Base modificada</span><b>Proyecto real subido</b></div><div class="kpi"><span>Programar</span><b>Vista 2D + Simular</b></div><div class="kpi"><span>Dimensiones</span><b>Chapa + plegado</b></div><div class="kpi"><span>Compilación</span><b id="buildCode">PP-507-REAL</b></div></div><div class="note"><b>Comprobación visual:</b> si ves este recuadro verde, estás ejecutando la nueva beta. La aplicación centra automáticamente las vistas al abrir Programar, Programación 2D, Programación 3D y las simulaciones.</div><div class="actions"><button class="btn" data-go="program">Abrir Programar</button><button class="btn secondary" data-go="sim2d">Probar Simulación 2D</button><button class="btn secondary" data-go="sim3d">Probar Simulación 3D</button></div></div>
+  <div class="card c12" id="buildVerification" style="border:2px solid #38d39f;box-shadow:0 0 0 1px rgba(56,211,159,.22) inset"><h2>✅ Plegar Pro v50.8 · versión verificada</h2><div class="kpis"><div class="kpi"><span>Base modificada</span><b>Proyecto real subido</b></div><div class="kpi"><span>Programar</span><b>Vista 2D + Simular</b></div><div class="kpi"><span>Dimensiones</span><b>Chapa + plegado</b></div><div class="kpi"><span>Compilación</span><b id="buildCode">PP-508-REAL</b></div></div><div class="note"><b>Comprobación visual:</b> si ves este recuadro verde, estás ejecutando la nueva beta. La aplicación centra automáticamente las vistas al abrir Programar, Programación 2D, Programación 3D y las simulaciones.</div><div class="actions"><button class="btn" data-go="program">Abrir Programar</button><button class="btn secondary" data-go="sim2d">Probar Simulación 2D</button><button class="btn secondary" data-go="sim3d">Probar Simulación 3D</button></div></div>
 </div>
 </section>
 
@@ -193,7 +194,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div class="actions"><button class="btn" id="freeAnalyze">Interpretar y programar</button><button class="btn secondary" id="freeToAI">Enviar a IA</button></div>
 <div id="freeResult" class="note">La entrada libre no modifica el proyecto hasta que pulses Interpretar.</div>
 </div>
-<div class="card c6"><h2>Importar archivo</h2><input type="file" id="fileInput" accept=".dxf,.svg,.pdf,.step,.stp,.iges,.igs,.dwg,image/*">
+<div class="card c6"><h2>Importar planos y archivos CAD</h2><input type="file" id="fileInput" accept=".dxf,.svg,.pdf,.step,.stp,.iges,.igs,.dwg,image/*">
 <div class="actions"><label class="btn" style="display:inline-flex;align-items:center;gap:8px">📷 Importar plano por foto<input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none"></label><button class="btn secondary" id="analyzePhoto">Analizar foto</button></div>
 <div id="photoPreview" class="note">Haz una foto perpendicular, con buena luz y sin sombras. El motor corregirá orientación, contraste y líneas del plano antes de crear una propuesta editable.</div>
 <div class="fields"><div><label>Modo de lectura</label><select id="visionMode"><option value="auto">Automático</option><option value="line">Plano lineal</option><option value="dimension">Priorizar cotas</option><option value="dark">Fondo oscuro</option></select></div><div><label>Contraste</label><input id="visionContrast" type="range" min="60" max="220" value="135"></div><div><label>Limpieza</label><input id="visionClean" type="range" min="0" max="4" value="1"></div><div><label>Enderezar</label><select id="visionDeskew"><option value="yes">Automático</option><option value="no">No</option></select></div></div>
@@ -202,7 +203,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div class="kpis"><div class="kpi"><span>Calidad foto</span><b id="visionQuality">—</b></div><div class="kpi"><span>Líneas</span><b id="visionLines">—</b></div><div class="kpi"><span>Ángulos</span><b id="visionAngles">—</b></div><div class="kpi"><span>Confianza</span><b id="visionConfidence">—</b></div></div>
 <div id="visionResult" class="note">La detección aparecerá aquí. Revisa siempre las medidas antes de fabricar.</div>
 <div class="actions"><button class="btn" id="analyzeFile">Analizar archivo</button><button class="btn secondary" id="loadExample">Cargar ejemplo Omega</button></div>
-<div id="fileResult" class="note">El prototipo registra el archivo y prepara una geometría editable. La lectura CAD industrial completa requiere conversor especializado.</div>
+<div id="fileResult" class="note"><b>Formatos visibles:</b> DXF, SVG, PDF, STEP/STP, IGES/IGS, DWG e imágenes. La aplicación registra el archivo y prepara una geometría editable; la conversión CAD industrial completa requiere el conversor especializado.</div>
 </div></div></section>
 
 <section class="page" id="technical"><div class="grid">
@@ -225,11 +226,13 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div><label>Factor K</label><input id="progKfactor" type="text" inputmode="decimal" min="0.1" max="0.6" step="0.01"></div>
 <div><label>Longitud de la chapa (mm)</label><input id="progSheetLength" type="text" inputmode="decimal" min="1" step="1"></div>
 <div><label>Longitud de plegado (mm)</label><input id="progBendLength" type="text" inputmode="decimal" min="1" step="1"></div>
+<div><label>V recomendada automática</label><input id="progRecommendedV" readonly aria-readonly="true"></div>
+<div><label>Punzón recomendado automático</label><input id="progRecommendedPunch" readonly aria-readonly="true"></div>
 <div><label><input id="progSpecialGeometry" type="checkbox"> Geometría especial</label></div>
 <div id="progSheetWidthWrap" style="display:none"><label>Anchura total opcional (mm)</label><input id="progSheetWidth" type="text" inputmode="decimal" min="1" step="1"></div>
 </div><div id="programDataStatus" class="note">Los cambios recalculan Programar, 2D, 3D, fuerza, desarrollo y Curva Perfecta.</div></div>
 <div class="card c8"><h2>Programa de plegado</h2>
-<div class="actions"><button class="btn" id="addBend">Añadir pliegue</button><button class="btn secondary" id="autoSequence">Orden automático</button><button class="btn secondary" data-go="program2d">Vista 2D</button><button class="btn secondary" data-go="program3d">Vista 3D</button><button class="btn secondary" data-go="sim2d">Simular 2D</button><button class="btn" id="sendSim">Simular 3D</button></div>
+<div class="actions"><button class="btn" data-go="import" id="programImportPlans">📥 Importar planos</button><button class="btn" id="addBend">Añadir pliegue</button><button class="btn secondary" id="autoSequence">Orden automático</button><button class="btn secondary" data-go="program2d">Vista 2D</button><button class="btn secondary" data-go="program3d">Vista 3D</button><button class="btn secondary" data-go="sim2d">Simular 2D</button><button class="btn" id="sendSim">Simular 3D</button></div>
 <div id="programLiveStatus" class="note">Las medidas se actualizan mientras escribes y se sincronizan con todos los módulos.</div><div class="tableWrap"><table class="table"><thead><tr><th>#</th><th>Ala mm</th><th>Ángulo</th><th>Radio</th><th>V</th><th>Punzón</th><th>Tope X</th><th>Sentido</th><th>Acciones</th></tr></thead><tbody id="programRows"></tbody></table></div>
 </div>
 <div class="card c4"><h2>Vista de la pieza en tiempo real</h2><div class="visualToolbar"><button class="btn secondary" id="programFit">Centrar</button><button class="btn secondary" id="programZoomIn">＋</button><button class="btn secondary" id="programZoomOut">－</button><button class="btn secondary" id="programRotateLeft">↶</button><button class="btn secondary" id="programRotateRight">↷</button></div><div class="stage previewProgram"><canvas id="canvasProgram" width="850" height="520"></canvas><div class="overlay" id="overlayProgram"></div></div><div id="programSummary" class="note"></div><h3>Notas del programa</h3><textarea id="programNotes" rows="6" placeholder="Anotaciones específicas de esta referencia..."></textarea><div class="actions"><button class="btn" id="saveProgramNotes">Guardar notas</button></div></div>
@@ -374,10 +377,10 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div><label>Correo</label><input id="ownerEmail" type="email"></div><div><label>Web</label><input id="ownerWebsite"></div>
 </div></div>
 <div class="card c6"><h2>Precisión y comportamiento</h2><div class="fields"><div><label>Unidades</label><select id="units"><option value="mm">Milímetros</option><option value="inch">Pulgadas</option></select></div><div><label>Tolerancia angular ±°</label><input id="angleTolerance" type="text" inputmode="decimal" min="0.1" step="0.1"></div><div><label>Tolerancia lineal ±mm</label><input id="linearTolerance" type="text" inputmode="decimal" min="0.05" step="0.05"></div><div><label>Confirmar antes de borrar</label><select id="confirmDelete"><option value="yes">Sí</option><option value="no">No</option></select></div><div><label>Sonidos de interfaz</label><select id="uiSounds"><option value="yes">Activados</option><option value="no">Desactivados</option></select></div><div><label>Modo compacto móvil</label><select id="compactMobile"><option value="auto">Automático</option><option value="yes">Siempre</option><option value="no">Nunca</option></select></div><div><label>Frecuencia de copia automática</label><select id="backupFrequency"><option value="change">En cada cambio</option><option value="5min">Cada 5 minutos</option><option value="manual">Manual</option></select></div><div><label>Nivel de ayuda IA</label><select id="aiAssistLevel"><option value="basic">Básico</option><option value="advanced">Avanzado</option><option value="expert">Experto</option></select></div></div></div>
-<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">v50.7 mantiene compatibilidad con los proyectos anteriores y añade comprobación visible de versión, sincronización dimensional y centrado automático sin borrar datos guardados.</div></div>
+<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">v50.8 mantiene compatibilidad con los proyectos anteriores y añade comprobación visible de versión, sincronización dimensional y centrado automático sin borrar datos guardados.</div></div>
 </div></section>
 
-<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v50.7</b><br>Código: PP-507-REAL<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
+<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v50.8</b><br>Código: PP-508-REAL<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
 
 <footer class="legalFooter" id="legalFooter"></footer></main></div>
 <div id="toast" class="hidden"></div>
@@ -444,7 +447,7 @@ let state={
 let undoStack=[],redoStack=[],pageHistory=['dashboard'],currentPage='dashboard';
 let sim={rotXP3:-.35,rotYP3:.5,rotXS3:-.35,rotYS3:.5,s2Step:0,s3Step:0,s2Timer:null,s3Timer:null,operatorStep:0,p3Active:0,rotX:-.35,rotY:.5,drag:false,lastX:0,lastY:0,zoomP3:1,zoomS3:1,panP3X:0,panP3Y:0,panS3X:0,panS3Y:0,dragTarget:'',panMode:false,zoomS2:1,rotS2:0,panS2X:0,panS2Y:0,zoomCurve:1,rotCurve:0,panCurveX:0,panCurveY:0,zoomProgram:1,rotProgram:0,panProgramX:0,panProgramY:0};
 let aiProposal=null;
-window.PLEGAR_PRO_BUILD={version:'50.6',code:'PP-507-REAL',source:'Plegar_Pro-main.zip',built:'2026-07-26'};
+window.PLEGAR_PRO_BUILD={version:'50.6',code:'PP-508-REAL',source:'Plegar_Pro-main.zip',built:'2026-07-26'};
 
 const titles={
  dashboard:['Panel de control','Proyecto único y sincronizado'],import:['Entrada libre / Importar','Captura inicial del trabajo'],
@@ -477,7 +480,7 @@ function go(page,remember=true){
  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
  $('pageTitle').textContent=titles[page][0];$('pageSub').textContent=titles[page][1];
  refreshPage(page);
- // v50.7: centrar y ajustar automáticamente las vistas al entrar.
+ // v50.8: centrar y ajustar automáticamente las vistas al entrar.
  requestAnimationFrame(()=>{
   try{
    if(page==='program'){sim.zoomProgram=1;sim.panProgramX=0;sim.panProgramY=0;drawAll()}
@@ -517,6 +520,25 @@ function recommendedVForThickness(t){
  const vs=[6,8,10,12,16,22,24,32,36,40,50],target=Math.max(6,t*8);
  return vs.reduce((best,v)=>Math.abs(v-target)<Math.abs(best-target)?v:best,vs[0]);
 }
+function recommendedPunchForThickness(t,angle=90){
+ t=Math.max(.1,+t||1);angle=Math.max(1,Math.min(179,+angle||90));
+ if(angle<75)return t<=3?'Punzón recto 30° R1':'Punzón recto 30° reforzado';
+ if(t<=1.5)return 'Punzón recto 88° R1';
+ if(t<=3)return 'Punzón recto 88° R2';
+ if(t<=6)return 'Punzón recto 88° R3 reforzado';
+ if(t<=10)return 'Punzón recto 88° R4 alta carga';
+ return 'Punzón recto 88° R6 alta carga';
+}
+function applyAutomaticToolRecommendation(){
+ const t=Math.max(.1,+state.project.thickness||1),v=recommendedVForThickness(t);
+ state.bends.forEach((b,i)=>{
+  if(isTerminalSegment(i))return;
+  b.v=v;
+  b.punch=recommendedPunchForThickness(t,b.angle);
+ });
+ state.curve.v=v;
+ return {v,punch:recommendedPunchForThickness(t,state.bends.find((_,i)=>!isTerminalSegment(i))?.angle||90)};
+}
 function estimatedProgramForce(){
  ensureProgramMeta();let t=Math.max(.1,+state.project.thickness||1),v=Math.max(1,+state.bends[0]?.v||recommendedVForThickness(t)),L=state.programMeta.bendLength;
  return (1.42*materialFactor(state.project.material)*t*t*L/v)/10;
@@ -525,7 +547,7 @@ function applyProgramSharedInputs(source){
  ensureProgramMeta();
  const material=$(source+'Material'),thickness=$(source+'Thickness'),length=$(source+'BendLength'),sheetLength=$(source+'SheetLength'),sheetWidth=$(source+'SheetWidth'),special=$(source+'SpecialGeometry'),k=$(source+'Kfactor');
  if(material)state.project.material=material.value;
- if(thickness)state.project.thickness=Math.max(.1,parseLocaleNumber(thickness.value)||1);
+ if(thickness){const previous=+state.project.thickness||1;state.project.thickness=Math.max(.1,parseLocaleNumber(thickness.value)||1);if(Math.abs(previous-state.project.thickness)>.00001)applyAutomaticToolRecommendation();}
  if(sheetLength)state.programMeta.sheetLength=Math.max(1,parseLocaleNumber(sheetLength.value)||1200);
  if(length)state.programMeta.bendLength=Math.max(1,parseLocaleNumber(length.value)||1000);
  if(special)state.programMeta.specialGeometry=!!special.checked;
@@ -537,10 +559,12 @@ function applyProgramSharedInputs(source){
 function renderProgramSharedInputs(){
  ensureProgramMeta();
  [['progMaterial',state.project.material],['progThickness',state.project.thickness],['progKfactor',state.project.kfactor],['progSheetLength',state.programMeta.sheetLength],['progBendLength',state.programMeta.bendLength],['progSheetWidth',state.programMeta.sheetWidth||''],['p2Material',state.project.material],['p2Thickness',state.project.thickness],['p2SheetLength',state.programMeta.sheetLength],['p2BendLength',state.programMeta.bendLength],['p2SheetWidth',state.programMeta.sheetWidth||''],['p3Material',state.project.material],['p3Thickness',state.project.thickness],['p3SheetLength',state.programMeta.sheetLength],['p3BendLength',state.programMeta.bendLength],['p3SheetWidth',state.programMeta.sheetWidth||'']].forEach(([id,v])=>{const el=$(id);if(el&&document.activeElement!==el)el.value=v});
- const d=calcProgramDevelopment(),force=estimatedProgramForce(),vrec=recommendedVForThickness(state.project.thickness);
+ const d=calcProgramDevelopment(),force=estimatedProgramForce(),vrec=recommendedVForThickness(state.project.thickness),prec=recommendedPunchForThickness(state.project.thickness,state.bends.find((_,i)=>!isTerminalSegment(i))?.angle||90);
+ if($('progRecommendedV'))$('progRecommendedV').value='V'+vrec;
+ if($('progRecommendedPunch'))$('progRecommendedPunch').value=prec;
  ['prog','p2','p3'].forEach(prefix=>{let c=$(prefix+'SpecialGeometry'),w=$(prefix+'SheetWidthWrap');if(c)c.checked=state.programMeta.specialGeometry;if(w)w.style.display=state.programMeta.specialGeometry?'block':'none'});
  const widthText=state.programMeta.specialGeometry&&state.programMeta.sheetWidth?' · anchura '+state.programMeta.sheetWidth.toFixed(0)+' mm':'';
- if($('programDataStatus'))$('programDataStatus').innerHTML=`<b>${state.project.material} · ${(+state.project.thickness).toFixed(2)} mm</b><br>Chapa ${state.programMeta.sheetLength.toFixed(0)} mm${widthText} · plegado ${state.programMeta.bendLength.toFixed(0)} mm · desarrollo ${d.flat.toFixed(2)} mm · fuerza orientativa ${force.toFixed(1)} t · V recomendada V${vrec}.`;
+ if($('programDataStatus'))$('programDataStatus').innerHTML=`<b>${state.project.material} · ${(+state.project.thickness).toFixed(2)} mm</b><br>Chapa ${state.programMeta.sheetLength.toFixed(0)} mm${widthText} · plegado ${state.programMeta.bendLength.toFixed(0)} mm · desarrollo ${d.flat.toFixed(2)} mm · fuerza orientativa ${force.toFixed(1)} t · <b>V automática V${vrec}</b> · <b>${prec}</b>.`;
  if($('p2DataStatus'))$('p2DataStatus').innerHTML=`<b>${state.project.material} · ${(+state.project.thickness).toFixed(2)} mm</b><br>Chapa ${state.programMeta.sheetLength.toFixed(0)} mm${widthText} · plegado ${state.programMeta.bendLength.toFixed(0)} mm. Geometría y desarrollo sincronizados.`;
  if($('s2DimensionStatus'))$('s2DimensionStatus').innerHTML=`<b>Dimensiones activas:</b> chapa ${state.programMeta.sheetLength.toFixed(0)} mm${widthText} · longitud de plegado ${state.programMeta.bendLength.toFixed(0)} mm.`;
  if($('s3DimensionStatus'))$('s3DimensionStatus').innerHTML=`<b>Dimensiones activas:</b> chapa ${state.programMeta.sheetLength.toFixed(0)} mm${widthText} · longitud de plegado ${state.programMeta.bendLength.toFixed(0)} mm.`;
@@ -620,7 +644,7 @@ function optimizeSequence(){
 }
 function exportSequenceReport(){
  const a=analyzeBendSequence();
- const lines=[`PLEGAR PRO v50.7 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
+ const lines=[`PLEGAR PRO v50.8 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
  a.rows.forEach(r=>lines.push(`P${r.i+1}: ala ${r.leg.toFixed(1)} mm | ${r.angle.toFixed(1)}° | R${r.radius.toFixed(1)} | V${r.v} | ${r.force.toFixed(1)} t | ${r.issues.length?r.issues.join('; '):'OK'}`));
  if(a.warnings.length){lines.push('',...a.warnings.map(x=>'ADVERTENCIA: '+x))}
  download(`PlegarPro_${state.project.ref||'pieza'}_secuencia.txt`,lines.join('\n'),'text/plain');
@@ -718,7 +742,7 @@ function renderSavedDevelopments(){
  document.querySelectorAll('.devDeleteSaved').forEach(b=>b.onclick=()=>commit('Eliminado cálculo guardado',()=>state.development.saved.splice(+b.dataset.i,1)));
 }
 function developmentSnapshot(){let r=calcDevelopment(),d=state.development;return {name:`${d.material} ${d.thickness} mm · V${d.referenceV}`,date:new Date().toLocaleString('es-ES'),material:d.material,thickness:d.thickness,referenceV:d.referenceV,flat:r.flat,data:deep({...d,saved:[]})}}
-function exportDevelopment(){let d=state.development,r=calcDevelopment(),payload={version:'50.3',generated:new Date().toISOString(),input:deep(d),result:r};download(`desarrollo-${d.material}-${d.thickness}mm-V${d.referenceV}.json`,JSON.stringify(payload,null,2))}
+function exportDevelopment(){let d=state.development,r=calcDevelopment(),payload={version:'50.8',generated:new Date().toISOString(),input:deep(d),result:r};download(`desarrollo-${d.material}-${d.thickness}mm-V${d.referenceV}.json`,JSON.stringify(payload,null,2))}
 
 function calculateCurve(){
  let c=state.curve,angle=Math.max(1,+c.angle||90),radius=Math.max(1,+c.radius||1),hits=Math.max(2,Math.round(+c.hits||2));if(c.mode==='length'){let preferred=Math.max((+c.thickness||2)*3,(+c.v||16)*.55,8);hits=Math.max(2,Math.ceil((+c.length||1)/preferred)+1);c.hits=hits}
@@ -765,7 +789,7 @@ function renderVCompare(){
 function drawVChart(rows){let c=$('vChart');if(!c)return;let x=c.getContext('2d'),w=c.width,h=c.height;x.clearRect(0,0,w,h);x.strokeStyle=getComputedStyle(document.body).getPropertyValue('--line');x.fillStyle=getComputedStyle(document.body).getPropertyValue('--muted');x.font='24px sans-serif';x.fillText('Variación de desarrollo respecto a la V de referencia',35,38);let max=Math.max(.1,...rows.map(r=>Math.abs(r.delta)));let left=70,right=w-35,top=70,bottom=h-50;x.beginPath();x.moveTo(left,(top+bottom)/2);x.lineTo(right,(top+bottom)/2);x.stroke();rows.forEach((r,i)=>{let px=left+(right-left)*(i/(Math.max(1,rows.length-1)));let py=(top+bottom)/2-r.delta/max*(bottom-top)*.42;x.beginPath();x.arc(px,py,8,0,Math.PI*2);x.fill();x.fillText('V'+r.v,px-16,bottom+32);x.fillText((r.delta>=0?'+':'')+r.delta.toFixed(2),px-26,py-15)});}
 function exportVComparison(format='csv'){
  let rows=window.__VCOMPARE_ROWS__||[],d=state.development;
- if(format==='json')return download(`comparador-V-${d.material}-${d.thickness}mm.json`,JSON.stringify({version:'50.3',development:deep(d),rows},null,2));
+ if(format==='json')return download(`comparador-V-${d.material}-${d.thickness}mm.json`,JSON.stringify({version:'50.8',development:deep(d),rows},null,2));
  let csv=['V;Referencia;Radio;Desarrollo;Variacion;Fuerza_t;Ala_minima;Estado',...rows.map(r=>[r.v,r.v==d.referenceV?'Sí':'No',r.actualRadius.toFixed(3),r.flat.toFixed(3),r.delta.toFixed(3),r.force.toFixed(2),r.minFlange.toFixed(2),r.status].join(';'))].join('\n');
  download(`comparador-V-${d.material}-${d.thickness}mm.csv`,csv,'text/csv;charset=utf-8');
 }
@@ -1113,7 +1137,7 @@ function installEssentialFallbacks(){
 }
 
 function runtimeFunctionalAudit(){
- const report={version:'50.3',missingElements:[],buttons:[],modules:[],errors:[]};
+ const report={version:'50.8',missingElements:[],buttons:[],modules:[],errors:[]};
  const required=['mobileMenuBtn','menuToggle','mainSidebar','backBtn','undoBtn','redoBtn','addBend','progThickness','progSheetLength','progBendLength','progSpecialGeometry','progCurveCreate','sequenceAnalyze','sequenceOptimize','sequenceExport','sendSim','p2Add','p2Thickness','p2SheetLength','p2BendLength','p3Apply','p3Thickness','p3SheetLength','p3BendLength','s2Play','s3Play','curveCalculate','compareVBtn','aiCalculate','crmSave','crmMail','saveSettings','saveProject'];
  required.forEach(id=>{if(!safeElement(id))report.missingElements.push(id)});
  document.querySelectorAll('section.page').forEach(p=>report.modules.push(p.id));
