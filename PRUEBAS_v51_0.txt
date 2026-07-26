@@ -1,0 +1,15 @@
+PRUEBAS ESTÁTICAS REALIZADAS
+- Sintaxis JavaScript validada con node --check: correcta.
+- IDs HTML duplicados: ninguno.
+- Compilación visible: PP-510-RECOVERY.
+- Salida independiente del loader incluida.
+- Funciones de foto a geometría presentes y enlazadas.
+- Botón Añadir pieza a Programar presente y enlazado.
+
+PRUEBAS QUE DEBE REALIZAR EL USUARIO EN GITHUB PAGES
+1. Subir todo el contenido sustituyendo el index.html anterior.
+2. Esperar a que termine Actions/Pages.
+3. Abrir la URL añadiendo ?v=510 al final para evitar la caché del navegador.
+4. Confirmar que aparece v51.0 y PP-510-RECOVERY.
+5. Importar una foto con fondo contrastado y una regla o cota conocida.
+6. Confirmar escala y campos antes de Añadir pieza a Programar.

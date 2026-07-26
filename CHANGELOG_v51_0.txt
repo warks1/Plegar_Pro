@@ -1,0 +1,13 @@
+PLEGAR PRO v51.0 · ARRANQUE RECUPERADO + FOTO A PLANO
+
+- Pantalla de arranque con salida de emergencia independiente del resto del JavaScript.
+- Logotipo revisado: PLEGAR PRO claramente visible en la marca y en el nombre.
+- Número de versión y código de compilación actualizados: PP-510-RECOVERY.
+- Módulo Importar planos renombrado y visible como módulo principal.
+- Reconstrucción geométrica local desde fotografía: detección, agrupación de líneas, cálculo de tramos y creación de propuesta editable.
+- La fotografía rellena automáticamente número de pliegues, tramos, ángulo y modo de análisis.
+- Añadir pieza a Programar conserva la sincronización con Desarrollo, 2D, 3D y simulaciones.
+- Se mantiene compatibilidad acumulativa con proyectos guardados anteriores.
+
+NOTA TÉCNICA
+La reconstrucción fotográfica dentro del navegador es geométrica y asistida. Las cotas reales, escala, espesor, radios y ángulos deben confirmarse antes de fabricar. La lectura completa de planos complejos y CAD propietarios requiere un servicio CAD/visión externo.

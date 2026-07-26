@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v50.8 · Verificación visible acumulativa</title>
+<title>Plegar Pro v51.0 · Arranque recuperado e importación fotográfica</title>
 <style>
 :root{
   --bg:#06111b;--panel:#0d2131;--panel2:#112a3d;--line:#31536c;
@@ -19,7 +19,7 @@ button{cursor:pointer}
 #loader.hidden{opacity:0;pointer-events:none;visibility:hidden} body.boot-complete #loader{display:none!important}
 .loadBox{width:min(460px,88vw);text-align:center}
 .logoMark{width:94px;height:94px;margin:0 auto 16px;border:3px solid var(--accent);border-radius:22px;display:grid;place-items:center;transform:rotate(45deg);box-shadow:0 0 35px #48d8ff55}
-.logoMark span{transform:rotate(-45deg);font-size:30px;font-weight:1000}
+.logoMark span{transform:rotate(-45deg);font-size:14px;line-height:1.05;font-weight:1000;letter-spacing:.05em;text-align:center;color:#edf7ff}.logoMark span b{font-size:20px;color:var(--accent)}
 .logoText{font-size:34px;font-weight:1000;letter-spacing:.04em}.logoText i{font-style:normal;color:var(--accent)}
 .loadBar{height:12px;border:1px solid #537188;border-radius:99px;overflow:hidden;margin-top:22px;background:#07131c}
 .loadBar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ok),var(--accent));transition:.18s}
@@ -108,27 +108,28 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
  .app:has(#menuToggle:checked){overflow:hidden}
 }
 </style>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v50.8 Recomendación de Utillaje e Importación Visible"></head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v51.0 Arranque recuperado e importación fotográfica"></head>
 <body>
 <div id="loader">
   <div class="loadBox">
-    <div class="logoMark"><span>PP</span></div>
-    <div class="logoText">PLEGAR <i>PRO</i></div>
+    <div class="logoMark"><span>PLEGAR<br><b>PRO</b></span></div>
+    <div class="logoText"><span>PLEGAR</span> <i>PRO</i></div>
     <div class="muted">AMS Engineering Solutions</div>
     <div class="loadBar"><i id="loadFill"></i></div>
     <div id="loadState">Inicializando núcleo...</div>
   </div>
 </div>
+<script>/* Arranque independiente de módulos: nunca dejar la pantalla bloqueada */setTimeout(function(){var l=document.getElementById('loader');document.body.classList.add('boot-complete');if(l){l.classList.add('hidden');l.style.display='none';}},2600);</script>
 
 <div class="app">
 <input type="checkbox" id="menuToggle" class="menuToggle" aria-hidden="true">
 <aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v50.8 · UTILLAJE AUTOMÁTICO E IMPORTAR PLANOS · base real acumulativa</div>
+  <div class="version">v51.0 · ARRANQUE RECUPERADO + FOTO A PLANO · base real acumulativa</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
-    <button data-page="import">Entrada libre / Importar</button>
+    <button data-page="import">Importar planos</button>
     <button data-page="technical">Datos generales</button>
     <button data-page="program">Programar</button>
     <button data-page="program2d">Programación 2D</button>
@@ -183,7 +184,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
     <div class="kpi"><span>Pliegues</span><b id="dashBends"></b></div>
   </div><div class="note">Cualquier cambio realizado en Programar, 2D, 3D, IA o Curva Perfecta actualiza el mismo proyecto.</div></div>
 
-  <div class="card c12" id="buildVerification" style="border:2px solid #38d39f;box-shadow:0 0 0 1px rgba(56,211,159,.22) inset"><h2>✅ Plegar Pro v50.9 · módulo Importar integrado</h2><div class="kpis"><div class="kpi"><span>Base modificada</span><b>Proyecto real subido</b></div><div class="kpi"><span>Programar</span><b>Vista 2D + Simular</b></div><div class="kpi"><span>Dimensiones</span><b>Chapa + plegado</b></div><div class="kpi"><span>Compilación</span><b id="buildCode">PP-509-REAL</b></div></div><div class="note"><b>Comprobación visual:</b> si ves este recuadro verde, estás ejecutando la nueva beta. La aplicación centra automáticamente las vistas al abrir Programar, Programación 2D, Programación 3D y las simulaciones.</div><div class="actions"><button class="btn" data-go="program">Abrir Programar</button><button class="btn secondary" data-go="sim2d">Probar Simulación 2D</button><button class="btn secondary" data-go="sim3d">Probar Simulación 3D</button></div></div>
+  <div class="card c12" id="buildVerification" style="border:2px solid #38d39f;box-shadow:0 0 0 1px rgba(56,211,159,.22) inset"><h2>✅ Plegar Pro v51.0 · arranque recuperado y fotografía a plano</h2><div class="kpis"><div class="kpi"><span>Base modificada</span><b>Proyecto real subido</b></div><div class="kpi"><span>Programar</span><b>Vista 2D + Simular</b></div><div class="kpi"><span>Dimensiones</span><b>Chapa + plegado</b></div><div class="kpi"><span>Compilación</span><b id="buildCode">PP-510-RECOVERY</b></div></div><div class="note"><b>Comprobación visual:</b> si ves este recuadro verde, estás ejecutando la nueva beta. La aplicación centra automáticamente las vistas al abrir Programar, Programación 2D, Programación 3D y las simulaciones.</div><div class="actions"><button class="btn" data-go="program">Abrir Programar</button><button class="btn secondary" data-go="sim2d">Probar Simulación 2D</button><button class="btn secondary" data-go="sim3d">Probar Simulación 3D</button></div></div>
 </div>
 </section>
 
@@ -377,10 +378,10 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div><label>Correo</label><input id="ownerEmail" type="email"></div><div><label>Web</label><input id="ownerWebsite"></div>
 </div></div>
 <div class="card c6"><h2>Precisión y comportamiento</h2><div class="fields"><div><label>Unidades</label><select id="units"><option value="mm">Milímetros</option><option value="inch">Pulgadas</option></select></div><div><label>Tolerancia angular ±°</label><input id="angleTolerance" type="text" inputmode="decimal" min="0.1" step="0.1"></div><div><label>Tolerancia lineal ±mm</label><input id="linearTolerance" type="text" inputmode="decimal" min="0.05" step="0.05"></div><div><label>Confirmar antes de borrar</label><select id="confirmDelete"><option value="yes">Sí</option><option value="no">No</option></select></div><div><label>Sonidos de interfaz</label><select id="uiSounds"><option value="yes">Activados</option><option value="no">Desactivados</option></select></div><div><label>Modo compacto móvil</label><select id="compactMobile"><option value="auto">Automático</option><option value="yes">Siempre</option><option value="no">Nunca</option></select></div><div><label>Frecuencia de copia automática</label><select id="backupFrequency"><option value="change">En cada cambio</option><option value="5min">Cada 5 minutos</option><option value="manual">Manual</option></select></div><div><label>Nivel de ayuda IA</label><select id="aiAssistLevel"><option value="basic">Básico</option><option value="advanced">Avanzado</option><option value="expert">Experto</option></select></div></div></div>
-<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">v50.8 mantiene compatibilidad con los proyectos anteriores y añade comprobación visible de versión, sincronización dimensional y centrado automático sin borrar datos guardados.</div></div>
+<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">v51.0 mantiene compatibilidad con los proyectos anteriores y añade comprobación visible de versión, sincronización dimensional y centrado automático sin borrar datos guardados.</div></div>
 </div></section>
 
-<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v50.9</b><br>Código: PP-509-REAL<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
+<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v51.0</b><br>Código: PP-510-RECOVERY<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
 
 <footer class="legalFooter" id="legalFooter"></footer></main></div>
 <div id="toast" class="hidden"></div>
@@ -447,7 +448,7 @@ let state={
 let undoStack=[],redoStack=[],pageHistory=['dashboard'],currentPage='dashboard';
 let sim={rotXP3:-.35,rotYP3:.5,rotXS3:-.35,rotYS3:.5,s2Step:0,s3Step:0,s2Timer:null,s3Timer:null,operatorStep:0,p3Active:0,rotX:-.35,rotY:.5,drag:false,lastX:0,lastY:0,zoomP3:1,zoomS3:1,panP3X:0,panP3Y:0,panS3X:0,panS3Y:0,dragTarget:'',panMode:false,zoomS2:1,rotS2:0,panS2X:0,panS2Y:0,zoomCurve:1,rotCurve:0,panCurveX:0,panCurveY:0,zoomProgram:1,rotProgram:0,panProgramX:0,panProgramY:0};
 let aiProposal=null,importDraft=null,importedFiles=[];
-window.PLEGAR_PRO_BUILD={version:'50.9',code:'PP-509-REAL',source:'Plegar_Pro-main.zip',built:'2026-07-26'};
+window.PLEGAR_PRO_BUILD={version:'51.0',code:'PP-510-RECOVERY',source:'Plegar_Pro_v50_9',built:'2026-07-26T14:02:00+02:00'};
 
 const titles={
  dashboard:['Panel de control','Proyecto único y sincronizado'],import:['Importar planos','CAD, PDF, fotografías e IA'],
@@ -480,7 +481,7 @@ function go(page,remember=true){
  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
  $('pageTitle').textContent=titles[page][0];$('pageSub').textContent=titles[page][1];
  refreshPage(page);
- // v50.8: centrar y ajustar automáticamente las vistas al entrar.
+ // v51.0: centrar y ajustar automáticamente las vistas al entrar.
  requestAnimationFrame(()=>{
   try{
    if(page==='program'){sim.zoomProgram=1;sim.panProgramX=0;sim.panProgramY=0;drawAll()}
@@ -644,7 +645,7 @@ function optimizeSequence(){
 }
 function exportSequenceReport(){
  const a=analyzeBendSequence();
- const lines=[`PLEGAR PRO v50.8 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
+ const lines=[`PLEGAR PRO v51.0 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
  a.rows.forEach(r=>lines.push(`P${r.i+1}: ala ${r.leg.toFixed(1)} mm | ${r.angle.toFixed(1)}° | R${r.radius.toFixed(1)} | V${r.v} | ${r.force.toFixed(1)} t | ${r.issues.length?r.issues.join('; '):'OK'}`));
  if(a.warnings.length){lines.push('',...a.warnings.map(x=>'ADVERTENCIA: '+x))}
  download(`PlegarPro_${state.project.ref||'pieza'}_secuencia.txt`,lines.join('\n'),'text/plain');
@@ -952,7 +953,46 @@ function visionGray(data,contrast,mode){let out=new Uint8ClampedArray(data.lengt
 function adaptiveBinary(gray,w,h,clean){let out=new Uint8ClampedArray(gray.length),r=10,integral=new Float64Array((w+1)*(h+1));for(let y=1;y<=h;y++){let row=0;for(let x=1;x<=w;x++){row+=gray[((y-1)*w+x-1)*4];integral[y*(w+1)+x]=integral[(y-1)*(w+1)+x]+row}}for(let y=0;y<h;y++)for(let x=0;x<w;x++){let x1=Math.max(0,x-r),y1=Math.max(0,y-r),x2=Math.min(w-1,x+r),y2=Math.min(h-1,y+r),n=(x2-x1+1)*(y2-y1+1),avg=(integral[(y2+1)*(w+1)+x2+1]-integral[y1*(w+1)+x2+1]-integral[(y2+1)*(w+1)+x1]+integral[y1*(w+1)+x1])/n,v=gray[(y*w+x)*4]<avg-10?0:255;let i=(y*w+x)*4;out[i]=out[i+1]=out[i+2]=v;out[i+3]=255}for(let pass=0;pass<clean;pass++){let cp=out.slice();for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){let black=0;for(let yy=-1;yy<=1;yy++)for(let xx=-1;xx<=1;xx++)if(cp[((y+yy)*w+x+xx)*4]<128)black++;let i=(y*w+x)*4;if(black<=1)out[i]=out[i+1]=out[i+2]=255}}return out}
 function detectPlanLines(bin,w,h){let hs=[],vs=[];for(let y=1;y<h-1;y++){let run=0,start=0;for(let x=0;x<w;x++){let b=bin[(y*w+x)*4]<128;if(b&&!run)start=x;run=b?run+1:0;if((!b||x===w-1)&&run>Math.max(25,w*.06)){hs.push({x1:start,x2:x-1,y,len:run});run=0}}}for(let x=1;x<w-1;x++){let run=0,start=0;for(let y=0;y<h;y++){let b=bin[(y*w+x)*4]<128;if(b&&!run)start=y;run=b?run+1:0;if((!b||y===h-1)&&run>Math.max(25,h*.06)){vs.push({y1:start,y2:y-1,x,len:run});run=0}}}hs.sort((a,b)=>b.len-a.len);vs.sort((a,b)=>b.len-a.len);return {h:hs.slice(0,24),v:vs.slice(0,24)}}
 function processPlanVision(showToast=true){if(!visionImage)return showToast&&toast('Selecciona o fotografía un plano');let c=$('visionCanvas'),ctx=c.getContext('2d'),max=1200,scale=Math.min(max/visionImage.naturalWidth,800/visionImage.naturalHeight,1),w=Math.max(1,Math.round(visionImage.naturalWidth*scale)),h=Math.max(1,Math.round(visionImage.naturalHeight*scale));if(Math.abs(visionRotation)%180===90)[w,h]=[h,w];c.width=w;c.height=h;ctx.save();ctx.translate(w/2,h/2);ctx.rotate(visionRotation*Math.PI/180);let dw=Math.abs(visionRotation)%180===90?h:w,dh=Math.abs(visionRotation)%180===90?w:h;ctx.drawImage(visionImage,-dw/2,-dh/2,dw,dh);ctx.restore();let raw=ctx.getImageData(0,0,w,h),g=visionGray(raw.data,+$('visionContrast').value,$('visionMode').value),bin=adaptiveBinary(g.data,w,h,+$('visionClean').value),lines=detectPlanLines(bin,w,h);let black=0;for(let i=0;i<bin.length;i+=4)if(bin[i]<128)black++;let density=black/(w*h),quality=Math.max(10,Math.min(99,Math.round(96-Math.abs(density-.09)*260)));let confidence=Math.max(18,Math.min(96,Math.round(quality*.55+Math.min(30,(lines.h.length+lines.v.length)*1.4))));let image=new ImageData(bin,w,h);ctx.putImageData(image,0,0);ctx.lineWidth=2;ctx.strokeStyle='rgba(0,170,255,.85)';lines.h.slice(0,10).forEach(l=>{ctx.beginPath();ctx.moveTo(l.x1,l.y);ctx.lineTo(l.x2,l.y);ctx.stroke()});ctx.strokeStyle='rgba(255,120,0,.85)';lines.v.slice(0,10).forEach(l=>{ctx.beginPath();ctx.moveTo(l.x,l.y1);ctx.lineTo(l.x,l.y2);ctx.stroke()});let angles=[];if(lines.h.length)angles.push(0);if(lines.v.length)angles.push(90);visionDetection={quality,confidence,lines,angles,width:w,height:h};$('visionQuality').textContent=quality+'%';$('visionLines').textContent=(lines.h.length+lines.v.length);$('visionAngles').textContent=angles.length?angles.join('° / ')+'°':'—';$('visionConfidence').textContent=confidence+'%';let estBends=Math.max(1,Math.min(12,Math.round((lines.v.length+lines.h.length)/5)));$('visionResult').innerHTML=`<b>Preprocesado completado</b><br>Se detectaron ${lines.h.length} líneas horizontales y ${lines.v.length} verticales. Propuesta inicial: ${estBends} pliegue${estBends===1?'':'s'}.<br><small>Las cifras impresas no pueden leerse con fiabilidad sin un motor OCR externo; confirma cotas, escala y espesor.</small>`;if(showToast)toast('Plano preprocesado y líneas detectadas')}
-function analyzePhotoLocal(){if(!visionImage)return toast('Selecciona o fotografía un plano');processPlanVision(false);let d=visionDetection||{confidence:50,lines:{h:[],v:[]}},n=Math.max(1,Math.min(10,Math.round((d.lines.h.length+d.lines.v.length)/5)));let guessedLegs=Array.from({length:n+1},(_,i)=>100+i*20);$('aiInput').value=`Plano fotografiado preprocesado. Material ${state.project.material}, espesor ${state.project.thickness} mm. Alas ${guessedLegs.join(', ')}. ${n} pliegues de 90 grados, radio 2, V16. Confirmar cotas detectadas.`;calculateAI();$('aiConfidence').textContent=d.confidence+'% estimada';$('aiCollision').textContent='Revisión activa';$('aiTooling').textContent='V16 provisional';$('aiSequence').textContent='Pendiente de validar';$('fileResult').innerHTML='<b>Foto procesada.</b> Se corrigió contraste, se limpiaron sombras y se detectaron líneas principales. Revisa la propuesta antes de enviarla a Programar.';go('ai')}
+function clusterLinePositions(lines,key,tolerance=10){
+ const sorted=[...lines].sort((a,b)=>a[key]-b[key]),groups=[];
+ sorted.forEach(line=>{let g=groups.find(x=>Math.abs(x.pos-line[key])<=tolerance);if(!g){g={pos:line[key],items:[]};groups.push(g)}g.items.push(line);g.pos=g.items.reduce((a,v)=>a+v[key],0)/g.items.length});
+ return groups.sort((a,b)=>a.pos-b.pos);
+}
+function buildPhotoGeometry(){
+ const d=visionDetection;if(!d)return null;
+ const hg=clusterLinePositions(d.lines.h,'y',Math.max(6,d.height*.012));
+ const vg=clusterLinePositions(d.lines.v,'x',Math.max(6,d.width*.012));
+ let axisGroups=vg.length>=2?vg:hg,axis=vg.length>=2?'vertical':'horizontal';
+ let positions=axisGroups.map(g=>g.pos).filter(Number.isFinite);
+ // Elimina cotas/bordes casi duplicados y conserva como máximo 9 líneas relevantes.
+ positions=positions.filter((v,i,a)=>i===0||v-a[i-1]>Math.max(14,(axis==='vertical'?d.width:d.height)*.025)).slice(0,9);
+ let segments=[];
+ if(positions.length>=2){for(let i=1;i<positions.length;i++)segments.push(positions[i]-positions[i-1]);}
+ if(!segments.length){
+   const dominant=(axis==='vertical'?d.lines.h:d.lines.v).sort((a,b)=>b.len-a.len).slice(0,4).map(x=>x.len);
+   segments=dominant.length?dominant:[100,100];
+ }
+ const pxTotal=segments.reduce((a,b)=>a+b,0)||1;
+ const known=parseLocaleNumber($('importSheetLength').value)||1000;
+ const scale=known/pxTotal;
+ let legs=segments.map(v=>Math.max(5,Math.round(v*scale*10)/10));
+ // Un perfil necesita un tramo más que pliegues. Añadimos extremos estimados si solo se detectaron líneas de pliegue.
+ if(legs.length<2)legs=[Math.round(known/2*10)/10,Math.round(known/2*10)/10];
+ const bends=Math.max(1,legs.length-1);
+ return {legs,bends,axis,confidence:Math.max(35,Math.min(92,d.confidence-(positions.length<2?20:0))),positions};
+}
+function applyPhotoGeometryToImport(){
+ const g=buildPhotoGeometry();if(!g)return false;
+ $('importBendCount').value=g.bends;
+ $('importLegs').value=g.legs.map(formatLocaleNumber).join(', ');
+ $('importAngle').value='90';
+ if(!$('importRadius').value)$('importRadius').value='2';
+ $('importAnalysisMode').value='photo';
+ $('visionResult').innerHTML+=`<br><b>Plano reconstruido:</b> ${g.legs.length} tramos (${g.legs.map(formatLocaleNumber).join(' / ')} mm) y ${g.bends} pliegue(s). Eje principal: ${g.axis}.`;
+ $('fileResult').innerHTML=`<b>Plano editable creado desde la fotografía.</b><br>Tramos: ${g.legs.map(formatLocaleNumber).join(' · ')} mm. Confianza geométrica ${g.confidence}%. Confirma escala, espesor, radios y ángulos antes de enviarlo.`;
+ return true;
+}
+function analyzePhotoLocal(){if(!visionImage)return toast('Selecciona o fotografía un plano');processPlanVision(false);applyPhotoGeometryToImport();analyzeImportedFiles();let d=visionDetection||{confidence:50};$('importConfidence').textContent=(buildPhotoGeometry()?.confidence||d.confidence)+'%';$('importReady').textContent='Plano creado';$('importTransferStatus').innerHTML='Plano fotográfico reconstruido. Revisa los campos y pulsa <b>Añadir pieza a Programar</b>.';toast('Plano creado desde la fotografía')}
 function updateAIKpis(){let bends=(aiProposal&&aiProposal.bends)||state.bends||[],risk=bends.some(b=>Math.abs(+b.angle)>120);if($('aiConfidence'))$('aiConfidence').textContent=(bends.length?'88%':'65%');if($('aiCollision'))$('aiCollision').textContent=risk?'Riesgo medio':'Sin riesgo obvio';if($('aiTooling'))$('aiTooling').textContent='V'+(bends[0]?.v||state.project.v||16);if($('aiSequence'))$('aiSequence').textContent=bends.length+' pliegues'}
 
 
@@ -976,7 +1016,8 @@ function analyzeImportedFiles(){
  const primary=importedFiles[0],name=primary?primary.name:'fotografia',ext=(name.split('.').pop()||'IMG').toLowerCase();
  $('importRef').value=(name.replace(/\.[^.]+$/,'')||'PIEZA-IMPORTADA').toUpperCase();
  let mode=$('importAnalysisMode').value;if(mode==='auto')mode=['step','stp','iges','igs','x_t','x_b','sldprt','ipt','stl','obj'].includes(ext)?'cad3d':['jpg','jpeg','png','webp','heic','tif','tiff'].includes(ext)?'photo':['pdf'].includes(ext)?'drawing':'cad2d';
- let confidence=mode==='cad3d'?88:mode==='cad2d'?86:mode==='drawing'?78:visionDetection?.confidence||70;
+ if(mode==='photo'&&visionImage)applyPhotoGeometryToImport();
+ let confidence=mode==='cad3d'?88:mode==='cad2d'?86:mode==='drawing'?78:(buildPhotoGeometry()?.confidence||visionDetection?.confidence||70);
  importDraft=readImportDraft();importDraft.confidence=confidence;importDraft.mode=mode;
  $('importConfidence').textContent=confidence+'%';$('importReady').textContent='Preparada';$('importToProgram').disabled=false;$('importSaveDraft').disabled=false;
  $('importToolingPreview').innerHTML=`<b>Utillaje recomendado:</b> V${recommendedVForThickness(importDraft.project.thickness)} · ${recommendedPunchForThickness(importDraft.project.thickness,parseLocaleNumber($('importAngle').value)||90)}.`;
@@ -1015,7 +1056,7 @@ function bind(){
  $('freeAnalyze').onclick=()=>{let p=parseTechnical($('freeInput').value);commit('Entrada libre interpretada',()=>{state.project=p.project;state.bends=p.bends});$('freeResult').innerHTML=`Interpretado: ${p.bends.length} pliegues. Enviado a Programar, 2D y 3D.`;go('program')};
  $('freeToAI').onclick=()=>{$('aiInput').value=$('freeInput').value;go('ai')};$('loadExample').onclick=()=>{importedFiles=[];$('importRef').value='OMEGA-DEMO';$('importMaterial').value='S235';$('importThickness').value='2';$('importSheetLength').value='1200';$('importBendLength').value='1000';$('importBendCount').value='3';$('importAngle').value='90';$('importRadius').value='2';$('importLegs').value='120, 85, 85, 120';$('importFileList').innerHTML='<b>Ejemplo Omega interno</b>';$('importCount').textContent='1';$('importType').textContent='DEMO';analyzeImportedFiles()};
  if($('fileInput'))$('fileInput').addEventListener('change',importFilesSelected);
- $('analyzeFile').onclick=analyzeImportedFiles;if($('analyzePhoto'))$('analyzePhoto').onclick=()=>{if(!visionImage)return toast('Selecciona una fotografía');processPlanVision(false);analyzeImportedFiles()};if($('importToProgram'))$('importToProgram').onclick=transferImportToProgram;if($('importSaveDraft'))$('importSaveDraft').onclick=saveImportDraft;
+ $('analyzeFile').onclick=analyzeImportedFiles;if($('analyzePhoto'))$('analyzePhoto').onclick=analyzePhotoLocal;if($('importToProgram'))$('importToProgram').onclick=transferImportToProgram;if($('importSaveDraft'))$('importSaveDraft').onclick=saveImportDraft;
  ['curveRadius','curveAngle','curveLength','curveHits','curveSpring','curveV','curveThickness','curveStrategy','curveMode'].forEach(id=>$(id).addEventListener('input',()=>{readCurveInputs();renderCurve()}));
  $('curveCalculate').onclick=()=>commit('Recalculada Curva Perfecta',()=>readCurveInputs());
  $('curveToProgram').onclick=()=>{readCurveInputs();let c=state.curve,r=calculateCurve();commit('Curva Perfecta enviada a Programar',()=>{state.bends=r.rows.map((x,i)=>({leg:+r.step.toFixed(2),angle:x.angle,radius:r.radius,v:c.v,punch:'Recto 30°',gauge:+x.x.toFixed(2),direction:1,curveGroup:'CP1',hit:i+1}))});go('program')};
@@ -1167,13 +1208,13 @@ function installEssentialFallbacks(){
  bindOnlyIfMissing('saveProject','click',()=>typeof saveProject==='function'&&saveProject());
  bindOnlyIfMissing('loadProject','click',()=>typeof loadProject==='function'&&loadProject());
  bindOnlyIfMissing('addBend','click',()=>{if(typeof commit==='function')commit('Añadido pliegue',()=>state.bends.push({leg:100,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:100,direction:1}))});
- /* analyzeFile enlazado en bind() al módulo Importar v50.9 */
+ /* analyzeFile enlazado en bind() al módulo Importar v51.0 */
  safeBind('photoInput','change',e=>typeof photoSelected==='function'&&photoSelected(e));
  safeBind('analyzePhoto','click',()=>typeof analyzePhotoLocal==='function'&&analyzePhotoLocal());
 }
 
 function runtimeFunctionalAudit(){
- const report={version:'50.8',missingElements:[],buttons:[],modules:[],errors:[]};
+ const report={version:'51.0',missingElements:[],buttons:[],modules:[],errors:[]};
  const required=['mobileMenuBtn','menuToggle','mainSidebar','backBtn','undoBtn','redoBtn','addBend','progThickness','progSheetLength','progBendLength','progSpecialGeometry','progCurveCreate','sequenceAnalyze','sequenceOptimize','sequenceExport','sendSim','p2Add','p2Thickness','p2SheetLength','p2BendLength','p3Apply','p3Thickness','p3SheetLength','p3BendLength','s2Play','s3Play','curveCalculate','compareVBtn','aiCalculate','crmSave','crmMail','saveSettings','saveProject'];
  required.forEach(id=>{if(!safeElement(id))report.missingElements.push(id)});
  document.querySelectorAll('section.page').forEach(p=>report.modules.push(p.id));
