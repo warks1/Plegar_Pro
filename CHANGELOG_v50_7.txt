@@ -1,0 +1,8 @@
+PLEGAR PRO v50.7 · CORRECCIÓN DECIMALES EN EDICIÓN
+
+- Corregido el bloqueo que impedía escribir 1,5 en Programar, Programación 2D y Programación 3D.
+- La causa era el repintado inmediato del formulario tras escribir la coma: «1,» se convertía a «1» antes de poder escribir el 5.
+- El campo activo ya no se sobrescribe durante la escritura.
+- Se aceptan coma y punto decimal.
+- Se limita la entrada a caracteres numéricos, un único separador decimal y signo negativo cuando corresponda.
+- Compilación: PP-507-REAL.

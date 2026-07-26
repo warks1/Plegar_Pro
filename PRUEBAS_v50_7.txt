@@ -1,0 +1,8 @@
+PRUEBAS PLEGAR PRO v50.7
+
+[OK] El campo activo no se repinta desde renderProgramSharedInputs.
+[OK] parseLocaleNumber('1,5') devuelve 1.5.
+[OK] parseLocaleNumber('1.5') devuelve 1.5.
+[OK] Se mantiene inputmode="decimal" en los campos numéricos.
+[OK] El manejador permite un único separador decimal.
+[OK] Versión visible v50.7 y compilación PP-507-REAL.
