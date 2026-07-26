@@ -1,0 +1,8 @@
+Pruebas realizadas:
+- Sintaxis JavaScript validada con Node.js.
+- Identificadores HTML duplicados: ninguno.
+- Presencia del motor OCR técnico y fallback.
+- Presencia de inferencia 500 / 123 / 50 para planos con esas cotas leídas.
+- Perfil U con retornos: 4 pliegues, 5 tramos.
+- Botón Añadir pieza a Programar habilitado tras reconstrucción.
+- Identificador de compilación: PP-511-VISION-OCR.

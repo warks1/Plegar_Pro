@@ -1,0 +1,11 @@
+Plegar Pro v51.1 · IA Vision OCR técnico
+- Nuevo OCR técnico para leer cotas numéricas de planos fotografiados.
+- Separación entre longitud de plegado, ancho exterior y altura del perfil.
+- Detección guiada de canal U con retornos.
+- Reconstrucción inicial de 4 pliegues y 5 tramos, evitando el antiguo resultado genérico 600/600.
+- Panel visible con cotas reconocidas y nivel de revisión.
+- Longitud de retorno editable cuando no está acotada.
+- Transferencia de geometría reconstruida a Programar.
+- Compilación visible PP-511-VISION-OCR.
+
+Limitación: el OCR usa un motor descargado por Internet. Si no está disponible, se mantiene el análisis geométrico y la confirmación manual. Toda pieza debe revisarse antes de fabricar.
