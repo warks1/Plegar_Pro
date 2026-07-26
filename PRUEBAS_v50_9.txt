@@ -1,0 +1,6 @@
+PRUEBAS REALIZADAS
+- JavaScript validado con node --check: correcto.
+- IDs HTML duplicados: ninguno.
+- Botón Añadir pieza a Programar presente y enlazado.
+- Transferencia actualiza state.project, state.programMeta y state.bends.
+- La importación CAD nativa completa sigue siendo orientativa en navegador; los formatos propietarios requieren conversor especializado.

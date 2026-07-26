@@ -1,0 +1,10 @@
+PLEGAR PRO v50.9 · MÓDULO IMPORTAR PLANOS
+- Importar planos pasa a ser un módulo independiente y visible.
+- Selección múltiple de CAD 2D/3D, PDF, documentos e imágenes.
+- Cámara/fotografía y preprocesado visual integrado.
+- Flujo Origen > Análisis IA > Crear pieza.
+- Datos detectados editables antes de transferir.
+- Cálculo automático de V y punzón por espesor.
+- Botón Añadir pieza a Programar.
+- Transferencia sincronizada de material, espesor, longitudes, tramos, pliegues y herramientas.
+- Historial local de importaciones y guardado de borrador.

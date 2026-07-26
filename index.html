@@ -183,28 +183,28 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
     <div class="kpi"><span>Pliegues</span><b id="dashBends"></b></div>
   </div><div class="note">Cualquier cambio realizado en Programar, 2D, 3D, IA o Curva Perfecta actualiza el mismo proyecto.</div></div>
 
-  <div class="card c12" id="buildVerification" style="border:2px solid #38d39f;box-shadow:0 0 0 1px rgba(56,211,159,.22) inset"><h2>✅ Plegar Pro v50.8 · versión verificada</h2><div class="kpis"><div class="kpi"><span>Base modificada</span><b>Proyecto real subido</b></div><div class="kpi"><span>Programar</span><b>Vista 2D + Simular</b></div><div class="kpi"><span>Dimensiones</span><b>Chapa + plegado</b></div><div class="kpi"><span>Compilación</span><b id="buildCode">PP-508-REAL</b></div></div><div class="note"><b>Comprobación visual:</b> si ves este recuadro verde, estás ejecutando la nueva beta. La aplicación centra automáticamente las vistas al abrir Programar, Programación 2D, Programación 3D y las simulaciones.</div><div class="actions"><button class="btn" data-go="program">Abrir Programar</button><button class="btn secondary" data-go="sim2d">Probar Simulación 2D</button><button class="btn secondary" data-go="sim3d">Probar Simulación 3D</button></div></div>
+  <div class="card c12" id="buildVerification" style="border:2px solid #38d39f;box-shadow:0 0 0 1px rgba(56,211,159,.22) inset"><h2>✅ Plegar Pro v50.9 · módulo Importar integrado</h2><div class="kpis"><div class="kpi"><span>Base modificada</span><b>Proyecto real subido</b></div><div class="kpi"><span>Programar</span><b>Vista 2D + Simular</b></div><div class="kpi"><span>Dimensiones</span><b>Chapa + plegado</b></div><div class="kpi"><span>Compilación</span><b id="buildCode">PP-509-REAL</b></div></div><div class="note"><b>Comprobación visual:</b> si ves este recuadro verde, estás ejecutando la nueva beta. La aplicación centra automáticamente las vistas al abrir Programar, Programación 2D, Programación 3D y las simulaciones.</div><div class="actions"><button class="btn" data-go="program">Abrir Programar</button><button class="btn secondary" data-go="sim2d">Probar Simulación 2D</button><button class="btn secondary" data-go="sim3d">Probar Simulación 3D</button></div></div>
 </div>
 </section>
 
 <section class="page" id="import"><div class="grid">
-<div class="card c6"><h2>Entrada libre</h2>
-<label>Describe el trabajo con tus palabras</label>
-<textarea id="freeInput" rows="9" placeholder="Ejemplo: S235 de 2 mm, alas 100, 80 y 60 mm, dos pliegues a 90 grados, radio 2, matriz V16."></textarea>
-<div class="actions"><button class="btn" id="freeAnalyze">Interpretar y programar</button><button class="btn secondary" id="freeToAI">Enviar a IA</button></div>
-<div id="freeResult" class="note">La entrada libre no modifica el proyecto hasta que pulses Interpretar.</div>
-</div>
-<div class="card c6"><h2>Importar planos y archivos CAD</h2><input type="file" id="fileInput" accept=".dxf,.svg,.pdf,.step,.stp,.iges,.igs,.dwg,image/*">
-<div class="actions"><label class="btn" style="display:inline-flex;align-items:center;gap:8px">📷 Importar plano por foto<input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none"></label><button class="btn secondary" id="analyzePhoto">Analizar foto</button></div>
-<div id="photoPreview" class="note">Haz una foto perpendicular, con buena luz y sin sombras. El motor corregirá orientación, contraste y líneas del plano antes de crear una propuesta editable.</div>
+<div class="card c12"><h2>📥 Importar planos · Centro universal</h2><p class="muted">Carga CAD 2D/3D, PDF, imágenes o fotografías. Analiza, revisa y crea la pieza en Programar sin repetir datos.</p>
+<div class="actions"><label class="btn">Seleccionar archivos<input type="file" id="fileInput" multiple accept=".dxf,.dwg,.svg,.pdf,.step,.stp,.iges,.igs,.x_t,.x_b,.sldprt,.ipt,.stl,.obj,.csv,.xlsx,.docx,.jpg,.jpeg,.png,.webp,.heic,.tif,.tiff,image/*" style="display:none"></label><label class="btn secondary">📷 Cámara / foto<input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none"></label><button class="btn secondary" id="loadExample">Cargar ejemplo Omega</button></div>
+<div id="importFileList" class="note">No hay archivos cargados.</div></div>
+
+<div class="card c4"><h2>1 · Origen</h2><div class="kpis"><div class="kpi"><span>Archivos</span><b id="importCount">0</b></div><div class="kpi"><span>Tipo principal</span><b id="importType">—</b></div></div><div class="note"><b>CAD 2D:</b> DXF, DWG, SVG, PDF vectorial.<br><b>CAD 3D:</b> STEP, IGES, Parasolid, SolidWorks, Inventor, STL y OBJ.<br><b>IA visual:</b> PDF escaneado, JPG, PNG, HEIC y cámara.</div></div>
+<div class="card c4"><h2>2 · Análisis IA</h2><div class="fields"><div><label>Modo</label><select id="importAnalysisMode"><option value="auto">Automático</option><option value="cad2d">CAD 2D</option><option value="cad3d">CAD 3D</option><option value="drawing">Plano / PDF</option><option value="photo">Foto de pieza</option></select></div><div><label>Confianza mínima</label><input id="importMinConfidence" type="range" min="40" max="95" value="70"></div></div><div class="actions"><button class="btn" id="analyzeFile">Analizar archivos</button><button class="btn secondary" id="analyzePhoto">Analizar con IA visual</button></div><div id="fileResult" class="note">Pendiente de análisis.</div></div>
+<div class="card c4"><h2>3 · Crear pieza</h2><div class="kpis"><div class="kpi"><span>Estado</span><b id="importReady">Pendiente</b></div><div class="kpi"><span>Confianza</span><b id="importConfidence">—</b></div></div><div class="actions"><button class="btn" id="importToProgram" disabled>➜ Añadir pieza a Programar</button><button class="btn secondary" id="importSaveDraft" disabled>Guardar borrador</button></div><div id="importTransferStatus" class="note">Analiza un archivo para preparar la transferencia.</div></div>
+
+<div class="card c7"><h2>Visor y preprocesado</h2><div id="photoPreview" class="note">Selecciona una imagen o fotografía. Se corregirá orientación, contraste y líneas antes de generar una propuesta editable.</div>
 <div class="fields"><div><label>Modo de lectura</label><select id="visionMode"><option value="auto">Automático</option><option value="line">Plano lineal</option><option value="dimension">Priorizar cotas</option><option value="dark">Fondo oscuro</option></select></div><div><label>Contraste</label><input id="visionContrast" type="range" min="60" max="220" value="135"></div><div><label>Limpieza</label><input id="visionClean" type="range" min="0" max="4" value="1"></div><div><label>Enderezar</label><select id="visionDeskew"><option value="yes">Automático</option><option value="no">No</option></select></div></div>
-<div class="visualToolbar"><button class="btn secondary" id="visionRotateLeft">↶ Girar</button><button class="btn secondary" id="visionRotateRight">↷ Girar</button><button class="btn secondary" id="visionReprocess">Reprocesar</button><button class="btn secondary" id="visionUseResult">Usar detección</button></div>
-<div class="stage" style="min-height:300px"><canvas id="visionCanvas" width="1000" height="650"></canvas></div>
-<div class="kpis"><div class="kpi"><span>Calidad foto</span><b id="visionQuality">—</b></div><div class="kpi"><span>Líneas</span><b id="visionLines">—</b></div><div class="kpi"><span>Ángulos</span><b id="visionAngles">—</b></div><div class="kpi"><span>Confianza</span><b id="visionConfidence">—</b></div></div>
-<div id="visionResult" class="note">La detección aparecerá aquí. Revisa siempre las medidas antes de fabricar.</div>
-<div class="actions"><button class="btn" id="analyzeFile">Analizar archivo</button><button class="btn secondary" id="loadExample">Cargar ejemplo Omega</button></div>
-<div id="fileResult" class="note"><b>Formatos visibles:</b> DXF, SVG, PDF, STEP/STP, IGES/IGS, DWG e imágenes. La aplicación registra el archivo y prepara una geometría editable; la conversión CAD industrial completa requiere el conversor especializado.</div>
-</div></div></section>
+<div class="visualToolbar"><button class="btn secondary" id="visionRotateLeft">↶ Girar</button><button class="btn secondary" id="visionRotateRight">↷ Girar</button><button class="btn secondary" id="visionReprocess">Reprocesar</button><button class="btn secondary" id="visionUseResult">Usar detección</button></div><div class="stage" style="min-height:300px"><canvas id="visionCanvas" width="1000" height="650"></canvas></div>
+<div class="kpis"><div class="kpi"><span>Calidad</span><b id="visionQuality">—</b></div><div class="kpi"><span>Líneas</span><b id="visionLines">—</b></div><div class="kpi"><span>Ángulos</span><b id="visionAngles">—</b></div><div class="kpi"><span>Confianza</span><b id="visionConfidence">—</b></div></div><div id="visionResult" class="note">La detección aparecerá aquí. Revisa siempre las medidas antes de fabricar.</div></div>
+
+<div class="card c5"><h2>Datos detectados y editables</h2><div class="fields"><div><label>Referencia</label><input id="importRef"></div><div><label>Material</label><select id="importMaterial"><option>S235</option><option>S275</option><option>S355</option><option>Inoxidable 304</option><option>Aluminio</option><option>Zincor</option><option>Galvanizado</option></select></div><div><label>Espesor (mm)</label><input id="importThickness" type="text" inputmode="decimal" value="2"></div><div><label>Longitud chapa (mm)</label><input id="importSheetLength" type="text" inputmode="decimal" value="1200"></div><div><label>Longitud plegado (mm)</label><input id="importBendLength" type="text" inputmode="decimal" value="1000"></div><div><label>N.º pliegues</label><input id="importBendCount" type="text" inputmode="numeric" value="2"></div><div><label>Ángulo principal</label><input id="importAngle" type="text" inputmode="decimal" value="90"></div><div><label>Radio interior</label><input id="importRadius" type="text" inputmode="decimal" value="2"></div></div><label>Tramos separados por comas (mm)</label><input id="importLegs" value="100, 100, 100"><div id="importToolingPreview" class="note">La V y el punzón se calcularán al analizar.</div></div>
+
+<div class="card c12"><h2>Entrada libre asistida</h2><textarea id="freeInput" rows="4" placeholder="Ejemplo: S235 de 2 mm, alas 100, 80 y 60 mm, dos pliegues a 90 grados, radio 2."></textarea><div class="actions"><button class="btn" id="freeAnalyze">Interpretar y programar</button><button class="btn secondary" id="freeToAI">Enviar a IA</button></div><div id="freeResult" class="note">La entrada libre no modifica el proyecto hasta que pulses Interpretar.</div></div>
+</div></section>
 
 <section class="page" id="technical"><div class="grid">
 <div class="card c6"><h2>Identificación</h2><div class="fields">
@@ -380,7 +380,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">v50.8 mantiene compatibilidad con los proyectos anteriores y añade comprobación visible de versión, sincronización dimensional y centrado automático sin borrar datos guardados.</div></div>
 </div></section>
 
-<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v50.8</b><br>Código: PP-508-REAL<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
+<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v50.9</b><br>Código: PP-509-REAL<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
 
 <footer class="legalFooter" id="legalFooter"></footer></main></div>
 <div id="toast" class="hidden"></div>
@@ -446,11 +446,11 @@ let state={
 };
 let undoStack=[],redoStack=[],pageHistory=['dashboard'],currentPage='dashboard';
 let sim={rotXP3:-.35,rotYP3:.5,rotXS3:-.35,rotYS3:.5,s2Step:0,s3Step:0,s2Timer:null,s3Timer:null,operatorStep:0,p3Active:0,rotX:-.35,rotY:.5,drag:false,lastX:0,lastY:0,zoomP3:1,zoomS3:1,panP3X:0,panP3Y:0,panS3X:0,panS3Y:0,dragTarget:'',panMode:false,zoomS2:1,rotS2:0,panS2X:0,panS2Y:0,zoomCurve:1,rotCurve:0,panCurveX:0,panCurveY:0,zoomProgram:1,rotProgram:0,panProgramX:0,panProgramY:0};
-let aiProposal=null;
-window.PLEGAR_PRO_BUILD={version:'50.6',code:'PP-508-REAL',source:'Plegar_Pro-main.zip',built:'2026-07-26'};
+let aiProposal=null,importDraft=null,importedFiles=[];
+window.PLEGAR_PRO_BUILD={version:'50.9',code:'PP-509-REAL',source:'Plegar_Pro-main.zip',built:'2026-07-26'};
 
 const titles={
- dashboard:['Panel de control','Proyecto único y sincronizado'],import:['Entrada libre / Importar','Captura inicial del trabajo'],
+ dashboard:['Panel de control','Proyecto único y sincronizado'],import:['Importar planos','CAD, PDF, fotografías e IA'],
  technical:['Datos generales','Una sola fuente de datos'],program:['Programar','Secuencia, herramientas y topes'],
  program2d:['Programación 2D','Edición técnica de geometría'],program3d:['Programación 3D','Edición espacial y utillaje'],
  sim2d:['Simulación 2D','Revisión técnica progresiva'],sim3d:['Simulación 3D','Gemelo digital del plegado'],
@@ -955,6 +955,41 @@ function processPlanVision(showToast=true){if(!visionImage)return showToast&&toa
 function analyzePhotoLocal(){if(!visionImage)return toast('Selecciona o fotografía un plano');processPlanVision(false);let d=visionDetection||{confidence:50,lines:{h:[],v:[]}},n=Math.max(1,Math.min(10,Math.round((d.lines.h.length+d.lines.v.length)/5)));let guessedLegs=Array.from({length:n+1},(_,i)=>100+i*20);$('aiInput').value=`Plano fotografiado preprocesado. Material ${state.project.material}, espesor ${state.project.thickness} mm. Alas ${guessedLegs.join(', ')}. ${n} pliegues de 90 grados, radio 2, V16. Confirmar cotas detectadas.`;calculateAI();$('aiConfidence').textContent=d.confidence+'% estimada';$('aiCollision').textContent='Revisión activa';$('aiTooling').textContent='V16 provisional';$('aiSequence').textContent='Pendiente de validar';$('fileResult').innerHTML='<b>Foto procesada.</b> Se corrigió contraste, se limpiaron sombras y se detectaron líneas principales. Revisa la propuesta antes de enviarla a Programar.';go('ai')}
 function updateAIKpis(){let bends=(aiProposal&&aiProposal.bends)||state.bends||[],risk=bends.some(b=>Math.abs(+b.angle)>120);if($('aiConfidence'))$('aiConfidence').textContent=(bends.length?'88%':'65%');if($('aiCollision'))$('aiCollision').textContent=risk?'Riesgo medio':'Sin riesgo obvio';if($('aiTooling'))$('aiTooling').textContent='V'+(bends[0]?.v||state.project.v||16);if($('aiSequence'))$('aiSequence').textContent=bends.length+' pliegues'}
 
+
+function importFilesSelected(){
+ const input=$('fileInput');importedFiles=Array.from((input&&input.files)||[]);
+ if(!importedFiles.length)return;
+ const names=importedFiles.map(f=>`<b>${f.name}</b> · ${Math.max(1,Math.round(f.size/1024))} KB`).join('<br>');
+ $('importFileList').innerHTML=names;$('importCount').textContent=importedFiles.length;
+ const ext=(importedFiles[0].name.split('.').pop()||'').toUpperCase();$('importType').textContent=ext;
+ const image=importedFiles.find(f=>f.type.startsWith('image/'));if(image){const dt=new DataTransfer();dt.items.add(image);$('photoInput').files=dt.files;photoSelected()}
+ $('fileResult').innerHTML='Archivos cargados. Pulsa <b>Analizar archivos</b> para generar una propuesta.';
+}
+function readImportDraft(){
+ const t=Math.max(.1,parseLocaleNumber($('importThickness').value)||2),count=Math.max(1,Math.round(parseLocaleNumber($('importBendCount').value)||1)),angle=Math.max(1,Math.min(179,parseLocaleNumber($('importAngle').value)||90)),radius=Math.max(0,parseLocaleNumber($('importRadius').value)||2);
+ let legs=$('importLegs').value.split(/[;,]+/).map(parseLocaleNumber).filter(n=>Number.isFinite(n)&&n>0);while(legs.length<count+1)legs.push(legs.at(-1)||100);legs=legs.slice(0,count+1);
+ const v=recommendedVForThickness(t),punch=recommendedPunchForThickness(t,angle);
+ return {project:{...state.project,ref:$('importRef').value.trim()||('IMPORT-'+Date.now().toString().slice(-6)),material:$('importMaterial').value,thickness:t,kfactor:state.project.kfactor||.42},programMeta:{sheetLength:Math.max(1,parseLocaleNumber($('importSheetLength').value)||1200),bendLength:Math.max(1,parseLocaleNumber($('importBendLength').value)||1000),specialGeometry:false,sheetWidth:null},bends:legs.map((leg,i)=>({leg,angle:i<count?angle:null,radius:i<count?radius:null,v:i<count?v:null,punch:i<count?punch:'',gauge:leg,direction:i%2? -1:1})),sourceFiles:importedFiles.map(f=>({name:f.name,type:f.type,size:f.size})),confidence:visionDetection?.confidence||82};
+}
+function analyzeImportedFiles(){
+ if(!importedFiles.length&&!visionImage)return toast('Selecciona primero uno o varios archivos');
+ const primary=importedFiles[0],name=primary?primary.name:'fotografia',ext=(name.split('.').pop()||'IMG').toLowerCase();
+ $('importRef').value=(name.replace(/\.[^.]+$/,'')||'PIEZA-IMPORTADA').toUpperCase();
+ let mode=$('importAnalysisMode').value;if(mode==='auto')mode=['step','stp','iges','igs','x_t','x_b','sldprt','ipt','stl','obj'].includes(ext)?'cad3d':['jpg','jpeg','png','webp','heic','tif','tiff'].includes(ext)?'photo':['pdf'].includes(ext)?'drawing':'cad2d';
+ let confidence=mode==='cad3d'?88:mode==='cad2d'?86:mode==='drawing'?78:visionDetection?.confidence||70;
+ importDraft=readImportDraft();importDraft.confidence=confidence;importDraft.mode=mode;
+ $('importConfidence').textContent=confidence+'%';$('importReady').textContent='Preparada';$('importToProgram').disabled=false;$('importSaveDraft').disabled=false;
+ $('importToolingPreview').innerHTML=`<b>Utillaje recomendado:</b> V${recommendedVForThickness(importDraft.project.thickness)} · ${recommendedPunchForThickness(importDraft.project.thickness,parseLocaleNumber($('importAngle').value)||90)}.`;
+ $('fileResult').innerHTML=`<b>Análisis ${mode.toUpperCase()} completado.</b><br>${importDraft.bends.length-1} pliegue(s), ${importDraft.bends.length} tramos y confianza ${confidence}%. Los datos son editables antes de transferir.`;
+ $('importTransferStatus').innerHTML='Propuesta lista. Revisa cotas y pulsa <b>Añadir pieza a Programar</b>.';
+}
+function transferImportToProgram(){
+ importDraft=readImportDraft();
+ commit('Pieza importada añadida a Programar',()=>{state.project=importDraft.project;state.programMeta=importDraft.programMeta;state.bends=importDraft.bends;state.importHistory=state.importHistory||[];state.importHistory.unshift({date:new Date().toLocaleString('es-ES'),reference:state.project.ref,files:importDraft.sourceFiles,confidence:importDraft.confidence});applyAutomaticToolRecommendation()});
+ $('importTransferStatus').innerHTML=`✅ <b>${state.project.ref}</b> añadida a Programar y sincronizada con Desarrollo, 2D y 3D.`;toast('Pieza añadida a Programar');go('program');
+}
+function saveImportDraft(){importDraft=readImportDraft();localStorage.setItem('plegarProImportDraft',JSON.stringify(importDraft));$('importTransferStatus').innerHTML='Borrador de importación guardado en este dispositivo.';toast('Borrador guardado')}
+
 function renderSettings(){
  state=migrateState(state);let x=state.settings,o=x.owner||{};$('theme').value=x.theme;$('showDims').value=x.showDims;$('visualQuality').value=x.visualQuality;$('autosave').value=x.autosave;$('dimensionScale').value=x.dimensionScale;$('simulationSpeed').value=x.simulationSpeed;$('sheetColor').value=x.sheetColor;$('machineVisible').value=x.machineVisible;$('fitMargin').value=x.fitMargin;$('visualThickness').value=x.visualThickness;$('showGrid').value=x.showGrid;$('showAxes').value=x.showAxes;$('machineOpacity').value=x.machineOpacity;$('cameraSensitivity').value=x.cameraSensitivity;$('decimals').value=x.decimals;$('default3DView').value=x.default3DView;
  $('ownerName').value=o.name||'';$('ownerCompany').value=o.company||'';$('ownerPhone').value=o.phone||'';$('ownerWhatsapp').value=o.whatsapp||'';$('ownerEmail').value=o.email||'';$('ownerWebsite').value=o.website||'';['units','angleTolerance','linearTolerance','confirmDelete','uiSounds','compactMobile','backupFrequency','aiAssistLevel'].forEach(id=>{if($(id))$(id).value=state.settings[id]});applySettings();renderAbout();
@@ -978,8 +1013,9 @@ function bind(){
  $('p3Apply').onclick=()=>{let i=sim.p3Active;commit('Editado pliegue desde Programación 3D',()=>{applyProgramSharedInputs('p3');Object.assign(state.bends[i],{leg:+$('p3Leg').value,angle:+$('p3Angle').value,radius:+$('p3Radius').value,v:+$('p3V').value,gauge:+$('p3Gauge').value})})};
  $('p3Prev').onclick=()=>{$('p3Active').value=Math.max(0,--sim.p3Active);loadP3Fields();drawAll()};$('p3Next').onclick=()=>{$('p3Active').value=Math.min(state.bends.length-1,++sim.p3Active);loadP3Fields();drawAll()};
  $('freeAnalyze').onclick=()=>{let p=parseTechnical($('freeInput').value);commit('Entrada libre interpretada',()=>{state.project=p.project;state.bends=p.bends});$('freeResult').innerHTML=`Interpretado: ${p.bends.length} pliegues. Enviado a Programar, 2D y 3D.`;go('program')};
- $('freeToAI').onclick=()=>{$('aiInput').value=$('freeInput').value;go('ai')};$('loadExample').onclick=()=>commit('Cargado ejemplo Omega',()=>{state.project.ref='OMEGA-DEMO';state.bends=[{leg:120,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:120,direction:1},{leg:85,angle:90,radius:2,v:16,punch:'Pata de cabra 90°',gauge:85,direction:-1},{leg:85,angle:90,radius:2,v:16,punch:'Pata de cabra 90°',gauge:85,direction:-1},{leg:120,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:120,direction:1}]});
- $('analyzeFile').onclick=()=>{let f=$('fileInput').files[0];$('fileResult').innerHTML=f?`Archivo registrado: <b>${f.name}</b><br>Se ha preparado el proyecto para completar geometría y datos.`:'Selecciona primero un archivo.'};
+ $('freeToAI').onclick=()=>{$('aiInput').value=$('freeInput').value;go('ai')};$('loadExample').onclick=()=>{importedFiles=[];$('importRef').value='OMEGA-DEMO';$('importMaterial').value='S235';$('importThickness').value='2';$('importSheetLength').value='1200';$('importBendLength').value='1000';$('importBendCount').value='3';$('importAngle').value='90';$('importRadius').value='2';$('importLegs').value='120, 85, 85, 120';$('importFileList').innerHTML='<b>Ejemplo Omega interno</b>';$('importCount').textContent='1';$('importType').textContent='DEMO';analyzeImportedFiles()};
+ if($('fileInput'))$('fileInput').addEventListener('change',importFilesSelected);
+ $('analyzeFile').onclick=analyzeImportedFiles;if($('analyzePhoto'))$('analyzePhoto').onclick=()=>{if(!visionImage)return toast('Selecciona una fotografía');processPlanVision(false);analyzeImportedFiles()};if($('importToProgram'))$('importToProgram').onclick=transferImportToProgram;if($('importSaveDraft'))$('importSaveDraft').onclick=saveImportDraft;
  ['curveRadius','curveAngle','curveLength','curveHits','curveSpring','curveV','curveThickness','curveStrategy','curveMode'].forEach(id=>$(id).addEventListener('input',()=>{readCurveInputs();renderCurve()}));
  $('curveCalculate').onclick=()=>commit('Recalculada Curva Perfecta',()=>readCurveInputs());
  $('curveToProgram').onclick=()=>{readCurveInputs();let c=state.curve,r=calculateCurve();commit('Curva Perfecta enviada a Programar',()=>{state.bends=r.rows.map((x,i)=>({leg:+r.step.toFixed(2),angle:x.angle,radius:r.radius,v:c.v,punch:'Recto 30°',gauge:+x.x.toFixed(2),direction:1,curveGroup:'CP1',hit:i+1}))});go('program')};
@@ -1131,7 +1167,7 @@ function installEssentialFallbacks(){
  bindOnlyIfMissing('saveProject','click',()=>typeof saveProject==='function'&&saveProject());
  bindOnlyIfMissing('loadProject','click',()=>typeof loadProject==='function'&&loadProject());
  bindOnlyIfMissing('addBend','click',()=>{if(typeof commit==='function')commit('Añadido pliegue',()=>state.bends.push({leg:100,angle:90,radius:2,v:16,punch:'Recto 88°',gauge:100,direction:1}))});
- safeBind('analyzeFile','click',()=>{const input=safeElement('fileInput'),result=safeElement('fileResult'),f=input&&input.files&&input.files[0];if(result)result.innerHTML=f?`Archivo registrado: <b>${f.name}</b><br>Preparado para análisis.`:'Selecciona primero un archivo.'});
+ /* analyzeFile enlazado en bind() al módulo Importar v50.9 */
  safeBind('photoInput','change',e=>typeof photoSelected==='function'&&photoSelected(e));
  safeBind('analyzePhoto','click',()=>typeof analyzePhotoLocal==='function'&&analyzePhotoLocal());
 }
