@@ -1,0 +1,18 @@
+PLEGAR PRO v50.4 - DIMENSIONES INTELIGENTES
+Base acumulativa: v50.3 Secuencia Inteligente
+
+IMPLEMENTADO
+- Nuevo dato obligatorio: Longitud de la chapa.
+- Se conserva Longitud de plegado como dato independiente.
+- Nuevo modo Geometría especial.
+- Anchura total opcional, oculta por defecto y visible solo al activar Geometría especial.
+- Sincronización entre Programar, Programación 2D y Programación 3D.
+- Resumen de dimensiones activo en Simulación 2D y Simulación 3D.
+- Persistencia dentro de programMeta.
+- Migración automática de proyectos anteriores con valores seguros.
+- Auditoría ampliada con los nuevos controles.
+- Identificación visual actualizada a v50.4.
+
+NO ELIMINADO
+- Se conservan todos los módulos, secuencia inteligente, Curva Perfecta, Desarrollo,
+  Comparador V, simulaciones, IA, producción, calidad, CRM, ajustes e historial.

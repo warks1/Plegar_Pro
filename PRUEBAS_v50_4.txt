@@ -1,0 +1,14 @@
+PRUEBAS PLEGAR PRO v50.4
+
+RESULTADOS
+- JavaScript validado con node --check: CORRECTO.
+- IDs HTML duplicados: NINGUNO.
+- Controles obligatorios presentes: CORRECTO.
+- Longitud de chapa y longitud de plegado separadas: CORRECTO.
+- Anchura opcional oculta por defecto: CORRECTO.
+- Migración desde v50.3 añadida: CORRECTO.
+- Sincronización Programar / 2D / 3D añadida: CORRECTO.
+- Resumen dimensional en simulaciones añadido: CORRECTO.
+
+NOTA
+La versión conserva la arquitectura de archivo único y todas las funciones heredadas.
