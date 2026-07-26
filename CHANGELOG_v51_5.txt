@@ -1,0 +1,11 @@
+PLEGAR PRO v51.5 — GRÁFICOS E IA INDUSTRIAL
+
+- Renovación visual industrial limpia y compacta.
+- Eliminado el panel de verificación visible.
+- Mejor contraste, jerarquía, tablas, formularios, lienzos y controles táctiles.
+- OCR técnico multipasada: original, nítida, limpia y giros 90/270 grados.
+- Lectura de cotas, ángulos y radios.
+- Inferencia de perfiles L, Z, U y U con retornos.
+- Confianza combinada de geometría y OCR.
+- No inventa medidas cuando la lectura no es fiable.
+- Conserva biblioteca completa de matrices y punzones y todos los módulos heredados.

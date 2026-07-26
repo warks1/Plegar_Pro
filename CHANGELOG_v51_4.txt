@@ -1,0 +1,18 @@
+PLEGAR PRO v51.4 · IA FOTO A PROGRAMAR
+
+Base: v51.3 Biblioteca Completa, derivada del proyecto enviado por el usuario.
+
+CORRECCIONES
+- La fotografía ya no se marca como analizada usando valores genéricos.
+- El botón Analizar archivos deriva las imágenes al análisis visual real.
+- El botón Analizar con IA visual muestra el estado y espera al resultado.
+- Se intenta primero el detector de texto del navegador y después OCR técnico multipasada.
+- Si el OCR no está disponible, se permite confirmar manualmente las cotas sin inventarlas.
+- La transferencia conserva la confianza, el modo de importación, la geometría inferida y el archivo fuente.
+- Antes de transferir se valida la coherencia entre número de pliegues y tramos.
+- Tras transferir se fuerza la sincronización de Programar, Desarrollo, 2D y 3D.
+- Se mantiene completa la biblioteca de matrices y punzones de la v51.3.
+- Se oculta el panel técnico de verificación para mantener la interfaz limpia.
+
+LIMITACIÓN REAL
+El OCR avanzado depende de que el navegador disponga de reconocimiento de texto o pueda cargar Tesseract.js. Si no está disponible, el programa pasa a confirmación manual y no inventa cotas.

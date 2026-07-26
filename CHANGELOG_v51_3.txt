@@ -1,0 +1,10 @@
+PLEGAR PRO v51.3 — BIBLIOTECA COMPLETA
+
+- Base utilizada: archivo enviado por el usuario (Plegar_Pro-main 2.zip).
+- Recuperadas 45 matrices: V6, V12, V16, V22, V24, V32, V36, V40 y V50.
+- Recuperados 25 punzones: rectos 30°, 60°, 88°, 90° y pata de cabra 90°.
+- Fabricantes: Bystronic, Mecos, Amada, Trumpf y Corplec.
+- Filtros por fabricante, tipo y búsqueda.
+- Selección de herramienta por pliegue.
+- El selector de punzón de Programar usa la biblioteca recuperada.
+- Eliminada la etiqueta técnica flotante para mantener una interfaz limpia.

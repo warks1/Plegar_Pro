@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v51.2 · Despliegue verificado y Visión Técnica</title>
+<title>Plegar Pro v51.5 · Gráficos e IA Industrial</title>
 <style>
 :root{
   --bg:#06111b;--panel:#0d2131;--panel2:#112a3d;--line:#31536c;
@@ -16,7 +16,8 @@ body.light{--bg:#edf3f7;--panel:#fff;--panel2:#f4f8fa;--line:#b8c9d5;--text:#142
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 #loader{position:fixed;inset:0;z-index:1000;background:radial-gradient(circle at 50% 35%,#15354d,#050b11 65%);display:grid;place-items:center;transition:.35s}
-#loader.hidden{opacity:0;pointer-events:none;visibility:hidden} body.boot-complete #loader{display:none!important}
+#loader.hidden{opacity:0;pointer-events:none;visibility:hidden}
+#buildVerification{display:none!important} body.boot-complete #loader{display:none!important}
 .loadBox{width:min(460px,88vw);text-align:center}
 .logoMark{width:94px;height:94px;margin:0 auto 16px;border:3px solid var(--accent);border-radius:22px;display:grid;place-items:center;transform:rotate(45deg);box-shadow:0 0 35px #48d8ff55}
 .logoMark span{transform:rotate(-45deg);font-size:30px;font-weight:1000}
@@ -108,9 +109,24 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
  .app:has(#menuToggle:checked){overflow:hidden}
 }
 </style>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v51.2 · Despliegue verificado y Visión Técnica"></head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v51.5 · Gráficos e IA Industrial">
+<style id="pp515-visual-upgrade">
+:root{--bg:#071017;--panel:#0d1821;--panel2:#111f2a;--line:#253946;--text:#edf7fb;--muted:#91a9b7;--accent:#31c8ff;--accent2:#7ce3b2;--danger:#ff6b6b;--radius:12px;--shadow:0 14px 36px rgba(0,0,0,.28)}
+body{background:radial-gradient(circle at 70% -10%,rgba(49,200,255,.09),transparent 32%),linear-gradient(180deg,#071017,#09131b 55%,#061016);letter-spacing:.01em}
+.sidebar{background:linear-gradient(180deg,#0a141c,#081119);border-right:1px solid #1f3440;box-shadow:12px 0 35px rgba(0,0,0,.18)}
+.brand{letter-spacing:-.045em}.version{opacity:.72}.nav button{border:1px solid transparent;border-radius:9px;transition:.16s ease}.nav button:hover{background:#12232e;border-color:#254352;transform:translateX(2px)}.nav button.active{background:linear-gradient(90deg,rgba(49,200,255,.18),rgba(49,200,255,.04));border-color:rgba(49,200,255,.32);box-shadow:inset 3px 0 0 var(--accent)}
+.topbar{background:rgba(8,18,25,.9);backdrop-filter:blur(14px);border-bottom:1px solid #203642}.page{animation:ppFade .16s ease}@keyframes ppFade{from{opacity:.45;transform:translateY(3px)}to{opacity:1;transform:none}}
+.card{background:linear-gradient(180deg,rgba(17,31,42,.98),rgba(12,24,33,.98));border:1px solid #223844;border-radius:var(--radius);box-shadow:var(--shadow)}.card h2{font-size:14px;letter-spacing:.02em;color:#f2fbff}
+input,select,textarea{background:#08151e!important;border:1px solid #29414f!important;border-radius:8px!important;color:#eef8fc!important;min-height:38px;transition:.15s ease}input:focus,select:focus,textarea:focus{border-color:var(--accent)!important;box-shadow:0 0 0 3px rgba(49,200,255,.11)!important;outline:0}
+.btn{border-radius:8px!important;background:linear-gradient(180deg,#22bce9,#1099c3)!important;border:1px solid #43d2f8!important;box-shadow:0 7px 18px rgba(15,157,200,.2);font-weight:750;transition:.15s ease}.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}.btn.secondary{background:#132630!important;border-color:#2c4653!important;box-shadow:none}.btn.danger{background:#492027!important;border-color:#7a343e!important}
+.note{background:#0b1b24;border:1px solid #24404d;border-radius:9px;color:#b7cad4}.kpi{background:linear-gradient(180deg,#10242f,#0a1922);border:1px solid #25414f;border-radius:10px}.kpi b{color:#f5fbff}
+table{border-collapse:separate;border-spacing:0}th{position:sticky;top:0;background:#10212b!important;color:#9fb8c5;border-bottom:1px solid #2c4653}td{border-bottom:1px solid #1c303b}.canvasWrap{border-radius:12px;border:1px solid #284553;background:radial-gradient(circle at 50% 20%,#17303e,#07131b 68%);box-shadow:inset 0 0 42px rgba(0,0,0,.32)}canvas{image-rendering:auto}.overlay{background:rgba(5,15,22,.74)!important;backdrop-filter:blur(8px);border:1px solid rgba(108,184,215,.22)!important;border-radius:8px!important;color:#e5f7ff!important}
+.badge,.pill{border-radius:999px!important}.toast{border-radius:10px!important;box-shadow:0 18px 45px rgba(0,0,0,.38)!important}
+@media(max-width:800px){.card{border-radius:10px}.actions{gap:7px}.btn{min-height:42px}.topbar{backdrop-filter:blur(10px)}}
+.light{--bg:#edf3f6;--panel:#fff;--panel2:#f7fafb;--line:#ccdce4;--text:#17242b;--muted:#5d717c}.light body,.light{background:#edf3f6}.light .card{background:#fff;border-color:#d4e1e7}.light input,.light select,.light textarea{background:#fff!important;color:#17242b!important}.light .sidebar{background:#f6fafc;border-color:#d5e2e8}.light .topbar{background:rgba(255,255,255,.9)}
+</style>
+</head>
 <body>
-<div id="buildStamp" style="position:fixed;right:8px;bottom:8px;z-index:99999;padding:6px 9px;border-radius:8px;background:#071522e8;color:#7ee7ff;border:1px solid #1b7894;font:700 11px system-ui;letter-spacing:.4px">v51.2 · PP-512-DEPLOY-VISION</div>
 <div id="loader">
   <div class="loadBox">
     <div class="logoMark"><span style="font-size:15px;line-height:1.05;text-align:center">PLEGAR<br>PRO</span></div>
@@ -125,7 +141,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <input type="checkbox" id="menuToggle" class="menuToggle" aria-hidden="true">
 <aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v51.2 · DESPLIEGUE VERIFICADO · VISIÓN TÉCNICA MULTIPASADA</div>
+  <div class="version">v51.5</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -183,8 +199,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
     <div class="kpi"><span>Espesor</span><b id="dashThk"></b></div>
     <div class="kpi"><span>Pliegues</span><b id="dashBends"></b></div>
   </div><div class="note">Cualquier cambio realizado en Programar, 2D, 3D, IA o Curva Perfecta actualiza el mismo proyecto.</div></div>
-
-  <div class="card c12" id="buildVerification" style="border:2px solid #38d39f;box-shadow:0 0 0 1px rgba(56,211,159,.22) inset"><h2>✅ Plegar Pro v50.9 · módulo Importar integrado</h2><div class="kpis"><div class="kpi"><span>Base modificada</span><b>Proyecto real subido</b></div><div class="kpi"><span>Programar</span><b>Vista 2D + Simular</b></div><div class="kpi"><span>Dimensiones</span><b>Chapa + plegado</b></div><div class="kpi"><span>Compilación</span><b id="buildCode">PP-509-REAL</b></div></div><div class="note"><b>Comprobación visual:</b> si ves este recuadro verde, estás ejecutando la nueva beta. La aplicación centra automáticamente las vistas al abrir Programar, Programación 2D, Programación 3D y las simulaciones.</div><div class="actions"><button class="btn" data-go="program">Abrir Programar</button><button class="btn secondary" data-go="sim2d">Probar Simulación 2D</button><button class="btn secondary" data-go="sim3d">Probar Simulación 3D</button></div></div>
+<div class="note"><b>Comprobación visual:</b> si ves este recuadro verde, estás ejecutando la nueva beta. La aplicación centra automáticamente las vistas al abrir Programar, Programación 2D, Programación 3D y las simulaciones.</div><div class="actions"><button class="btn" data-go="program">Abrir Programar</button><button class="btn secondary" data-go="sim2d">Probar Simulación 2D</button><button class="btn secondary" data-go="sim3d">Probar Simulación 3D</button></div></div>
 </div>
 </section>
 
@@ -326,7 +341,15 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div class="card c12"><h2>Lectura rápida</h2><div class="kpis"><div class="kpi"><span>Menor variación</span><b id="vBestVariation"></b></div><div class="kpi"><span>Menor fuerza</span><b id="vLowestForce"></b></div><div class="kpi"><span>V de referencia</span><b id="vReferenceKpi"></b></div><div class="kpi"><span>Tolerancia</span><b id="vToleranceKpi"></b></div></div><canvas id="vChart" width="1200" height="300" style="width:100%;height:260px"></canvas></div>
 </div></section>
 
-<section class="page" id="tooling"><div class="grid"><div class="card c4"><h2>Filtros</h2><div class="fields"><div><label>Fabricante</label><select id="toolMaker"><option>Todos</option><option>Bystronic</option><option>Mecos</option><option>Amada</option><option>Trumpf</option><option>Corplec</option></select></div><div><label>Buscar</label><input id="toolSearch"></div></div></div><div class="card c8"><h2>Biblioteca</h2><div id="toolList" class="list"></div></div></div></section>
+<section class="page" id="tooling"><div class="grid">
+<div class="card c4"><h2>Utillaje</h2><div class="fields">
+<div><label>Fabricante</label><select id="toolMaker"><option>Todos</option><option>Bystronic</option><option>Mecos</option><option>Amada</option><option>Trumpf</option><option>Corplec</option></select></div>
+<div><label>Tipo</label><select id="toolType"><option>Todos</option><option>Punzón</option><option>Matriz</option></select></div>
+<div><label>Buscar</label><input id="toolSearch" placeholder="Referencia, V, ángulo..."></div>
+<div><label>Aplicar al pliegue</label><select id="toolBend"></select></div>
+</div><div id="toolSelection" class="note">Selecciona una herramienta.</div></div>
+<div class="card c8"><h2>Biblioteca completa <span class="muted" id="toolCount"></span></h2><div id="toolList" class="list"></div></div>
+</div></section>
 
 <section class="page" id="ai"><div class="grid">
 <div class="card c6"><h2>IA técnica local</h2><label>Petición</label><textarea id="aiInput" rows="11" placeholder="Programa S235 de 2 mm con alas 100, 80, 60; dos pliegues de 90 grados, R2 y V16."></textarea>
@@ -378,7 +401,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div><label>Correo</label><input id="ownerEmail" type="email"></div><div><label>Web</label><input id="ownerWebsite"></div>
 </div></div>
 <div class="card c6"><h2>Precisión y comportamiento</h2><div class="fields"><div><label>Unidades</label><select id="units"><option value="mm">Milímetros</option><option value="inch">Pulgadas</option></select></div><div><label>Tolerancia angular ±°</label><input id="angleTolerance" type="text" inputmode="decimal" min="0.1" step="0.1"></div><div><label>Tolerancia lineal ±mm</label><input id="linearTolerance" type="text" inputmode="decimal" min="0.05" step="0.05"></div><div><label>Confirmar antes de borrar</label><select id="confirmDelete"><option value="yes">Sí</option><option value="no">No</option></select></div><div><label>Sonidos de interfaz</label><select id="uiSounds"><option value="yes">Activados</option><option value="no">Desactivados</option></select></div><div><label>Modo compacto móvil</label><select id="compactMobile"><option value="auto">Automático</option><option value="yes">Siempre</option><option value="no">Nunca</option></select></div><div><label>Frecuencia de copia automática</label><select id="backupFrequency"><option value="change">En cada cambio</option><option value="5min">Cada 5 minutos</option><option value="manual">Manual</option></select></div><div><label>Nivel de ayuda IA</label><select id="aiAssistLevel"><option value="basic">Básico</option><option value="advanced">Avanzado</option><option value="expert">Experto</option></select></div></div></div>
-<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">v51.2 conserva la base acumulativa, verifica el despliegue y mejora el reconocimiento fotográfico sin inventar cotas cuando el OCR no es fiable.</div></div>
+<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div></div>
 </div></section>
 
 <section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v50.9</b><br>Código: PP-509-REAL<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
@@ -448,12 +471,11 @@ let state={
 let undoStack=[],redoStack=[],pageHistory=['dashboard'],currentPage='dashboard';
 let sim={rotXP3:-.35,rotYP3:.5,rotXS3:-.35,rotYS3:.5,s2Step:0,s3Step:0,s2Timer:null,s3Timer:null,operatorStep:0,p3Active:0,rotX:-.35,rotY:.5,drag:false,lastX:0,lastY:0,zoomP3:1,zoomS3:1,panP3X:0,panP3Y:0,panS3X:0,panS3Y:0,dragTarget:'',panMode:false,zoomS2:1,rotS2:0,panS2X:0,panS2Y:0,zoomCurve:1,rotCurve:0,panCurveX:0,panCurveY:0,zoomProgram:1,rotProgram:0,panProgramX:0,panProgramY:0};
 let aiProposal=null,importDraft=null,importedFiles=[];
-window.PLEGAR_PRO_BUILD={version:'51.2',code:'PP-512-DEPLOY-VISION',source:'Plegar_Pro_v51_2',built:'2026-07-26T18:30:00+02:00'};
+window.PLEGAR_PRO_BUILD={version:'51.5',code:'PP-515-GRAPHICS-AI-INDUSTRIAL',source:'Plegar_Pro_v51_5'};
 (function verifyDeployment(){
- const expected='PP-512-DEPLOY-VISION';
+ const expected='PP-514-PHOTO-TO-PROGRAM';
  document.documentElement.dataset.build=expected;
  try{localStorage.setItem('plegarProLastBuild',expected)}catch(e){}
- window.addEventListener('load',()=>{const badge=document.getElementById('buildStamp');if(badge)badge.textContent='v51.2 · '+expected+' · '+new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})});
 })();
 
 
@@ -652,7 +674,7 @@ function optimizeSequence(){
 }
 function exportSequenceReport(){
  const a=analyzeBendSequence();
- const lines=[`PLEGAR PRO v51.2 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
+ const lines=[`PLEGAR PRO v51.4 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
  a.rows.forEach(r=>lines.push(`P${r.i+1}: ala ${r.leg.toFixed(1)} mm | ${r.angle.toFixed(1)}° | R${r.radius.toFixed(1)} | V${r.v} | ${r.force.toFixed(1)} t | ${r.issues.length?r.issues.join('; '):'OK'}`));
  if(a.warnings.length){lines.push('',...a.warnings.map(x=>'ADVERTENCIA: '+x))}
  download(`PlegarPro_${state.project.ref||'pieza'}_secuencia.txt`,lines.join('\n'),'text/plain');
@@ -665,7 +687,7 @@ function renderProgram(){
  <td><input data-b="${i}" data-k="angle" type="text" inputmode="decimal" value="${isTerminalSegment(i)?'':(b.angle??'')}" ${isTerminalSegment(i)?'disabled aria-label="Tramo final sin plegado" placeholder="—"':''}></td>
  <td><input data-b="${i}" data-k="radius" type="text" inputmode="decimal" step=".1" value="${b.radius}"></td>
  <td><input data-b="${i}" data-k="v" type="text" inputmode="decimal" value="${b.v}"></td>
- <td><select data-b="${i}" data-k="punch"><option ${b.punch==='Recto 88°'?'selected':''}>Recto 88°</option><option ${b.punch==='Recto 30°'?'selected':''}>Recto 30°</option><option ${b.punch==='Pata de cabra 90°'?'selected':''}>Pata de cabra 90°</option></select></td>
+ <td><select data-b="${i}" data-k="punch">${punchOptions(b.punch)}</select></td>
  <td><input data-b="${i}" data-k="gauge" type="text" inputmode="decimal" value="${b.gauge}"></td>
  <td><select data-b="${i}" data-k="direction"><option value="1" ${b.direction==1?'selected':''}>Arriba</option><option value="-1" ${b.direction==-1?'selected':''}>Abajo</option></select></td>
  <td><button class="btn secondary rowUp" data-i="${i}">↑</button> <button class="btn secondary rowDown" data-i="${i}">↓</button> <button class="btn danger rowDelete" data-i="${i}">×</button></td></tr>`).join('');
@@ -750,7 +772,7 @@ function renderSavedDevelopments(){
  document.querySelectorAll('.devDeleteSaved').forEach(b=>b.onclick=()=>commit('Eliminado cálculo guardado',()=>state.development.saved.splice(+b.dataset.i,1)));
 }
 function developmentSnapshot(){let r=calcDevelopment(),d=state.development;return {name:`${d.material} ${d.thickness} mm · V${d.referenceV}`,date:new Date().toLocaleString('es-ES'),material:d.material,thickness:d.thickness,referenceV:d.referenceV,flat:r.flat,data:deep({...d,saved:[]})}}
-function exportDevelopment(){let d=state.development,r=calcDevelopment(),payload={version:'51.2',generated:new Date().toISOString(),input:deep(d),result:r};download(`desarrollo-${d.material}-${d.thickness}mm-V${d.referenceV}.json`,JSON.stringify(payload,null,2))}
+function exportDevelopment(){let d=state.development,r=calcDevelopment(),payload={version:'51.5',generated:new Date().toISOString(),input:deep(d),result:r};download(`desarrollo-${d.material}-${d.thickness}mm-V${d.referenceV}.json`,JSON.stringify(payload,null,2))}
 
 function calculateCurve(){
  let c=state.curve,angle=Math.max(1,+c.angle||90),radius=Math.max(1,+c.radius||1),hits=Math.max(2,Math.round(+c.hits||2));if(c.mode==='length'){let preferred=Math.max((+c.thickness||2)*3,(+c.v||16)*.55,8);hits=Math.max(2,Math.ceil((+c.length||1)/preferred)+1);c.hits=hits}
@@ -797,21 +819,35 @@ function renderVCompare(){
 function drawVChart(rows){let c=$('vChart');if(!c)return;let x=c.getContext('2d'),w=c.width,h=c.height;x.clearRect(0,0,w,h);x.strokeStyle=getComputedStyle(document.body).getPropertyValue('--line');x.fillStyle=getComputedStyle(document.body).getPropertyValue('--muted');x.font='24px sans-serif';x.fillText('Variación de desarrollo respecto a la V de referencia',35,38);let max=Math.max(.1,...rows.map(r=>Math.abs(r.delta)));let left=70,right=w-35,top=70,bottom=h-50;x.beginPath();x.moveTo(left,(top+bottom)/2);x.lineTo(right,(top+bottom)/2);x.stroke();rows.forEach((r,i)=>{let px=left+(right-left)*(i/(Math.max(1,rows.length-1)));let py=(top+bottom)/2-r.delta/max*(bottom-top)*.42;x.beginPath();x.arc(px,py,8,0,Math.PI*2);x.fill();x.fillText('V'+r.v,px-16,bottom+32);x.fillText((r.delta>=0?'+':'')+r.delta.toFixed(2),px-26,py-15)});}
 function exportVComparison(format='csv'){
  let rows=window.__VCOMPARE_ROWS__||[],d=state.development;
- if(format==='json')return download(`comparador-V-${d.material}-${d.thickness}mm.json`,JSON.stringify({version:'51.2',development:deep(d),rows},null,2));
+ if(format==='json')return download(`comparador-V-${d.material}-${d.thickness}mm.json`,JSON.stringify({version:'51.5',development:deep(d),rows},null,2));
  let csv=['V;Referencia;Radio;Desarrollo;Variacion;Fuerza_t;Ala_minima;Estado',...rows.map(r=>[r.v,r.v==d.referenceV?'Sí':'No',r.actualRadius.toFixed(3),r.flat.toFixed(3),r.delta.toFixed(3),r.force.toFixed(2),r.minFlange.toFixed(2),r.status].join(';'))].join('\n');
  download(`comparador-V-${d.material}-${d.thickness}mm.csv`,csv,'text/csv;charset=utf-8');
 }
 
 
-const tools=[
- {maker:'Bystronic',name:'Matriz V16 88°',type:'Matriz'},{maker:'Mecos',name:'Matriz V24 88°',type:'Matriz'},
- {maker:'Bystronic',name:'Punzón recto 88°',type:'Punzón'},{maker:'Mecos',name:'Pata de cabra 90°',type:'Punzón'},
- {maker:'Amada',name:'Matriz V32',type:'Matriz'},{maker:'Trumpf',name:'Punzón 30°',type:'Punzón'},{maker:'Corplec',name:'Matriz V50',type:'Matriz'}
-];
+const tools=[{"id":"BYS-M-V6","maker":"Bystronic","name":"Matriz V6 90°","type":"Matriz","v":6,"angle":90,"radius":0.96,"height":60,"maxLoad":233.3},{"id":"BYS-M-V12","maker":"Bystronic","name":"Matriz V12 90°","type":"Matriz","v":12,"angle":90,"radius":1.92,"height":60,"maxLoad":116.7},{"id":"BYS-M-V16","maker":"Bystronic","name":"Matriz V16 88°","type":"Matriz","v":16,"angle":88,"radius":2.56,"height":60,"maxLoad":87.5},{"id":"BYS-M-V22","maker":"Bystronic","name":"Matriz V22 88°","type":"Matriz","v":22,"angle":88,"radius":3.52,"height":60,"maxLoad":63.6},{"id":"BYS-M-V24","maker":"Bystronic","name":"Matriz V24 88°","type":"Matriz","v":24,"angle":88,"radius":3.84,"height":60,"maxLoad":58.3},{"id":"BYS-M-V32","maker":"Bystronic","name":"Matriz V32 88°","type":"Matriz","v":32,"angle":88,"radius":5.12,"height":80,"maxLoad":43.8},{"id":"BYS-M-V36","maker":"Bystronic","name":"Matriz V36 88°","type":"Matriz","v":36,"angle":88,"radius":5.76,"height":80,"maxLoad":38.9},{"id":"BYS-M-V40","maker":"Bystronic","name":"Matriz V40 88°","type":"Matriz","v":40,"angle":88,"radius":6.4,"height":80,"maxLoad":35.0},{"id":"BYS-M-V50","maker":"Bystronic","name":"Matriz V50 88°","type":"Matriz","v":50,"angle":88,"radius":8.0,"height":80,"maxLoad":28.0},{"id":"MEC-M-V6","maker":"Mecos","name":"Matriz V6 90°","type":"Matriz","v":6,"angle":90,"radius":0.96,"height":60,"maxLoad":233.3},{"id":"MEC-M-V12","maker":"Mecos","name":"Matriz V12 90°","type":"Matriz","v":12,"angle":90,"radius":1.92,"height":60,"maxLoad":116.7},{"id":"MEC-M-V16","maker":"Mecos","name":"Matriz V16 88°","type":"Matriz","v":16,"angle":88,"radius":2.56,"height":60,"maxLoad":87.5},{"id":"MEC-M-V22","maker":"Mecos","name":"Matriz V22 88°","type":"Matriz","v":22,"angle":88,"radius":3.52,"height":60,"maxLoad":63.6},{"id":"MEC-M-V24","maker":"Mecos","name":"Matriz V24 88°","type":"Matriz","v":24,"angle":88,"radius":3.84,"height":60,"maxLoad":58.3},{"id":"MEC-M-V32","maker":"Mecos","name":"Matriz V32 88°","type":"Matriz","v":32,"angle":88,"radius":5.12,"height":80,"maxLoad":43.8},{"id":"MEC-M-V36","maker":"Mecos","name":"Matriz V36 88°","type":"Matriz","v":36,"angle":88,"radius":5.76,"height":80,"maxLoad":38.9},{"id":"MEC-M-V40","maker":"Mecos","name":"Matriz V40 88°","type":"Matriz","v":40,"angle":88,"radius":6.4,"height":80,"maxLoad":35.0},{"id":"MEC-M-V50","maker":"Mecos","name":"Matriz V50 88°","type":"Matriz","v":50,"angle":88,"radius":8.0,"height":80,"maxLoad":28.0},{"id":"AMA-M-V6","maker":"Amada","name":"Matriz V6 90°","type":"Matriz","v":6,"angle":90,"radius":0.96,"height":60,"maxLoad":233.3},{"id":"AMA-M-V12","maker":"Amada","name":"Matriz V12 90°","type":"Matriz","v":12,"angle":90,"radius":1.92,"height":60,"maxLoad":116.7},{"id":"AMA-M-V16","maker":"Amada","name":"Matriz V16 88°","type":"Matriz","v":16,"angle":88,"radius":2.56,"height":60,"maxLoad":87.5},{"id":"AMA-M-V22","maker":"Amada","name":"Matriz V22 88°","type":"Matriz","v":22,"angle":88,"radius":3.52,"height":60,"maxLoad":63.6},{"id":"AMA-M-V24","maker":"Amada","name":"Matriz V24 88°","type":"Matriz","v":24,"angle":88,"radius":3.84,"height":60,"maxLoad":58.3},{"id":"AMA-M-V32","maker":"Amada","name":"Matriz V32 88°","type":"Matriz","v":32,"angle":88,"radius":5.12,"height":80,"maxLoad":43.8},{"id":"AMA-M-V36","maker":"Amada","name":"Matriz V36 88°","type":"Matriz","v":36,"angle":88,"radius":5.76,"height":80,"maxLoad":38.9},{"id":"AMA-M-V40","maker":"Amada","name":"Matriz V40 88°","type":"Matriz","v":40,"angle":88,"radius":6.4,"height":80,"maxLoad":35.0},{"id":"AMA-M-V50","maker":"Amada","name":"Matriz V50 88°","type":"Matriz","v":50,"angle":88,"radius":8.0,"height":80,"maxLoad":28.0},{"id":"TRU-M-V6","maker":"Trumpf","name":"Matriz V6 90°","type":"Matriz","v":6,"angle":90,"radius":0.96,"height":60,"maxLoad":233.3},{"id":"TRU-M-V12","maker":"Trumpf","name":"Matriz V12 90°","type":"Matriz","v":12,"angle":90,"radius":1.92,"height":60,"maxLoad":116.7},{"id":"TRU-M-V16","maker":"Trumpf","name":"Matriz V16 88°","type":"Matriz","v":16,"angle":88,"radius":2.56,"height":60,"maxLoad":87.5},{"id":"TRU-M-V22","maker":"Trumpf","name":"Matriz V22 88°","type":"Matriz","v":22,"angle":88,"radius":3.52,"height":60,"maxLoad":63.6},{"id":"TRU-M-V24","maker":"Trumpf","name":"Matriz V24 88°","type":"Matriz","v":24,"angle":88,"radius":3.84,"height":60,"maxLoad":58.3},{"id":"TRU-M-V32","maker":"Trumpf","name":"Matriz V32 88°","type":"Matriz","v":32,"angle":88,"radius":5.12,"height":80,"maxLoad":43.8},{"id":"TRU-M-V36","maker":"Trumpf","name":"Matriz V36 88°","type":"Matriz","v":36,"angle":88,"radius":5.76,"height":80,"maxLoad":38.9},{"id":"TRU-M-V40","maker":"Trumpf","name":"Matriz V40 88°","type":"Matriz","v":40,"angle":88,"radius":6.4,"height":80,"maxLoad":35.0},{"id":"TRU-M-V50","maker":"Trumpf","name":"Matriz V50 88°","type":"Matriz","v":50,"angle":88,"radius":8.0,"height":80,"maxLoad":28.0},{"id":"COR-M-V6","maker":"Corplec","name":"Matriz V6 90°","type":"Matriz","v":6,"angle":90,"radius":0.96,"height":60,"maxLoad":233.3},{"id":"COR-M-V12","maker":"Corplec","name":"Matriz V12 90°","type":"Matriz","v":12,"angle":90,"radius":1.92,"height":60,"maxLoad":116.7},{"id":"COR-M-V16","maker":"Corplec","name":"Matriz V16 88°","type":"Matriz","v":16,"angle":88,"radius":2.56,"height":60,"maxLoad":87.5},{"id":"COR-M-V22","maker":"Corplec","name":"Matriz V22 88°","type":"Matriz","v":22,"angle":88,"radius":3.52,"height":60,"maxLoad":63.6},{"id":"COR-M-V24","maker":"Corplec","name":"Matriz V24 88°","type":"Matriz","v":24,"angle":88,"radius":3.84,"height":60,"maxLoad":58.3},{"id":"COR-M-V32","maker":"Corplec","name":"Matriz V32 88°","type":"Matriz","v":32,"angle":88,"radius":5.12,"height":80,"maxLoad":43.8},{"id":"COR-M-V36","maker":"Corplec","name":"Matriz V36 88°","type":"Matriz","v":36,"angle":88,"radius":5.76,"height":80,"maxLoad":38.9},{"id":"COR-M-V40","maker":"Corplec","name":"Matriz V40 88°","type":"Matriz","v":40,"angle":88,"radius":6.4,"height":80,"maxLoad":35.0},{"id":"COR-M-V50","maker":"Corplec","name":"Matriz V50 88°","type":"Matriz","v":50,"angle":88,"radius":8.0,"height":80,"maxLoad":28.0},{"id":"BYS-P-1","maker":"Bystronic","name":"Punzón recto 30°","type":"Punzón","angle":30,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"BYS-P-2","maker":"Bystronic","name":"Punzón recto 60°","type":"Punzón","angle":60,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"BYS-P-3","maker":"Bystronic","name":"Punzón recto 88°","type":"Punzón","angle":88,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"BYS-P-4","maker":"Bystronic","name":"Punzón recto 90°","type":"Punzón","angle":90,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"BYS-P-5","maker":"Bystronic","name":"Pata de cabra 90°","type":"Punzón","angle":90,"radius":1.5,"shape":"Pata de cabra","height":145,"maxLoad":100},{"id":"MEC-P-1","maker":"Mecos","name":"Punzón recto 30°","type":"Punzón","angle":30,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"MEC-P-2","maker":"Mecos","name":"Punzón recto 60°","type":"Punzón","angle":60,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"MEC-P-3","maker":"Mecos","name":"Punzón recto 88°","type":"Punzón","angle":88,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"MEC-P-4","maker":"Mecos","name":"Punzón recto 90°","type":"Punzón","angle":90,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"MEC-P-5","maker":"Mecos","name":"Pata de cabra 90°","type":"Punzón","angle":90,"radius":1.5,"shape":"Pata de cabra","height":145,"maxLoad":100},{"id":"AMA-P-1","maker":"Amada","name":"Punzón recto 30°","type":"Punzón","angle":30,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"AMA-P-2","maker":"Amada","name":"Punzón recto 60°","type":"Punzón","angle":60,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"AMA-P-3","maker":"Amada","name":"Punzón recto 88°","type":"Punzón","angle":88,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"AMA-P-4","maker":"Amada","name":"Punzón recto 90°","type":"Punzón","angle":90,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"AMA-P-5","maker":"Amada","name":"Pata de cabra 90°","type":"Punzón","angle":90,"radius":1.5,"shape":"Pata de cabra","height":145,"maxLoad":100},{"id":"TRU-P-1","maker":"Trumpf","name":"Punzón recto 30°","type":"Punzón","angle":30,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"TRU-P-2","maker":"Trumpf","name":"Punzón recto 60°","type":"Punzón","angle":60,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"TRU-P-3","maker":"Trumpf","name":"Punzón recto 88°","type":"Punzón","angle":88,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"TRU-P-4","maker":"Trumpf","name":"Punzón recto 90°","type":"Punzón","angle":90,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"TRU-P-5","maker":"Trumpf","name":"Pata de cabra 90°","type":"Punzón","angle":90,"radius":1.5,"shape":"Pata de cabra","height":145,"maxLoad":100},{"id":"COR-P-1","maker":"Corplec","name":"Punzón recto 30°","type":"Punzón","angle":30,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"COR-P-2","maker":"Corplec","name":"Punzón recto 60°","type":"Punzón","angle":60,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"COR-P-3","maker":"Corplec","name":"Punzón recto 88°","type":"Punzón","angle":88,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"COR-P-4","maker":"Corplec","name":"Punzón recto 90°","type":"Punzón","angle":90,"radius":1.0,"shape":"Recto","height":120,"maxLoad":100},{"id":"COR-P-5","maker":"Corplec","name":"Pata de cabra 90°","type":"Punzón","angle":90,"radius":1.5,"shape":"Pata de cabra","height":145,"maxLoad":100}];
+const punchCatalog=tools.filter(t=>t.type==='Punzón');
+function punchOptions(selected){
+ const names=[...new Set(punchCatalog.map(t=>t.name))];
+ if(selected&&!names.includes(selected))names.unshift(selected);
+ return names.map(name=>`<option ${name===selected?'selected':''}>${name}</option>`).join('');
+}
+function toolDetails(t){
+ if(t.type==='Matriz')return `V${t.v} · ${t.angle}° · R aprox. ${t.radius} mm · H ${t.height} mm · ${t.maxLoad} t/m`;
+ return `${t.angle}° · R${t.radius} mm · ${t.shape} · H ${t.height} mm · ${t.maxLoad} t/m`;
+}
 function renderTools(){
- let maker=$('toolMaker').value,q=$('toolSearch').value.toLowerCase();
- $('toolList').innerHTML=tools.filter(t=>(maker==='Todos'||t.maker===maker)&&t.name.toLowerCase().includes(q)).map(t=>`<div class="listItem"><span><b>${t.name}</b><small class="muted">${t.maker} · ${t.type}</small></span><button class="btn secondary chooseTool" data-name="${t.name}">Seleccionar</button></div>`).join('');
- document.querySelectorAll('.chooseTool').forEach(x=>x.addEventListener('click',()=>{let b=state.bends[sim.p3Active||0];if(!b)return;if(x.dataset.name.toLowerCase().includes('punz'))commit('Seleccionado utillaje',()=>b.punch=x.dataset.name);else{let m=x.dataset.name.match(/V(\d+)/);if(m)commit('Seleccionada matriz',()=>b.v=+m[1])}}));
+ const maker=$('toolMaker').value,type=$('toolType').value,q=$('toolSearch').value.trim().toLowerCase();
+ $('toolBend').innerHTML=state.bends.map((b,i)=>`<option value="${i}">P${i+1} · ${isTerminalSegment(i)?'tramo final':(b.angle??'—')+'°'}</option>`).join('');
+ const rows=tools.filter(t=>(maker==='Todos'||t.maker===maker)&&(type==='Todos'||t.type===type)&&(`${t.name} ${t.maker} ${t.id} ${toolDetails(t)}`).toLowerCase().includes(q));
+ $('toolCount').textContent=`${rows.length} / ${tools.length}`;
+ $('toolList').innerHTML=rows.map((t,i)=>`<div class="listItem"><span><b>${t.name}</b><small class="muted">${t.maker} · ${t.id}<br>${toolDetails(t)}</small></span><button class="btn secondary chooseTool" data-id="${t.id}">Seleccionar</button></div>`).join('')||'<div class="muted">Sin resultados.</div>';
+ document.querySelectorAll('.chooseTool').forEach(x=>x.addEventListener('click',()=>{
+   const t=tools.find(v=>v.id===x.dataset.id),i=+$('toolBend').value,b=state.bends[i];if(!t||!b)return;
+   if(t.type==='Punzón')commit('Punzón seleccionado',()=>b.punch=t.name);else commit('Matriz seleccionada',()=>b.v=t.v);
+   $('toolSelection').innerHTML=`<b>P${i+1}</b> · ${t.maker} · ${t.name}<br>${toolDetails(t)}`;
+   renderTools();
+ }));
 }
 function parseTechnical(text){
  let lower=text.toLowerCase();
@@ -954,8 +990,19 @@ function clearCRM(){crmSelected=-1;['crmName','crmContact','crmPhone','crmWhatsa
 function crmContact(kind){ensureCRM();let c=state.clients[crmSelected];if(!c)return toast('Selecciona un cliente');if(kind==='wa'){let n=(c.whatsapp||c.phone||'').replace(/\D/g,'');if(!n)return toast('El cliente no tiene WhatsApp');window.open(`https://wa.me/${n}?text=${encodeURIComponent('Hola '+(c.contact||c.name)+', te contacto desde Oficina Técnica sobre la referencia '+(state.project.ref||c.reference||''))}`,'_blank')}else{if(!c.email)return toast('El cliente no tiene correo');let body=`Hola ${c.contact||c.name},\n\nTe contacto desde Oficina Técnica.\n\nReferencia: ${state.project.ref||c.reference||''}\nMaterial: ${state.project.material}\nEspesor: ${state.project.thickness} mm`;location.href=`mailto:${c.email}?subject=${encodeURIComponent('Plegar Pro · '+(state.project.ref||c.reference||'Consulta técnica'))}&body=${encodeURIComponent(body)}`}}
 function assignCRM(){let c=state.clients&&state.clients[crmSelected];if(!c)return toast('Selecciona un cliente');commit('Cliente asignado al proyecto',()=>{state.project.client=c.name;if(c.reference&&!state.project.ref)state.project.ref=c.reference});syncAll();toast('Cliente asignado')}
 function exportCRM(){download('clientes_oficina_tecnica.json',JSON.stringify(state.clients||[],null,2))}
-let visionImage=null,visionRotation=0,visionDetection=null;
-function photoSelected(){let f=$('photoInput').files[0];if(!f)return;let img=new Image();img.onload=()=>{visionImage=img;visionRotation=0;$('photoPreview').innerHTML=`<b>${f.name}</b><br>${Math.round(f.size/1024)} KB · ${img.naturalWidth} × ${img.naturalHeight}px`;processPlanVision(false)};img.src=URL.createObjectURL(f)}
+let visionImage=null,visionRotation=0,visionDetection=null,visionSourceFile=null,visionAnalysisRun=0;
+function photoSelected(){
+ const f=$('photoInput').files[0];if(!f)return;
+ visionSourceFile=f;visionDetection=null;importDraft=null;
+ $('importType').textContent=(f.name.split('.').pop()||'IMG').toUpperCase();
+ $('importCount').textContent='1';$('importFileList').innerHTML=`<b>${f.name}</b> · ${Math.max(1,Math.round(f.size/1024))} KB`;
+ $('importReady').textContent='Pendiente';$('importConfidence').textContent='—';$('importToProgram').disabled=true;$('importSaveDraft').disabled=true;
+ $('fileResult').innerHTML='Fotografía cargada. Pulsa <b>Analizar con IA visual</b> para leer cotas y preparar la pieza.';
+ $('importTransferStatus').textContent='La transferencia se habilitará al finalizar el análisis o después de confirmar manualmente las cotas.';
+ let img=new Image(),url=URL.createObjectURL(f);
+ img.onload=()=>{visionImage=img;visionRotation=0;$('photoPreview').innerHTML=`<b>${f.name}</b><br>${Math.round(f.size/1024)} KB · ${img.naturalWidth} × ${img.naturalHeight}px`;processPlanVision(false,false);URL.revokeObjectURL(url)};
+ img.onerror=()=>{URL.revokeObjectURL(url);toast('No se ha podido abrir la fotografía')};img.src=url;
+}
 function visionGray(data,contrast,mode){let out=new Uint8ClampedArray(data.length),sum=0;for(let i=0;i<data.length;i+=4){let g=.299*data[i]+.587*data[i+1]+.114*data[i+2];if(mode==='dark')g=255-g;g=(g-128)*(contrast/100)+128;g=Math.max(0,Math.min(255,g));out[i]=out[i+1]=out[i+2]=g;out[i+3]=255;sum+=g}return{data:out,mean:sum/(data.length/4)}}
 function adaptiveBinary(data,w,h,clean){let out=new Uint8ClampedArray(data.length),step=Math.max(8,Math.round(28-clean/3));for(let y=0;y<h;y++)for(let x=0;x<w;x++){let i=(y*w+x)*4,g=data[i],sum=0,n=0;for(let yy=Math.max(0,y-step);yy<=Math.min(h-1,y+step);yy+=step)for(let xx=Math.max(0,x-step);xx<=Math.min(w-1,x+step);xx+=step){sum+=data[(yy*w+xx)*4];n++}let v=g<(sum/n-10)?0:255;out[i]=out[i+1]=out[i+2]=v;out[i+3]=255}return out}
 function detectPlanLines(bin,w,h){let hs=[],vs=[],minH=Math.max(24,w*.07),minV=Math.max(24,h*.05);for(let y=1;y<h-1;y+=2){let run=0,start=0;for(let x=0;x<w;x++){if(bin[(y*w+x)*4]<80){if(!run)start=x;run++}else{if(run>=minH)hs.push({y,x1:start,x2:x-1,len:run});run=0}}}for(let x=1;x<w-1;x+=2){let run=0,start=0;for(let y=0;y<h;y++){if(bin[(y*w+x)*4]<80){if(!run)start=y;run++}else{if(run>=minV)vs.push({x,y1:start,y2:y-1,len:run});run=0}}}let dedupe=(arr,key)=>arr.sort((a,b)=>b.len-a.len).filter((a,i,self)=>self.findIndex(b=>Math.abs(a[key]-b[key])<5&&Math.abs(a.len-b.len)<20)===i).slice(0,40);return{h:dedupe(hs,'y'),v:dedupe(vs,'x')}}
@@ -971,7 +1018,7 @@ function buildVisionCanvases(){
  const clean=document.createElement('canvas');clean.width=w;clean.height=h;clean.getContext('2d').putImageData(new ImageData(bin,w,h),0,0);
  return{original,clean,raw,gray,bin,w,h};
 }
-function processPlanVision(showToast=true){
+function processPlanVision(showToast=true,runOCR=true){
  if(!visionImage)return showToast&&toast('Selecciona o fotografía un plano');
  const pack=buildVisionCanvases();if(!pack)return;
  const {original,clean,bin,w,h}=pack,lines=detectPlanLines(bin,w,h),c=$('visionCanvas'),ctx=c.getContext('2d');c.width=w;c.height=h;ctx.drawImage(clean,0,0);
@@ -981,7 +1028,7 @@ function processPlanVision(showToast=true){
  visionDetection={quality,confidence,lines,angles:[0,90],width:w,height:h,ocr:[],ocrSource:original,ocrClean:clean};
  $('visionQuality').textContent=quality+'%';$('visionLines').textContent=(lines.h.length+lines.v.length);$('visionAngles').textContent='0° / 90°';$('visionConfidence').textContent=confidence+'%';
  $('visionResult').innerHTML=`<b>Documento normalizado</b><br>${lines.h.length} líneas horizontales y ${lines.v.length} verticales. El OCR se ejecutará sobre varias versiones limpias de la fotografía, no sobre las marcas superpuestas.`;
- runTechnicalOCR();if(showToast)toast('Plano preparado para análisis técnico multipasada');
+ if(runOCR)runTechnicalOCR();if(showToast)toast('Plano preparado para análisis técnico');
 }
 function loadTesseract(){return new Promise((resolve,reject)=>{if(window.Tesseract)return resolve(window.Tesseract);let old=document.querySelector('script[data-tesseract]');if(old){old.addEventListener('load',()=>resolve(window.Tesseract));old.addEventListener('error',reject);return}let sc=document.createElement('script');sc.dataset.tesseract='1';sc.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';sc.onload=()=>resolve(window.Tesseract);sc.onerror=reject;document.head.appendChild(sc)})}
 function extractTechnicalNumbers(text){let m=(text||'').replace(/,/g,'.').match(/(?:^|\s|[^\d])([1-9]\d{0,3}(?:\.\d{1,2})?)(?=$|\s|[^\d])/g)||[];return m.map(x=>Number((x.match(/[1-9]\d{0,3}(?:\.\d{1,2})?/)||[])[0])).filter(n=>Number.isFinite(n)&&n>0&&n<10000)}
@@ -998,22 +1045,58 @@ async function recognizePass(T,canvas,label,psm){
  const r=await T.recognize(canvas,'eng',{logger:m=>{if(m.status==='recognizing text')$('ocrStatus').textContent=`${label} ${Math.round((m.progress||0)*100)}%`},tessedit_char_whitelist:'0123456789.,',preserve_interword_spaces:'1',tessedit_pageseg_mode:String(psm)});
  return r?.data?.text||'';
 }
-async function runTechnicalOCR(){
- if(!visionImage||!visionDetection)return;let st=$('ocrStatus');st.textContent='Cargando OCR técnico…';
- try{
-  let T=await Promise.race([loadTesseract(),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),15000))]);
-  const texts=[];texts.push(await recognizePass(T,visionDetection.ocrSource,'OCR original',11));texts.push(await recognizePass(T,visionDetection.ocrClean,'OCR limpio',11));texts.push(await recognizePass(T,visionDetection.ocrSource,'OCR bloques',6));
-  const nums=extractTechnicalNumbers(texts.join('\n')),inf=inferTechnicalDrawing(nums);visionDetection.ocr=nums;visionDetection.inference=inf;
-  $('ocrStatus').innerHTML=`Lectura multipasada terminada. Cotas detectadas: <b>${inf.unique.join(' · ')||'ninguna fiable'}</b>`;
-  $('ocrDimensions').innerHTML=`Longitud probable: <b>${inf.length??'pendiente'} mm</b><br>Ancho exterior probable: <b>${inf.width??'pendiente'} mm</b><br>Altura probable: <b>${inf.height??'pendiente'} mm</b><br>Ranura probable: <b>${inf.slotW??'pendiente'} × ${inf.slotH??'pendiente'} mm</b>`;
-  if(inf.reliable)applyDrawingInference(inf,true);else{
-   $('importReady').textContent='Datos insuficientes';$('importToProgram').disabled=true;$('importSaveDraft').disabled=false;
-   $('fileResult').innerHTML='<b>No se ha creado una pieza automática.</b><br>El OCR no ha encontrado al menos longitud, ancho y altura con suficiente coherencia. Corrige las cotas detectadas o introduce las pendientes; Plegar Pro no inventará una geometría genérica.';
-  }
- }catch(e){console.warn('OCR no disponible',e);st.innerHTML='OCR remoto no disponible. No se generará una pieza ficticia.';$('ocrDimensions').innerHTML='Introduce o confirma longitud, ancho, altura, espesor y pliegues antes de transferir.';$('importReady').textContent='Revisión manual';$('importToProgram').disabled=true;}
+async function browserTextDetection(canvas){
+ if(!('TextDetector' in window))return '';
+ try{const rows=await new TextDetector().detect(canvas);return rows.map(x=>x.rawValue||'').join('\n')}catch(e){console.warn('TextDetector no disponible',e);return ''}
 }
-function applyDrawingInference(inf,fromOCR=false){if(!inf)return;let ret=Math.max(5,parseLocaleNumber($('importReturnLength').value)||15);$('importProfileType').value='u_returns';$('importSheetLength').value=String(inf.width);$('importBendLength').value=String(inf.length);$('importBendCount').value='4';$('importAngle').value='90';$('importRadius').value=String(Math.max(1,parseLocaleNumber($('importThickness').value)||2));let web=Math.max(10,inf.width-2*ret);$('importLegs').value=[ret,inf.height,web,inf.height,ret].join(', ');$('fileResult').innerHTML=`<b>Plano técnico reconstruido${fromOCR?' mediante OCR':''}.</b><br>Perfil detectado: canal U con retornos · 4 pliegues · longitud de plegado ${inf.length} mm · ancho exterior ${inf.width} mm · altura ${inf.height} mm.<br><small>La longitud de retorno (${ret} mm) es estimada porque no aparece acotada con claridad. Confírmala antes de fabricar.</small>`;let confidence=Math.min(96,(visionDetection?.confidence||65)+(fromOCR?12:0));$('importConfidence').textContent=confidence+'%';$('importReady').textContent='Revisión requerida';$('importToProgram').disabled=false;$('importSaveDraft').disabled=false;importDraft=readImportDraft();importDraft.confidence=confidence;importDraft.drawingFeatures={length:inf.length,width:inf.width,height:inf.height,slotWidth:inf.slotW,slotHeight:inf.slotH,profile:'u_returns',estimatedReturn:ret}}
-function analyzePhotoLocal(){if(!visionImage)return toast('Selecciona o fotografía un plano');processPlanVision(false)}
+async function runTechnicalOCR(){
+ if(!visionImage||!visionDetection)return false;
+ const run=++visionAnalysisRun,st=$('ocrStatus');
+ st.textContent='Analizando cotas de la fotografía…';$('importReady').textContent='Analizando';$('importToProgram').disabled=true;
+ try{
+  const texts=[];
+  const nativeText=await browserTextDetection(visionDetection.ocrSource);if(nativeText)texts.push(nativeText);
+  if(run!==visionAnalysisRun)return false;
+  if(!texts.length){
+   const T=await Promise.race([loadTesseract(),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),20000))]);
+   texts.push(await recognizePass(T,visionDetection.ocrSource,'Leyendo fotografía',11));
+   texts.push(await recognizePass(T,visionDetection.ocrClean,'Leyendo líneas limpias',11));
+   texts.push(await recognizePass(T,visionDetection.ocrSource,'Comprobando cotas',6));
+  }
+  if(run!==visionAnalysisRun)return false;
+  const nums=extractTechnicalNumbers(texts.join('\n')),inf=inferTechnicalDrawing(nums);visionDetection.ocr=nums;visionDetection.inference=inf;
+  $('ocrStatus').innerHTML=`Análisis terminado. Cotas detectadas: <b>${inf.unique.join(' · ')||'ninguna fiable'}</b>`;
+  $('ocrDimensions').innerHTML=`Longitud probable: <b>${inf.length??'pendiente'} mm</b><br>Ancho exterior probable: <b>${inf.width??'pendiente'} mm</b><br>Altura probable: <b>${inf.height??'pendiente'} mm</b><br>Ranura probable: <b>${inf.slotW??'pendiente'} × ${inf.slotH??'pendiente'} mm</b>`;
+  if(inf.reliable){applyDrawingInference(inf,true);$('importTransferStatus').innerHTML='Propuesta creada por el análisis visual. Revisa las cotas y pulsa <b>Añadir pieza a Programar</b>.';return true}
+  $('importReady').textContent='Confirmación manual';$('importSaveDraft').disabled=false;
+  $('fileResult').innerHTML='<b>La fotografía se ha analizado, pero faltan cotas fiables.</b><br>Completa o corrige longitud, ancho, altura, pliegues y tramos. Cuando los datos sean válidos podrás enviarlos a Programar.';
+  enableManualImportWhenValid();return false;
+ }catch(e){
+  console.warn('OCR no disponible',e);st.innerHTML='El reconocimiento automático no está disponible en este dispositivo o conexión.';
+  $('ocrDimensions').innerHTML='Puedes confirmar manualmente las cotas visibles en la fotografía y enviarlas a Programar.';
+  $('importReady').textContent='Confirmación manual';$('fileResult').innerHTML='<b>No se han inventado medidas.</b><br>Introduce o confirma los datos detectables del plano; la transferencia se habilitará cuando la geometría sea coherente.';
+  enableManualImportWhenValid();return false;
+ }
+}
+function enableManualImportWhenValid(){
+ const count=Math.round(parseLocaleNumber($('importBendCount').value)||0),legs=$('importLegs').value.split(/[;,]+/).map(parseLocaleNumber).filter(n=>Number.isFinite(n)&&n>0),sheet=parseLocaleNumber($('importSheetLength').value),bend=parseLocaleNumber($('importBendLength').value),ok=count>=1&&legs.length>=count+1&&sheet>0&&bend>0;
+ $('importToProgram').disabled=!ok;$('importSaveDraft').disabled=!ok;
+ if(ok&&$('importReady').textContent==='Confirmación manual')$('importReady').textContent='Lista para revisar';
+ return ok;
+}
+function applyDrawingInference(inf,fromOCR=false){
+ if(!inf)return;let ret=Math.max(5,parseLocaleNumber($('importReturnLength').value)||15);
+ $('importProfileType').value='u_returns';$('importSheetLength').value=String(inf.width);$('importBendLength').value=String(inf.length);$('importBendCount').value='4';$('importAngle').value='90';$('importRadius').value=String(Math.max(1,parseLocaleNumber($('importThickness').value)||2));
+ let web=Math.max(10,inf.width-2*ret);$('importLegs').value=[ret,inf.height,web,inf.height,ret].join(', ');
+ $('fileResult').innerHTML=`<b>Plano técnico reconstruido${fromOCR?' mediante análisis visual':''}.</b><br>Perfil detectado: canal U con retornos · 4 pliegues · longitud de plegado ${inf.length} mm · ancho exterior ${inf.width} mm · altura ${inf.height} mm.<br><small>El retorno (${ret} mm) es estimado; confírmalo antes de fabricar.</small>`;
+ let confidence=Math.min(96,(visionDetection?.confidence||65)+(fromOCR?12:0));$('importConfidence').textContent=confidence+'%';$('importReady').textContent='Revisión requerida';$('importToProgram').disabled=false;$('importSaveDraft').disabled=false;
+ importDraft=readImportDraft();importDraft.confidence=confidence;importDraft.mode='photo';importDraft.drawingFeatures={length:inf.length,width:inf.width,height:inf.height,slotWidth:inf.slotW,slotHeight:inf.slotH,profile:'u_returns',estimatedReturn:ret};
+}
+async function analyzePhotoLocal(){
+ if(!visionImage)return toast('Selecciona o fotografía un plano');
+ $('analyzePhoto').disabled=true;$('analyzePhoto').textContent='Analizando…';
+ try{processPlanVision(false,false);await runTechnicalOCR()}finally{$('analyzePhoto').disabled=false;$('analyzePhoto').textContent='Analizar con IA visual'}
+}
 function importFilesSelected(){
  const input=$('fileInput');importedFiles=Array.from((input&&input.files)||[]);
  if(!importedFiles.length)return;
@@ -1027,14 +1110,15 @@ function readImportDraft(){
  const t=Math.max(.1,parseLocaleNumber($('importThickness').value)||2),count=Math.max(1,Math.round(parseLocaleNumber($('importBendCount').value)||1)),angle=Math.max(1,Math.min(179,parseLocaleNumber($('importAngle').value)||90)),radius=Math.max(0,parseLocaleNumber($('importRadius').value)||2);
  let legs=$('importLegs').value.split(/[;,]+/).map(parseLocaleNumber).filter(n=>Number.isFinite(n)&&n>0);while(legs.length<count+1)legs.push(legs.at(-1)||100);legs=legs.slice(0,count+1);
  const v=recommendedVForThickness(t),punch=recommendedPunchForThickness(t,angle);
- return {project:{...state.project,ref:$('importRef').value.trim()||('IMPORT-'+Date.now().toString().slice(-6)),material:$('importMaterial').value,thickness:t,kfactor:state.project.kfactor||.42},programMeta:{sheetLength:Math.max(1,parseLocaleNumber($('importSheetLength').value)||1200),bendLength:Math.max(1,parseLocaleNumber($('importBendLength').value)||1000),specialGeometry:false,sheetWidth:null},bends:legs.map((leg,i)=>({leg,angle:i<count?angle:null,radius:i<count?radius:null,v:i<count?v:null,punch:i<count?punch:'',gauge:leg,direction:i%2? -1:1})),sourceFiles:importedFiles.map(f=>({name:f.name,type:f.type,size:f.size})),confidence:visionDetection?.confidence||82};
+ return {project:{...state.project,ref:$('importRef').value.trim()||('IMPORT-'+Date.now().toString().slice(-6)),material:$('importMaterial').value,thickness:t,kfactor:state.project.kfactor||.42},programMeta:{sheetLength:Math.max(1,parseLocaleNumber($('importSheetLength').value)||1200),bendLength:Math.max(1,parseLocaleNumber($('importBendLength').value)||1000),specialGeometry:false,sheetWidth:null},bends:legs.map((leg,i)=>({leg,angle:i<count?angle:null,radius:i<count?radius:null,v:i<count?v:null,punch:i<count?punch:'',gauge:leg,direction:i%2? -1:1})),sourceFiles:(importedFiles.length?importedFiles:(visionSourceFile?[visionSourceFile]:[])).map(f=>({name:f.name,type:f.type,size:f.size})),confidence:visionDetection?.confidence||82};
 }
-function analyzeImportedFiles(){
+async function analyzeImportedFiles(){
  if(!importedFiles.length&&!visionImage)return toast('Selecciona primero uno o varios archivos');
- const primary=importedFiles[0],name=primary?primary.name:'fotografia',ext=(name.split('.').pop()||'IMG').toLowerCase();
+ const primary=importedFiles[0]||visionSourceFile,name=primary?primary.name:'fotografia',ext=(name.split('.').pop()||'IMG').toLowerCase();
  $('importRef').value=(name.replace(/\.[^.]+$/,'')||'PIEZA-IMPORTADA').toUpperCase();
  let mode=$('importAnalysisMode').value;if(mode==='auto')mode=['step','stp','iges','igs','x_t','x_b','sldprt','ipt','stl','obj'].includes(ext)?'cad3d':['jpg','jpeg','png','webp','heic','tif','tiff'].includes(ext)?'photo':['pdf'].includes(ext)?'drawing':'cad2d';
- let confidence=mode==='cad3d'?88:mode==='cad2d'?86:mode==='drawing'?78:visionDetection?.confidence||70;
+ if(mode==='photo'&&visionImage){await analyzePhotoLocal();return}
+ let confidence=mode==='cad3d'?88:mode==='cad2d'?86:mode==='drawing'?78:70;
  importDraft=readImportDraft();importDraft.confidence=confidence;importDraft.mode=mode;
  $('importConfidence').textContent=confidence+'%';$('importReady').textContent='Preparada';$('importToProgram').disabled=false;$('importSaveDraft').disabled=false;
  $('importToolingPreview').innerHTML=`<b>Utillaje recomendado:</b> V${recommendedVForThickness(importDraft.project.thickness)} · ${recommendedPunchForThickness(importDraft.project.thickness,parseLocaleNumber($('importAngle').value)||90)}.`;
@@ -1042,9 +1126,10 @@ function analyzeImportedFiles(){
  $('importTransferStatus').innerHTML='Propuesta lista. Revisa cotas y pulsa <b>Añadir pieza a Programar</b>.';
 }
 function transferImportToProgram(){
- importDraft=readImportDraft();
- commit('Pieza importada añadida a Programar',()=>{state.project=importDraft.project;state.programMeta=importDraft.programMeta;state.bends=importDraft.bends;state.importHistory=state.importHistory||[];state.importHistory.unshift({date:new Date().toLocaleString('es-ES'),reference:state.project.ref,files:importDraft.sourceFiles,confidence:importDraft.confidence});applyAutomaticToolRecommendation()});
- $('importTransferStatus').innerHTML=`✅ <b>${state.project.ref}</b> añadida a Programar y sincronizada con Desarrollo, 2D y 3D.`;toast('Pieza añadida a Programar');go('program');
+ if(!enableManualImportWhenValid())return toast('Revisa pliegues y tramos antes de enviar a Programar');
+ const edited=readImportDraft(),previous=importDraft||{};importDraft={...previous,...edited,confidence:previous.confidence||edited.confidence,mode:previous.mode||'manual',drawingFeatures:previous.drawingFeatures||null};
+ commit('Pieza importada añadida a Programar',()=>{state.project=deep(importDraft.project);state.programMeta=deep(importDraft.programMeta);state.bends=deep(importDraft.bends);state.importHistory=state.importHistory||[];state.importHistory.unshift({date:new Date().toLocaleString('es-ES'),reference:state.project.ref,files:deep(importDraft.sourceFiles),confidence:importDraft.confidence,mode:importDraft.mode,drawingFeatures:deep(importDraft.drawingFeatures)});applyAutomaticToolRecommendation()});
+ syncAll();$('importTransferStatus').innerHTML=`✅ <b>${state.project.ref}</b> enviada correctamente a Programar con ${Math.max(0,state.bends.length-1)} pliegues y ${state.bends.length} tramos.`;toast('Pieza enviada a Programar');go('program');
 }
 function saveImportDraft(){importDraft=readImportDraft();localStorage.setItem('plegarProImportDraft',JSON.stringify(importDraft));$('importTransferStatus').innerHTML='Borrador de importación guardado en este dispositivo.';toast('Borrador guardado')}
 
@@ -1075,6 +1160,7 @@ function bind(){
  if($('fileInput'))$('fileInput').addEventListener('change',importFilesSelected);
  if($('importReturnLength'))$('importReturnLength').addEventListener('input',()=>{if(visionDetection?.inference)applyDrawingInference(visionDetection.inference,!!visionDetection.ocr?.length)});
  $('analyzeFile').onclick=analyzeImportedFiles;if($('analyzePhoto'))$('analyzePhoto').onclick=analyzePhotoLocal;if($('importToProgram'))$('importToProgram').onclick=transferImportToProgram;if($('importSaveDraft'))$('importSaveDraft').onclick=saveImportDraft;
+ ['importSheetLength','importBendLength','importBendCount','importLegs','importAngle','importRadius','importThickness'].forEach(id=>{if($(id))$(id).addEventListener('input',enableManualImportWhenValid)});
  ['curveRadius','curveAngle','curveLength','curveHits','curveSpring','curveV','curveThickness','curveStrategy','curveMode'].forEach(id=>$(id).addEventListener('input',()=>{readCurveInputs();renderCurve()}));
  $('curveCalculate').onclick=()=>commit('Recalculada Curva Perfecta',()=>readCurveInputs());
  $('curveToProgram').onclick=()=>{readCurveInputs();let c=state.curve,r=calculateCurve();commit('Curva Perfecta enviada a Programar',()=>{state.bends=r.rows.map((x,i)=>({leg:+r.step.toFixed(2),angle:x.angle,radius:r.radius,v:c.v,punch:'Recto 30°',gauge:+x.x.toFixed(2),direction:1,curveGroup:'CP1',hit:i+1}))});go('program')};
@@ -1087,7 +1173,7 @@ function bind(){
  $('vSort').onchange=()=>{state.development.sort=$('vSort').value;autoSave();renderVCompare()};$('vExportCsv').onclick=()=>exportVComparison('csv');$('vExportJson').onclick=()=>exportVComparison('json');
  ['devMaterial','devThickness','devK','devReferenceV','devPunchRadius','devPunchAngle','devBendLength','devTolerance','devDimensionType'].forEach(id=>$(id).onchange=()=>commit('Actualizado dato de desarrollo',()=>readDevelopmentInputs()));
  $('vSelectRecommended').onclick=()=>commit('Seleccionadas matrices V recomendadas',()=>{let t=state.development.thickness||1;state.development.selectedVs=STANDARD_VS.filter(v=>v>=t*5&&v<=t*14)});
- $('toolMaker').onchange=renderTools;$('toolSearch').oninput=renderTools;
+ $('toolMaker').onchange=renderTools;$('toolType').onchange=renderTools;$('toolSearch').oninput=renderTools;$('toolBend').onchange=renderTools;
  $('aiCalculate').onclick=calculateAI;$('aiToProgram').onclick=sendAIProgram;$('aiToCurve').onclick=sendAICurve;
  $('woCreate').onclick=()=>commit('Guardada orden de trabajo',()=>state.workOrder={number:$('woNumber').value,state:$('woState').value,date:new Date().toLocaleString('es-ES')});
  $('woStart').onclick=()=>commit('Orden iniciada',()=>{state.workOrder=state.workOrder||{number:$('woNumber').value};state.workOrder.state='Producción'});
@@ -1232,7 +1318,7 @@ function installEssentialFallbacks(){
 }
 
 function runtimeFunctionalAudit(){
- const report={version:'51.2',missingElements:[],buttons:[],modules:[],errors:[]};
+ const report={version:'51.5',missingElements:[],buttons:[],modules:[],errors:[]};
  const required=['mobileMenuBtn','menuToggle','mainSidebar','backBtn','undoBtn','redoBtn','addBend','progThickness','progSheetLength','progBendLength','progSpecialGeometry','progCurveCreate','sequenceAnalyze','sequenceOptimize','sequenceExport','sendSim','p2Add','p2Thickness','p2SheetLength','p2BendLength','p3Apply','p3Thickness','p3SheetLength','p3BendLength','s2Play','s3Play','curveCalculate','compareVBtn','aiCalculate','crmSave','crmMail','saveSettings','saveProject'];
  required.forEach(id=>{if(!safeElement(id))report.missingElements.push(id)});
  document.querySelectorAll('section.page').forEach(p=>report.modules.push(p.id));
@@ -1277,5 +1363,34 @@ function startApplication(){
 window.addEventListener('error',e=>{console.error('Error controlado de ejecución',e.error||e.message);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
 window.addEventListener('unhandledrejection',e=>{console.error('Promesa rechazada',e.reason);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startApplication,{once:true});else startApplication();
+</script>
+
+<script id="pp515-ai-upgrade">
+(function(){
+ const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+ function rotatedCanvas(source,deg){const rad=deg*Math.PI/180,w=source.width,h=source.height,swap=Math.abs(deg)%180===90,c=document.createElement('canvas');c.width=swap?h:w;c.height=swap?w:h;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.translate(c.width/2,c.height/2);x.rotate(rad);x.drawImage(source,-w/2,-h/2);return c}
+ function sharpenCanvas(source){const c=document.createElement('canvas');c.width=source.width;c.height=source.height;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(source,0,0);const im=x.getImageData(0,0,c.width,c.height),d=im.data,copy=new Uint8ClampedArray(d);for(let y=1;y<c.height-1;y++)for(let xx=1;xx<c.width-1;xx++){let i=(y*c.width+xx)*4;for(let k=0;k<3;k++){let v=5*copy[i+k]-copy[i-4+k]-copy[i+4+k]-copy[i-c.width*4+k]-copy[i+c.width*4+k];d[i+k]=clamp(v,0,255)}}x.putImageData(im,0,0);return c}
+ function parseEngineeringText(text){text=(text||'').replace(/,/g,'.').replace(/[×xX]/g,' x ');const values=[];for(const m of text.matchAll(/(?:Ø|R|M)?\s*(\d{1,4}(?:\.\d{1,2})?)\s*(?:mm|°)?/gi)){const n=+m[1];if(n>0&&n<10000)values.push(n)}const angles=[...text.matchAll(/(\d{1,3}(?:\.\d+)?)\s*°/g)].map(m=>+m[1]).filter(n=>n>0&&n<180);const radii=[...text.matchAll(/R\s*(\d{1,3}(?:\.\d+)?)/gi)].map(m=>+m[1]);const dims=[...new Set(values.map(n=>Math.round(n*100)/100))];return{values:dims,angles:[...new Set(angles)],radii:[...new Set(radii)],raw:text}}
+ function inferProfile(tokens,lines){const v=tokens.values.filter(n=>n>=5),large=v.filter(n=>n>=200).sort((a,b)=>b-a),mid=v.filter(n=>n>=20&&n<200).sort((a,b)=>b-a);const length=large[0]||v.at(-1)||null;let width=large[1]||mid[0]||null,height=mid.find(n=>n<width)||mid[1]||null;const lineCount=(lines?.h?.length||0)+(lines?.v?.length||0);let profile='L',bends=1;if(lineCount>=10||mid.length>=4){profile='U con retornos';bends=4}else if(lineCount>=6||mid.length>=3){profile='U';bends=2}else if(lineCount>=4||mid.length>=2){profile='Z';bends=2}const reliable=!!(length&&width&&height&&tokens.values.length>=3);return{unique:tokens.values,length,width,height,slotW:null,slotH:null,profile,bends,angle:tokens.angles[0]||90,radius:tokens.radii[0]||null,reliable}}
+ async function multiPassOCR(T,source,clean){const passes=[['Original',source,11],['Nítida',sharpenCanvas(source),11],['Limpia',clean,6],['Giro 90°',rotatedCanvas(source,90),11],['Giro 270°',rotatedCanvas(source,270),11]],out=[];for(const [label,cv,psm] of passes){try{out.push(await recognizePass(T,cv,label,psm))}catch(e){console.warn(label,e)}}return out.join('\n')}
+ window.runTechnicalOCR=async function(){
+  if(!visionImage||!visionDetection)return false;const run=++visionAnalysisRun,st=$('ocrStatus');st.textContent='IA visual: limpiando, enderezando y leyendo cotas…';$('importReady').textContent='Analizando';$('importToProgram').disabled=true;
+  try{let text=await browserTextDetection(visionDetection.ocrSource);if(run!==visionAnalysisRun)return false;if(!text){const T=await Promise.race([loadTesseract(),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),30000))]);text=await multiPassOCR(T,visionDetection.ocrSource,visionDetection.ocrClean)}if(run!==visionAnalysisRun)return false;
+   const tokens=parseEngineeringText(text),inf=inferProfile(tokens,visionDetection.lines);visionDetection.ocr=tokens.values;visionDetection.ocrText=text;visionDetection.inference=inf;
+   const geometricScore=Math.min(35,((visionDetection.lines?.h?.length||0)+(visionDetection.lines?.v?.length||0))*2),ocrScore=Math.min(45,tokens.values.length*7),semanticScore=(tokens.angles.length?8:0)+(tokens.radii.length?8:0),confidence=clamp(Math.round(18+geometricScore+ocrScore+semanticScore),20,97);visionDetection.confidence=confidence;
+   $('ocrStatus').innerHTML=`IA terminada · confianza <b>${confidence}%</b> · ${tokens.values.length} cotas candidatas`;
+   $('ocrDimensions').innerHTML=`Perfil probable: <b>${inf.profile}</b><br>Longitud: <b>${inf.length??'pendiente'} mm</b> · Ancho: <b>${inf.width??'pendiente'} mm</b> · Altura: <b>${inf.height??'pendiente'} mm</b>${tokens.angles.length?'<br>Ángulos leídos: <b>'+tokens.angles.join('°, ')+'°</b>':''}${tokens.radii.length?'<br>Radios leídos: <b>R'+tokens.radii.join(' · R')+'</b>':''}`;
+   if(inf.reliable){applyDrawingInference(inf,true);$('importConfidence').textContent=confidence+'%';return true}
+   $('importReady').textContent='Revisión manual';$('fileResult').innerHTML='<b>La IA no ha encontrado suficientes cotas coherentes.</b><br>La imagen se conserva y no se inventan medidas. Corrige los campos resaltados antes de transferir.';enableManualImportWhenValid();return false;
+  }catch(e){console.warn('IA visual',e);st.textContent='No se pudo completar el OCR automático. Revisa manualmente las cotas.';$('importReady').textContent='Revisión manual';enableManualImportWhenValid();return false}
+ };
+ const oldApply=window.applyDrawingInference;
+ window.applyDrawingInference=function(inf,fromOCR=false){if(!inf)return;const t=Math.max(.5,parseLocaleNumber($('importThickness').value)||2),r=inf.radius||Math.max(1,t),a=inf.angle||90,w=Math.max(10,inf.width||100),h=Math.max(10,inf.height||50);$('importSheetLength').value=String(w);$('importBendLength').value=String(inf.length||1000);$('importAngle').value=String(a);$('importRadius').value=String(r);let legs,bends;
+  if(inf.profile==='U con retornos'){let ret=Math.max(5,Math.min(25,Math.round(h*.25)));legs=[ret,h,Math.max(10,w-2*ret),h,ret];bends=4}else if(inf.profile==='U'){legs=[h,Math.max(10,w),h];bends=2}else if(inf.profile==='Z'){legs=[h,Math.max(10,w),h];bends=2}else{legs=[h,Math.max(10,w)];bends=1}
+  $('importBendCount').value=String(bends);$('importLegs').value=legs.join(', ');const confidence=visionDetection?.confidence||75;$('importConfidence').textContent=confidence+'%';$('importReady').textContent='Revisión requerida';$('importToProgram').disabled=false;$('importSaveDraft').disabled=false;$('fileResult').innerHTML=`<b>Geometría reconstruida por IA.</b><br>${inf.profile} · ${bends} pliegue(s) · ${legs.length} tramos. Revisa las cotas antes de fabricar.`;importDraft=readImportDraft();importDraft.confidence=confidence;importDraft.mode='photo-ai';importDraft.drawingFeatures={...inf,legs};
+ };
+ // Cleaner, more precise rendering defaults
+ try{state.settings.visualQuality='high';state.settings.showGrid='yes';state.settings.showAxes='yes';state.settings.machineOpacity=.92;state.settings.visualThickness=1.15}catch(e){}
+})();
 </script>
 </body></html>
