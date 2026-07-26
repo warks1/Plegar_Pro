@@ -1,0 +1,15 @@
+PLEGAR PRO v50.6 · CONTROL TÁCTIL Y DECIMALES
+
+CAMBIOS REALES SOBRE v50.5
+- Todos los campos numéricos permiten escribir coma o punto decimal.
+- Teclado decimal activado en móvil y tablet mediante inputmode=decimal.
+- Conversión interna segura de 1,5 y 1.5 al mismo valor numérico.
+- El último tramo de la pieza aparece sin ángulo porque no genera un plegado posterior.
+- El último ángulo queda deshabilitado y marcado con “—” en Programar.
+- Las vistas 2D permiten pellizco para ampliar/reducir, desplazamiento con dos dedos, rueda de ratón y doble clic para centrar.
+- Las vistas 3D permiten pellizco para ampliar/reducir, desplazamiento con dos dedos, rotación con un dedo, rueda de ratón, botón derecho/Mayús para desplazar y doble clic para centrar.
+- Límites de zoom ampliados para revisar detalles pequeños.
+- Versión visible actualizada a v50.6 / PP-506-REAL.
+
+NOTA
+La plegadora 3D sigue siendo una representación técnica generada por canvas, no una réplica CAD exacta de una máquina Bystronic concreta. No se declara esa mejora como completada.

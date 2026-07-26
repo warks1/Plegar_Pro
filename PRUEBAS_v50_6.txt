@@ -1,0 +1,18 @@
+PRUEBAS REALIZADAS v50.6
+
+[OK] El archivo HTML se abre como documento autónomo.
+[OK] Comprobación de sintaxis JavaScript con node --check.
+[OK] No se han eliminado pantallas ni módulos heredados.
+[OK] Los inputs numéricos usan teclado decimal y aceptan la pulsación de coma.
+[OK] El analizador numérico local convierte coma y punto.
+[OK] El último tramo se representa con ángulo vacío/deshabilitado.
+[OK] Las etiquetas gráficas no dibujan ángulo en el último extremo.
+[OK] Control multitáctil añadido a los canvas 2D.
+[OK] Control multitáctil añadido a los canvas 3D.
+[OK] Rueda, arrastre y doble clic conservados en PC.
+
+PENDIENTE DE VALIDACIÓN EN DISPOSITIVO REAL
+- Safari iPhone/iPad: comportamiento exacto del teclado decimal y gesto de pellizco.
+- Ratón físico: botón derecho y sensibilidad orbital según navegador.
+- GitHub Pages: caché y publicación del ZIP desplegado.
+- Réplica CAD real de la plegadora: todavía no implementada.

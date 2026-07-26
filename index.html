@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v50.5 · Verificación visible acumulativa</title>
+<title>Plegar Pro v50.6 · Verificación visible acumulativa</title>
 <style>
 :root{
   --bg:#06111b;--panel:#0d2131;--panel2:#112a3d;--line:#31536c;
@@ -108,7 +108,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
  .app:has(#menuToggle:checked){overflow:hidden}
 }
 </style>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v50.5 Verificación Visible Acumulativa"></head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v50.6 Verificación Visible Acumulativa"></head>
 <body>
 <div id="loader">
   <div class="loadBox">
@@ -124,7 +124,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <input type="checkbox" id="menuToggle" class="menuToggle" aria-hidden="true">
 <aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v50.5 · CAMBIOS VISIBLES · base real acumulativa</div>
+  <div class="version">v50.6 · CONTROL TÁCTIL Y DECIMALES · base real acumulativa</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -182,7 +182,7 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
     <div class="kpi"><span>Pliegues</span><b id="dashBends"></b></div>
   </div><div class="note">Cualquier cambio realizado en Programar, 2D, 3D, IA o Curva Perfecta actualiza el mismo proyecto.</div></div>
 
-  <div class="card c12" id="buildVerification" style="border:2px solid #38d39f;box-shadow:0 0 0 1px rgba(56,211,159,.22) inset"><h2>✅ Plegar Pro v50.5 · versión verificada</h2><div class="kpis"><div class="kpi"><span>Base modificada</span><b>Proyecto real subido</b></div><div class="kpi"><span>Programar</span><b>Vista 2D + Simular</b></div><div class="kpi"><span>Dimensiones</span><b>Chapa + plegado</b></div><div class="kpi"><span>Compilación</span><b id="buildCode">PP-505-REAL</b></div></div><div class="note"><b>Comprobación visual:</b> si ves este recuadro verde, estás ejecutando la nueva beta. La aplicación centra automáticamente las vistas al abrir Programar, Programación 2D, Programación 3D y las simulaciones.</div><div class="actions"><button class="btn" data-go="program">Abrir Programar</button><button class="btn secondary" data-go="sim2d">Probar Simulación 2D</button><button class="btn secondary" data-go="sim3d">Probar Simulación 3D</button></div></div>
+  <div class="card c12" id="buildVerification" style="border:2px solid #38d39f;box-shadow:0 0 0 1px rgba(56,211,159,.22) inset"><h2>✅ Plegar Pro v50.6 · versión verificada</h2><div class="kpis"><div class="kpi"><span>Base modificada</span><b>Proyecto real subido</b></div><div class="kpi"><span>Programar</span><b>Vista 2D + Simular</b></div><div class="kpi"><span>Dimensiones</span><b>Chapa + plegado</b></div><div class="kpi"><span>Compilación</span><b id="buildCode">PP-506-REAL</b></div></div><div class="note"><b>Comprobación visual:</b> si ves este recuadro verde, estás ejecutando la nueva beta. La aplicación centra automáticamente las vistas al abrir Programar, Programación 2D, Programación 3D y las simulaciones.</div><div class="actions"><button class="btn" data-go="program">Abrir Programar</button><button class="btn secondary" data-go="sim2d">Probar Simulación 2D</button><button class="btn secondary" data-go="sim3d">Probar Simulación 3D</button></div></div>
 </div>
 </section>
 
@@ -208,12 +208,12 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <section class="page" id="technical"><div class="grid">
 <div class="card c6"><h2>Identificación</h2><div class="fields">
 <div><label>Referencia</label><input id="ref"></div><div><label>Cliente</label><input id="client"></div>
-<div><label>Cantidad</label><input id="qty" type="number" min="1"></div><div><label>Revisión</label><input id="rev"></div>
+<div><label>Cantidad</label><input id="qty" type="text" inputmode="decimal" min="1"></div><div><label>Revisión</label><input id="rev"></div>
 </div></div>
 <div class="card c6"><h2>Fabricación</h2><div class="fields">
 <div><label>Material</label><select id="material"><option>S235</option><option>S275</option><option>S355</option><option>Inoxidable 304</option><option>Aluminio</option><option>Zincor</option><option>Galvanizado</option></select></div>
-<div><label>Espesor (mm)</label><input id="thickness" type="number" min=".1" step=".1"></div>
-<div><label>Factor K</label><input id="kfactor" type="number" min=".1" max=".6" step=".01"></div>
+<div><label>Espesor (mm)</label><input id="thickness" type="text" inputmode="decimal" min=".1" step=".1"></div>
+<div><label>Factor K</label><input id="kfactor" type="text" inputmode="decimal" min=".1" max=".6" step=".01"></div>
 <div><label>Máquina</label><select id="machine"><option>Bystronic Xpert 3100 × 100 T</option><option>Bystronic Xpert 3200 × 150 T</option><option>Personalizada</option></select></div>
 </div></div>
 </div></section>
@@ -221,12 +221,12 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <section class="page" id="program"><div class="grid">
 <div class="card c12"><h2>Datos de la pieza · sincronización general</h2><div class="fields">
 <div><label>Material</label><select id="progMaterial"><option>S235</option><option>S275</option><option>S355</option><option>Inoxidable 304</option><option>Aluminio</option><option>Zincor</option><option>Galvanizado</option></select></div>
-<div><label>Espesor de chapa (mm)</label><input id="progThickness" type="number" min="0.1" step="0.1"></div>
-<div><label>Factor K</label><input id="progKfactor" type="number" min="0.1" max="0.6" step="0.01"></div>
-<div><label>Longitud de la chapa (mm)</label><input id="progSheetLength" type="number" min="1" step="1"></div>
-<div><label>Longitud de plegado (mm)</label><input id="progBendLength" type="number" min="1" step="1"></div>
+<div><label>Espesor de chapa (mm)</label><input id="progThickness" type="text" inputmode="decimal" min="0.1" step="0.1"></div>
+<div><label>Factor K</label><input id="progKfactor" type="text" inputmode="decimal" min="0.1" max="0.6" step="0.01"></div>
+<div><label>Longitud de la chapa (mm)</label><input id="progSheetLength" type="text" inputmode="decimal" min="1" step="1"></div>
+<div><label>Longitud de plegado (mm)</label><input id="progBendLength" type="text" inputmode="decimal" min="1" step="1"></div>
 <div><label><input id="progSpecialGeometry" type="checkbox"> Geometría especial</label></div>
-<div id="progSheetWidthWrap" style="display:none"><label>Anchura total opcional (mm)</label><input id="progSheetWidth" type="number" min="1" step="1"></div>
+<div id="progSheetWidthWrap" style="display:none"><label>Anchura total opcional (mm)</label><input id="progSheetWidth" type="text" inputmode="decimal" min="1" step="1"></div>
 </div><div id="programDataStatus" class="note">Los cambios recalculan Programar, 2D, 3D, fuerza, desarrollo y Curva Perfecta.</div></div>
 <div class="card c8"><h2>Programa de plegado</h2>
 <div class="actions"><button class="btn" id="addBend">Añadir pliegue</button><button class="btn secondary" id="autoSequence">Orden automático</button><button class="btn secondary" data-go="program2d">Vista 2D</button><button class="btn secondary" data-go="program3d">Vista 3D</button><button class="btn secondary" data-go="sim2d">Simular 2D</button><button class="btn" id="sendSim">Simular 3D</button></div>
@@ -239,35 +239,35 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div class="actions"><button class="btn" id="sequenceAnalyze">Analizar secuencia</button><button class="btn secondary" id="sequenceOptimize">Aplicar orden recomendado</button><button class="btn secondary" id="sequenceExport">Exportar informe</button></div></div>
 <div class="card c12"><h2>Curva Perfecta · cálculo en tiempo real desde Programar</h2><div class="fields">
 <div><label>Modo</label><select id="progCurveMode"><option value="radius">Por radio y ángulo</option><option value="length">Por longitud de arco</option></select></div>
-<div><label>Radio objetivo (mm)</label><input id="progCurveRadius" type="number" min="1" step="0.1"></div>
-<div><label>Ángulo total (°)</label><input id="progCurveAngle" type="number" min="1" max="179" step="0.1"></div>
-<div><label>Longitud de arco (mm)</label><input id="progCurveLength" type="number" min="1" step="0.1"></div>
-<div><label>Número de golpes</label><input id="progCurveHits" type="number" min="2" step="1"></div>
-<div><label>Recuperación (°)</label><input id="progCurveSpring" type="number" step="0.1"></div>
-<div><label>Matriz V</label><input id="progCurveV" type="number" min="1" step="1"></div>
+<div><label>Radio objetivo (mm)</label><input id="progCurveRadius" type="text" inputmode="decimal" min="1" step="0.1"></div>
+<div><label>Ángulo total (°)</label><input id="progCurveAngle" type="text" inputmode="decimal" min="1" max="179" step="0.1"></div>
+<div><label>Longitud de arco (mm)</label><input id="progCurveLength" type="text" inputmode="decimal" min="1" step="0.1"></div>
+<div><label>Número de golpes</label><input id="progCurveHits" type="text" inputmode="decimal" min="2" step="1"></div>
+<div><label>Recuperación (°)</label><input id="progCurveSpring" type="text" inputmode="decimal" step="0.1"></div>
+<div><label>Matriz V</label><input id="progCurveV" type="text" inputmode="decimal" min="1" step="1"></div>
 <div><label>Estrategia</label><select id="progCurveStrategy"><option value="uniform">Uniforme</option><option value="smooth">Suavizada</option><option value="adaptive">Adaptativa</option></select></div>
 </div><div class="kpis"><div class="kpi"><span>Golpes</span><b id="progCurveHitsOut">—</b></div><div class="kpi"><span>Distancia</span><b id="progCurveStepOut">—</b></div><div class="kpi"><span>Arco</span><b id="progCurveArcOut">—</b></div><div class="kpi"><span>Ángulo/golpe</span><b id="progCurveAngleOut">—</b></div></div><div id="progCurveWarnings" class="note"></div><div class="actions"><button class="btn" id="progCurveCreate">Crear golpes en el programa</button><button class="btn secondary" data-go="curve">Abrir módulo completo</button></div></div>
 </div></section>
 
 <section class="page" id="program2d"><div class="split">
-<div class="card"><h2>Edición 2D</h2><div class="fields"><div><label>Material</label><select id="p2Material"><option>S235</option><option>S275</option><option>S355</option><option>Inoxidable 304</option><option>Aluminio</option><option>Zincor</option><option>Galvanizado</option></select></div><div><label>Espesor (mm)</label><input id="p2Thickness" type="number" min="0.1" step="0.1"></div><div><label>Longitud de la chapa (mm)</label><input id="p2SheetLength" type="number" min="1" step="1"></div><div><label>Longitud de plegado (mm)</label><input id="p2BendLength" type="number" min="1" step="1"></div><div><label><input id="p2SpecialGeometry" type="checkbox"> Geometría especial</label></div><div id="p2SheetWidthWrap" style="display:none"><label>Anchura total opcional (mm)</label><input id="p2SheetWidth" type="number" min="1" step="1"></div></div><div id="p2DataStatus" class="note">Espesor sincronizado con el proyecto activo.</div><div id="editor2d"></div><div class="actions"><button class="btn" id="p2Add">Añadir pliegue</button><button class="btn secondary" id="p2Fit">Centrar pieza</button><button class="btn secondary" data-go="sim2d">Simular 2D</button><button class="btn secondary" data-go="program3d">Vista 3D</button></div></div>
+<div class="card"><h2>Edición 2D</h2><div class="fields"><div><label>Material</label><select id="p2Material"><option>S235</option><option>S275</option><option>S355</option><option>Inoxidable 304</option><option>Aluminio</option><option>Zincor</option><option>Galvanizado</option></select></div><div><label>Espesor (mm)</label><input id="p2Thickness" type="text" inputmode="decimal" min="0.1" step="0.1"></div><div><label>Longitud de la chapa (mm)</label><input id="p2SheetLength" type="text" inputmode="decimal" min="1" step="1"></div><div><label>Longitud de plegado (mm)</label><input id="p2BendLength" type="text" inputmode="decimal" min="1" step="1"></div><div><label><input id="p2SpecialGeometry" type="checkbox"> Geometría especial</label></div><div id="p2SheetWidthWrap" style="display:none"><label>Anchura total opcional (mm)</label><input id="p2SheetWidth" type="text" inputmode="decimal" min="1" step="1"></div></div><div id="p2DataStatus" class="note">Espesor sincronizado con el proyecto activo.</div><div id="editor2d"></div><div class="actions"><button class="btn" id="p2Add">Añadir pliegue</button><button class="btn secondary" id="p2Fit">Centrar pieza</button><button class="btn secondary" data-go="sim2d">Simular 2D</button><button class="btn secondary" data-go="program3d">Vista 3D</button></div></div>
 <div><div class="stage"><canvas id="canvasP2" width="1100" height="650"></canvas><div class="overlay" id="overlayP2"></div></div></div>
 </div></section>
 
 <section class="page" id="program3d"><div class="split">
 <div class="card"><h2>Edición 3D</h2><div class="fields">
 <div><label>Material</label><select id="p3Material"><option>S235</option><option>S275</option><option>S355</option><option>Inoxidable 304</option><option>Aluminio</option><option>Zincor</option><option>Galvanizado</option></select></div>
-<div><label>Espesor (mm)</label><input id="p3Thickness" type="number" min="0.1" step="0.1"></div>
-<div><label>Longitud de la chapa (mm)</label><input id="p3SheetLength" type="number" min="1" step="1"></div>
-<div><label>Longitud de plegado (mm)</label><input id="p3BendLength" type="number" min="1" step="1"></div>
+<div><label>Espesor (mm)</label><input id="p3Thickness" type="text" inputmode="decimal" min="0.1" step="0.1"></div>
+<div><label>Longitud de la chapa (mm)</label><input id="p3SheetLength" type="text" inputmode="decimal" min="1" step="1"></div>
+<div><label>Longitud de plegado (mm)</label><input id="p3BendLength" type="text" inputmode="decimal" min="1" step="1"></div>
 <div><label><input id="p3SpecialGeometry" type="checkbox"> Geometría especial</label></div>
-<div id="p3SheetWidthWrap" style="display:none"><label>Anchura total opcional (mm)</label><input id="p3SheetWidth" type="number" min="1" step="1"></div>
+<div id="p3SheetWidthWrap" style="display:none"><label>Anchura total opcional (mm)</label><input id="p3SheetWidth" type="text" inputmode="decimal" min="1" step="1"></div>
 <div><label>Pliegue activo</label><select id="p3Active"></select></div>
-<div><label>Cámara</label><select id="p3Camera"><option value="iso">Isométrica</option><option value="front">Frontal</option><option value="rear">Trasera</option><option value="side">Lateral</option><option value="top">Superior</option><option value="operator">Operario</option><option value="free">Libre</option></select></div><div><label>Longitud / ala</label><input id="p3Leg" type="number" step="0.1"></div>
-<div><label>Ángulo</label><input id="p3Angle" type="number"></div>
-<div><label>Radio</label><input id="p3Radius" type="number" step=".1"></div>
-<div><label>V</label><input id="p3V" type="number"></div>
-<div><label>Tope X</label><input id="p3Gauge" type="number"></div>
+<div><label>Cámara</label><select id="p3Camera"><option value="iso">Isométrica</option><option value="front">Frontal</option><option value="rear">Trasera</option><option value="side">Lateral</option><option value="top">Superior</option><option value="operator">Operario</option><option value="free">Libre</option></select></div><div><label>Longitud / ala</label><input id="p3Leg" type="text" inputmode="decimal" step="0.1"></div>
+<div><label>Ángulo</label><input id="p3Angle" type="text" inputmode="decimal"></div>
+<div><label>Radio</label><input id="p3Radius" type="text" inputmode="decimal" step=".1"></div>
+<div><label>V</label><input id="p3V" type="text" inputmode="decimal"></div>
+<div><label>Tope X</label><input id="p3Gauge" type="text" inputmode="decimal"></div>
 </div><div class="actions"><button class="btn" id="p3Apply">Aplicar al pliegue</button><button class="btn secondary" id="p3Prev">Pliegue anterior</button><button class="btn secondary" id="p3Next">Siguiente</button><button class="btn secondary" id="p3Fit">Centrar</button><button class="btn secondary" data-go="sim3d">Simular 3D</button></div>
 <div class="note">Arrastra sobre la vista para rotar. La programación 3D edita; la simulación 3D reproduce.</div></div>
 <div><div class="stage"><canvas id="canvasP3" width="1100" height="650"></canvas><div class="overlay" id="overlayP3"></div></div></div>
@@ -286,13 +286,13 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <section class="page" id="development"><div class="grid">
 <div class="card c4"><h2>Calculadora de desarrollo</h2><div class="fields">
 <div><label>Material</label><select id="devMaterial"><option>S235</option><option>S275</option><option>S355</option><option>Inoxidable</option><option>Aluminio</option><option>Galvanizado</option><option>Zincor</option><option>Personalizado</option></select></div>
-<div><label>Espesor (mm)</label><input id="devThickness" type="number" min="0.1" step="0.1"></div>
-<div><label>Factor K</label><input id="devK" type="number" min="0.1" max="0.6" step="0.01"></div>
+<div><label>Espesor (mm)</label><input id="devThickness" type="text" inputmode="decimal" min="0.1" step="0.1"></div>
+<div><label>Factor K</label><input id="devK" type="text" inputmode="decimal" min="0.1" max="0.6" step="0.01"></div>
 <div><label>V de referencia</label><select id="devReferenceV"></select></div>
-<div><label>Radio punzón (mm)</label><input id="devPunchRadius" type="number" min="0" step="0.1"></div>
-<div><label>Ángulo punzón</label><input id="devPunchAngle" type="number" min="20" max="90"></div>
-<div><label>Longitud de plegado (mm)</label><input id="devBendLength" type="number" min="1"></div>
-<div><label>Tolerancia admisible ± mm</label><input id="devTolerance" type="number" min="0" step="0.05"></div>
+<div><label>Radio punzón (mm)</label><input id="devPunchRadius" type="text" inputmode="decimal" min="0" step="0.1"></div>
+<div><label>Ángulo punzón</label><input id="devPunchAngle" type="text" inputmode="decimal" min="20" max="90"></div>
+<div><label>Longitud de plegado (mm)</label><input id="devBendLength" type="text" inputmode="decimal" min="1"></div>
+<div><label>Tolerancia admisible ± mm</label><input id="devTolerance" type="text" inputmode="decimal" min="0" step="0.05"></div>
 <div><label>Tipo de cotas</label><select id="devDimensionType"><option value="exterior">Exteriores</option><option value="interior">Interiores</option><option value="mixed">Mixtas</option></select></div>
 </div><div class="actions"><button class="btn" id="devCalculate">Calcular</button><button class="btn secondary" id="devToCompare">Comparar matrices V</button><button class="btn secondary" id="devSaveCalc">Guardar cálculo</button><button class="btn secondary" id="devExport">Exportar cálculo</button><button class="btn secondary" id="devReset">Restablecer calculadora</button></div>
 <div class="note"><b>Sincronización exclusiva:</b> esta calculadora comparte sus datos únicamente con el Comparador de V. Programar, 2D, 3D, simulaciones, Producción y Calidad permanecen independientes.</div></div>
@@ -303,13 +303,13 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 
 <section class="page" id="curve"><div class="grid">
 <div class="card c5"><h2>Programación de Curva Perfecta</h2><div class="fields">
-<div><label>Radio objetivo (mm)</label><input id="curveRadius" type="number" min="1"></div>
-<div><label>Ángulo total (°)</label><input id="curveAngle" type="number" min="1" max="180"></div>
-<div><label>Longitud curva (mm)</label><input id="curveLength" type="number" min="1"></div>
-<div><label>Número de golpes</label><input id="curveHits" type="number" min="2"></div>
-<div><label>Recuperación total (°)</label><input id="curveSpring" type="number" step=".1"></div>
-<div><label>Matriz V</label><input id="curveV" type="number"></div>
-<div><label>Espesor (mm)</label><input id="curveThickness" type="number" min="0.1" step="0.1"></div>
+<div><label>Radio objetivo (mm)</label><input id="curveRadius" type="text" inputmode="decimal" min="1"></div>
+<div><label>Ángulo total (°)</label><input id="curveAngle" type="text" inputmode="decimal" min="1" max="180"></div>
+<div><label>Longitud curva (mm)</label><input id="curveLength" type="text" inputmode="decimal" min="1"></div>
+<div><label>Número de golpes</label><input id="curveHits" type="text" inputmode="decimal" min="2"></div>
+<div><label>Recuperación total (°)</label><input id="curveSpring" type="text" inputmode="decimal" step=".1"></div>
+<div><label>Matriz V</label><input id="curveV" type="text" inputmode="decimal"></div>
+<div><label>Espesor (mm)</label><input id="curveThickness" type="text" inputmode="decimal" min="0.1" step="0.1"></div>
 <div><label>Estrategia</label><select id="curveStrategy"><option value="uniform">Uniforme</option><option value="smooth">Suave en extremos</option><option value="adaptive">Adaptativa</option></select></div>
 <div><label>Modo de entrada</label><select id="curveMode"><option value="radius">Radio + ángulo</option><option value="length">Longitud + ángulo (golpes automáticos)</option><option value="hits">Golpes fijados</option></select></div>
 </div><div class="actions"><button class="btn" id="curveCalculate">Calcular</button><button class="btn secondary" id="curveToProgram">Enviar a Programar</button></div><div id="curveResult" class="note"></div></div>
@@ -344,8 +344,8 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <section class="page" id="quality"><div class="grid">
 <div class="card c5"><h2>Registrar control</h2><div class="fields">
 <div><label>Pliegue</label><select id="qBend"></select></div><div><label>Tipo</label><select id="qType"><option>Ángulo</option><option>Longitud</option><option>Radio</option></select></div>
-<div><label>Nominal</label><input id="qNominal" type="number"></div><div><label>Medido</label><input id="qMeasured" type="number"></div>
-<div><label>Tolerancia ±</label><input id="qTolerance" type="number" step=".1"></div><div><label>Inspector</label><input id="qInspector"></div>
+<div><label>Nominal</label><input id="qNominal" type="text" inputmode="decimal"></div><div><label>Medido</label><input id="qMeasured" type="text" inputmode="decimal"></div>
+<div><label>Tolerancia ±</label><input id="qTolerance" type="text" inputmode="decimal" step=".1"></div><div><label>Inspector</label><input id="qInspector"></div>
 </div><textarea id="qNote" rows="3" placeholder="Observaciones"></textarea><div class="actions"><button class="btn" id="qSave">Registrar</button><button class="btn warn" id="qNcr">Crear no conformidad</button><button class="btn secondary" id="qExport">Exportar informe</button></div><div id="qResult" class="note"></div></div>
 <div class="card c7"><h2>Historial de calidad</h2><div class="kpis"><div class="kpi"><span>Total</span><b id="qTotal"></b></div><div class="kpi"><span>Conformes</span><b id="qOk"></b></div><div class="kpi"><span>No conformes</span><b id="qBad"></b></div><div class="kpi"><span>Índice</span><b id="qRate"></b></div></div><div id="qList" class="list"></div></div>
 </div></section>
@@ -373,11 +373,11 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <div><label>Teléfono</label><input id="ownerPhone"></div><div><label>WhatsApp</label><input id="ownerWhatsapp"></div>
 <div><label>Correo</label><input id="ownerEmail" type="email"></div><div><label>Web</label><input id="ownerWebsite"></div>
 </div></div>
-<div class="card c6"><h2>Precisión y comportamiento</h2><div class="fields"><div><label>Unidades</label><select id="units"><option value="mm">Milímetros</option><option value="inch">Pulgadas</option></select></div><div><label>Tolerancia angular ±°</label><input id="angleTolerance" type="number" min="0.1" step="0.1"></div><div><label>Tolerancia lineal ±mm</label><input id="linearTolerance" type="number" min="0.05" step="0.05"></div><div><label>Confirmar antes de borrar</label><select id="confirmDelete"><option value="yes">Sí</option><option value="no">No</option></select></div><div><label>Sonidos de interfaz</label><select id="uiSounds"><option value="yes">Activados</option><option value="no">Desactivados</option></select></div><div><label>Modo compacto móvil</label><select id="compactMobile"><option value="auto">Automático</option><option value="yes">Siempre</option><option value="no">Nunca</option></select></div><div><label>Frecuencia de copia automática</label><select id="backupFrequency"><option value="change">En cada cambio</option><option value="5min">Cada 5 minutos</option><option value="manual">Manual</option></select></div><div><label>Nivel de ayuda IA</label><select id="aiAssistLevel"><option value="basic">Básico</option><option value="advanced">Avanzado</option><option value="expert">Experto</option></select></div></div></div>
-<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">v50.5 mantiene compatibilidad con los proyectos anteriores y añade comprobación visible de versión, sincronización dimensional y centrado automático sin borrar datos guardados.</div></div>
+<div class="card c6"><h2>Precisión y comportamiento</h2><div class="fields"><div><label>Unidades</label><select id="units"><option value="mm">Milímetros</option><option value="inch">Pulgadas</option></select></div><div><label>Tolerancia angular ±°</label><input id="angleTolerance" type="text" inputmode="decimal" min="0.1" step="0.1"></div><div><label>Tolerancia lineal ±mm</label><input id="linearTolerance" type="text" inputmode="decimal" min="0.05" step="0.05"></div><div><label>Confirmar antes de borrar</label><select id="confirmDelete"><option value="yes">Sí</option><option value="no">No</option></select></div><div><label>Sonidos de interfaz</label><select id="uiSounds"><option value="yes">Activados</option><option value="no">Desactivados</option></select></div><div><label>Modo compacto móvil</label><select id="compactMobile"><option value="auto">Automático</option><option value="yes">Siempre</option><option value="no">Nunca</option></select></div><div><label>Frecuencia de copia automática</label><select id="backupFrequency"><option value="change">En cada cambio</option><option value="5min">Cada 5 minutos</option><option value="manual">Manual</option></select></div><div><label>Nivel de ayuda IA</label><select id="aiAssistLevel"><option value="basic">Básico</option><option value="advanced">Avanzado</option><option value="expert">Experto</option></select></div></div></div>
+<div class="card c12"><div class="actions"><button class="btn" id="saveSettings">Guardar ajustes</button><button class="btn secondary" id="resetSettings">Restablecer</button><button class="btn" id="saveProject">Guardar proyecto</button><button class="btn secondary" id="loadProject">Recuperar</button><button class="btn secondary" id="exportProject">Exportar JSON</button><button class="btn danger" id="clearProject">Borrar guardado</button></div><div class="note">v50.6 mantiene compatibilidad con los proyectos anteriores y añade comprobación visible de versión, sincronización dimensional y centrado automático sin borrar datos guardados.</div></div>
 </div></section>
 
-<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v50.5</b><br>Código: PP-505-REAL<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
+<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v50.6</b><br>Código: PP-506-REAL<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
 
 <footer class="legalFooter" id="legalFooter"></footer></main></div>
 <div id="toast" class="hidden"></div>
@@ -424,6 +424,9 @@ body{background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent)
 <script>
 const $=id=>document.getElementById(id);
 const deep=o=>JSON.parse(JSON.stringify(o));
+const parseLocaleNumber=value=>{const raw=String(value??'').trim().replace(/\s/g,'').replace(',', '.');const n=Number(raw);return Number.isFinite(n)?n:0};
+const formatLocaleNumber=(value,decimals=2)=>Number(value||0).toLocaleString('es-ES',{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
+const isTerminalSegment=i=>i===state.bends.length-1;
 const STORAGE='plegarProV43';
 let state={
  project:{ref:'PP-001',client:'Cliente demo',qty:10,rev:'A',material:'S235',thickness:2,kfactor:.42,machine:'Bystronic Xpert 3100 × 100 T'},
@@ -441,7 +444,7 @@ let state={
 let undoStack=[],redoStack=[],pageHistory=['dashboard'],currentPage='dashboard';
 let sim={rotXP3:-.35,rotYP3:.5,rotXS3:-.35,rotYS3:.5,s2Step:0,s3Step:0,s2Timer:null,s3Timer:null,operatorStep:0,p3Active:0,rotX:-.35,rotY:.5,drag:false,lastX:0,lastY:0,zoomP3:1,zoomS3:1,panP3X:0,panP3Y:0,panS3X:0,panS3Y:0,dragTarget:'',panMode:false,zoomS2:1,rotS2:0,panS2X:0,panS2Y:0,zoomCurve:1,rotCurve:0,panCurveX:0,panCurveY:0,zoomProgram:1,rotProgram:0,panProgramX:0,panProgramY:0};
 let aiProposal=null;
-window.PLEGAR_PRO_BUILD={version:'50.5',code:'PP-505-REAL',source:'Plegar_Pro-main.zip',built:'2026-07-26'};
+window.PLEGAR_PRO_BUILD={version:'50.6',code:'PP-506-REAL',source:'Plegar_Pro-main.zip',built:'2026-07-26'};
 
 const titles={
  dashboard:['Panel de control','Proyecto único y sincronizado'],import:['Entrada libre / Importar','Captura inicial del trabajo'],
@@ -474,7 +477,7 @@ function go(page,remember=true){
  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
  $('pageTitle').textContent=titles[page][0];$('pageSub').textContent=titles[page][1];
  refreshPage(page);
- // v50.5: centrar y ajustar automáticamente las vistas al entrar.
+ // v50.6: centrar y ajustar automáticamente las vistas al entrar.
  requestAnimationFrame(()=>{
   try{
    if(page==='program'){sim.zoomProgram=1;sim.panProgramX=0;sim.panProgramY=0;drawAll()}
@@ -489,7 +492,7 @@ function back(){if(pageHistory.length<=1)return toast('Ya estás en la primera p
 
 function applyProjectInputs(){
  state.project.ref=$('ref').value;state.project.client=$('client').value;state.project.qty=+$('qty').value||1;state.project.rev=$('rev').value;
- state.project.material=$('material').value;state.project.thickness=+$('thickness').value||1;state.project.kfactor=+$('kfactor').value||.42;state.project.machine=$('machine').value;
+ state.project.material=$('material').value;state.project.thickness=parseLocaleNumber($('thickness').value)||1;state.project.kfactor=parseLocaleNumber($('kfactor').value)||.42;state.project.machine=$('machine').value;
 }
 function bindProjectInputs(){
  ['ref','client','qty','rev','material','thickness','kfactor','machine'].forEach(id=>{
@@ -500,7 +503,7 @@ function renderProjectInputs(){
  $('ref').value=state.project.ref;$('client').value=state.project.client;$('qty').value=state.project.qty;$('rev').value=state.project.rev;
  $('material').value=state.project.material;$('thickness').value=state.project.thickness;$('kfactor').value=state.project.kfactor;$('machine').value=state.project.machine;
 }
-function bendSummary(b,i){return `P${i+1}: ${b.leg} mm · ${b.angle}° · R${b.radius} · V${b.v}`}
+function bendSummary(b,i){return isTerminalSegment(i)?`Tramo ${i+1}: ${b.leg} mm · final sin plegado`:`P${i+1}: ${b.leg} mm · ${b.angle}° · R${b.radius} · V${b.v}`}
 
 
 function ensureProgramMeta(){
@@ -522,12 +525,12 @@ function applyProgramSharedInputs(source){
  ensureProgramMeta();
  const material=$(source+'Material'),thickness=$(source+'Thickness'),length=$(source+'BendLength'),sheetLength=$(source+'SheetLength'),sheetWidth=$(source+'SheetWidth'),special=$(source+'SpecialGeometry'),k=$(source+'Kfactor');
  if(material)state.project.material=material.value;
- if(thickness)state.project.thickness=Math.max(.1,+thickness.value||1);
- if(sheetLength)state.programMeta.sheetLength=Math.max(1,+sheetLength.value||1200);
- if(length)state.programMeta.bendLength=Math.max(1,+length.value||1000);
+ if(thickness)state.project.thickness=Math.max(.1,parseLocaleNumber(thickness.value)||1);
+ if(sheetLength)state.programMeta.sheetLength=Math.max(1,parseLocaleNumber(sheetLength.value)||1200);
+ if(length)state.programMeta.bendLength=Math.max(1,parseLocaleNumber(length.value)||1000);
  if(special)state.programMeta.specialGeometry=!!special.checked;
- if(sheetWidth)state.programMeta.sheetWidth=state.programMeta.specialGeometry?Math.max(1,+sheetWidth.value||state.programMeta.bendLength):null;
- if(k)state.project.kfactor=Math.max(.1,Math.min(.6,+k.value||.42));
+ if(sheetWidth)state.programMeta.sheetWidth=state.programMeta.specialGeometry?Math.max(1,parseLocaleNumber(sheetWidth.value)||state.programMeta.bendLength):null;
+ if(k)state.project.kfactor=Math.max(.1,Math.min(.6,parseLocaleNumber(k.value)||.42));
  state.curve.thickness=state.project.thickness;
  if(!state.curve.v||state.curve.v<state.project.thickness*4)state.curve.v=recommendedVForThickness(state.project.thickness);
 }
@@ -617,7 +620,7 @@ function optimizeSequence(){
 }
 function exportSequenceReport(){
  const a=analyzeBendSequence();
- const lines=[`PLEGAR PRO v50.5 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
+ const lines=[`PLEGAR PRO v50.6 - INFORME DE SECUENCIA`,`Referencia: ${state.project.ref}`,`Material: ${state.project.material} ${state.project.thickness} mm`,`Estado: ${a.stateText} (${a.score}/100)`,`Riesgo: ${a.risk}`,`Cambios de herramienta: ${a.toolChanges}`,`Manipulaciones: ${a.turns}`,`Orden recomendado: ${a.order.map(i=>'P'+(i+1)).join(' -> ')}`,''];
  a.rows.forEach(r=>lines.push(`P${r.i+1}: ala ${r.leg.toFixed(1)} mm | ${r.angle.toFixed(1)}° | R${r.radius.toFixed(1)} | V${r.v} | ${r.force.toFixed(1)} t | ${r.issues.length?r.issues.join('; '):'OK'}`));
  if(a.warnings.length){lines.push('',...a.warnings.map(x=>'ADVERTENCIA: '+x))}
  download(`PlegarPro_${state.project.ref||'pieza'}_secuencia.txt`,lines.join('\n'),'text/plain');
@@ -626,16 +629,16 @@ function renderProgram(){
  renderProgramSharedInputs();renderProgramCurveLive();
  $('programRows').innerHTML=state.bends.map((b,i)=>`<tr>
  <td>${i+1}</td>
- <td><input data-b="${i}" data-k="leg" type="number" value="${b.leg}"></td>
- <td><input data-b="${i}" data-k="angle" type="number" value="${b.angle}"></td>
- <td><input data-b="${i}" data-k="radius" type="number" step=".1" value="${b.radius}"></td>
- <td><input data-b="${i}" data-k="v" type="number" value="${b.v}"></td>
+ <td><input data-b="${i}" data-k="leg" type="text" inputmode="decimal" value="${b.leg}"></td>
+ <td><input data-b="${i}" data-k="angle" type="text" inputmode="decimal" value="${isTerminalSegment(i)?'':(b.angle??'')}" ${isTerminalSegment(i)?'disabled aria-label="Tramo final sin plegado" placeholder="—"':''}></td>
+ <td><input data-b="${i}" data-k="radius" type="text" inputmode="decimal" step=".1" value="${b.radius}"></td>
+ <td><input data-b="${i}" data-k="v" type="text" inputmode="decimal" value="${b.v}"></td>
  <td><select data-b="${i}" data-k="punch"><option ${b.punch==='Recto 88°'?'selected':''}>Recto 88°</option><option ${b.punch==='Recto 30°'?'selected':''}>Recto 30°</option><option ${b.punch==='Pata de cabra 90°'?'selected':''}>Pata de cabra 90°</option></select></td>
- <td><input data-b="${i}" data-k="gauge" type="number" value="${b.gauge}"></td>
+ <td><input data-b="${i}" data-k="gauge" type="text" inputmode="decimal" value="${b.gauge}"></td>
  <td><select data-b="${i}" data-k="direction"><option value="1" ${b.direction==1?'selected':''}>Arriba</option><option value="-1" ${b.direction==-1?'selected':''}>Abajo</option></select></td>
  <td><button class="btn secondary rowUp" data-i="${i}">↑</button> <button class="btn secondary rowDown" data-i="${i}">↓</button> <button class="btn danger rowDelete" data-i="${i}">×</button></td></tr>`).join('');
  $('programNotes').value=state.programNotes;
- document.querySelectorAll('#programRows input,#programRows select').forEach(el=>{el.addEventListener('input',()=>{let i=+el.dataset.b,k=el.dataset.k,v=(k==='punch'?el.value:+el.value);if(!state.bends[i])return;state.bends[i][k]=v;autoSave();drawAll();$('programLiveStatus').innerHTML=`Actualizado P${i+1}: ${bendSummary(state.bends[i],i)}<br>2D, 3D, simulaciones y desarrollo sincronizados.`});el.addEventListener('change',()=>syncAll())});
+ document.querySelectorAll('#programRows input,#programRows select').forEach(el=>{el.addEventListener('input',()=>{let i=+el.dataset.b,k=el.dataset.k,v=(k==='punch'?el.value:parseLocaleNumber(el.value));if(!state.bends[i])return;state.bends[i][k]=v;autoSave();drawAll();$('programLiveStatus').innerHTML=`Actualizado P${i+1}: ${bendSummary(state.bends[i],i)}<br>2D, 3D, simulaciones y desarrollo sincronizados.`});el.addEventListener('change',()=>syncAll())});
  document.querySelectorAll('.rowDelete').forEach(b=>b.addEventListener('click',()=>commit('Eliminado pliegue '+(+b.dataset.i+1),()=>state.bends.splice(+b.dataset.i,1))));
  document.querySelectorAll('.rowUp').forEach(b=>b.addEventListener('click',()=>moveBend(+b.dataset.i,-1)));
  document.querySelectorAll('.rowDown').forEach(b=>b.addEventListener('click',()=>moveBend(+b.dataset.i,1)));
@@ -699,7 +702,7 @@ function renderDevelopment(){
  $('devMaterial').value=d.material;$('devThickness').value=d.thickness;$('devK').value=d.kfactor;$('devPunchRadius').value=d.punchRadius;$('devPunchAngle').value=d.punchAngle;$('devBendLength').value=d.bendLength;$('devTolerance').value=d.tolerance;$('devDimensionType').value=d.dimensionType;
  $('devReferenceV').innerHTML=STANDARD_VS.map(v=>`<option value="${v}" ${v==d.referenceV?'selected':''}>V${v}</option>`).join('');
  let r=calcDevelopment();
- $('devRows').innerHTML=d.bends.map((b,i)=>`<tr><td>${i+1}</td><td><input class="devBendInput" data-i="${i}" data-k="leg" type="number" step="0.1" value="${b.leg}"></td><td><input class="devBendInput" data-i="${i}" data-k="angle" type="number" min="1" max="179" value="${b.angle}"></td><td><input class="devBendInput" data-i="${i}" data-k="radius" type="number" min="0" step="0.1" value="${b.radius}"></td><td>${r.rows[i].allowance.toFixed(3)}</td><td>${r.rows[i].deduction.toFixed(3)}</td><td><button class="btn danger devDelete" data-i="${i}">×</button></td></tr>`).join('');
+ $('devRows').innerHTML=d.bends.map((b,i)=>`<tr><td>${i+1}</td><td><input class="devBendInput" data-i="${i}" data-k="leg" type="text" inputmode="decimal" step="0.1" value="${b.leg}"></td><td><input class="devBendInput" data-i="${i}" data-k="angle" type="text" inputmode="decimal" min="1" max="179" value="${b.angle}"></td><td><input class="devBendInput" data-i="${i}" data-k="radius" type="text" inputmode="decimal" min="0" step="0.1" value="${b.radius}"></td><td>${r.rows[i].allowance.toFixed(3)}</td><td>${r.rows[i].deduction.toFixed(3)}</td><td><button class="btn danger devDelete" data-i="${i}">×</button></td></tr>`).join('');
  document.querySelectorAll('.devBendInput').forEach(el=>el.onchange=()=>commit('Modificado cálculo de desarrollo',()=>{state.development.bends[+el.dataset.i][el.dataset.k]=+el.value}));
  document.querySelectorAll('.devDelete').forEach(el=>el.onclick=()=>commit('Eliminado pliegue de la calculadora',()=>state.development.bends.splice(+el.dataset.i,1)));
  $('sumLegs').textContent=r.sum.toFixed(2)+' mm';$('flatLength').textContent=r.flat.toFixed(3)+' mm';$('devBATotal').textContent=r.ba.toFixed(3)+' mm';$('devBDTotal').textContent=r.bd.toFixed(3)+' mm';$('devActualRadius').textContent='R'+r.actualRadius.toFixed(2);$('forceEstimate').textContent=r.force.toFixed(1)+' t';$('devMinFlange').textContent=r.minFlange.toFixed(1)+' mm';
@@ -831,7 +834,7 @@ function renderHistory(){
 function drawTechnical2D(canvas,step=state.bends.length,editable=false){
  let ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height,margin=+(state.settings.fitMargin||150);ctx.clearRect(0,0,w,h);ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--bg');ctx.fillRect(0,0,w,h);
  if(state.settings.showGrid!=='no'){ctx.strokeStyle='rgba(120,170,190,.12)';ctx.lineWidth=1;for(let x=40;x<w;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}for(let y=40;y<h;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}}
- let raw=[{x:0,y:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y-len*Math.sin(heading)});if(i<step)heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});let xs=raw.map(p=>p.x),ys=raw.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),bw=Math.max(1,maxX-minX),bh=Math.max(1,maxY-minY),scale=Math.min((w-margin*2)/bw,(h-margin*1.25)/bh,4.2);if(!isFinite(scale)||scale<=0)scale=1;let target=canvas.id==='canvasS2'?'S2':canvas.id==='canvasProgram'?'Program':'P2',z=sim['zoom'+target]||1,rot=sim['rot'+target]||0,px=sim['pan'+target+'X']||0,py=sim['pan'+target+'Y']||0;scale*=z;let ox=w/2-(minX+maxX)/2*scale+px,oy=h/2-(minY+maxY)/2*scale+py,cx=w/2+px,cy=h/2+py,cr=Math.cos(rot),sr=Math.sin(rot),pts=raw.map(p=>{let x=p.x*scale+ox,y=p.y*scale+oy,dx=x-cx,dy=y-cy;return{x:cx+dx*cr-dy*sr,y:cy+dx*sr+dy*cr}});
+ let raw=[{x:0,y:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y-len*Math.sin(heading)});if(i<step&&i<state.bends.length-1)heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});let xs=raw.map(p=>p.x),ys=raw.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),bw=Math.max(1,maxX-minX),bh=Math.max(1,maxY-minY),scale=Math.min((w-margin*2)/bw,(h-margin*1.25)/bh,4.2);if(!isFinite(scale)||scale<=0)scale=1;let target=canvas.id==='canvasS2'?'S2':canvas.id==='canvasProgram'?'Program':'P2',z=sim['zoom'+target]||1,rot=sim['rot'+target]||0,px=sim['pan'+target+'X']||0,py=sim['pan'+target+'Y']||0;scale*=z;let ox=w/2-(minX+maxX)/2*scale+px,oy=h/2-(minY+maxY)/2*scale+py,cx=w/2+px,cy=h/2+py,cr=Math.cos(rot),sr=Math.sin(rot),pts=raw.map(p=>{let x=p.x*scale+ox,y=p.y*scale+oy,dx=x-cx,dy=y-cy;return{x:cx+dx*cr-dy*sr,y:cy+dx*sr+dy*cr}});
  ctx.lineJoin='round';ctx.lineCap='round';ctx.strokeStyle='#102731';ctx.lineWidth=Math.max(13,state.project.thickness*5);ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.strokeStyle=state.settings.sheetColor||'#4fb3ff';ctx.lineWidth=Math.max(7,state.project.thickness*3);ctx.stroke();ctx.strokeStyle='#e8f7ff';ctx.lineWidth=2;ctx.stroke();let fs=Math.round(15*(state.settings.dimensionScale||1.2)),dec=+(state.settings.decimals??2);
  if(state.settings.showDims!=='none'){ctx.font=`700 ${fs}px system-ui`;pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1],dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L,mx=(p.x+q.x)/2+nx*30,my=(p.y+q.y)/2+ny*30,txt=`${(+state.bends[i].leg).toFixed(dec)} mm`,tw=ctx.measureText(txt).width;ctx.fillStyle='rgba(5,16,22,.88)';ctx.fillRect(mx-tw/2-7,my-fs+2,tw+14,fs+8);ctx.fillStyle='#f3fbff';ctx.fillText(txt,mx-tw/2,my);if(i<state.bends.length-1&&(state.settings.showDims==='all'||i===step-1)){ctx.fillStyle=i===step-1?'#ffbc4d':'#dcecf4';ctx.fillText(`${(+state.bends[i].angle).toFixed(dec)}°  R${(+state.bends[i].radius).toFixed(dec)}`,q.x+11,q.y-11)}})}pts.forEach((p,i)=>{ctx.fillStyle=i===Math.min(step,state.bends.length)?'#ffb84d':'#d9f6ff';ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill()});return pts;
 }
@@ -862,10 +865,10 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    ctx.restore();
  }
  if(state.settings.showAxes!=='no'){let o=project({x:-430,y:-230,z:-130}),ax=[['X',{x:-340,y:-230,z:-130},'#ffb55c'],['Y',{x:-430,y:-140,z:-130},'#7ee4b1'],['Z',{x:-430,y:-230,z:-40},'#72c7ff']];ctx.font='12px system-ui';ax.forEach(([t,p,c])=>{let q=project(p);ctx.strokeStyle=c;ctx.beginPath();ctx.moveTo(o.x,o.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.fillStyle=c;ctx.fillText(t,q.x+4,q.y)})}
- let raw=[{x:0,y:0,z:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y+len*Math.sin(heading),z:0});if(i<step)heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});
+ let raw=[{x:0,y:0,z:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y+len*Math.sin(heading),z:0});if(i<step&&i<state.bends.length-1)heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});
  let cx=raw.reduce((a,p)=>a+p.x,0)/raw.length,cy=raw.reduce((a,p)=>a+p.y,0)/raw.length,placed=raw.map(p=>({x:(p.x-cx)*1.45,y:(p.y-cy)*1.45-20,z:0})),pts=placed.map(project),thick=Math.max(10,state.project.thickness*4*(state.settings.visualThickness||1.6));
  ctx.lineJoin='round';ctx.lineCap='round';ctx.shadowBlur=20;ctx.shadowColor='#000';ctx.strokeStyle='#07161d';ctx.lineWidth=thick+10;ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle=state.settings.sheetColor||'#4fb3ff';ctx.lineWidth=thick;ctx.stroke();ctx.strokeStyle='#e6f8ff';ctx.lineWidth=2;ctx.stroke();
- let fs=Math.round(14*(state.settings.dimensionScale||1.2)),dec=+(state.settings.decimals??2),showDims=state.settings.showDims!=='none'&&(!simulation||!$('s3Dims')||$('s3Dims').checked);if(showDims){ctx.font=`700 ${fs}px system-ui`;pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1],txt=`${(+state.bends[i].leg).toFixed(dec)} mm`,x=(p.x+q.x)/2,y=(p.y+q.y)/2-22,tw=ctx.measureText(txt).width;ctx.fillStyle='#06141bdd';ctx.fillRect(x-tw/2-6,y-fs+2,tw+12,fs+7);ctx.fillStyle='#f3fbff';ctx.fillText(txt,x-tw/2,y);if(i<step){ctx.fillStyle='#ffbc4d';ctx.fillText(`${(+state.bends[i].angle).toFixed(dec)}° R${(+state.bends[i].radius).toFixed(dec)}`,q.x+8,q.y-8)}})}
+ let fs=Math.round(14*(state.settings.dimensionScale||1.2)),dec=+(state.settings.decimals??2),showDims=state.settings.showDims!=='none'&&(!simulation||!$('s3Dims')||$('s3Dims').checked);if(showDims){ctx.font=`700 ${fs}px system-ui`;pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1],txt=`${(+state.bends[i].leg).toFixed(dec)} mm`,x=(p.x+q.x)/2,y=(p.y+q.y)/2-22,tw=ctx.measureText(txt).width;ctx.fillStyle='#06141bdd';ctx.fillRect(x-tw/2-6,y-fs+2,tw+12,fs+7);ctx.fillStyle='#f3fbff';ctx.fillText(txt,x-tw/2,y);if(i<step&&i<state.bends.length-1){ctx.fillStyle='#ffbc4d';ctx.fillText(`${(+state.bends[i].angle).toFixed(dec)}° R${(+state.bends[i].radius).toFixed(dec)}`,q.x+8,q.y-8)}})}
  pts.forEach((p,i)=>{ctx.fillStyle=i===Math.min(step,state.bends.length)?'#ffb84d':'#d9f6ff';ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill()});
 }
 function drawCurve(){
@@ -993,7 +996,17 @@ function bind(){
  simButtons('s2','s2');simButtons('s3','s3');
  $('p3Camera').onchange=()=>{applyCameraPreset($('p3Camera').value,'P3');drawAll()};$('s3Camera').onchange=()=>{applyCameraPreset($('s3Camera').value,'S3');drawAll()};$('s2Camera').onchange=drawAll;$('s3Machine').onchange=drawAll;$('s3Dims').onchange=drawAll;
  $('p3Fit').onclick=()=>resetView('p3');$('s3Fit').onclick=()=>resetView('s3');$('s3RotateLeft').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)-.2;drawAll()};$('s3RotateRight').onclick=()=>{sim.rotYS3=(sim.rotYS3??.5)+.2;drawAll()};$('s3ZoomIn').onclick=()=>{sim.zoomS3=Math.min(3,sim.zoomS3*1.15);drawAll()};$('s3ZoomOut').onclick=()=>{sim.zoomS3=Math.max(.45,sim.zoomS3*.87);drawAll()};$('s2Fit').onclick=()=>reset2D('S2');$('s2ZoomIn').onclick=()=>zoom2D('S2',1.15);$('s2ZoomOut').onclick=()=>zoom2D('S2',.87);$('s2RotateLeft').onclick=()=>rotate2D('S2',-.15);$('s2RotateRight').onclick=()=>rotate2D('S2',.15);$('curveFit').onclick=()=>reset2D('Curve');$('curveZoomIn').onclick=()=>zoom2D('Curve',1.15);$('curveZoomOut').onclick=()=>zoom2D('Curve',.87);$('curveRotateLeft').onclick=()=>rotate2D('Curve',-.15);$('curveRotateRight').onclick=()=>rotate2D('Curve',.15);$('programFit').onclick=()=>reset2D('Program');$('programZoomIn').onclick=()=>zoom2D('Program',1.15);$('programZoomOut').onclick=()=>zoom2D('Program',.87);$('programRotateLeft').onclick=()=>rotate2D('Program',-.15);$('programRotateRight').onclick=()=>rotate2D('Program',.15);
- function wire3D(id,target){let cv=$(id);cv.addEventListener('pointerdown',e=>{sim.drag=true;sim.dragTarget=target;sim.panMode=e.shiftKey||e.button===1;sim.lastX=e.clientX;sim.lastY=e.clientY;cv.setPointerCapture(e.pointerId)});cv.addEventListener('pointermove',e=>{if(!sim.drag||sim.dragTarget!==target)return;let dx=e.clientX-sim.lastX,dy=e.clientY-sim.lastY;if(sim.panMode){sim['pan'+target+'X']+=dx;sim['pan'+target+'Y']+=dy}else{let sens=state.settings.cameraSensitivity||.01;sim['rotY'+target]=(sim['rotY'+target]??.5)+dx*sens;sim['rotX'+target]=(sim['rotX'+target]??-.35)+dy*sens}sim.lastX=e.clientX;sim.lastY=e.clientY;drawAll()});cv.addEventListener('pointerup',()=>sim.drag=false);cv.addEventListener('wheel',e=>{e.preventDefault();let k='zoom'+target;sim[k]=Math.max(.45,Math.min(2.8,sim[k]*(e.deltaY>0?.9:1.1)));drawAll()},{passive:false})}
+ function wire3D(id,target){
+  const cv=$(id),points=new Map();let lastDistance=0,lastCenter=null;
+  const center=()=>{const a=[...points.values()];return{x:(a[0].x+a[1].x)/2,y:(a[0].y+a[1].y)/2}};
+  const distance=()=>{const a=[...points.values()];return Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)};
+  cv.addEventListener('pointerdown',e=>{e.preventDefault();points.set(e.pointerId,{x:e.clientX,y:e.clientY});cv.setPointerCapture(e.pointerId);sim.drag=true;sim.dragTarget=target;sim.panMode=e.shiftKey||e.button===1||e.button===2;sim.lastX=e.clientX;sim.lastY=e.clientY;if(points.size===2){lastDistance=distance();lastCenter=center()}});
+  cv.addEventListener('pointermove',e=>{if(!points.has(e.pointerId))return;points.set(e.pointerId,{x:e.clientX,y:e.clientY});if(points.size>=2){const d=distance(),c=center();if(lastDistance){const k='zoom'+target;sim[k]=Math.max(.35,Math.min(4,sim[k]*(d/lastDistance)));sim['pan'+target+'X']+=(c.x-lastCenter.x);sim['pan'+target+'Y']+=(c.y-lastCenter.y)}lastDistance=d;lastCenter=c;drawAll();return}if(!sim.drag||sim.dragTarget!==target)return;let dx=e.clientX-sim.lastX,dy=e.clientY-sim.lastY;if(sim.panMode){sim['pan'+target+'X']+=dx;sim['pan'+target+'Y']+=dy}else{let sens=state.settings.cameraSensitivity||.01;sim['rotY'+target]=(sim['rotY'+target]??.5)+dx*sens;sim['rotX'+target]=(sim['rotX'+target]??-.35)+dy*sens}sim.lastX=e.clientX;sim.lastY=e.clientY;drawAll()});
+  const up=e=>{points.delete(e.pointerId);if(points.size<2){lastDistance=0;lastCenter=null}if(!points.size)sim.drag=false};
+  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);cv.addEventListener('contextmenu',e=>e.preventDefault());
+  cv.addEventListener('wheel',e=>{e.preventDefault();let k='zoom'+target;sim[k]=Math.max(.35,Math.min(4,sim[k]*(e.deltaY>0?.9:1.1)));drawAll()},{passive:false});
+  cv.addEventListener('dblclick',()=>resetView(target));
+ }
  wire3D('canvasP3','P3');wire3D('canvasS3','S3');
  function resetView(target){
   const t=String(target||'s3').toUpperCase();
@@ -1002,8 +1015,23 @@ function bind(){
  function reset2D(t){sim['zoom'+t]=1;sim['rot'+t]=0;sim['pan'+t+'X']=0;sim['pan'+t+'Y']=0;drawAll()}
  function zoom2D(t,f){sim['zoom'+t]=Math.max(.45,Math.min(3.5,(sim['zoom'+t]||1)*f));drawAll()}
  function rotate2D(t,a){sim['rot'+t]=(sim['rot'+t]||0)+a;drawAll()}
- function wire2D(id,t){let cv=$(id),drag=false,lx=0,ly=0;cv.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId)});cv.addEventListener('pointermove',e=>{if(!drag)return;sim['pan'+t+'X']=(sim['pan'+t+'X']||0)+(e.clientX-lx);sim['pan'+t+'Y']=(sim['pan'+t+'Y']||0)+(e.clientY-ly);lx=e.clientX;ly=e.clientY;drawAll()});cv.addEventListener('pointerup',()=>drag=false);cv.addEventListener('pointercancel',()=>drag=false);cv.addEventListener('wheel',e=>{e.preventDefault();zoom2D(t,e.deltaY>0?.9:1.1)},{passive:false})}
+ function wire2D(id,t){
+  const cv=$(id),points=new Map();let lx=0,ly=0,lastDistance=0,lastCenter=null;
+  const center=()=>{const a=[...points.values()];return{x:(a[0].x+a[1].x)/2,y:(a[0].y+a[1].y)/2}};
+  const distance=()=>{const a=[...points.values()];return Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)};
+  cv.addEventListener('pointerdown',e=>{e.preventDefault();points.set(e.pointerId,{x:e.clientX,y:e.clientY});lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId);if(points.size===2){lastDistance=distance();lastCenter=center()}});
+  cv.addEventListener('pointermove',e=>{if(!points.has(e.pointerId))return;points.set(e.pointerId,{x:e.clientX,y:e.clientY});if(points.size>=2){const d=distance(),c=center();if(lastDistance){sim['zoom'+t]=Math.max(.35,Math.min(5,(sim['zoom'+t]||1)*(d/lastDistance)));sim['pan'+t+'X']=(sim['pan'+t+'X']||0)+(c.x-lastCenter.x);sim['pan'+t+'Y']=(sim['pan'+t+'Y']||0)+(c.y-lastCenter.y)}lastDistance=d;lastCenter=c;drawAll();return}sim['pan'+t+'X']=(sim['pan'+t+'X']||0)+(e.clientX-lx);sim['pan'+t+'Y']=(sim['pan'+t+'Y']||0)+(e.clientY-ly);lx=e.clientX;ly=e.clientY;drawAll()});
+  const up=e=>{points.delete(e.pointerId);if(points.size<2){lastDistance=0;lastCenter=null}};
+  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);cv.addEventListener('wheel',e=>{e.preventDefault();zoom2D(t,e.deltaY>0?.9:1.1)},{passive:false});cv.addEventListener('dblclick',()=>reset2D(t));
+ }
  wire2D('canvasS2','S2');wire2D('canvasCurve','Curve');wire2D('canvasProgram','Program');
+
+ // Entrada decimal española: permite 1,5 y 1.5 en todos los campos numéricos.
+ document.querySelectorAll('input[inputmode="decimal"]').forEach(el=>{
+  el.addEventListener('input',()=>{el.dataset.numericValue=String(parseLocaleNumber(el.value));});
+  el.addEventListener('blur',()=>{const n=parseLocaleNumber(el.value);if(el.value.trim()!==''&&Number.isFinite(n))el.value=String(n).replace('.',',');});
+  el.addEventListener('focus',()=>{el.value=String(el.value).replace('.',',');});
+ });
 
  // Oficina técnica / Clientes
  const crmOn=(id,event,fn)=>{const el=$(id);if(el)el.addEventListener(event,fn)};
