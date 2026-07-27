@@ -1,0 +1,14 @@
+PLEGAR PRO v52.3 · BIBLIOTECAS TÉCNICAS Y ECONÓMICAS
+
+- Conserva íntegramente v52.2 y todos sus módulos.
+- Biblioteca económica de materiales con precio/kg, cálculo €/m² y precio por chapa.
+- Proveedor, fecha de tarifa, stock, plazo, merma, importación/exportación CSV.
+- Catálogo base editable marcado expresamente como orientativo, no precio en directo.
+- Ficha técnica individual para cada punzón y matriz.
+- Geometría, carga, amarre, longitudes, dureza, tratamiento, compatibilidades e inventario.
+- Historial de mantenimiento por herramienta.
+- Exportación JSON de fichas.
+- Persistencia local.
+- Auditoría interna de páginas, navegación e identificadores.
+
+IMPORTANTE: contrastar dimensiones, cargas y compatibilidades con el catálogo oficial y la herramienta física antes de fabricar.

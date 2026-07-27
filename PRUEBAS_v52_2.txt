@@ -1,0 +1,7 @@
+PRUEBAS ESTÁTICAS v52.2
+Módulos: 24
+Navegación: 24
+Destinos ausentes: []
+IDs duplicados: []
+Módulos: dashboard, import, technical, program, program2d, program3d, sim2d, sim3d, development, curve, vcompare, tooling, ai, office, plans, clients, quotes, materials, production, quality, notes, history, settings, about
+Nota: no equivale a prueba física en Safari/iPhone.

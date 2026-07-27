@@ -1,0 +1,8 @@
+PLEGAR PRO v52.2 — MÓDULOS RESTAURADOS
+
+- Se conservan los 20 módulos de v52.1.
+- Se añaden módulos independientes de Planos y documentos, Clientes, Presupuestos y Biblioteca de materiales.
+- Oficina técnica permanece como módulo propio.
+- Total: 24 módulos.
+- Formularios y persistencia local añadidos para los cuatro módulos nuevos.
+- No se elimina ningún módulo heredado.

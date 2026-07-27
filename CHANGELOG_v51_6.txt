@@ -1,0 +1,12 @@
+PLEGAR PRO v51.6 · PROGRAMACIÓN PROFESIONAL
+
+- Continúa desde v51.5 sin eliminar módulos ni bibliotecas.
+- Programar diferencia V recomendada y V utilizada.
+- Programar diferencia punzón recomendado y punzón utilizado.
+- Selectores completos por pliegue para cambiar herramienta manualmente.
+- Estado de disponibilidad visible de forma compacta.
+- Nuevo bloque Mi taller para marcar matrices y punzones disponibles.
+- La recomendación puede priorizar herramientas realmente disponibles.
+- Se conserva el tramo final sin plegado.
+- Eliminado aviso visual de comprobación para mantener la interfaz limpia.
+- Versión interna unificada PP-516-PROGRAM-TOOL-OVERRIDE.

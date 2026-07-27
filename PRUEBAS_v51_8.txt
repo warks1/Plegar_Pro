@@ -1,0 +1,16 @@
+PLEGAR PRO v51.8 · PRUEBAS REALIZADAS
+
+VALIDACIÓN ESTÁTICA
+- Sintaxis JavaScript: correcta (node --check).
+- Módulos detectados: 20.
+- Botones detectados: 138.
+- IDs duplicados: 0.
+- Destinos de navegación inexistentes: 0.
+- Funciones nuevas verificadas en código: insertar, duplicar, subir, bajar y eliminar pliegues.
+- Protección de programa mínimo: activa.
+- Auditoría interna de páginas/destinos/IDs: activa.
+
+LIMITACIÓN DEL ENTORNO
+- El entorno bloqueó la apertura automatizada de localhost y file:// en Chromium.
+- Por ello no se afirma una prueba visual real en Safari, iPhone físico ni GitHub Pages para esta entrega.
+- La validación visual completa deberá repetirse al publicar o abrir el paquete en un navegador permitido.

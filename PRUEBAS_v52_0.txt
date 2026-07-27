@@ -1,0 +1,8 @@
+VALIDACIÓN ESTÁTICA v52.0
+
+- Sintaxis JavaScript validada con Node.js.
+- Identificadores HTML revisados: sin duplicados.
+- Destinos data-page y data-go revisados.
+- Sistema de revisiones: creación, listado, restauración, eliminación y exportación presentes.
+- Persistencia local limitada a 25 revisiones.
+- No se afirma prueba en Safari/iPhone físico ni publicación real en GitHub Pages.

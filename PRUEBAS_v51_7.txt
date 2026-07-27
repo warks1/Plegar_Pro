@@ -1,0 +1,24 @@
+PRUEBAS REALIZADAS SOBRE PLEGAR PRO v51.7
+
+VALIDACIÓN ESTÁTICA
+- JavaScript: sintaxis correcta con Node.js.
+- Documento HTML: cierre correcto y sin contenido residual visible.
+- Módulos detectados: 20.
+- Navegación detectada: 20 accesos.
+
+PRUEBA VISUAL/FUNCIONAL AUTOMATIZADA
+Entorno: Chromium headless con viewport 390 x 844, escala 3, modo móvil y táctil.
+- Arranque y retirada del loader: correcto.
+- Navegación por los 20 módulos: correcta, una sola página activa.
+- Errores JavaScript durante navegación: ninguno.
+- Programar: tabla renderizada con 3 filas iniciales.
+- Añadir pliegue: correcto, pasa de 3 a 4 filas.
+- Mi Taller: 70 referencias renderizadas.
+- Código residual al final de la interfaz: eliminado.
+- Captura visual generada: Plegar_Pro_v51_7_iPhone_programar.png.
+
+LIMITACIONES DECLARADAS
+- No se ha ejecutado en un iPhone físico ni en Safari físico.
+- La prueba móvil se ha realizado con emulación táctil Chromium.
+- GitHub Pages no puede publicarse desde este entorno sin acceso al repositorio del usuario.
+- El OCR de fotografías depende de TextDetector/Tesseract disponibles en el navegador y de la calidad de la imagen.

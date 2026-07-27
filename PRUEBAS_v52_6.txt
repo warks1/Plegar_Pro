@@ -1,0 +1,8 @@
+PRUEBAS ESTÁTICAS v52.6
+- Sintaxis JavaScript: pendiente de ejecución automática incluida en empaquetado.
+- IDs duplicados: comprobación incluida.
+- Navegación: inventario comparado.
+- Curva Perfecta: cálculo de radio/arco/cuerda/flecha y tabla de golpes.
+- Comparador V: clasificación, puntuación, criterios y aplicación recomendada.
+
+AVISO: cálculos orientativos. Validar con tablas oficiales, CNC, utillaje y prueba real antes de fabricar.

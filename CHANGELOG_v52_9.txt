@@ -1,0 +1,9 @@
+PLEGAR PRO v52.9 · CALCULADORA DE DESARROLLO INDEPENDIENTE
+
+- La Calculadora de desarrollo queda completamente aislada del proyecto.
+- Eliminados los botones Cargar proyecto actual y Enviar a Programar.
+- Eliminadas todas las lecturas y escrituras de state desde la calculadora.
+- No modifica Programar, Desarrollo, Curva Perfecta, 2D, 3D ni Simulación.
+- Mantiene cálculo rápido BA, BD, OSSB, multiplegado, radio, calibración y CSV.
+- Los datos solo viven en la pantalla durante la sesión.
+- Conservada íntegramente la base acumulativa v52.8 y todos los demás módulos.

@@ -1,0 +1,17 @@
+PRUEBAS PLEGAR PRO v51.9
+
+SUPERADAS
+- Sintaxis JavaScript validada con Node.js.
+- 20 módulos y 20 destinos principales de navegación.
+- 138 botones conservados.
+- 0 identificadores HTML duplicados.
+- Manifest PWA y service worker presentes con rutas relativas aptas para GitHub Pages.
+- Ajustes completos incluidos en lectura, guardado y restablecimiento.
+- CSS específico revisado para iPhone/Safari: safe areas, controles táctiles, tablas y canvas.
+
+LIMITACIONES DE LA SESIÓN
+- Chromium del entorno devolvió una página interna al intentar cargar tanto localhost como file://, por lo que no se considera superada una prueba visual real de esta compilación.
+- No se ha probado en un iPhone físico ni en Safari físico.
+- No se ha publicado en una cuenta real de GitHub Pages.
+
+La versión se entrega como actualización acumulativa para prueba del usuario, sin afirmar validaciones que el entorno no permitió completar.

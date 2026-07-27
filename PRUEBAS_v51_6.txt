@@ -1,0 +1,13 @@
+COMPROBACIONES ESTÁTICAS v51.6
+
+- JavaScript: sintaxis correcta con Node.
+- HTML: sin identificadores duplicados.
+- Navegación: todas las páginas conservadas.
+- Biblioteca: matrices y punzones preservados desde v51.5.
+- Programar: selectores independientes de V y punzón por pliegue.
+- Mi taller: controles de disponibilidad y persistencia añadidos.
+
+Pendiente de confirmar en dispositivo real:
+- interacción táctil Safari/iPhone;
+- publicación GitHub Pages;
+- prueba visual completa de 2D/3D.

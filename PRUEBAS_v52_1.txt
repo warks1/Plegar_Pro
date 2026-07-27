@@ -1,0 +1,8 @@
+VALIDACIÓN ESTÁTICA v52.1
+
+- Sintaxis JavaScript: pendiente de validación automatizada tras empaquetado.
+- 19 secciones operativas + panel principal conservados.
+- Formularios dinámicos instalados por módulo.
+- Biblioteca ampliada de forma acumulativa.
+- Banners estáticos ocultados sin eliminar resultados con identificador.
+- No se afirma prueba en iPhone físico, Safari real ni GitHub Pages publicado.

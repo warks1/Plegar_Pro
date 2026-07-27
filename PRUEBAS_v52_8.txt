@@ -1,0 +1,9 @@
+PRUEBAS PLEGAR PRO v52.8
+
+- Sintaxis JavaScript: validada correctamente con Node.js.
+- Navegación: Calculadora de desarrollo enlazada.
+- Fórmulas: BA, OSSB y BD implementadas.
+- Multiplegado: validación N tramos / N-1 pliegues.
+- Sincronización: carga desde proyecto y envío a Programar.
+- Exportación CSV: implementada.
+- Persistencia anterior y módulos heredados: conservados.

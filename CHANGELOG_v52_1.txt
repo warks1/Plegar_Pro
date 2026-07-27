@@ -1,0 +1,11 @@
+PLEGAR PRO v52.1 · INDUSTRIAL VISUAL + IA
+
+- Rediseño visual industrial acumulativo.
+- Eliminación visual de banners informativos estáticos; se conservan resultados dinámicos.
+- Formularios profesionales específicos en los 19 módulos operativos, con pestañas, guardado y restauración local.
+- Biblioteca ampliada: matrices V4–V120, punzones rectos, cuello de cisne, radio y gran altura; fabricantes y sistemas adicionales.
+- Resumen de inventario y filtros técnicos.
+- IA multicriterio con auditoría de geometría, radios, secuencia y preparación para simulación.
+- Mantiene la base v52.0, revisiones, sincronización y módulos existentes.
+
+NOTA: las referencias ampliadas son técnicas/genéricas y editables. Para fabricación deben comprobarse con el catálogo oficial vigente y datos reales del taller.

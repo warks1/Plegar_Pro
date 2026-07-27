@@ -1,0 +1,13 @@
+PLEGAR PRO v51.7 · CONSOLIDACIÓN FUNCIONAL
+
+- Corregido el cierre HTML defectuoso que mostraba código técnico al final de la aplicación.
+- Restaurado el enlace funcional de Mi Taller: guardar, seleccionar todo y desmarcar todo.
+- Verificación y recuperación automática de la tabla de Programar.
+- Verificación del botón Añadir pliegue.
+- Mensaje claro cuando se pulsa Analizar con IA visual sin seleccionar una fotografía.
+- Eliminados huecos provocados por contenido residual fuera del documento.
+- Mejorada la presentación móvil de Programar en Safari/iPhone.
+- Tabla profesional con desplazamiento horizontal táctil, sin comprimir campos ni herramientas.
+- Controles y botones con tamaño táctil mínimo mejorado.
+- Salida segura de la pantalla de carga y recuperación en pageshow de Safari.
+- Se mantienen los 20 módulos, la biblioteca de 70 herramientas y todas las funciones acumulativas.

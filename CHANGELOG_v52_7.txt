@@ -1,0 +1,11 @@
+PLEGAR PRO v52.7 · MOTOR DE CÁLCULO E HISTORIAL
+
+- Nuevo módulo Motor de cálculo.
+- Historial de hasta 50 versiones completas del proyecto.
+- Comparación A/B de desarrollo, fuerza, radio, espesor y número de pliegues.
+- Restauración segura con copia automática previa.
+- Comparador multiplegado para V personalizadas.
+- Priorización por equilibrio, precisión, fuerza, radio o marcado.
+- Exportación JSON del historial y estado actual.
+- Sincronización de material, espesor, factor K, pliegues y longitud de plegado.
+- Conservados todos los módulos de v52.6.

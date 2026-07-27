@@ -1,0 +1,10 @@
+PLEGAR PRO v51.8 · ESTABILIDAD PROFESIONAL
+
+- Base acumulativa v51.7 conservada.
+- Programar: insertar, duplicar, subir, bajar y eliminar pliegues.
+- Protección para no dejar el programa sin tramos.
+- Navegación por campos con Enter.
+- Normalización y recuperación del estado al volver desde Safari/iOS.
+- Auditoría interna de páginas, destinos, botones e IDs duplicados.
+- Refuerzo de formularios decimales y controles táctiles.
+- Versión y código de compilación actualizados.

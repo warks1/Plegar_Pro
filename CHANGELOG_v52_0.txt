@@ -1,0 +1,9 @@
+PLEGAR PRO v52.0 · PROFESSIONAL CORE
+
+- Sistema de revisiones manuales y automáticas del proyecto.
+- Restauración de revisiones completas sin perder la estructura de la pieza.
+- Exportación individual de revisiones a JSON.
+- Hasta 25 puntos de recuperación guardados localmente.
+- Nueva interfaz de revisiones integrada en Historial.
+- Identificación de compilación actualizada a v52.0.
+- Conservación acumulativa de módulos, biblioteca y simulaciones anteriores.

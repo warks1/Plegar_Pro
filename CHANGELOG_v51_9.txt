@@ -1,0 +1,9 @@
+PLEGAR PRO v51.9 · SAFARI / GITHUB CONSOLIDADA
+
+- Refuerzo de compatibilidad Safari e iPhone: safe areas, controles táctiles de 44 px, tablas con desplazamiento inercial y canvas sin gestos del navegador.
+- Preparación PWA para GitHub Pages: manifest y service worker con rutas relativas.
+- Recuperación al volver desde segundo plano en iOS mediante resincronización del proyecto.
+- Corregida la persistencia inmediata de todos los controles de Ajustes.
+- Restablecer ajustes vuelve a incluir unidades, tolerancias, confirmaciones, modo móvil, copias e IA.
+- Corregido el texto de sincronización del módulo Desarrollo para reflejar el comportamiento acumulativo acordado.
+- Registro interno de errores JavaScript no visible al operario.

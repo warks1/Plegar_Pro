@@ -1,0 +1,11 @@
+PRUEBAS PLEGAR PRO v52.9
+
+[OK] Sintaxis JavaScript validada con Node.js.
+[OK] Navegación: todos los data-page tienen sección de destino.
+[OK] Calculadora accesible desde menú.
+[OK] No existen dcFromProject ni dcToProject.
+[OK] No existen funciones fromProject/toProject en el bloque de calculadora.
+[OK] El bloque de calculadora no contiene referencias a state.project, state.bends, state.development ni commit().
+[OK] Cálculo BA/BD/OSSB y multiplegado conservado.
+[OK] Exportación CSV conservada.
+[OK] Resto de módulos preservados.

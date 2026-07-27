@@ -1,0 +1,10 @@
+PLEGAR PRO v52.6 — COMPARADOR V Y CURVA PERFECTA
+
+- Comparador V con criterios de prioridad, puntuación 0-100, límites de fuerza/radio, margen de ala y riesgo de marcado.
+- Selección y aplicación de la mejor V según criterio equilibrado, precisión, fuerza, marcado o radio.
+- Comparación rápida de todas las V disponibles y exportación ampliada.
+- Curva Perfecta con entrada por radio, arco, golpes o cuerda+flecha.
+- Optimización automática de golpes por ángulo máximo y tolerancia geométrica.
+- Cálculo de cuerda, flecha, desviación geométrica, calidad y mínimo recomendado de golpes.
+- Exportación CSV del programa de golpes.
+- Conservados todos los módulos y funciones de v52.5.

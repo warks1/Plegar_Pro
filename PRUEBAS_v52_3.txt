@@ -1,0 +1,8 @@
+PRUEBAS ESTÁTICAS v52.3
+- Archivo index.html generado.
+- Script de bibliotecas integrado.
+- Persistencia local implementada.
+- Importación/exportación de materiales implementada.
+- Fichas de punzones/matrices implementadas.
+- No probado en plegadora real ni validado contra catálogos oficiales.
+- No probado en iPhone físico ni GitHub Pages real en esta ejecución.

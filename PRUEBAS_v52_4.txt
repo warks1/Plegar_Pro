@@ -1,0 +1,7 @@
+VALIDACIONES ESTÁTICAS v52.4
+- Inventario de páginas y navegación.
+- IDs duplicados.
+- Sintaxis de scripts JavaScript.
+- Presencia del módulo Máquina.
+- Persistencia local y exportación incluidas.
+No probado en plegadora real, iPhone físico ni publicación GitHub Pages real.

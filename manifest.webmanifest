@@ -1,0 +1,11 @@
+{
+  "name": "Plegar Pro",
+  "short_name": "Plegar Pro",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#07141c",
+  "theme_color": "#07141c",
+  "lang": "es",
+  "description": "Programación y simulación profesional de plegado de chapa"
+}

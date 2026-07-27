@@ -1,0 +1,9 @@
+PLEGAR PRO v52.4 · GEMELO DIGITAL Y AUDITOR DE COMPATIBILIDAD
+- Se conserva íntegramente la base v52.3.
+- Nuevo módulo independiente Máquina / Gemelo digital.
+- Ficha configurable de plegadora: capacidad, longitudes, carrera, luz, garganta, velocidades, ejes y compensación.
+- Vista esquemática de la máquina.
+- Auditor máquina + material + punzón + matriz.
+- Revisión de longitud útil, paso entre montantes, tonelaje, cargas de herramienta, altura montada, V/espesor, ala mínima y disponibilidad.
+- Exportación JSON de la ficha de máquina.
+- Persistencia local y uso de datos del proyecto.

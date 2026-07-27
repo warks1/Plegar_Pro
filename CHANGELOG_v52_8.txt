@@ -1,0 +1,11 @@
+PLEGAR PRO v52.8 · CALCULADORA DE DESARROLLO DE PRECISIÓN
+
+- Nuevo módulo independiente Calculadora de desarrollo.
+- Cálculo multiplegado mediante BA, OSSB y BD.
+- Admite cotas exteriores, interiores y tramos hasta tangencia.
+- Radios generales o individuales por pliegue.
+- Estimación de radio por V o radio real manual.
+- Factor K editable y corrección calibrada del taller.
+- Nivel de precisión, tolerancia y advertencias técnicas.
+- Envío sincronizado a Programar y exportación CSV.
+- Se conserva íntegra la base acumulativa v52.7.

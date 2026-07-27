@@ -1,0 +1,12 @@
+PLEGAR PRO v52.5 · PRODUCCIÓN Y TRAZABILIDAD
+
+- Se conserva íntegramente la base v52.4.
+- Nuevo módulo Órdenes y trazabilidad.
+- Alta, edición y listado de órdenes de fabricación.
+- Estados: pendiente, preparación, producción, pausa, calidad y finalización.
+- Cronómetro real acumulativo.
+- Comparación de tiempo previsto y real.
+- Registro de incidencias, rechazos, lote de material, operario y máquina.
+- Carga de datos desde el proyecto actual.
+- Persistencia local y exportación JSON.
+- Panel KPI de órdenes abiertas, retrasadas y tiempos.
