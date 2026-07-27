@@ -1,0 +1,10 @@
+PLEGAR PRO v53.0
+
+- Reparado y reforzado Analizar con IA visual con progreso, preprocesado, OCR con tiempo límite y revisión manual segura.
+- Mejorada la importación de planos con validación de formato, unidades, escala y geometría.
+- Programación 2D permite eliminar pliegues con confirmación.
+- Calculadora de desarrollo independiente incorpora editor visual para añadir y eliminar plegados.
+- Gemelo digital incorpora biblioteca seleccionable de modelos de plegadora y modelos personalizados.
+- Biblioteca económica ampliada con 18 materiales adicionales.
+- Pantalla de logo ralentizada para que sea visible.
+- Se conserva acumulativamente toda la funcionalidad anterior.

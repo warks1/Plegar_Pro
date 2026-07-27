@@ -1,0 +1,10 @@
+PRUEBAS v53.0
+
+- Sintaxis JavaScript validada.
+- Navegación: destinos sin ausencias.
+- Botón IA visual enlazado a controlador reforzado.
+- Eliminación de pliegues 2D con mínimo de un pliegue.
+- Editor de plegados de calculadora aislado del proyecto.
+- Biblioteca de máquinas aplicable a ficha del gemelo.
+- Materiales añadidos sin sobrescribir ediciones existentes.
+- Arranque conserva pantalla de logo durante más tiempo.
