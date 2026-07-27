@@ -208,6 +208,19 @@ canvas{touch-action:none;-webkit-user-select:none;user-select:none;max-width:100
 .pp524-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.pp524-kpi{padding:12px;border:1px solid var(--line,#334155);border-radius:10px;background:rgba(255,255,255,.03)}.pp524-kpi b{display:block;font-size:1.25rem}.pp524-audit{margin-top:12px;display:grid;gap:8px}.pp524-check{padding:10px 12px;border-radius:9px;border-left:4px solid #64748b;background:rgba(255,255,255,.035)}.pp524-check.ok{border-left-color:#22c55e}.pp524-check.warn{border-left-color:#f59e0b}.pp524-check.bad{border-left-color:#ef4444}.pp524-machine-preview{height:220px;border:1px solid var(--line,#334155);border-radius:12px;position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(59,130,246,.09),rgba(15,23,42,.2))}.pp524-machine-preview .frame{position:absolute;left:12%;right:12%;top:15%;bottom:14%;border:14px solid #475569;border-bottom-width:22px;border-radius:8px}.pp524-machine-preview .ram{position:absolute;left:18%;right:18%;top:32%;height:25px;background:#94a3b8;border-radius:4px}.pp524-machine-preview .bed{position:absolute;left:17%;right:17%;bottom:24%;height:18px;background:#64748b}.pp524-machine-preview .tool{position:absolute;left:49%;top:43%;width:10px;height:58px;background:#cbd5e1;transform:translateX(-50%)}
 @media(max-width:760px){.pp524-kpis{grid-template-columns:1fr}}
 </style>
+
+<style id="pp531-splash-style">
+#loader{opacity:1;visibility:visible;transition:opacity .45s ease,visibility .45s ease}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#loader .loadBox{animation:pp531FadeIn .55s ease both}
+#loader .logoMark{animation:pp531LogoIn .7s cubic-bezier(.2,.8,.2,1) both}
+#loader .logoText{animation:pp531TextIn .55s .25s ease both}
+#loader .loadBar{overflow:hidden}
+#loader #loadFill{transition:none!important;will-change:width}
+@keyframes pp531FadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pp531LogoIn{from{opacity:0;transform:rotate(45deg) scale(.78)}to{opacity:1;transform:rotate(45deg) scale(1)}}
+@keyframes pp531TextIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>
 </head>
 <body>
 <div id="loader">
@@ -224,7 +237,7 @@ canvas{touch-action:none;-webkit-user-select:none;user-select:none;max-width:100
 <input type="checkbox" id="menuToggle" class="menuToggle" aria-hidden="true">
 <aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v53.0</div>
+  <div class="version">v53.1</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -1554,16 +1567,42 @@ function audit(){
  let ids=[...document.querySelectorAll('[id]')].map(x=>x.id),dup=ids.filter((x,i)=>ids.indexOf(x)!==i);if(dup.length)issues.push('IDs duplicados: '+dup.join(','));
  return issues;
 }
-function loader(){
- ensureCRM();renderCRM();
- let steps=['Inicializando núcleo','Cargando proyecto','Preparando Programar','Preparando vistas 2D','Preparando vistas 3D','Analizando secuencias','Cargando Curva Perfecta','Conectando IA técnica','Verificando botones','Sincronizando módulos','Programa listo'];
- let i=0,t=setInterval(()=>{$('loadState').textContent=steps[i]+'...';$('loadFill').style.width=((i+1)/steps.length*100)+'%';i++;if(i===steps.length){clearInterval(t);setTimeout(()=>$('loader').classList.add('hidden'),350)}},260);
-}
-function forceFinishBoot(message='Programa listo'){
+const PP_SPLASH_DURATION=4000;
+let ppSplashStart=performance.now();
+let ppBootReady=false;
+let ppSplashFinished=false;
+function ppSplashClose(message='Programa listo'){
+ if(ppSplashFinished)return;
+ ppSplashFinished=true;
  const ld=safeElement('loader'),st=safeElement('loadState'),fill=safeElement('loadFill');
  if(st)st.textContent=message;if(fill)fill.style.width='100%';
  document.body.classList.add('boot-complete');
- if(ld){ld.classList.add('hidden');ld.setAttribute('aria-hidden','true');setTimeout(()=>{ld.style.display='none'},80)}
+ if(ld){ld.classList.add('hidden');ld.setAttribute('aria-hidden','true');setTimeout(()=>{ld.style.display='none'},480)}
+}
+function loader(){
+ ensureCRM();renderCRM();
+ ppSplashStart=performance.now();
+ const steps=[
+  [0,'Inicializando núcleo...'],[12,'Cargando proyecto...'],[24,'Preparando Programar...'],
+  [36,'Preparando vistas 2D...'],[48,'Preparando vistas 3D...'],[60,'Analizando secuencias...'],
+  [70,'Cargando Curva Perfecta...'],[80,'Conectando IA técnica...'],[89,'Verificando botones...'],
+  [96,'Sincronizando módulos...'],[100,'Programa listo']
+ ];
+ const tick=now=>{
+  const elapsed=Math.min(PP_SPLASH_DURATION,now-ppSplashStart);
+  const pct=Math.min(100,(elapsed/PP_SPLASH_DURATION)*100);
+  const fill=safeElement('loadFill'),state=safeElement('loadState');
+  if(fill)fill.style.width=pct.toFixed(2)+'%';
+  if(state){let msg=steps[0][1];for(const step of steps){if(pct>=step[0])msg=step[1]}state.textContent=msg}
+  if(elapsed<PP_SPLASH_DURATION){requestAnimationFrame(tick)}else if(ppBootReady){ppSplashClose('Programa listo')}else{if(state)state.textContent='Finalizando carga...';setTimeout(()=>ppSplashClose('Programa listo'),1200)}
+ };
+ requestAnimationFrame(tick);
+}
+function forceFinishBoot(message='Programa listo'){
+ ppBootReady=true;
+ const remaining=PP_SPLASH_DURATION-(performance.now()-ppSplashStart);
+ if(remaining<=0)ppSplashClose(message);
+ else setTimeout(()=>ppSplashClose(message),remaining);
 }
 function safeRun(name,fn){try{return fn()}catch(e){console.error('[Inicio] '+name,e);return null}}
 function startApplication(){
@@ -1579,7 +1618,7 @@ function startApplication(){
  safeRun('pantalla de carga',loader);
  safeRun('segunda verificación de eventos',installEssentialFallbacks);
  // Salida de emergencia: aunque falle una función o Safari pause un temporizador, abre la aplicación.
- setTimeout(()=>forceFinishBoot('Programa listo'),1800);
+ setTimeout(()=>forceFinishBoot('Programa listo'),4000);
 }
 window.addEventListener('error',e=>{console.error('Error controlado de ejecución',e.error||e.message);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
 window.addEventListener('unhandledrejection',e=>{console.error('Promesa rechazada',e.reason);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
@@ -1648,7 +1687,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   const b=el('analyzePhoto');if(!b||b.dataset.pp517)return;b.dataset.pp517='1';
   b.addEventListener('click',async()=>{if(!window.visionImage){const input=el('photoInput');if(input&&!input.files.length){const r=el('fileResult');if(r)r.innerHTML='<b>Selecciona primero una fotografía.</b><br>Después pulsa Analizar con IA visual.';return}}});
  }
- function finalRepair(){bindWorkshop();repairProgram();repairVisualAI();document.body.classList.add('boot-complete');const l=el('loader');if(l){l.classList.add('hidden');setTimeout(()=>l.style.display='none',100)}}
+ function finalRepair(){bindWorkshop();repairProgram();repairVisualAI();/* La pantalla de inicio la controla exclusivamente el temporizador sincronizado de 4 segundos. */}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(finalRepair,50),{once:true});else setTimeout(finalRepair,50);
  window.addEventListener('pageshow',()=>setTimeout(finalRepair,50));
  window.PLEGAR_PRO_BUILD='52.2-MODULOS-RESTAURADOS';
@@ -2121,7 +2160,7 @@ function upgradeMaterials(){try{const key='plegarPro.v52.3.libraries',d=JSON.par
 async function enhancedVisualAI(){const b=$('analyzePhoto'),r=$('fileResult');if(!visionImage){r.innerHTML='<b>Selecciona primero una fotografía o imagen del plano.</b>';notify('Falta seleccionar una imagen');return}b.disabled=true;b.textContent='Analizando imagen…';r.innerHTML='<b>Análisis visual en curso</b><div class="pp530-ai-progress"><i id="pp530AIBar"></i></div><span id="pp530AIStage">Preprocesando líneas…</span>';const bar=()=>document.getElementById('pp530AIBar'),stage=()=>document.getElementById('pp530AIStage');try{bar().style.width='20%';processPlanVision(false,false);await new Promise(x=>setTimeout(x,120));stage().textContent='Detectando geometría y cotas…';bar().style.width='45%';let ok=false;try{ok=await Promise.race([window.runTechnicalOCR(),new Promise(res=>setTimeout(()=>res(false),35000))])}catch(e){}bar().style.width='90%';if(!ok&&visionDetection){const lines=(visionDetection.lines?.h?.length||0)+(visionDetection.lines?.v?.length||0);r.innerHTML=`<b>Análisis geométrico completado.</b><br>${lines} líneas técnicas detectadas. El OCR no ha confirmado suficientes cotas: revisa los campos manuales sin que el programa invente medidas.`;$('importReady').textContent='Revisión manual';if(typeof enableManualImportWhenValid==='function')enableManualImportWhenValid()}bar()?.style&&(bar().style.width='100%')}catch(e){console.error(e);r.innerHTML='<b>No se ha podido completar el análisis.</b><br>La imagen permanece cargada para revisión manual.'}finally{b.disabled=false;b.textContent='Analizar con IA visual'}}
 function precisionFileAnalysis(){const input=$('fileInput'),files=[...(input?.files||[])];if(!files.length)return typeof analyzeImportedFiles==='function'&&analyzeImportedFiles();const image=files.find(f=>f.type.startsWith('image/'));if(image&&!visionImage){const dt=new DataTransfer();dt.items.add(image);$('photoInput').files=dt.files;if(typeof photoSelected==='function')photoSelected();setTimeout(enhancedVisualAI,250);return}if(typeof analyzeImportedFiles==='function')analyzeImportedFiles();const names=files.map(f=>f.name).join(', ');$('fileResult').insertAdjacentHTML('beforeend','<hr><b>Importación de precisión activa:</b> validación de extensión, escala, unidades, cotas y geometría antes de transferir. Archivos: '+names.replace(/[<>&]/g,'')+'.')}
 function bindAI(){const a=$('analyzePhoto'),f=$('analyzeFile');if(a)a.onclick=enhancedVisualAI;if(f)f.onclick=precisionFileAnalysis;}
-function init(){upgrade2D();upgradeCalculator();upgradeTwin();upgradeMaterials();bindAI();document.documentElement.dataset.ppVersion='53.0';window.PLEGAR_PRO_BUILD='53.0-IA-IMPORTACION-PLIEGUES-GEMELO-MATERIALES';setTimeout(()=>{const l=$('loader');if(l&&!l.classList.contains('hidden')){const min=1800-(performance.now()||0);if(min>0)setTimeout(()=>l.classList.add('hidden'),min)}},100)}
+function init(){upgrade2D();upgradeCalculator();upgradeTwin();upgradeMaterials();bindAI();document.documentElement.dataset.ppVersion='53.1';window.PLEGAR_PRO_BUILD='53.1-SPLASH-4S-SINCRONIZADO'}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,350));else setTimeout(init,350);window.addEventListener('pageshow',()=>setTimeout(init,250));
 })();
 </script>

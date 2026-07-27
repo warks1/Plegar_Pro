@@ -1,0 +1,9 @@
+PLEGAR PRO v53.1 — SPLASH SINCRONIZADO DE 4 SEGUNDOS
+
+- Pantalla del logotipo visible durante un mínimo exacto de 4 segundos.
+- Barra de progreso animada de forma continua desde 0 % hasta 100 % durante esos 4 segundos.
+- Mensajes de inicialización sincronizados con el porcentaje mostrado.
+- Eliminadas las rutas antiguas que ocultaban el logotipo a los 50 ms, 1,8 s o al terminar reparaciones secundarias.
+- La aplicación solo cierra la pantalla de inicio cuando han transcurrido los 4 segundos y el arranque está preparado.
+- Si la carga real tarda más, la pantalla espera brevemente hasta finalizar en lugar de desaparecer antes.
+- Versión visible actualizada a v53.1.

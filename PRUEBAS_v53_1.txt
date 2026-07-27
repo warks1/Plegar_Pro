@@ -1,0 +1,9 @@
+PRUEBAS PLEGAR PRO v53.1
+
+[OK] Duración mínima del splash configurada en 4000 ms.
+[OK] Progreso calculado mediante requestAnimationFrame: 0-100 % en 4000 ms.
+[OK] forceFinishBoot respeta el tiempo restante del splash.
+[OK] Reparación v52.2 ya no oculta el loader prematuramente.
+[OK] Inicializador v53.0 ya no aplica cierre anticipado a 1800 ms.
+[OK] Pantalla principal conserva navegación y módulos anteriores.
+[OK] Versión actualizada a v53.1.
