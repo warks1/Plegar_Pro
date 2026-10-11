@@ -32,3 +32,4 @@ No se han importado catálogos automáticamente. El gemelo es visual y no es CAD
 - Sincroniza la deformación de la chapa en la vista principal y en el detalle de sección con la carrera normalizada del punzón.
 - Corrige un error de ejecución detectado en Chromium: faltaba el dibujador axonométrico de caras del visor CAD/CAM de utillaje (`iso`), que provocaba `iso is not defined` al renderizar perfiles.
 - Prueba automatizada de navegador con Chromium superada: arranque ~5,1 s, canvas del gemelo visible, preferencia de cámara persistida, navegación a colisiones, visor axonométrico de utillaje y cero errores de ejecución en el recorrido probado.
+- Error de ejecución del visor CAD corregido: el renderizador de perfiles usa ahora un único nombre de función (`poly`) tanto en su declaración como en las tres llamadas del punzón/matriz. Se añade una comprobación automática para evitar regresiones.
