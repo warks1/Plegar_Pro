@@ -96,6 +96,7 @@ jobs:
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/plegar-pro-server.log 2>&1 &
           SERVER_PID=$!
+          for i in {1..20}; do curl -fsS http://127.0.0.1:4173/ >/dev/null && break || sleep 1; done
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           node <<'NODE'
           const { chromium } = require('playwright');
@@ -106,7 +107,7 @@ jobs:
             page.on('pageerror', error => errors.push(error.message));
             const started = Date.now();
             await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded', timeout: 30000 });
-            await page.waitForFunction(() => document.body.classList.contains('boot-complete'), { timeout: 15000 });
+            await page.waitForFunction(() => document.body.classList.contains('boot-complete'), null, { timeout: 15000 });
             const splashMs = Date.now() - started;
             if (splashMs < 4800) throw new Error('Loading screen closed too early: ' + splashMs + 'ms');
             await page.waitForSelector('#pp59canvas', { timeout: 10000 });
@@ -114,7 +115,7 @@ jobs:
             await page.waitForFunction(() => {
               const canvas = document.querySelector('#pp59canvas');
               return canvas && canvas.getBoundingClientRect().width > 0 && !!canvas.getContext('2d');
-            }, { timeout: 10000 });
+            }, null, { timeout: 10000 });
             await page.locator('#pp59cam').selectOption('front');
             const savedCamera = await page.evaluate(() => JSON.parse(localStorage.getItem('plegarPro.v59.prefs') || '{}').camera);
             if (savedCamera !== 'front') throw new Error('Camera preference was not saved');
