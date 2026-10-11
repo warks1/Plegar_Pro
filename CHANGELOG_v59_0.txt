@@ -30,3 +30,4 @@ No se han importado catálogos automáticamente. El gemelo es visual y no es CAD
 - Corrige también el umbral de aviso de carrera cercana: compara la fracción normalizada de carrera (0–1), no con un porcentaje entero.
 - La sección ampliada de colisiones ahora anima también el perfil de la chapa según la carrera: parte plana, se dobla progresivamente y llega al punto de contacto visual.
 - Sincroniza la deformación de la chapa en la vista principal y en el detalle de sección con la carrera normalizada del punzón.
+- Corrige un error de ejecución detectado en Chromium: faltaba el dibujador axonométrico de caras del visor CAD/CAM de utillaje (`iso`), que provocaba `iso is not defined` al renderizar perfiles.
