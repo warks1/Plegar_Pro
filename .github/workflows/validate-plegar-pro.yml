@@ -39,6 +39,7 @@ jobs:
           const sw = read('sw.js');
           const failures = [];
           if (!collision.includes('tipY=top+4+travel*55')) failures.push('collision section punch travel formula missing');
+          if (!collision.includes('travel>0.85?')) failures.push('normalized near-contact threshold missing');
           const assetBlock = sw.match(/const ASSETS=\[(.*?)\]/s);
           if (!assetBlock) failures.push('service worker asset list missing');
           else {
