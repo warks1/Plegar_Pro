@@ -8,7 +8,7 @@ const ORDER_KEY='plegarPro.v54.bendOrder',CALC_KEY='plegarPro.v54.developmentPro
 let selectedFold=0;
 function notify(s){if(typeof window.toast==='function')window.toast(s);else console.info('[Plegar Pro]',s)}
 function foldCount(){return Math.max(0,(typeof state!=='undefined'&&state.bends?state.bends.length:0)-1)}
-function orderGet(){let n=foldCount(),raw=[];try{raw=JSON.parse(localStorage.getItem(ORDER_KEY)||'[]')}catch(e){}const a=raw.filter((v,i)=>Number.isInteger(v)&&v>=0&&v<n&&raw.indexOf(v)===i);for(let i=0;i<n;i++)if(!a.includes(i))a.push(i);return a.slice(0,n)}
+function orderGet(){let n=foldCount(),raw=[];if(typeof state!=='undefined'&&Array.isArray(state.bendOrder))raw=state.bendOrder.slice();else try{raw=JSON.parse(localStorage.getItem(ORDER_KEY)||'[]')}catch(e){}const a=raw.filter((v,i)=>Number.isInteger(v)&&v>=0&&v<n&&raw.indexOf(v)===i);for(let i=0;i<n;i++)if(!a.includes(i))a.push(i);return a.slice(0,n)}
 function orderSave(a){try{localStorage.setItem(ORDER_KEY,JSON.stringify(a))}catch(e){}}
 function foldLabel(i){const b=state.bends[i];return 'P'+(i+1)+' · '+num(b.angle)+'° · R'+num(b.radius)+' · ala '+num(b.leg)+' mm'}
 function selectFold(i,source){const n=foldCount();if(!n)return;selectedFold=Math.max(0,Math.min(n-1,Number(i)||0));sim.p3Active=selectedFold;if($('p3Active'))$('p3Active').value=String(selectedFold);if(typeof loadP3Fields==='function')loadP3Fields();renderOrderLists();if(typeof drawAll==='function')drawAll();document.querySelectorAll('[data-pp54-fold]').forEach(el=>el.classList.toggle('pp54-selected',Number(el.dataset.pp54Fold)===selectedFold));const live=$('pp54OrderStatus');if(live)live.textContent='Pliegue P'+(selectedFold+1)+' seleccionado'+(source?' · '+source:'')+'. Usa ↑ y ↓ para cambiar su orden de ejecución.'}
