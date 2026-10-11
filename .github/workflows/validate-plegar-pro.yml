@@ -120,11 +120,11 @@ jobs:
             const savedCamera = await page.evaluate(() => JSON.parse(localStorage.getItem('plegarPro.v59.prefs') || '{}').camera);
             if (savedCamera !== 'front') throw new Error('Camera preference was not saved');
             await page.locator('#pp59collisions').click();
-            await page.waitForFunction(() => document.querySelector('#collisions')?.classList.contains('active'), { timeout: 10000 });
+            await page.waitForFunction(() => document.querySelector('#collisions')?.classList.contains('active'), null, { timeout: 10000 });
             await page.waitForFunction(() => {
               const canvas = document.querySelector('#pp56Collision');
               return canvas && canvas.getBoundingClientRect().width > 0 && !!canvas.getContext('2d');
-            }, { timeout: 10000 });
+            }, null, { timeout: 10000 });
             if (errors.length) throw new Error('Browser runtime errors: ' + errors.join(' | '));
             console.log(JSON.stringify({ startupMs: splashMs, machineCanvas: 'visible', cameraPreference: savedCamera, collisionCanvas: 'visible', runtimeErrors: errors.length }));
             await browser.close();
