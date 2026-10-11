@@ -2,7 +2,7 @@
 (function(){'use strict';
 const $=id=>document.getElementById(id),KEY='plegarPro.v59.audit';
 const SOURCES=[['MECOS · catálogo general','https://mecos.es/files/productos/utillaje-plegadora/MECOS-Catalogo-General-de-Utillaje-2022.pdf','PDF'],['AMADA · catálogo AFH','https://cdn.amada.eu/fileadmin/Repository/Products/Brochures/Catalog_AFH_EN_2024.pdf','PDF'],['TRUMPF · herramientas','https://www.trumpf.com/en_INT/products/services/services-machines-systems-and-lasers/tools/bending-tools/','Web'],['EUROSTAMP · catálogo online','https://www.eurostamp-abkantwerkzeuge.de/online-shop/','Web']];
-const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]));
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const S=()=>{try{return typeof state!=='undefined'?state:null}catch(e){return null}},T=()=>Array.isArray(window.tools)?window.tools:[];
 const dl=(name,data,type='application/json')=>{const a=document.createElement('a'),u=URL.createObjectURL(new Blob([data],{type}));a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1200)};
 let yaw=-.6,pitch=.22,zoom=1,drag=null,playing=true,started=performance.now(),audit={date:null,results:[]};try{audit=Object.assign(audit,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
