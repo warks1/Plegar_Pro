@@ -76,6 +76,7 @@ jobs:
             if (!v59.includes(token)) failures.push('v59 missing expected persistence hook: ' + token);
           }
           if (!v59.includes('function executionOrder()') || !v59.includes('heading-=(Number(q.direction)||1)')) failures.push('v59 playback must consume the assigned execution order and fold toward the die');
+          if (!html.includes('function ppExecutionRank(i)') || !html.includes('ppExecutionRank(i)<step')) failures.push('core 2D/3D playback must read the assigned order directly');
           if (!collision.includes('const sy=base+35,folds=Math.max(0,all.length-1)') || !collision.includes('rank===step?travel:0')) failures.push('collision sheet must deform progressively in assigned fold order');
           if (!html.includes('@media(max-width:560px)') || !html.includes('.app{grid-template-columns:minmax(0,1fr)}')) failures.push('responsive mobile layout rules missing');
           if (html.indexOf('./pp57-system-integration.js') > html.indexOf('./pp59-engineering-upgrade.js')) {
