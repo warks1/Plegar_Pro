@@ -1,0 +1,19 @@
+PLEGAR PRO v58.0 — VALIDACIÓN
+=============================
+
+Comprobaciones automáticas completadas:
+- pp57-system-integration.js recuperado desde la rama de trabajo y parseado con new Function sin errores de sintaxis.
+- index.html carga pp57-system-integration.js.
+- sw.js usa la caché plegar-pro-v58-0 e incluye el nuevo recurso.
+- No se ha eliminado ningún módulo ni modificado fórmulas de desarrollo o detección de colisiones.
+
+Comprobaciones manuales pendientes en navegador:
+1. Cambiar material, espesor y longitudes en Programar, Programación 2D y Programación 3D y confirmar actualización en todos los módulos relacionados.
+2. Confirmar que dcMaterial, dcThickness, dcK, dcV y los demás campos dc* siguen siendo independientes.
+3. Observar un ciclo completo del gemelo visual y cambiar cámaras, zoom y velocidad en escritorio y móvil.
+4. Seleccionar varias herramientas y comprobar que los perfiles/cotas se actualizan y que los valores sin fuente se marcan como estimados.
+5. Pulsar Actualizar bases de datos y confirmar que cada resultado coincide con el acceso real a la fuente; los bloqueos CORS no deben declararse como importación.
+6. Guardar la ficha de oficina técnica, exportar TXT/CSV/JSON y recargar la aplicación.
+7. Revisar consola del navegador, pantalla de carga y despliegue GitHub Pages.
+
+La comprobación sintáctica no equivale a prueba visual integral. No se valida como exacta la geometría de fabricantes ni como segura una secuencia CNC.
