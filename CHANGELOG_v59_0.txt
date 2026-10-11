@@ -17,3 +17,4 @@ No se han importado catálogos automáticamente. El gemelo es visual y no es CAD
 - Persiste también la órbita personalizada (yaw/pitch), además de cámara, zoom, paso seleccionado y estado de animación.
 - La validación automática ahora comprueba anclajes de integración entre los módulos heredados y la persistencia de los controles del visor.
 - Evita ciclos de animación duplicados al guardar preferencias mientras la vista 3D está reproduciéndose; mantiene la órbita personalizada al cambiar otros ajustes.
+- La pausa conserva el fotograma actual; la chapa pasa de plana a plegada durante la carrera y permanece plegada durante el retorno de la trancha.
