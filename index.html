@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v55.0 · CAD/CAM y Cálculo de Desarrollo</title>
+<title>Plegar Pro v56.0 · Revisión de colisiones CAD/CAM</title>
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -238,7 +238,7 @@ canvas{touch-action:none;-webkit-user-select:none;user-select:none;max-width:100
 <input type="checkbox" id="menuToggle" class="menuToggle" aria-hidden="true">
 <aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v55.0</div>
+  <div class="version">v56.0</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -249,6 +249,7 @@ canvas{touch-action:none;-webkit-user-select:none;user-select:none;max-width:100
     <button data-page="program3d">Programación 3D</button>
     <button data-page="sim2d">Simulación 2D</button>
     <button data-page="sim3d">Simulación 3D</button>
+    <button data-page="collisions">Revisión de colisiones</button>
     <h4>INGENIERÍA</h4>
     <button data-page="development">Desarrollo</button>
     <button data-page="devcalculator">Calculadora de desarrollo</button>
@@ -660,7 +661,7 @@ const titles={
  dashboard:['Panel de control','Proyecto único y sincronizado'],import:['Importar planos','CAD, PDF, fotografías e IA'],
  technical:['Datos generales','Una sola fuente de datos'],program:['Programar','Secuencia, herramientas y topes'],
  program2d:['Programación 2D','Edición técnica de geometría'],program3d:['Programación 3D','Edición espacial y utillaje'],
- sim2d:['Simulación 2D','Revisión técnica progresiva'],sim3d:['Simulación 3D','Gemelo digital del plegado'],
+ sim2d:['Simulación 2D','Revisión técnica progresiva'],sim3d:['Simulación 3D','Gemelo digital del plegado'],collisions:['Revisión de colisiones','Simulación 3D sincronizada con la secuencia'], 
  development:['Desarrollo','Cálculo de chapa plana'],devcalculator:['Calculadora de desarrollo','Consulta rápida, aislada y sin sincronización'],curve:['Curva Perfecta','Programación por golpes'],
  vcompare:['Comparador V','Selección orientativa de matriz'],engineering:['Motor de cálculo','Historial, comparación y restauración'],tooling:['Utillaje','Biblioteca de punzones y matrices'],
  ai:['IA técnica','Cálculo y envío a módulos'],office:['Oficina técnica / Clientes','CRM técnico y contacto directo'],production:['Producción','Órdenes y modo operario'],
@@ -2178,4 +2179,5 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 <script src="./pp54-engineering.js"></script>
 <script src="./pp55-cad-precision.js"></script>
+<script src="./pp56-collision-review.js"></script>
 </body></html>
