@@ -42,3 +42,12 @@ PLEGAR PRO · ACTUALIZACIÓN DE SECUENCIA Y ADAPTACIÓN (12-10-2026)
 - Se ajustan menú, paneles, controles y canvas para pantallas de escritorio, tableta y móvil, con rejilla adaptable y controles táctiles.
 - La validación de CI comprueba regresiones del orden, deformación de chapa y reglas responsive.
 - La geometría sigue siendo una representación visual orientativa; no equivale a cálculo físico certificado ni a detección industrial de colisiones.
+
+
+PLEGAR PRO v60.0 · ORDEN DE PLEGADO Y RESPONSIVE
+- Se corrige la lectura del orden asignado directamente desde el estado del proyecto en simulación 2D, simulación 3D, gemelo de máquina y revisión de colisiones.
+- Los indicadores de simulación identifican el número real del pliegue ejecutado, no solo el índice geométrico.
+- Se añade la deformación progresiva de la chapa en la revisión de colisiones y en el gemelo de máquina.
+- Se incorporan pruebas automáticas de secuencia asignada, movimiento de chapa y desbordamiento móvil.
+- Se cambia la caché del service worker a v60 para evitar que la web mantenga módulos anteriores.
+- La representación sigue siendo geométrica orientativa y no un cálculo industrial certificado de colisiones.
