@@ -23,3 +23,35 @@ jobs:
           grep -Fq './pp59-engineering-upgrade.js' index.html
           grep -Fq './pp59-engineering-upgrade.js' sw.js
           grep -Fq "plegar-pro-v59-0" sw.js
+          grep -Fq './pp55-cad-precision.js' index.html
+      - name: Check v59 integration anchors and persisted controls
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const read = p => fs.readFileSync(p, 'utf8');
+          const html = read('index.html');
+          const cad = read('pp55-cad-precision.js');
+          const system = read('pp57-system-integration.js');
+          const v59 = read('pp59-engineering-upgrade.js');
+          const failures = [];
+          for (const id of ['program3d', 'tooling']) {
+            if (!html.includes('id="' + id + '"')) failures.push('index.html missing #' + id);
+          }
+          for (const id of ['pp55ToolSelect', 'pp55ToolCAD']) {
+            if (!cad.includes(id)) failures.push('CAD module missing integration anchor ' + id);
+          }
+          for (const id of ['pp58DbCard', 'pp58Office', 'pp58TwinCard']) {
+            if (!system.includes(id)) failures.push('system module missing integration anchor ' + id);
+          }
+          for (const token of ['function savePrefs()', 'prefs.camera=v', 'prefs.zoom=zoom', 'prefs.step=']) {
+            if (!v59.includes(token)) failures.push('v59 missing expected persistence hook: ' + token);
+          }
+          if (html.indexOf('./pp57-system-integration.js') > html.indexOf('./pp59-engineering-upgrade.js')) {
+            failures.push('v59 must load after the existing system integration module');
+          }
+          if (failures.length) {
+            console.error(failures.join('\\n'));
+            process.exit(1);
+          }
+          console.log('Integration anchors and preference persistence verified.');
+          NODE
