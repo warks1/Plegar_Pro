@@ -417,7 +417,7 @@ canvas{touch-action:none;-webkit-user-select:none;user-select:none;max-width:100
 <div><label>Ángulo punzón</label><input id="devPunchAngle" type="text" inputmode="decimal" min="20" max="90"></div>
 <div><label>Longitud de plegado (mm)</label><input id="devBendLength" type="text" inputmode="decimal" min="1"></div>
 <div><label>Tolerancia admisible ± mm</label><input id="devTolerance" type="text" inputmode="decimal" min="0" step="0.05"></div>
-<div><label>Tipo de cotas</label><select id="devDimensionType"><option value="exterior">Exteriores</option><option value="interior">Interiores</option><option value="mixed">Mixtas</option></select></div>
+<div><label>Tipo de cotas</label><select id="devDimensionType"><option value="exterior">Exteriores</option><option value="interior">Interiores</option><option value="tangent">Tramos hasta tangencia</option><option value="mixed">Mixtas</option></select></div>
 </div><div class="actions"><button class="btn" id="devCalculate">Calcular</button><button class="btn secondary" id="devToCompare">Comparar matrices V</button><button class="btn secondary" id="devSaveCalc">Guardar cálculo</button><button class="btn secondary" id="devExport">Exportar cálculo</button><button class="btn secondary" id="devReset">Restablecer calculadora</button></div>
 <div class="note"><b>Sincronización general:</b> los cambios de material, espesor, radio, ángulo y V actualizan el proyecto activo, Programar, vistas 2D/3D, simulaciones, Desarrollo y Comparador de V.</div></div>
 <div class="card c8"><h2>Pliegues de la calculadora</h2><div class="tableWrap"><table class="table"><thead><tr><th>#</th><th>Longitud / ala (mm)</th><th>Ángulo final</th><th>Radio solicitado</th><th>BA</th><th>BD</th><th></th></tr></thead><tbody id="devRows"></tbody></table></div><div class="actions"><button class="btn" id="devAddBend">Añadir pliegue</button></div></div>
@@ -941,6 +941,7 @@ function calcDevelopmentForV(v){
    ba+=allowance;bd+=deduction;return {i,allowance,deduction,setback,radius};
  });
  let flat=d.dimensionType==='interior'?sum+ba:sum-bd;
+ if(d.dimensionType==='tangent')flat=sum+ba;
  if(d.dimensionType==='mixed')flat=sum-(bd*.5)+(ba*.5);
  let bendLength=Math.max(1,d.bendLength||1000);
  let force=(1.42*materialFactor(d.material)*t*t*bendLength/Math.max(1,v))/10;
