@@ -81,7 +81,7 @@ function drawCollision(){
  x.save();x.shadowColor='rgba(12,37,54,.18)';x.shadowBlur=16;x.fillStyle='rgba(255,255,255,.97)';x.strokeStyle='#91b8cc';x.lineWidth=2;x.beginPath();x.roundRect(bx,by,bw,bh,14);x.fill();x.stroke();x.shadowBlur=0;
  x.fillStyle='#173246';x.font='900 13px system-ui';x.fillText('SECCIÓN DE PLEGADO · DETALLE',bx+15,by+24);
  x.fillStyle='#607d8e';x.font='11px system-ui';x.fillText('Perfil de referencia · ángulo '+ang+'° · espesor '+t.toFixed(2)+' mm',bx+15,by+43);
- const cx=bx+bw/2, top=by+78, floor=by+183, halfV=Math.max(48,Math.min(92,v*1.25)), tipY=top+Math.max(0,100-travel)*.55;
+ const cx=bx+bw/2, top=by+78, floor=by+183, halfV=Math.max(48,Math.min(92,v*1.25)), tipY=top+4+travel*55;
  // Die block with machined V throat.
  x.fillStyle='#15516f';x.strokeStyle='#082f43';x.lineWidth=3;x.beginPath();x.moveTo(cx-halfV-45,floor);x.lineTo(cx-halfV-45,top+34);x.lineTo(cx-halfV*.32,top+34);x.lineTo(cx,floor-24);x.lineTo(cx+halfV*.32,top+34);x.lineTo(cx+halfV+45,top+34);x.lineTo(cx+halfV+45,floor);x.closePath();x.fill();x.stroke();
  x.strokeStyle='#bceeff';x.lineWidth=3;x.beginPath();x.moveTo(cx-halfV*.32,top+34);x.lineTo(cx,floor-24);x.lineTo(cx+halfV*.32,top+34);x.stroke();
