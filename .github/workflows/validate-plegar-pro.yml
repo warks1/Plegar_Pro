@@ -38,6 +38,8 @@ jobs:
           const v59 = read('pp59-engineering-upgrade.js');
           const sw = read('sw.js');
           const failures = [];
+          const toolDraw = cad.slice(cad.indexOf('function drawTool()'), cad.indexOf('\nfunction ', cad.indexOf('function drawTool()') + 10) > -1 ? cad.indexOf('\nfunction ', cad.indexOf('function drawTool()') + 10) : undefined);
+          if (!toolDraw || !toolDraw.includes('function poly(points,col)') || /\biso\(/.test(toolDraw)) failures.push('CAD tooling renderer must use the defined poly() helper consistently');
           if (!collision.includes('tipY=top+4+travel*55')) failures.push('collision section punch travel formula missing');
           if (!collision.includes('travel>0.85?') || collision.includes('travel>85?')) failures.push('normalized near-contact threshold missing or stale comparison remains');
           if (!collision.includes('insetSheetY=top+37+travel*22') || !collision.includes('(180-ang)*.27))*travel') || !collision.includes('sheetBase=insetSheetY-insetRise') || !collision.includes('rise=Math.max(0,Math.min(100,(180-ang)*.62))*travel')) failures.push('progressive sheet bend missing or incorrectly oriented');
