@@ -1,0 +1,13 @@
+# Pruebas estáticas v56.0
+
+- Sintaxis de `pp56-collision-review.js`: correcta.
+- Sintaxis de `sw.js`: correcta.
+- 15 bloques JavaScript inline de `index.html`: sin errores de análisis.
+- Script v56 enlazado desde index.html: correcto.
+- Navegación y título de Revisión de colisiones: presentes.
+- Cache service worker incrementada y módulo incluido en precache: correcto.
+- Controles de reproducción, paso anterior/siguiente, cámara y visibilidad de topes/matriz/punzón/trancha/mesa: presentes.
+- Paneles de desarrollo y comparador V añadidos a las páginas de Programación 2D y 3D.
+- Sin prueba interactiva en navegador ni confirmación de despliegue GitHub Pages en esta revisión.
+
+Nota: una prueba sintáctica no sustituye a una prueba de uso real. Confirmar el despliegue y probar el flujo completo en navegador antes de producción.
