@@ -2292,4 +2292,120 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script src="./pp54-engineering.js"></script>
 <script src="./pp55-cad-precision.js"></script>
 <script src="./pp56-collision-review.js"></script>
+
+<style id="pp57-visual-polish">
+/* Plegar Pro v57.3 · carga de alto contraste y edición 2D despejada */
+#loader{
+  background:
+    radial-gradient(ellipse at 50% 36%,rgba(27,107,145,.34),transparent 38%),
+    radial-gradient(circle at 50% 50%,#102a3d 0,#07131e 48%,#02070c 100%);
+  color:#f7fcff;
+}
+#loader .loadBox{width:min(520px,90vw);padding:28px 24px 24px}
+#loader .logoMark{
+  width:112px;height:112px;margin:0 auto 22px;
+  border:2px solid #7ce5ff;border-radius:27px;
+  background:linear-gradient(145deg,rgba(55,180,226,.24),rgba(4,17,28,.92));
+  box-shadow:0 0 0 7px rgba(53,169,224,.08),0 0 45px rgba(53,216,255,.32),inset 0 0 24px rgba(92,217,255,.12);
+  animation:pp57LogoPulse 2.4s ease-in-out infinite;
+}
+#loader .logoMark span{
+  color:#fff!important;font-size:19px!important;line-height:1.08!important;
+  letter-spacing:.09em;text-shadow:0 2px 16px #35c8ff;
+}
+#loader .logoText{
+  color:#fff;font-size:clamp(34px,6vw,44px);font-weight:1000;
+  letter-spacing:.075em;line-height:1.15;
+  text-shadow:0 3px 25px rgba(51,191,244,.3);
+}
+#loader .logoText i{color:#70e2ff;text-shadow:0 0 20px rgba(67,206,255,.5)}
+#loader .muted{color:#d6eaf5!important;font-size:13px;letter-spacing:.12em;margin-top:10px}
+#loader .loadBar{height:10px;margin-top:28px;background:#020b12;border:1px solid #5b8098;box-shadow:0 0 18px rgba(38,174,224,.12)}
+#loader .loadBar i{background:linear-gradient(90deg,#38d7a3 0%,#35bfe9 55%,#a2efff 100%);box-shadow:0 0 16px #35bfe988}
+#loader #loadState{color:#d6eaf5;font-size:12px;letter-spacing:.035em;min-height:18px}
+@keyframes pp57LogoPulse{0%,100%{box-shadow:0 0 0 7px rgba(53,169,224,.08),0 0 34px rgba(53,216,255,.24),inset 0 0 24px rgba(92,217,255,.1)}50%{box-shadow:0 0 0 10px rgba(53,169,224,.12),0 0 52px rgba(53,216,255,.42),inset 0 0 30px rgba(92,217,255,.2)}}
+.stage{isolation:isolate;border-color:#41647a;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24),0 16px 36px rgba(0,0,0,.2)}
+.stage canvas{position:relative;z-index:1;outline:none}
+.stage:after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 34px rgba(15,55,78,.08);z-index:2}
+.stage .overlay{
+  z-index:4;pointer-events:auto;cursor:grab;touch-action:none;user-select:none;
+  max-width:min(300px,75%);padding:10px 12px;
+  color:#f4fbff;background:linear-gradient(145deg,rgba(5,22,34,.94),rgba(10,43,61,.91));
+  border:1px solid rgba(87,190,226,.8);border-radius:11px;
+  box-shadow:0 8px 22px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.1);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  line-height:1.55;font-size:11px;
+}
+.stage .overlay:before{content:"⠿  INFORMACIÓN · ARRASTRAR";display:block;margin-bottom:5px;color:#78dcff;font-size:9px;font-weight:900;letter-spacing:.09em}
+.stage .overlay.pp57-dragging{cursor:grabbing;opacity:.96;box-shadow:0 12px 30px rgba(0,0,0,.3),0 0 0 2px rgba(62,194,239,.25)}
+#program2d .split{align-items:start}
+#program2d .split>.card{position:relative}
+#program2d .stage{min-height:300px}
+#canvasP2{background:linear-gradient(145deg,#fbfdff,#edf5fa);filter:drop-shadow(0 4px 5px rgba(25,66,90,.08))}
+#canvasProgram,#canvasP2{image-rendering:auto}
+.visualToolbar{position:relative;z-index:3}
+.visualToolbar .btn{transition:transform .16s ease,filter .16s ease}
+.visualToolbar .btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+@media(max-width:720px){
+ #loader .loadBox{padding:22px 16px}
+ #loader .logoMark{width:94px;height:94px;border-radius:23px}
+ #loader .logoText{font-size:32px}
+ .stage .overlay{max-width:calc(100% - 20px);font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){#loader .logoMark{animation:none}.visualToolbar .btn{transition:none}}
+</style>
+<script id="pp57-draggable-overlays">
+(function(){
+ 'use strict';
+ const KEY='plegarPro.v57.overlayPositions';
+ function read(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
+ function write(id,left,top){try{const p=read();p[id]={left,top};localStorage.setItem(KEY,JSON.stringify(p))}catch(e){}}
+ function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+ function setup(el){
+   if(!el||el.dataset.pp57DragReady==='1')return;
+   const stage=el.closest('.stage');if(!stage)return;
+   el.dataset.pp57DragReady='1';
+   el.setAttribute('role','group');
+   el.setAttribute('aria-label','Panel informativo móvil. Arrastra para cambiarlo de posición.');
+   const saved=read()[el.id];
+   if(saved&&Number.isFinite(saved.left)&&Number.isFinite(saved.top)){
+     el.style.left=saved.left+'px';el.style.top=saved.top+'px';el.style.right='auto';
+   }
+   let active=null;
+   el.addEventListener('pointerdown',e=>{
+     if(e.button!==undefined&&e.button!==0)return;
+     const r=el.getBoundingClientRect(),sr=stage.getBoundingClientRect();
+     active={id:e.pointerId,x:e.clientX,y:e.clientY,left:r.left-sr.left,top:r.top-sr.top,moved:false};
+     el.classList.add('pp57-dragging');
+     try{el.setPointerCapture(e.pointerId)}catch(_){}
+     e.preventDefault();
+   });
+   el.addEventListener('pointermove',e=>{
+     if(!active||active.id!==e.pointerId)return;
+     const sr=stage.getBoundingClientRect();
+     const left=clamp(active.left+e.clientX-active.x,4,Math.max(4,sr.width-el.offsetWidth-4));
+     const top=clamp(active.top+e.clientY-active.y,4,Math.max(4,sr.height-el.offsetHeight-4));
+     if(Math.abs(e.clientX-active.x)+Math.abs(e.clientY-active.y)>3)active.moved=true;
+     el.style.left=left+'px';el.style.top=top+'px';el.style.right='auto';
+   });
+   const end=e=>{
+     if(!active||active.id!==e.pointerId)return;
+     const r=el.getBoundingClientRect(),sr=stage.getBoundingClientRect();
+     write(el.id,Math.round(r.left-sr.left),Math.round(r.top-sr.top));
+     active=null;el.classList.remove('pp57-dragging');
+   };
+   el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+ }
+ function scan(){document.querySelectorAll('.stage .overlay').forEach(setup)}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scan,{once:true});else scan();
+ const mo=new MutationObserver(scan);mo.observe(document.documentElement,{childList:true,subtree:true});
+ window.addEventListener('resize',()=>document.querySelectorAll('.stage .overlay').forEach(el=>{
+   const st=el.closest('.stage');if(!st)return;const sr=st.getBoundingClientRect();
+   const left=clamp(parseFloat(el.style.left)||10,4,Math.max(4,sr.width-el.offsetWidth-4));
+   const top=clamp(parseFloat(el.style.top)||10,4,Math.max(4,sr.height-el.offsetHeight-4));
+   el.style.left=left+'px';el.style.top=top+'px';el.style.right='auto';
+ }));
+})();
+</script>
+
 </body></html>
