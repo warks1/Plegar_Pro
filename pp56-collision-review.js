@@ -21,7 +21,69 @@ function addPage(){if($('collisions'))return;const p=document.createElement('sec
 function project(p,w,h){let x=p.x,y=p.y,z=p.z;if(camera==='orbit'||camera==='isometric'){const a=rot,xx=x*Math.cos(a)-z*Math.sin(a);z=x*Math.sin(a)+z*Math.cos(a);x=xx}if(camera==='front')return{x:w/2+x*zoom,y:h*.72-y*zoom};if(camera==='side')return{x:w/2+z*zoom,y:h*.72-y*zoom};if(camera==='top')return{x:w/2+x*zoom,y:h*.5+z*zoom};const a=-.55,xx=x*Math.cos(a)-z*Math.sin(a),zz=x*Math.sin(a)+z*Math.cos(a);return{x:w/2+xx*zoom,y:h*.69-(y-zz*.38)*zoom}}
 function poly(x,w,h,pts,fill){x.beginPath();pts.map(p=>project(p,w,h)).forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.closePath();x.fillStyle=fill;x.fill();x.strokeStyle='#57788b';x.lineWidth=2;x.stroke()}
 function line(x,w,h,pts,col,width){x.beginPath();pts.map(p=>project(p,w,h)).forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.strokeStyle=col;x.lineWidth=width;x.lineJoin='round';x.stroke()}
-function drawCollision(){const c=$('pp56Collision');if(!c)return;const x=c.getContext('2d'),w=c.width,h=c.height;x.clearRect(0,0,w,h);const gr=x.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#fafdff');gr.addColorStop(1,'#e5f3fb');x.fillStyle=gr;x.fillRect(0,0,w,h);x.strokeStyle='#d2e5ef';for(let i=0;i<w;i+=45){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}const travel=Number($('pp56Travel')?.value||0)/100,bs0=bs(),o=seq(),idx=o[Math.min(step,Math.max(0,o.length-1))]??0,b=bs0[idx]||{angle:90,leg:50},base=500,half=260,P=p=>project(p,w,h);poly(x,w,h,[{x:-410,y:60,z:-60},{x:-360,y:60,z:60},{x:-360,y:550,z:60},{x:-410,y:550,z:-60}],'#a9bdca');poly(x,w,h,[{x:360,y:60,z:-60},{x:410,y:60,z:60},{x:410,y:550,z:60},{x:360,y:550,z:-60}],'#a9bdca');if(visible.table)poly(x,w,h,[{x:-390,y:base,z:-120},{x:390,y:base,z:-120},{x:390,y:base,z:120},{x:-390,y:base,z:120}],'#91a7b5');if(visible.die){poly(x,w,h,[{x:-320,y:base,z:-70},{x:320,y:base,z:-70},{x:320,y:base+35,z:70},{x:-320,y:base+35,z:70}],'#2b789d');line(x,w,h,[{x:-320,y:base+35,z:-70},{x:0,y:base-18,z:0},{x:320,y:base+35,z:-70}],'#d8f2ff',5)}const py=base-70+travel*220;if(visible.ram)poly(x,w,h,[{x:-350,y:py,z:-80},{x:350,y:py,z:-80},{x:350,y:py+45,z:80},{x:-350,y:py+45,z:80}],'#7896a7');if(visible.punch){poly(x,w,h,[{x:-290,y:py,z:-45},{x:290,y:py,z:-45},{x:250,y:py-90,z:0},{x:-250,y:py-90,z:0}],'#edaa4f');line(x,w,h,[{x:-250,y:py-90,z:0},{x:0,y:py-128,z:0},{x:250,y:py-90,z:0}],'#fff0ce',5)}if(visible.stops){[-1,1].forEach(s=>poly(x,w,h,[{x:s*260,y:base-10,z:-140},{x:s*245,y:base-10,z:-140},{x:s*245,y:base+65,z:-140},{x:s*260,y:base+65,z:-140}],'#647f90'))}const ang=Math.max(30,Math.min(150,Number(b.angle)||90)),rise=Math.min(100,Math.max(12,(180-ang)*1.05)),t=th(),profile=[{x:-half,y:base+40,z:0},{x:-half*.48,y:base+40,z:0},{x:-half*.16,y:base+40-rise*.35,z:0},{x:0,y:base+40-rise,z:0},{x:half*.16,y:base+40-rise*.35,z:0},{x:half*.48,y:base+40,z:0},{x:half,y:base+40,z:0}];line(x,w,h,profile,'#d65c69',Math.max(4,t*1.5));x.fillStyle='#173246';x.font='bold 24px system-ui';x.fillText('PLEGAR PRO · REVISIÓN DE COLISIONES',26,40);x.font='16px system-ui';x.fillStyle='#526f82';x.fillText('Vista '+camera+' · Paso '+(step+1)+' / '+Math.max(1,o.length),26,68);const st=$('pp56Status'),nearClose=travel>.84&&visible.punch&&visible.die;if(st){st.className='pp56-status '+(nearClose?'warn':'ok');st.textContent=nearClose?'Carrera de cierre alta: revisa visualmente contacto, radios y holguras. La detección CAD exacta aún no está implementada.':'Movimiento esquemático actualizado. Esta vista no calcula ni certifica colisiones CAD reales.'}if(S()){S().collisionReview={step:step,foldIndex:idx,travel:travel,parts:{...visible},camera:camera}}}
+function drawCollision(){
+ const c=$('pp56Collision');if(!c)return;
+ const x=c.getContext('2d'),w=c.width,h=c.height;
+ x.clearRect(0,0,w,h);
+ const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#f9fcff');bg.addColorStop(.58,'#eaf3f8');bg.addColorStop(1,'#dbe7ee');x.fillStyle=bg;x.fillRect(0,0,w,h);
+ x.save();x.globalAlpha=.55;x.strokeStyle='#c5d8e4';x.lineWidth=1;
+ for(let i=0;i<w;i+=40){x.beginPath();x.moveTo(i,80);x.lineTo(i,h);x.stroke()}
+ for(let j=100;j<h;j+=40){x.beginPath();x.moveTo(0,j);x.lineTo(w,j);x.stroke()}x.restore();
+ const base=500,travel=Number($('pp56Travel')?.value||0)/100,all=bs(),order=seq(),idx=order[Math.min(step,Math.max(0,order.length-1))]??0,b=all[idx]||{angle:90,leg:50},ang=Math.max(30,Math.min(150,Number(b.angle)||90)),t=th(),dieV=Math.max(6,Number(b.v||S()?.project?.selectedV||16)),py=base-80+travel*230;
+ const face=(pts,col,stroke='#5e7788')=>{poly(x,w,h,pts,col);x.strokeStyle=stroke;x.lineWidth=1.5};
+ const dim=(a,b,label,offset=22)=>{const A=project(a,w,h),B=project(b,w,h);x.save();x.strokeStyle='#087ea4';x.fillStyle='#075c7b';x.lineWidth=2;x.beginPath();x.moveTo(A.x,A.y);x.lineTo(B.x,B.y);x.stroke();const dx=B.x-A.x,dy=B.y-A.y,len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len;[A,B].forEach(p=>{x.beginPath();x.moveTo(p.x-nx*7,p.y-ny*7);x.lineTo(p.x+nx*7,p.y+ny*7);x.stroke()});x.font='bold 15px system-ui';x.textAlign='center';x.fillText(label,(A.x+B.x)/2+nx*offset,(A.y+B.y)/2+ny*offset);x.restore()};
+ const label=(txt,px,py0,fill='#173246')=>{x.save();x.font='bold 14px system-ui';const tw=x.measureText(txt).width+20;x.fillStyle='rgba(255,255,255,.92)';x.strokeStyle='#c4d8e4';x.lineWidth=1;x.beginPath();x.roundRect(px,py0-19,tw,28,7);x.fill();x.stroke();x.fillStyle=fill;x.fillText(txt,px+10,py0);x.restore()};
+ // Frame uprights and top beam: separate shaded faces create a machine-like assembly.
+ if(visible.ram){
+  face([{x:-430,y:py+80,z:-70},{x:-365,y:py+80,z:-70},{x:-365,y:py+500,z:-70},{x:-430,y:py+500,z:-70}],'#8da5b4');
+  face([{x:365,y:py+80,z:-70},{x:430,y:py+80,z:-70},{x:430,y:py+500,z:-70},{x:365,y:py+500,z:-70}],'#8da5b4');
+  face([{x:-430,y:py+80,z:-70},{x:-365,y:py+80,z:-70},{x:-365,y:py+500,z:70},{x:-430,y:py+500,z:70}],'#b8c9d3');
+  face([{x:365,y:py+80,z:-70},{x:430,y:py+80,z:-70},{x:430,y:py+500,z:70},{x:365,y:py+500,z:70}],'#b8c9d3');
+  face([{x:-430,y:py+80,z:-70},{x:430,y:py+80,z:-70},{x:430,y:py+145,z:70},{x:-430,y:py+145,z:70}],'#547487');
+  face([{x:-430,y:py+80,z:-70},{x:430,y:py+80,z:-70},{x:430,y:py+80,z:70},{x:-430,y:py+80,z:70}],'#d5e2e9');
+ }
+ if(visible.table){
+  face([{x:-390,y:base+28,z:-150},{x:390,y:base+28,z:-150},{x:390,y:base+28,z:150},{x:-390,y:base+28,z:150}],'#839aa8');
+  face([{x:-390,y:base+28,z:-150},{x:390,y:base+28,z:-150},{x:390,y:base+65,z:150},{x:-390,y:base+65,z:150}],'#b8c8d1');
+  face([{x:-390,y:base+28,z:150},{x:390,y:base+28,z:150},{x:390,y:base+65,z:150},{x:-390,y:base+65,z:150}],'#6e8797');
+ }
+ // V die with two sloping shoulders and a dark, visible V opening.
+ if(visible.die){
+  face([{x:-330,y:base-6,z:-70},{x:330,y:base-6,z:-70},{x:330,y:base+30,z:70},{x:-330,y:base+30,z:70}],'#347fa2');
+  face([{x:-330,y:base-6,z:-70},{x:-62,y:base-6,z:-70},{x:-20,y:base+22,z:0},{x:-330,y:base+30,z:70}],'#559bb8');
+  face([{x:62,y:base-6,z:-70},{x:330,y:base-6,z:-70},{x:330,y:base+30,z:70},{x:20,y:base+22,z:0}],'#276887');
+  line(x,w,h,[{x:-62,y:base-7,z:-70},{x:0,y:base+21,z:0},{x:62,y:base-7,z:-70}],'#123e57',7);
+  line(x,w,h,[{x:-330,y:base-6,z:-70},{x:-62,y:base-6,z:-70},{x:0,y:base+21,z:0},{x:62,y:base-6,z:-70},{x:330,y:base-6,z:-70}],'#c9efff',3);
+ }
+ // Punch body and ground nose with highlighted edges, not a plain rectangular block.
+ if(visible.punch){
+  face([{x:-300,y:py,z:-48},{x:300,y:py,z:-48},{x:300,y:py+32,z:48},{x:-300,y:py+32,z:48}],'#d68a35');
+  face([{x:-300,y:py,z:-48},{x:300,y:py,z:-48},{x:220,y:py-68,z:0},{x:-220,y:py-68,z:0}],'#f0b55e');
+  face([{x:-220,y:py-68,z:0},{x:220,y:py-68,z:0},{x:28,y:py-118,z:0},{x:-28,y:py-118,z:0}],'#c47a2d');
+  line(x,w,h,[{x:-28,y:py-118,z:0},{x:0,y:py-126,z:0},{x:28,y:py-118,z:0}],'#fff0d4',4);
+  line(x,w,h,[{x:-300,y:py,z:-48},{x:-220,y:py-68,z:0},{x:-28,y:py-118,z:0},{x:0,y:py-126,z:0},{x:28,y:py-118,z:0},{x:220,y:py-68,z:0},{x:300,y:py,z:-48}],'#fff0d4',2);
+ }
+ // Backgauge fingers shown as separate adjustable stops.
+ if(visible.stops){[-1,1].forEach(s=>{face([{x:s*250,y:base-20,z:-170},{x:s*230,y:base-20,z:-170},{x:s*230,y:base+18,z:-170},{x:s*250,y:base+18,z:-170}],'#536f80');face([{x:s*250,y:base-20,z:-170},{x:s*230,y:base-20,z:-170},{x:s*230,y:base-20,z:-115},{x:s*250,y:base-20,z:-115}],'#91a9b7')})}
+ // Bent sheet section: the selected bend angle is reflected in the centre profile.
+ const half=260,rise=Math.max(30,Math.min(170,(180-ang)*1.45)),sheetY=base+2;
+ const sheet=[{x:-half,y:sheetY,z:0},{x:-half*.46,y:sheetY,z:0},{x:-half*.15,y:sheetY-rise*.48,z:0},{x:0,y:sheetY-rise,z:0},{x:half*.15,y:sheetY-rise*.48,z:0},{x:half*.46,y:sheetY,z:0},{x:half,y:sheetY,z:0}];
+ line(x,w,h,sheet,'#a8c2d0',Math.max(8,Math.min(16,t*2)));
+ line(x,w,h,sheet,'#edf7fc',Math.max(4,Math.min(10,t*1.1)));
+ line(x,w,h,sheet,'#4e879f',1.5);
+ dim({x:-half,y:sheetY-30,z:0},{x:half,y:sheetY-30,z:0},'Chapa · espesor '+t.toFixed(1)+' mm',-20);
+ // HUD, component legends and explicit schematic-status notice.
+ x.fillStyle='#173246';x.font='900 24px system-ui';x.fillText('PLEGAR PRO  /  CONTROL 3D INDUSTRIAL',26,38);
+ x.fillStyle='#526f82';x.font='14px system-ui';x.fillText('Cámara '+camera+'   ·   Operación '+(step+1)+'/'+Math.max(1,order.length)+'   ·   Ángulo objetivo '+ang+'°',27,64);
+ label('PUNZÓN · R '+Math.max(0,Number(b.punchRadius)||0).toFixed(1)+' mm',w-320,104);
+ label('MATRIZ V'+dieV,w-320,142);
+ label('ESPESOR '+t.toFixed(2)+' mm',w-320,180);
+ const legend=[['#d68a35','Punzón'],['#347fa2','Matriz'],['#edf7fc','Chapa'],['#839aa8','Mesa']];
+ legend.forEach((it,i)=>{const xx=26+i*150;x.fillStyle=it[0];x.fillRect(xx,h-48,15,15);x.fillStyle='#29485b';x.font='bold 13px system-ui';x.fillText(it[1],xx+22,h-36)});
+ x.fillStyle='rgba(255,248,230,.96)';x.strokeStyle='#dfb95e';x.lineWidth=1;x.beginPath();x.roundRect(w-410,h-84,384,48,9);x.fill();x.stroke();x.fillStyle='#76500c';x.font='bold 13px system-ui';x.fillText('VISTA ESQUEMÁTICA · COLISIÓN CAD NO CERTIFICADA',w-393,h-55);
+ const st=$('pp56Status');if(st){st.className='pp56-status warn';st.textContent='Vista geométrica esquemática: comprueba manualmente holguras y recorrido. No se ha ejecutado un cálculo CAD de colisiones.'}
+ if(S())S().collisionReview={step:step,foldIndex:idx,travel:travel,parts:{...visible},camera:camera,collisionCertification:false};
+}
 function setStep(n){const o=seq(),a=bs();step=Math.max(0,Math.min(Math.max(0,o.length-1),n));const idx=o[step]??0,b=a[idx]||{};if($('pp56Step'))$('pp56Step').value=String(step);$('pp56StepNum').textContent=(step+1)+' / '+Math.max(1,o.length);$('pp56Fold').textContent='P'+(idx+1);$('pp56Angle').textContent=(Number(b.angle)||90)+'°';$('pp56Th').textContent=th().toFixed(2)+' mm';if(S()){S().bendOrder=o.slice();try{if(typeof sim!=='undefined'&&sim){sim.p3Active=idx;if($('p3Active'))$('p3Active').value=String(idx);if(typeof loadP3Fields==='function')loadP3Fields()}}catch(e){}}try{if(typeof drawAll==='function')drawAll()}catch(e){}drawCollision()}
 function refreshSteps(){const sel=$('pp56Step');if(!sel)return;const o=seq(),a=bs();sel.dataset.sequence=o.join(',');sel.innerHTML=o.map((idx,i)=>'<option value="'+i+'">Paso '+(i+1)+' · P'+(idx+1)+' · '+(Number(a[idx]?.angle)||90)+'°</option>').join('')||'<option value="0">Añade pliegues al programa</option>';setStep(step)}
 function stop(){playing=false;if(raf)cancelAnimationFrame(raf);raf=0;if($('pp56Play'))$('pp56Play').textContent='▶ Reproducir'}
