@@ -2453,4 +2453,10 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 <script src="./pp57-system-integration.js"></script>
 <script src="./pp59-engineering-upgrade.js"></script>
+
+<style id="pp60-responsive-final">
+/* Overrides after legacy theme layers: mobile navigation stays a drawer and no decorative icon can widen the page. */
+@media(max-width:900px){body .app{display:block!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:100%!important}body .side{position:fixed!important;inset:0 auto 0 0!important;width:min(310px,88vw)!important;height:100dvh!important;max-height:100dvh!important;transform:translateX(-105%)!important;overflow:auto!important;z-index:90!important}body .side.open,body.menu-open .side,#menuToggle:checked~.side{transform:translateX(0)!important}body .main{width:100%!important;min-width:0!important;max-width:100%!important;padding:10px!important}.nav button{min-width:0!important}}
+@media(max-width:560px){body .main{padding:7px!important;overflow-x:clip!important}.tableWrap,.tablewrap,.pp56-table{max-width:100%!important;overflow-x:auto!important}.pp56-hmi-layout,.pp56-canvas,.pp56-card,.pp59{min-width:0!important;max-width:100%!important}.pp56-canvas canvas,.pp59 canvas{display:block;width:100%!important;height:auto!important;min-height:0!important;max-width:100%!important}i.table,.pp56-rail-legend i.table{display:inline-block!important;width:14px!important;min-width:14px!important;max-width:14px!important;height:14px!important;flex:0 0 14px!important}.pp56-controls,.pp59 .controls{grid-template-columns:repeat(2,minmax(0,1fr))!important}.pp56-actions button,.pp59 .actions button{min-width:0!important;white-space:normal!important}}
+</style>
 </body></html>
