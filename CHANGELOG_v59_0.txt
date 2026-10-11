@@ -14,3 +14,5 @@ No se han importado catálogos automáticamente. El gemelo es visual y no es CAD
 - Corrige el enlace entre el índice de utillaje y el visor CAD/CAM existente.
 - Evita mostrar valores de reserva como cotas oficiales: las dimensiones ausentes aparecen como «No documentado».
 - Refuerza el arranque del módulo con reintentos si los paneles de la versión anterior tardan en montarse.
+- Persiste también la órbita personalizada (yaw/pitch), además de cámara, zoom, paso seleccionado y estado de animación.
+- La validación automática ahora comprueba anclajes de integración entre los módulos heredados y la persistencia de los controles del visor.
