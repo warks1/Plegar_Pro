@@ -40,6 +40,7 @@ jobs:
           const failures = [];
           if (!collision.includes('tipY=top+4+travel*55')) failures.push('collision section punch travel formula missing');
           if (!collision.includes('travel>0.85?')) failures.push('normalized near-contact threshold missing');
+          if (!collision.includes('insetSheetY=top+37+travel*22') || !collision.includes('(180-ang)*.27))*travel')) failures.push('progressive sheet bend in collision inset missing');
           const assetBlock = sw.match(/const ASSETS=\[(.*?)\]/s);
           if (!assetBlock) failures.push('service worker asset list missing');
           else {
