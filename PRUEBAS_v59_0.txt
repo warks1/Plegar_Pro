@@ -21,6 +21,7 @@ Estas pruebas son estáticas/automáticas. No sustituyen la comprobación visual
 [ ] Revisar visualmente que la chapa queda simétrica, baja hacia la matriz y que la punta del punzón se alinea con el vértice al completar la carrera.
 [ ] Girar la vista con ratón y pantalla táctil; probar rueda y control de zoom.
 [ ] Cambiar cámara, orbitar, zoom y paso; recargar y comprobar que las preferencias se conservan.
+[ ] Modificar la secuencia de pliegues y comprobar que el selector 3D se actualiza y usa el ángulo del paso seleccionado.
 [ ] Comprobar que pausar/reanudar conserva el fotograma, la chapa se pliega progresivamente y el retorno de la trancha no deshace el pliegue.
 [ ] Comprobar que guardar preferencias no crea ciclos de animación duplicados ni borra la órbita guardada.
 [ ] Buscar referencias en el catálogo de utillaje, filtrar fabricante, abrir el perfil correspondiente y exportar CSV/JSON.
