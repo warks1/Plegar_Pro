@@ -4,8 +4,8 @@
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#07141c",
-  "theme_color": "#07141c",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "lang": "es",
   "description": "Programación y simulación profesional de plegado de chapa"
 }
