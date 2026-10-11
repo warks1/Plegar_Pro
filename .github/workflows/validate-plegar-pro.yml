@@ -58,7 +58,7 @@ jobs:
           for (const id of ['pp58DbCard', 'pp58Office', 'pp58TwinCard']) {
             if (!system.includes(id)) failures.push('system module missing integration anchor ' + id);
           }
-          for (const token of ['function savePrefs()', 'prefs.camera=v', 'prefs.zoom=zoom', 'prefs.step=', 'prefs.yaw=yaw', 'prefs.pitch=pitch', 'pp59collisions', 'framePending=false', 'function scheduleTick()', 'pausedCycle=0', 'sheetAngle=180-(180-angle)*bendProgress', 'yy=-20-stroke*37', 'profile=[{x:-65-dx']) {
+          for (const token of ['function savePrefs()', 'prefs.camera=v', 'prefs.zoom=zoom', 'prefs.step=', 'prefs.yaw=yaw', 'prefs.pitch=pitch', 'syncStepOptions()', 'pp59collisions', 'framePending=false', 'function scheduleTick()', 'pausedCycle=0', 'sheetAngle=180-(180-angle)*bendProgress', 'yy=-20-stroke*37', 'profile=[{x:-65-dx']) {
             if (!v59.includes(token)) failures.push('v59 missing expected persistence hook: ' + token);
           }
           if (html.indexOf('./pp57-system-integration.js') > html.indexOf('./pp59-engineering-upgrade.js')) {
