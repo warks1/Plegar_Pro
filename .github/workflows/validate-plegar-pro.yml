@@ -169,7 +169,16 @@ jobs:
             if (travelFrames.flat === travelFrames.bent) throw new Error('Collision sheet image did not change with ram travel');
             await page.setViewportSize({ width: 390, height: 844 });
             await page.waitForTimeout(250);
-            const mobile = await page.evaluate(() => ({ width: innerWidth, scrollWidth: document.documentElement.scrollWidth }));
+            const mobile = await page.evaluate(() => {
+              const offenders = [...document.querySelectorAll('body *')].filter(el => {
+                const r = el.getBoundingClientRect(), s = getComputedStyle(el);
+                return s.display !== 'none' && r.width > 0 && (r.right > innerWidth + 2 || r.left < -2);
+              }).sort((a,b) => b.getBoundingClientRect().right - a.getBoundingClientRect().right).slice(0,15).map(el => {
+                const r = el.getBoundingClientRect();
+                return { tag: el.tagName, id: el.id, className: String(el.className).slice(0,90), left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width), text: (el.innerText || '').slice(0,50) };
+              });
+              return { width: innerWidth, scrollWidth: document.documentElement.scrollWidth, offenders };
+            });
             if (mobile.scrollWidth > mobile.width + 2) throw new Error('Mobile layout overflows horizontally: ' + JSON.stringify(mobile));
             if (errors.length) throw new Error('Browser runtime errors: ' + errors.join(' | '));
             console.log(JSON.stringify({ startupMs: splashMs, machineCanvas: 'visible', cameraPreference: savedCamera, machineOrder, collisionOrder, collisionSheetAnimates: true, mobile, runtimeErrors: errors.length }));
