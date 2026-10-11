@@ -934,7 +934,7 @@ function calcDevelopmentForV(v){
  let actualRadius=Math.max(d.punchRadius||0,(+v||d.referenceV||16)*.16);
  const programBends=Array.isArray(state.bends)?state.bends:[];
  const linkedToProgram=d.bends.length===programBends.length&&d.bends.every((b,i)=>Math.abs((+b.leg||0)-(+programBends[i]?.leg||0))<.0001&&Math.abs((+b.angle||0)-(+programBends[i]?.angle||0))<.0001&&Math.abs((+b.radius||0)-(+programBends[i]?.radius||0))<.0001);
- const terminalIndex=linkedToProgram?d.bends.length-1:-1;
+ const markedTerminal=d.bends.findIndex(b=>b.terminal===true);const terminalIndex=markedTerminal>=0?markedTerminal:(linkedToProgram?d.bends.length-1:-1);
  let rows=d.bends.map((b,i)=>{
    let angle=Math.max(1,Math.min(179,+b.angle||90));let theta=(180-angle)*Math.PI/180;
    let requested=+b.radius||actualRadius;let radius=Math.max(requested,actualRadius);
@@ -968,7 +968,7 @@ function renderDevelopment(){
  $('devReferenceV').innerHTML=STANDARD_VS.map(v=>`<option value="${v}" ${v==d.referenceV?'selected':''}>V${v}</option>`).join('');
  let r=calcDevelopment();
  $('devRows').innerHTML=d.bends.map((b,i)=>`<tr><td>${i+1}</td><td><input class="devBendInput" data-i="${i}" data-k="leg" type="text" inputmode="decimal" step="0.1" value="${b.leg}"></td><td><input class="devBendInput" data-i="${i}" data-k="angle" type="text" inputmode="decimal" min="1" max="179" value="${b.angle}"></td><td><input class="devBendInput" data-i="${i}" data-k="radius" type="text" inputmode="decimal" min="0" step="0.1" value="${b.radius}"></td><td>${r.rows[i].allowance.toFixed(3)}</td><td>${r.rows[i].deduction.toFixed(3)}</td><td><button class="btn danger devDelete" data-i="${i}">×</button></td></tr>`).join('');
- document.querySelectorAll('.devBendInput').forEach(el=>el.onchange=()=>commit('Modificado cálculo de desarrollo',()=>{state.development.bends[+el.dataset.i][el.dataset.k]=+el.value}));
+ document.querySelectorAll('.devBendInput').forEach(el=>el.onchange=()=>commit('Modificado cálculo de desarrollo',()=>{const row=state.development.bends[+el.dataset.i];row[el.dataset.k]=+el.value;if(el.dataset.k==='angle'||el.dataset.k==='radius')delete row.terminal}));
  document.querySelectorAll('.devDelete').forEach(el=>el.onclick=()=>commit('Eliminado pliegue de la calculadora',()=>state.development.bends.splice(+el.dataset.i,1)));
  $('sumLegs').textContent=r.sum.toFixed(2)+' mm';$('flatLength').textContent=r.flat.toFixed(3)+' mm';$('devBATotal').textContent=r.ba.toFixed(3)+' mm';$('devBDTotal').textContent=r.bd.toFixed(3)+' mm';$('devActualRadius').textContent='R'+r.actualRadius.toFixed(2);$('forceEstimate').textContent=r.force.toFixed(1)+' t';$('devMinFlange').textContent=r.minFlange.toFixed(1)+' mm';
  let short=d.bends.some(b=>(+b.leg||0)<r.minFlange);$('devStatus').textContent=short?'Revisar':'Calculado';$('devStatus').className=short?'error':'ok';
