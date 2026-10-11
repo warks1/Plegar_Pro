@@ -25,7 +25,7 @@ function drawCollision(){
  const c=$('pp56Collision');if(!c)return;const x=c.getContext('2d'),w=c.width,h=c.height;
  x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#fafdff');bg.addColorStop(.62,'#edf5fa');bg.addColorStop(1,'#dce8ef');x.fillStyle=bg;x.fillRect(0,0,w,h);
  x.save();x.strokeStyle='#d5e3eb';x.lineWidth=1;for(let i=0;i<w;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}for(let j=40;j<h;j+=40){x.beginPath();x.moveTo(0,j);x.lineTo(w,j);x.stroke()}x.restore();
- const base=500,travel=Number($('pp56Travel')?.value||0)/100,order=seq(),all=bs(),idx=order[Math.min(step,Math.max(0,order.length-1))]??0,b=all[idx]||{angle:90,leg:50,v:16},ang=Math.max(30,Math.min(150,Number(b.angle)||90)),t=th(),v=Math.max(6,Number(b.v||S()?.project?.selectedV||16)),py=base+230-travel*94;
+ const base=500,travel=Number($('pp56Travel')?.value||0)/100,order=seq(),all=bs(),idx=order[Math.min(step,Math.max(0,order.length-1))]??0,b=all[idx]||{angle:90,leg:50,v:16},ang=Math.max(30,Math.min(150,Number(b.angle)||90)),t=th(),v=Math.max(6,Number(b.v||S()?.project?.selectedV||16)),py=base+230-travel*146;
  const face=(pts,col,stroke)=>poly(x,w,h,pts,col,stroke||'#587486');
  const tag=(txt,px,py0,kind='normal')=>{x.save();x.font='700 14px system-ui';const tw=x.measureText(txt).width+22;x.fillStyle=kind==='warn'?'#fff4dc':'rgba(255,255,255,.96)';x.strokeStyle=kind==='warn'?'#e6c16e':'#c3d8e5';x.lineWidth=1;x.beginPath();x.roundRect(px,py0-20,tw,30,8);x.fill();x.stroke();x.fillStyle=kind==='warn'?'#76500c':'#173246';x.fillText(txt,px+11,py0);x.restore()};
  const dimension=(a,b,label)=>{const A=project(a,w,h),B=project(b,w,h);x.save();x.strokeStyle='#087ea4';x.fillStyle='#075c7b';x.lineWidth=2;x.beginPath();x.moveTo(A.x,A.y);x.lineTo(B.x,B.y);x.stroke();const dx=B.x-A.x,dy=B.y-A.y,len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len;[A,B].forEach(p=>{x.beginPath();x.moveTo(p.x-nx*6,p.y-ny*6);x.lineTo(p.x+nx*6,p.y+ny*6);x.stroke()});x.font='bold 15px system-ui';x.textAlign='center';x.fillStyle='#075c7b';x.fillText(label,(A.x+B.x)/2+nx*19,(A.y+B.y)/2+ny*19);x.restore()};
@@ -65,7 +65,7 @@ function drawCollision(){
  }
  if(visible.stops){[-1,1].forEach(s=>{face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base+18,z:-175},{x:s*255,y:base+18,z:-175}],'#4c687a');face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base-15,z:-120},{x:s*255,y:base-15,z:-120}],'#9db3bf')})}
  // Bent sheet profile and thickness rendered as a bright metal edge.
- const half=260,rise=Math.max(30,Math.min(155,(180-ang)*1.4)),sy=base+35;
+ const half=260,rise=Math.max(12,Math.min(100,(180-ang)*.62)),sy=base+35;
  const sheet=[{x:-half,y:sy,z:0},{x:-half*.46,y:sy,z:0},{x:-half*.15,y:sy-rise*.48,z:0},{x:0,y:sy-rise,z:0},{x:half*.15,y:sy-rise*.48,z:0},{x:half*.46,y:sy,z:0},{x:half,y:sy,z:0}];
  line(x,w,h,sheet,'#91aebe',Math.max(9,Math.min(17,t*2.2)));line(x,w,h,sheet,'#effaff',Math.max(5,Math.min(11,t*1.2)));line(x,w,h,sheet,'#4385a0',2);
  dimension({x:-half,y:sy-32,z:0},{x:half,y:sy-32,z:0},'Chapa · espesor '+t.toFixed(2)+' mm');
