@@ -36,6 +36,12 @@ jobs:
           const system = read('pp57-system-integration.js');
           const v59 = read('pp59-engineering-upgrade.js');
           const failures = [];
+          const inlineScripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)]
+            .filter(([, attrs]) => !/\bsrc\s*=/.test(attrs) && !/\btype=["'](?:application\/json|application\/ld\+json)/i.test(attrs));
+          inlineScripts.forEach(([, , source], i) => {
+            try { new Function(source); }
+            catch (error) { failures.push('inline script ' + i + ' syntax error: ' + error.message); }
+          });
           const ids = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map(m => m[1]);
           const counts = ids.reduce((out, id) => (out[id] = (out[id] || 0) + 1, out), {});
           const duplicateIds = Object.entries(counts).filter(([, count]) => count > 1).map(([id]) => id);
