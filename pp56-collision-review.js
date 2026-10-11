@@ -83,14 +83,14 @@ function drawCollision(){
  x.fillStyle='#607d8e';x.font='11px system-ui';x.fillText('Perfil de referencia · ángulo '+ang+'° · espesor '+t.toFixed(2)+' mm',bx+15,by+43);
  const cx=bx+bw/2, top=by+78, floor=by+183, halfV=Math.max(48,Math.min(92,v*1.25)), tipY=top+Math.max(0,100-travel)*.55;
  // Die block with machined V throat.
- x.fillStyle='#236b8d';x.strokeStyle='#164c68';x.lineWidth=2;x.beginPath();x.moveTo(cx-halfV-45,floor);x.lineTo(cx-halfV-45,top+34);x.lineTo(cx-halfV*.32,top+34);x.lineTo(cx,floor-24);x.lineTo(cx+halfV*.32,top+34);x.lineTo(cx+halfV+45,top+34);x.lineTo(cx+halfV+45,floor);x.closePath();x.fill();x.stroke();
+ x.fillStyle='#15516f';x.strokeStyle='#082f43';x.lineWidth=3;x.beginPath();x.moveTo(cx-halfV-45,floor);x.lineTo(cx-halfV-45,top+34);x.lineTo(cx-halfV*.32,top+34);x.lineTo(cx,floor-24);x.lineTo(cx+halfV*.32,top+34);x.lineTo(cx+halfV+45,top+34);x.lineTo(cx+halfV+45,floor);x.closePath();x.fill();x.stroke();
  x.strokeStyle='#bceeff';x.lineWidth=3;x.beginPath();x.moveTo(cx-halfV*.32,top+34);x.lineTo(cx,floor-24);x.lineTo(cx+halfV*.32,top+34);x.stroke();
  // Punch tip is drawn as a separate amber steel part; travel visibly changes its clearance.
  x.fillStyle='#d58a37';x.strokeStyle='#a96624';x.beginPath();x.moveTo(cx-70,top-4);x.lineTo(cx+70,top-4);x.lineTo(cx+42,tipY-8);x.lineTo(cx+10,tipY+2);x.lineTo(cx,tipY+4);x.lineTo(cx-10,tipY+2);x.lineTo(cx-42,tipY-8);x.closePath();x.fill();x.stroke();
  // Sheet is a bright metal profile, with a clear fold apex and two flanges.
- const insetSheetY=top+37, insetRise=Math.max(10,Math.min(45,(180-ang)*.27));
- x.strokeStyle='#8fa9b7';x.lineWidth=Math.max(5,Math.min(9,t*1.4));x.lineJoin='round';x.beginPath();x.moveTo(cx-145,sy+rise);x.lineTo(cx-50,sy+rise);x.lineTo(cx,insetSheetY);x.lineTo(cx+50,sy+rise);x.lineTo(cx+145,sy+rise);x.stroke();
- x.strokeStyle='#f8fdff';x.lineWidth=Math.max(2,Math.min(4,t*.65));x.beginPath();x.moveTo(cx-145,sy+rise-1);x.lineTo(cx-50,sy+rise-1);x.lineTo(cx,insetSheetY-1);x.lineTo(cx+50,sy+rise-1);x.lineTo(cx+145,sy+rise-1);x.stroke();
+ const insetSheetY=top+37, insetRise=Math.max(10,Math.min(45,(180-ang)*.27)), sheetBase=insetSheetY+insetRise;
+ x.strokeStyle='#5b7687';x.lineWidth=Math.max(6,Math.min(10,t*1.4));x.lineJoin='round';x.beginPath();x.moveTo(cx-145,sheetBase);x.lineTo(cx-50,sheetBase);x.lineTo(cx,insetSheetY);x.lineTo(cx+50,sheetBase);x.lineTo(cx+145,sheetBase);x.stroke();
+ x.strokeStyle='#f8fdff';x.lineWidth=Math.max(3,Math.min(5,t*.65));x.beginPath();x.moveTo(cx-145,sheetBase-1);x.lineTo(cx-50,sheetBase-1);x.lineTo(cx,insetSheetY-1);x.lineTo(cx+50,sheetBase-1);x.lineTo(cx+145,sheetBase-1);x.stroke();
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('PUNZÓN',bx+16,by+67);x.fillText('CHAPA',bx+16,by+119);x.fillText('MATRIZ V'+v,bx+16,by+bh-15);
  x.fillStyle=travel>85?'#b83e37':'#087ea4';x.font='900 11px system-ui';x.textAlign='right';x.fillText(travel>85?'CARRERA CERCANA AL CONTACTO':('CARRERA '+Math.round(travel*100)+'%'),bx+bw-14,by+bh-15);x.textAlign='left';
  x.restore();
