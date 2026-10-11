@@ -34,9 +34,11 @@ jobs:
           const html = read('index.html');
           const cad = read('pp55-cad-precision.js');
           const system = read('pp57-system-integration.js');
+          const collision = read('pp56-collision-review.js');
           const v59 = read('pp59-engineering-upgrade.js');
           const sw = read('sw.js');
           const failures = [];
+          if (!collision.includes('tipY=top+4+travel*55')) failures.push('collision section punch travel formula missing');
           const assetBlock = sw.match(/const ASSETS=\[(.*?)\]/s);
           if (!assetBlock) failures.push('service worker asset list missing');
           else {
