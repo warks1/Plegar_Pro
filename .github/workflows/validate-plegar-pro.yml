@@ -110,7 +110,7 @@ jobs:
             await page.waitForFunction(() => document.body.classList.contains('boot-complete'), null, { timeout: 15000 });
             const splashMs = Date.now() - started;
             if (splashMs < 4800) throw new Error('Loading screen closed too early: ' + splashMs + 'ms');
-            await page.waitForSelector('#pp59canvas', { timeout: 10000 });
+            await page.waitForSelector('#pp59canvas', { state: 'attached', timeout: 10000 });
             await page.locator('[data-page="program3d"]').click();
             await page.waitForFunction(() => {
               const canvas = document.querySelector('#pp59canvas');
