@@ -1,0 +1,25 @@
+name: Validate Plegar Pro
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [feature/plegar-pro-engineering-upgrade]
+jobs:
+  syntax-and-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        run: |
+          for file in pp54-engineering.js pp55-cad-precision.js pp56-collision-review.js pp57-system-integration.js pp59-engineering-upgrade.js sw.js; do
+            echo "Checking $file"
+            node --check "$file"
+          done
+      - name: Verify module and cache wiring
+        run: |
+          grep -Fq './pp59-engineering-upgrade.js' index.html
+          grep -Fq './pp59-engineering-upgrade.js' sw.js
+          grep -Fq "plegar-pro-v59-0" sw.js
