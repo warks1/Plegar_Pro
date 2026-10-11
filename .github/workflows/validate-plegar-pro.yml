@@ -132,14 +132,46 @@ jobs:
             await page.locator('#pp59cam').selectOption('front');
             const savedCamera = await page.evaluate(() => JSON.parse(localStorage.getItem('plegarPro.v59.prefs') || '{}').camera);
             if (savedCamera !== 'front') throw new Error('Camera preference was not saved');
+            await page.evaluate(() => {
+              state.bends = [
+                { leg: 50, angle: 90, radius: 2, v: 16, direction: 1 },
+                { leg: 80, angle: 45, radius: 2, v: 16, direction: -1 },
+                { leg: 120, angle: 135, radius: 2, v: 16, direction: 1 },
+                { leg: 80, angle: 90, radius: 2, v: 16, direction: 1 }
+              ];
+              state.bendOrder = [2, 0, 1];
+              window.PLEGAR_PRO_V59.refresh();
+            });
+            const machineOrder = await page.locator('#pp59step option').allTextContents();
+            if (!machineOrder[0]?.includes('P3') || !machineOrder[1]?.includes('P1') || !machineOrder[2]?.includes('P2')) {
+              throw new Error('3D playback selector ignored the assigned fold order: ' + machineOrder.join(' | '));
+            }
             await page.locator('#pp59collisions').click();
             await page.waitForFunction(() => document.querySelector('#collisions')?.classList.contains('active'), null, { timeout: 10000 });
             await page.waitForFunction(() => {
               const canvas = document.querySelector('#pp56Collision');
               return canvas && canvas.getBoundingClientRect().width > 0 && !!canvas.getContext('2d');
             }, null, { timeout: 10000 });
+            await page.waitForFunction(() => document.querySelectorAll('#pp56Step option').length >= 3, null, { timeout: 5000 });
+            const collisionOrder = await page.locator('#pp56Step option').allTextContents();
+            if (!collisionOrder[0]?.includes('P3') || !collisionOrder[1]?.includes('P1') || !collisionOrder[2]?.includes('P2')) {
+              throw new Error('Collision review ignored the assigned fold order: ' + collisionOrder.join(' | '));
+            }
+            const travelFrames = await page.evaluate(() => {
+              const slider = document.querySelector('#pp56Travel'), canvas = document.querySelector('#pp56Collision');
+              slider.value = '0'; slider.dispatchEvent(new Event('input', { bubbles: true }));
+              const flat = canvas.toDataURL();
+              slider.value = '100'; slider.dispatchEvent(new Event('input', { bubbles: true }));
+              const bent = canvas.toDataURL();
+              return { flat, bent };
+            });
+            if (travelFrames.flat === travelFrames.bent) throw new Error('Collision sheet image did not change with ram travel');
+            await page.setViewportSize({ width: 390, height: 844 });
+            await page.waitForTimeout(250);
+            const mobile = await page.evaluate(() => ({ width: innerWidth, scrollWidth: document.documentElement.scrollWidth }));
+            if (mobile.scrollWidth > mobile.width + 2) throw new Error('Mobile layout overflows horizontally: ' + JSON.stringify(mobile));
             if (errors.length) throw new Error('Browser runtime errors: ' + errors.join(' | '));
-            console.log(JSON.stringify({ startupMs: splashMs, machineCanvas: 'visible', cameraPreference: savedCamera, collisionCanvas: 'visible', runtimeErrors: errors.length }));
+            console.log(JSON.stringify({ startupMs: splashMs, machineCanvas: 'visible', cameraPreference: savedCamera, machineOrder, collisionOrder, collisionSheetAnimates: true, mobile, runtimeErrors: errors.length }));
             await browser.close();
           })().catch(error => { console.error(error); process.exit(1); });
           NODE
