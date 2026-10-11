@@ -81,3 +81,51 @@ jobs:
           }
           console.log('Integration anchors and preference persistence verified.');
           NODE
+  browser-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright
+        run: npm install --no-save playwright
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Start static server and test startup, 3D canvas, and collision navigation
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/plegar-pro-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          node <<'NODE'
+          const { chromium } = require('playwright');
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+            const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+            const errors = [];
+            page.on('pageerror', error => errors.push(error.message));
+            const started = Date.now();
+            await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+            await page.waitForFunction(() => document.body.classList.contains('boot-complete'), { timeout: 15000 });
+            const splashMs = Date.now() - started;
+            if (splashMs < 4800) throw new Error('Loading screen closed too early: ' + splashMs + 'ms');
+            await page.waitForSelector('#pp59canvas', { timeout: 10000 });
+            await page.locator('[data-page="program3d"]').click();
+            await page.waitForFunction(() => {
+              const canvas = document.querySelector('#pp59canvas');
+              return canvas && canvas.getBoundingClientRect().width > 0 && !!canvas.getContext('2d');
+            }, { timeout: 10000 });
+            await page.locator('#pp59cam').selectOption('front');
+            const savedCamera = await page.evaluate(() => JSON.parse(localStorage.getItem('plegarPro.v59.prefs') || '{}').camera);
+            if (savedCamera !== 'front') throw new Error('Camera preference was not saved');
+            await page.locator('#pp59collisions').click();
+            await page.waitForFunction(() => document.querySelector('#collisions')?.classList.contains('active'), { timeout: 10000 });
+            await page.waitForFunction(() => {
+              const canvas = document.querySelector('#pp56Collision');
+              return canvas && canvas.getBoundingClientRect().width > 0 && !!canvas.getContext('2d');
+            }, { timeout: 10000 });
+            if (errors.length) throw new Error('Browser runtime errors: ' + errors.join(' | '));
+            console.log(JSON.stringify({ startupMs: splashMs, machineCanvas: 'visible', cameraPreference: savedCamera, collisionCanvas: 'visible', runtimeErrors: errors.length }));
+            await browser.close();
+          })().catch(error => { console.error(error); process.exit(1); });
+          NODE
