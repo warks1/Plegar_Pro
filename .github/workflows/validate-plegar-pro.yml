@@ -117,6 +117,13 @@ jobs:
               const canvas = document.querySelector('#pp59canvas');
               return canvas && canvas.getBoundingClientRect().width > 0 && !!canvas.getContext('2d');
             }, null, { timeout: 10000 });
+            await page.locator('[data-page="tooling"]').click();
+            await page.waitForFunction(() => {
+              const canvas = document.querySelector('#pp55ToolCanvas');
+              return canvas && canvas.getBoundingClientRect().width > 0 && !!canvas.getContext('2d');
+            }, null, { timeout: 10000 });
+            await page.locator('#pp55ToolView').selectOption('iso');
+            await page.locator('[data-page="program3d"]').click();
             await page.locator('#pp59cam').selectOption('front');
             const savedCamera = await page.evaluate(() => JSON.parse(localStorage.getItem('plegarPro.v59.prefs') || '{}').camera);
             if (savedCamera !== 'front') throw new Error('Camera preference was not saved');
