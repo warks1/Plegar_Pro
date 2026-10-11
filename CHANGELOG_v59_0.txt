@@ -28,3 +28,4 @@ No se han importado catálogos automáticamente. El gemelo es visual y no es CAD
 - CI verifica que cada ruta incluida en la caché offline del service worker corresponde a un archivo existente en el repositorio.
 - Repara el detalle de sección del módulo de colisiones: el punzón ahora desciende en la misma dirección y con el mismo porcentaje de carrera que el visor principal, en lugar de quedar prácticamente inmóvil.
 - Corrige también el umbral de aviso de carrera cercana: compara la fracción normalizada de carrera (0–1), no con un porcentaje entero.
+- La sección ampliada de colisiones ahora anima también el perfil de la chapa según la carrera: parte plana, se dobla progresivamente y llega al punto de contacto visual.
