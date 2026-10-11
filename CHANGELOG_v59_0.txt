@@ -1,0 +1,53 @@
+PLEGAR PRO v59.0 · ENGINEERING UPGRADE
+Fecha de preparación: 2026-10-11
+
+- Se añade pp59-engineering-upgrade.js sin eliminar los módulos anteriores.
+- Se añade un gemelo digital 3D visual con trancha móvil, portautillaje, punzón, matriz V, chapa, cámaras, órbita, zoom y selección de paso.
+- Se añade auditoría de fuentes con fecha, resultado HTTP o error, enlace y estado de importación explícito.
+- Se añade recuento de referencias únicas y candidatos a duplicado en el catálogo local.
+- Se amplía oficina técnica con historial de revisiones y metadatos de trazabilidad.
+- Se actualiza index.html y la caché del service worker a v59.
+
+No se han importado catálogos automáticamente. El gemelo es visual y no es CAD certificado. Deben comprobarse en navegador el arranque, la animación, los controles, el almacenamiento y las exportaciones antes de integrar en main.
+- Se amplían los ajustes con cámara inicial, zoom, animación y densidad visual persistentes, sin alterar datos de pieza.
+- Se añade índice de utillaje buscable por fabricante/referencia, con cotas disponibles, procedencia y exportación CSV/JSON.
+- Corrige el enlace entre el índice de utillaje y el visor CAD/CAM existente.
+- Evita mostrar valores de reserva como cotas oficiales: las dimensiones ausentes aparecen como «No documentado».
+- Refuerza el arranque del módulo con reintentos si los paneles de la versión anterior tardan en montarse.
+- Persiste también la órbita personalizada (yaw/pitch), además de cámara, zoom, paso seleccionado y estado de animación.
+- La validación automática ahora comprueba anclajes de integración entre los módulos heredados y la persistencia de los controles del visor.
+- Evita ciclos de animación duplicados al guardar preferencias mientras la vista 3D está reproduciéndose; mantiene la órbita personalizada al cambiar otros ajustes.
+- La pausa conserva el fotograma actual; la chapa pasa de plana a plegada durante la carrera y permanece plegada durante el retorno de la trancha.
+- Refina el perfil de chapa de la vista: alas simétricas, espesor visual y descenso del vértice durante la carrera, alineado con la punta del punzón y el fondo de la matriz V (referencia visual, no análisis de interferencias).
+- Pantalla de carga: se elimina el texto de marca visible, se mantiene el emblema industrial y se fija la introducción a 5 segundos.
+- Service worker: solo guarda respuestas correctas del mismo origen y, sin conexión, reserva el fallback a `index.html` para navegación; no entrega HTML como si fuera un JavaScript/CSS ausente.
+- Añade un acceso directo desde la vista de máquina a la revisión de colisiones, sin alterar la pieza ni la secuencia activa.
+- CI también compila todos los scripts JavaScript incrustados en `index.html`, además de los archivos externos, para detectar errores de sintaxis que podrían dejar la aplicación en blanco.
+- El selector de pasos del gemelo se resincroniza con los pliegues activos cuando cambia el programa; al elegir un paso, toma su ángulo real en vez de reutilizar siempre 90°.
+- El selector de pasos del gemelo se resincroniza con los pliegues activos cuando cambia el programa; al elegir un paso, toma su ángulo real en vez de reutilizar siempre 90°.
+- CI verifica que cada ruta incluida en la caché offline del service worker corresponde a un archivo existente en el repositorio.
+- Repara el detalle de sección del módulo de colisiones: el punzón ahora desciende en la misma dirección y con el mismo porcentaje de carrera que el visor principal, en lugar de quedar prácticamente inmóvil.
+- Corrige también el umbral de aviso de carrera cercana: compara la fracción normalizada de carrera (0–1), no con un porcentaje entero.
+- La sección ampliada de colisiones ahora anima también el perfil de la chapa según la carrera: parte plana, se dobla progresivamente y llega al punto de contacto visual.
+- Sincroniza la deformación de la chapa en la vista principal y en el detalle de sección con la carrera normalizada del punzón.
+- Corrige un error de ejecución detectado en Chromium: faltaba el dibujador axonométrico de caras del visor CAD/CAM de utillaje (`iso`), que provocaba `iso is not defined` al renderizar perfiles.
+- Prueba automatizada de navegador con Chromium superada: arranque ~5,1 s, canvas del gemelo visible, preferencia de cámara persistida, navegación a colisiones, visor axonométrico de utillaje y cero errores de ejecución en el recorrido probado.
+- Error de ejecución del visor CAD corregido: el renderizador de perfiles usa ahora un único nombre de función (`poly`) tanto en su declaración como en las tres llamadas del punzón/matriz. Se añade una comprobación automática para evitar regresiones.
+
+
+PLEGAR PRO · ACTUALIZACIÓN DE SECUENCIA Y ADAPTACIÓN (12-10-2026)
+- El visor 3D de máquina usa el orden de ejecución configurado para seleccionar el pliegue activo y avanzar durante la reproducción.
+- La chapa del gemelo 3D se construye con los tramos de la pieza y los pliegues ya ejecutados; el pliegue activo se deforma progresivamente durante la carrera.
+- La revisión de colisiones muestra la chapa de la pieza por tramos y la deforma en el orden asignado, coordinada con la carrera de la trancha.
+- Se ajustan menú, paneles, controles y canvas para pantallas de escritorio, tableta y móvil, con rejilla adaptable y controles táctiles.
+- La validación de CI comprueba regresiones del orden, deformación de chapa y reglas responsive.
+- La geometría sigue siendo una representación visual orientativa; no equivale a cálculo físico certificado ni a detección industrial de colisiones.
+
+
+PLEGAR PRO v60.0 · ORDEN DE PLEGADO Y RESPONSIVE
+- Se corrige la lectura del orden asignado directamente desde el estado del proyecto en simulación 2D, simulación 3D, gemelo de máquina y revisión de colisiones.
+- Los indicadores de simulación identifican el número real del pliegue ejecutado, no solo el índice geométrico.
+- Se añade la deformación progresiva de la chapa en la revisión de colisiones y en el gemelo de máquina.
+- Se incorporan pruebas automáticas de secuencia asignada, movimiento de chapa y desbordamiento móvil.
+- Se cambia la caché del service worker a v60 para evitar que la web mantenga módulos anteriores.
+- La representación sigue siendo geométrica orientativa y no un cálculo industrial certificado de colisiones.

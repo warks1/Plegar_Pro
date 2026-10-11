@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v57.2 · Control 3D industrial</title>
+<title>Plegar Pro v60.0 · Ordered Simulation</title>
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -186,8 +186,13 @@ tr:hover td{background:#10283a}
 @keyframes ppShine{0%{stroke-dashoffset:300;opacity:.2}50%{opacity:1}100%{stroke-dashoffset:0;opacity:.3}}
 @keyframes ppBarGlow{to{background-position:200% 0}}
 @media(prefers-reduced-motion:reduce){.pp-emblem,.pp-orbit,.pp-letter-back,.pp-letter-front,.pp-shine,.pp-loading .loadBar i{animation:none!important}}
+
+/* Responsive layout: preserve the same modules on desktop, tablet and mobile. */
+@media(max-width:900px){.app{grid-template-columns:minmax(0,1fr)}.side{position:relative;top:auto;height:auto;max-height:none;overflow:visible;padding:10px;border-right:0;border-bottom:1px solid var(--line)}.nav{display:flex;flex-wrap:wrap;gap:3px}.nav h4{width:100%;margin:9px 4px 3px}.nav button{width:auto;flex:1 1 145px;margin:0;padding:8px}.main{padding:10px;min-width:0}.topbar{align-items:flex-start;flex-wrap:wrap}.heading h1{font-size:clamp(18px,3vw,22px)}.syncBadge{font-size:11px}.c3,.c4,.c5,.c6,.c7,.c8,.c9{grid-column:span 6}.pp56-hmi-layout{grid-template-columns:minmax(0,1fr)!important}.pp56-hmi-rail{min-width:0}.pp56-canvas{min-width:0}.pp56-canvas canvas,.pp59 canvas{max-width:100%;height:auto}}
+@media(max-width:560px){.main{padding:7px}.grid{gap:8px}.card{padding:10px;border-radius:11px}.c3,.c4,.c5,.c6,.c7,.c8,.c9{grid-column:span 12}.fields{grid-template-columns:minmax(0,1fr)}.topbar{gap:7px}.topLeft{flex-wrap:wrap}.nav button{flex:1 1 125px;font-size:12px}.pp56-controls,.pp59 .controls{grid-template-columns:repeat(2,minmax(0,1fr))}.pp56-grid,.pp59 .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.pp56-hmi-rail{grid-template-columns:repeat(2,minmax(0,1fr))}.pp56-hmi-note{grid-column:1/-1}.pp56-canvas canvas{width:100%;height:auto}.pp56-actions,.pp59 .actions{gap:6px}.pp56-actions button,.pp59 .actions button{flex:1 1 130px;white-space:normal}.pp59 canvas{width:100%;height:auto}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v57.1 · Revisión geométrica">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v59.0 · Engineering Upgrade">
 <style id="pp515-visual-upgrade">
 :root{--bg:#071017;--panel:#0d1821;--panel2:#111f2a;--line:#253946;--text:#edf7fb;--muted:#91a9b7;--accent:#31c8ff;--accent2:#7ce3b2;--danger:#ff6b6b;--radius:12px;--shadow:0 14px 36px rgba(0,0,0,.28)}
 body{background:radial-gradient(circle at 70% -10%,rgba(49,200,255,.09),transparent 32%),linear-gradient(180deg,#071017,#09131b 55%,#061016);letter-spacing:.01em}
@@ -376,8 +381,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #23a9d426!important;bo
         <path class="pp-shine" d="M42 49 H99 Q124 49 130 67 M82 87 H137 Q162 87 168 105" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".85"/>
       </svg>
     </div>
-    <div class="logoText">PLEGAR <i>PRO</i></div>
-    <div class="pp-subtitle">INGENIERÍA · PROGRAMACIÓN · PLEGADO</div>
+    <div class="pp-subtitle">SISTEMA INDUSTRIAL · CONTROL · SIMULACIÓN</div>
     <div class="loadBar"><i id="loadFill"></i></div>
     <div id="loadState">Inicializando núcleo...</div>
     <div class="pp-loading-foot">PRECISIÓN EN CADA PLEGADO <span>© AMS · TODOS LOS DERECHOS RESERVADOS</span></div>
@@ -388,7 +392,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #23a9d426!important;bo
 <input type="checkbox" id="menuToggle" class="menuToggle" aria-hidden="true">
 <aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v57.2 · INDUSTRIAL EDITION</div>
+  <div class="version">v59.0 · ENGINEERING EDITION</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -732,7 +736,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #23a9d426!important;bo
 <div class="card c8"><h2>Comparación multiplegado por V</h2><div class="fields"><div><label>V candidatas</label><input id="pp527Vs" value="6,8,10,12,16,22,24,32,36,40,50"></div><div><label>Prioridad</label><select id="pp527Priority"><option value="balanced">Equilibrada</option><option value="precision">Precisión</option><option value="force">Menor fuerza</option><option value="radius">Menor radio</option><option value="marks">Menor marcado</option></select></div><div><label>Tolerancia acumulada (mm)</label><input id="pp527Tolerance" type="number" step="0.01" value="0.50"></div><div><label>Fuerza máxima (t)</label><input id="pp527MaxForce" type="number" step="0.1" value="999"></div></div><div class="tableWrap"><table class="table"><thead><tr><th>V</th><th>Desarrollo total</th><th>Δ acumulada</th><th>Radio</th><th>Fuerza</th><th>Ala mín.</th><th>Riesgo</th><th>Puntuación</th><th>Resultado</th></tr></thead><tbody id="pp527Rows"></tbody></table></div><div id="pp527Recommendation" class="note">Pulsa “Analizar V multiplegado”.</div></div>
 <div class="card c12"><h2>Historial de versiones</h2><div class="fields"><div><label>Versión A</label><select id="pp527A"></select></div><div><label>Versión B</label><select id="pp527B"></select></div><div class="actions"><button class="btn secondary" id="pp527Compare">Comparar seleccionadas</button></div></div><div id="pp527Diff" class="note">Guarda al menos dos versiones para comparar.</div><div class="tableWrap"><table class="table"><thead><tr><th>Fecha</th><th>Nombre</th><th>Material</th><th>Espesor</th><th>V ref.</th><th>Pliegues</th><th>Desarrollo</th><th>Acciones</th></tr></thead><tbody id="pp527History"></tbody></table></div></div>
 </div></section>
-<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v53.0</b><br>Código: PP-530-IA-IMPORTACION-PLIEGUES-GEMELO-MATERIALES<br>Base acumulativa limpia y profesional.<br>Base acumulativa modificada desde el proyecto real.<br><br>Incluye Programar con accesos 2D/3D, simulación, dimensiones sincronizadas, centrado de vistas y Curva Perfecta.</div></div></div></section>
+<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v59.0</b><br>Código: PP-590-ENGINEERING-UPGRADE<br>Mejora acumulativa sobre la base existente.<br>Incluye gemelo digital visual, auditoría de fuentes y trazabilidad de oficina técnica.<br><br>Las dimensiones sin plano verificable y la simulación visual no certifican un programa CNC ni la ausencia de colisiones.</div></div></div></section>
 
 <footer class="legalFooter" id="legalFooter"></footer></main></div>
 <div id="toast" class="hidden"></div>
@@ -1293,10 +1297,11 @@ function renderQuality(){
 function renderHistory(){
  if(!$('historyList'))return;let h=state.history||[];$('historyList').innerHTML=h.length?h.map((x,i)=>`<div class="listItem"><span><b>${x.text}</b><small class="muted">${x.time}</small></span><span class="status">${i+1}</span></div>`).join(''):'<div class="muted">Sin cambios registrados.</div>';
 }
+function ppExecutionRank(i){try{const a=typeof state!=='undefined'&&Array.isArray(state.bendOrder)?state.bendOrder:[],r=a.indexOf(i);if(r>=0)return r;const f=window.PLEGAR_PRO_V54?.orderIndex?.(i);return Number.isFinite(f)?f:i}catch(e){return i}}
 function drawTechnical2D(canvas,step=state.bends.length,editable=false){
  let ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height,margin=+(state.settings.fitMargin||150);ctx.clearRect(0,0,w,h);ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--bg');ctx.fillRect(0,0,w,h);
  if(state.settings.showGrid!=='no'){ctx.strokeStyle='rgba(120,170,190,.12)';ctx.lineWidth=1;for(let x=40;x<w;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}for(let y=40;y<h;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}}
- let raw=[{x:0,y:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y-len*Math.sin(heading)});if(i<state.bends.length-1&&(canvas.id!=='canvasS2'||((window.PLEGAR_PRO_V54?.orderIndex?.(i)??i)<step)))heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});let xs=raw.map(p=>p.x),ys=raw.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),bw=Math.max(1,maxX-minX),bh=Math.max(1,maxY-minY),scale=Math.min((w-margin*2)/bw,(h-margin*1.25)/bh,4.2);if(!isFinite(scale)||scale<=0)scale=1;let target=canvas.id==='canvasS2'?'S2':canvas.id==='canvasProgram'?'Program':'P2',z=sim['zoom'+target]||1,rot=sim['rot'+target]||0,px=sim['pan'+target+'X']||0,py=sim['pan'+target+'Y']||0;scale*=z;let ox=w/2-(minX+maxX)/2*scale+px,oy=h/2-(minY+maxY)/2*scale+py,cx=w/2+px,cy=h/2+py,cr=Math.cos(rot),sr=Math.sin(rot),pts=raw.map(p=>{let x=p.x*scale+ox,y=p.y*scale+oy,dx=x-cx,dy=y-cy;return{x:cx+dx*cr-dy*sr,y:cy+dx*sr+dy*cr}});
+ let raw=[{x:0,y:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y-len*Math.sin(heading)});if(i<state.bends.length-1&&(canvas.id!=='canvasS2'||(ppExecutionRank(i)<step)))heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});let xs=raw.map(p=>p.x),ys=raw.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),bw=Math.max(1,maxX-minX),bh=Math.max(1,maxY-minY),scale=Math.min((w-margin*2)/bw,(h-margin*1.25)/bh,4.2);if(!isFinite(scale)||scale<=0)scale=1;let target=canvas.id==='canvasS2'?'S2':canvas.id==='canvasProgram'?'Program':'P2',z=sim['zoom'+target]||1,rot=sim['rot'+target]||0,px=sim['pan'+target+'X']||0,py=sim['pan'+target+'Y']||0;scale*=z;let ox=w/2-(minX+maxX)/2*scale+px,oy=h/2-(minY+maxY)/2*scale+py,cx=w/2+px,cy=h/2+py,cr=Math.cos(rot),sr=Math.sin(rot),pts=raw.map(p=>{let x=p.x*scale+ox,y=p.y*scale+oy,dx=x-cx,dy=y-cy;return{x:cx+dx*cr-dy*sr,y:cy+dx*sr+dy*cr}});
  ctx.lineJoin='round';ctx.lineCap='round';ctx.strokeStyle='#102731';ctx.lineWidth=Math.max(13,state.project.thickness*5);ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.strokeStyle=state.settings.sheetColor||'#4fb3ff';ctx.lineWidth=Math.max(7,state.project.thickness*3);ctx.stroke();ctx.strokeStyle='#e8f7ff';ctx.lineWidth=2;ctx.stroke();let fs=Math.round(15*(state.settings.dimensionScale||1.2)),dec=+(state.settings.decimals??2);
  if(state.settings.showDims!=='none'){ctx.font=`700 ${fs}px system-ui`;pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1],dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L,mx=(p.x+q.x)/2+nx*30,my=(p.y+q.y)/2+ny*30,txt=`${(+state.bends[i].leg).toFixed(dec)} mm`,tw=ctx.measureText(txt).width;ctx.fillStyle=document.body.classList.contains('light')?'rgba(255,255,255,.96)':'rgba(5,16,22,.88)';ctx.fillRect(mx-tw/2-7,my-fs+2,tw+14,fs+8);ctx.strokeStyle=document.body.classList.contains('light')?'#b9cbd7':'#284a5b';if(document.body.classList.contains('light'))ctx.strokeRect(mx-tw/2-7,my-fs+2,tw+14,fs+8);ctx.fillStyle=document.body.classList.contains('light')?'#172b3b':'#f3fbff';ctx.fillText(txt,mx-tw/2,my);if(i<state.bends.length-1&&(state.settings.showDims==='all'||i===step-1)){ctx.fillStyle=i===step-1?'#d97706':(document.body.classList.contains('light')?'#38576a':'#dcecf4');ctx.fillText(`${(+state.bends[i].angle).toFixed(dec)}°  R${(+state.bends[i].radius).toFixed(dec)}`,q.x+11,q.y-11)}})}pts.forEach((p,i)=>{ctx.fillStyle=i===Math.min(step,state.bends.length)?'#d97706':(document.body.classList.contains('light')?'#007da5':'#d9f6ff');ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill()});return pts;
 }
@@ -1327,7 +1332,7 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    ctx.restore();
  }
  if(state.settings.showAxes!=='no'){let o=project({x:-430,y:-230,z:-130}),ax=[['X',{x:-340,y:-230,z:-130},'#ffb55c'],['Y',{x:-430,y:-140,z:-130},'#7ee4b1'],['Z',{x:-430,y:-230,z:-40},'#72c7ff']];ctx.font='12px system-ui';ax.forEach(([t,p,c])=>{let q=project(p);ctx.strokeStyle=c;ctx.beginPath();ctx.moveTo(o.x,o.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.fillStyle=c;ctx.fillText(t,q.x+4,q.y)})}
- let raw=[{x:0,y:0,z:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y+len*Math.sin(heading),z:0});if(i<state.bends.length-1&&(!simulation||((window.PLEGAR_PRO_V54?.orderIndex?.(i)??i)<step)))heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});
+ let raw=[{x:0,y:0,z:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y+len*Math.sin(heading),z:0});if(i<state.bends.length-1&&(!simulation||(ppExecutionRank(i)<step)))heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});
  let cx=raw.reduce((a,p)=>a+p.x,0)/raw.length,cy=raw.reduce((a,p)=>a+p.y,0)/raw.length,placed=raw.map(p=>({x:(p.x-cx)*1.45,y:(p.y-cy)*1.45-20,z:0})),pts=placed.map(project),thick=Math.max(10,state.project.thickness*4*(state.settings.visualThickness||1.6));
  ctx.lineJoin='round';ctx.lineCap='round';ctx.shadowBlur=20;ctx.shadowColor='#000';ctx.strokeStyle='#07161d';ctx.lineWidth=thick+10;ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle=state.settings.sheetColor||'#4fb3ff';ctx.lineWidth=thick;ctx.stroke();ctx.strokeStyle='#e6f8ff';ctx.lineWidth=2;ctx.stroke();
  let fs=Math.round(14*(state.settings.dimensionScale||1.2)),dec=+(state.settings.decimals??2),showDims=state.settings.showDims!=='none'&&(!simulation||!$('s3Dims')||$('s3Dims').checked);if(showDims){ctx.font=`700 ${fs}px system-ui`;pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1],txt=`${(+state.bends[i].leg).toFixed(dec)} mm`,x=(p.x+q.x)/2,y=(p.y+q.y)/2-22,tw=ctx.measureText(txt).width;ctx.fillStyle=document.body.classList.contains('light')?'rgba(255,255,255,.96)':'#06141bdd';ctx.fillRect(x-tw/2-6,y-fs+2,tw+12,fs+7);ctx.strokeStyle=document.body.classList.contains('light')?'#b9cbd7':'#06141d';if(document.body.classList.contains('light'))ctx.strokeRect(x-tw/2-6,y-fs+2,tw+12,fs+7);ctx.fillStyle=document.body.classList.contains('light')?'#172b3b':'#f3fbff';ctx.fillText(txt,x-tw/2,y);if(i<step&&i<state.bends.length-1){ctx.fillStyle='#ffbc4d';ctx.fillText(`${(+state.bends[i].angle).toFixed(dec)}° R${(+state.bends[i].radius).toFixed(dec)}`,q.x+8,q.y-8)}})}
@@ -1347,8 +1352,8 @@ function drawAll(){
  drawTechnical2D($('canvasP2'));if($('canvasProgram'))drawTechnical2D($('canvasProgram'));draw3D($('canvasP3'));drawTechnical2D($('canvasS2'),sim.s2Step);draw3D($('canvasS3'),sim.s3Step,true);drawCurve();
  $('overlayP2').innerHTML=`PROGRAMACIÓN 2D<br>${state.project.material} ${state.project.thickness} mm<br>Cotas, radios y ángulos sincronizados`;
  if($('overlayProgram'))$('overlayProgram').innerHTML=`VISTA EN TIEMPO REAL<br>${state.project.material} · ${(+state.project.thickness).toFixed(2)} mm<br>${state.bends.length} pliegues · Desarrollo ${calcProgramDevelopment().flat.toFixed(2)} mm`;let b=state.bends[sim.p3Active];$('overlayP3').innerHTML=b?`PLIEGUE ${sim.p3Active+1}<br>${b.leg} mm · ${b.angle}° · R${b.radius}<br>V${b.v} · X ${b.gauge} mm`:'Sin pliegues';
- let s2=state.bends[Math.max(0,sim.s2Step-1)];$('overlayS2').innerHTML=s2?`PASO ${sim.s2Step}/${state.bends.length}<br>${s2.angle}° · R${s2.radius} · ${s2.leg} mm`:'Pieza plana · desarrollo '+calcProgramDevelopment().flat.toFixed(2)+' mm';
- let s3=state.bends[Math.max(0,sim.s3Step-1)];$('overlayS3').innerHTML=s3?`PLIEGUE ${sim.s3Step}/${state.bends.length}<br>${s3.angle}° · R${s3.radius}<br>V${s3.v} · ${s3.punch}`:'Máquina preparada';
+ let s2Index=sim.s2Step>0?state.bends.findIndex((_,i)=>i<state.bends.length-1&&ppExecutionRank(i)===sim.s2Step-1):-1,s2=s2Index>=0?state.bends[s2Index]:null;$('overlayS2').innerHTML=s2?`PASO ${sim.s2Step}/${state.bends.length} · P${s2Index+1}<br>${s2.angle}° · R${s2.radius} · ${s2.leg} mm`:'Pieza plana · desarrollo '+calcProgramDevelopment().flat.toFixed(2)+' mm';
+ let s3Index=sim.s3Step>0?state.bends.findIndex((_,i)=>i<state.bends.length-1&&ppExecutionRank(i)===sim.s3Step-1):-1,s3=s3Index>=0?state.bends[s3Index]:null;$('overlayS3').innerHTML=s3?`PASO ${sim.s3Step}/${state.bends.length} · P${s3Index+1}<br>${s3.angle}° · R${s3.radius}<br>V${s3.v} · ${s3.punch}`:'Máquina preparada';
 }
 function refreshPage(page){
  if(page==='program')renderProgram();if(page==='program2d')render2DEditor();if(page==='program3d')populateP3();
@@ -1727,7 +1732,7 @@ function audit(){
  let ids=[...document.querySelectorAll('[id]')].map(x=>x.id),dup=ids.filter((x,i)=>ids.indexOf(x)!==i);if(dup.length)issues.push('IDs duplicados: '+dup.join(','));
  return issues;
 }
-const PP_SPLASH_DURATION=4000;
+const PP_SPLASH_DURATION=5000;
 let ppSplashStart=performance.now();
 let ppBootReady=false;
 let ppSplashFinished=false;
@@ -2447,4 +2452,11 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </script>
 
 <script src="./pp57-system-integration.js"></script>
+<script src="./pp59-engineering-upgrade.js"></script>
+
+<style id="pp60-responsive-final">
+/* Overrides after legacy theme layers: mobile navigation stays a drawer and no decorative icon can widen the page. */
+@media(max-width:900px){body .app{display:block!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:100%!important}body .side{position:fixed!important;inset:0 auto 0 0!important;width:min(310px,88vw)!important;height:100dvh!important;max-height:100dvh!important;transform:translateX(-105%)!important;overflow:auto!important;z-index:90!important}body .side.open,body.menu-open .side,#menuToggle:checked~.side{transform:translateX(0)!important}body .main{width:100%!important;min-width:0!important;max-width:100%!important;padding:10px!important}.nav button{min-width:0!important}}
+@media(max-width:560px){body .main{padding:7px!important;overflow-x:clip!important}.tableWrap,.tablewrap,.pp56-table{max-width:100%!important;overflow-x:auto!important}.pp56-hmi-layout,.pp56-canvas,.pp56-card,.pp59{min-width:0!important;max-width:100%!important}.pp56-canvas canvas,.pp59 canvas{display:block;width:100%!important;height:auto!important;min-height:0!important;max-width:100%!important}i.table,.pp56-rail-legend i.table{display:inline-block!important;width:14px!important;min-width:14px!important;max-width:14px!important;height:14px!important;flex:0 0 14px!important}.pp56-controls,.pp59 .controls{grid-template-columns:repeat(2,minmax(0,1fr))!important}.pp56-actions button,.pp59 .actions button{min-width:0!important;white-space:normal!important}}
+</style>
 </body></html>
