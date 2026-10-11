@@ -34,6 +34,11 @@ jobs:
           const system = read('pp57-system-integration.js');
           const v59 = read('pp59-engineering-upgrade.js');
           const failures = [];
+          const ids = [...html.matchAll(/\\bid=["']([^"']+)["']/g)].map(m => m[1]);
+          const counts = ids.reduce((out, id) => (out[id] = (out[id] || 0) + 1, out), {});
+          const duplicateIds = Object.entries(counts).filter(([, count]) => count > 1).map(([id]) => id);
+          if (duplicateIds.length) failures.push('duplicate static HTML ids: ' + duplicateIds.join(', '));
+          if ((html.match(/\\.\\/pp59-engineering-upgrade\\.js/g) || []).length !== 1) failures.push('v59 script must be wired exactly once in index.html');
           if (html.includes('<div class="logoText">PLEGAR <i>PRO</i></div>')) failures.push('loader must use the industrial emblem without visible wordmark');
           if (!html.includes('PP_SPLASH_DURATION=5000')) failures.push('loader duration must remain 5 seconds');
           for (const id of ['program3d', 'tooling']) {
