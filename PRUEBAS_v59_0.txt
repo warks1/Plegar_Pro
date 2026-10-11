@@ -21,6 +21,7 @@ Estas pruebas son estáticas/automáticas. No sustituyen la comprobación visual
 [ ] Abrir la revisión de colisiones desde el botón del visor y comprobar que mantiene la pieza activa.
 [ ] Revisar visualmente que la chapa queda simétrica, baja hacia la matriz y que la punta del punzón se alinea con el vértice al completar la carrera.
 [ ] En Revisión de colisiones, confirmar que el punzón del detalle de sección desciende al aumentar la carrera y queda coordinado con la vista principal.
+[ ] Verificar que el aviso «carrera cercana al contacto» aparece únicamente al superar el 85 % de carrera.
 [ ] Girar la vista con ratón y pantalla táctil; probar rueda y control de zoom.
 [ ] Cambiar cámara, orbitar, zoom y paso; recargar y comprobar que las preferencias se conservan.
 [ ] Modificar la secuencia de pliegues y comprobar que el selector 3D se actualiza y usa el ángulo del paso seleccionado.
