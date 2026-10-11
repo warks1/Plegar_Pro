@@ -72,7 +72,7 @@ jobs:
           for (const id of ['pp58DbCard', 'pp58Office', 'pp58TwinCard']) {
             if (!system.includes(id)) failures.push('system module missing integration anchor ' + id);
           }
-          for (const token of ['function savePrefs()', 'prefs.camera=v', 'prefs.zoom=zoom', 'prefs.step=', 'prefs.yaw=yaw', 'prefs.pitch=pitch', 'syncStepOptions()', 'pp59collisions', 'framePending=false', 'function scheduleTick()', 'pausedCycle=0', 'function executionOrder()', 'const order=executionOrder()', 'heading-=(Number(q.direction)||1)', 'PASO ']) {
+          for (const token of ['function savePrefs()', 'prefs.camera=v', 'prefs.zoom=zoom', 'prefs.step=', 'prefs.yaw=yaw', 'prefs.pitch=pitch', 'syncStepOptions()', 'pp59collisions', 'framePending=false', 'function scheduleTick()', 'pausedCycle=0', 'function executionOrder()', 'order=executionOrder()', 'heading-=(Number(q.direction)||1)', 'PASO ']) {
             if (!v59.includes(token)) failures.push('v59 missing expected persistence hook: ' + token);
           }
           if (!v59.includes('function executionOrder()') || !v59.includes('heading-=(Number(q.direction)||1)')) failures.push('v59 playback must consume the assigned execution order and fold toward the die');
