@@ -14,6 +14,15 @@ PRUEBAS AUTOMÁTICAS EJECUTADAS EN GITHUB ACTIONS
 
 Estas pruebas son estáticas/automáticas. No sustituyen la comprobación visual e interactiva en navegador indicada abajo.
 
+Prueba automatizada en Chromium (GitHub Actions, ejecución 38177529859): PASADA.
+- Pantalla de carga: 5099 ms.
+- Canvas de máquina visible al abrir Programación 3D.
+- Preferencia de cámara frontal guardada en localStorage.
+- Canvas de colisiones visible al abrir la revisión desde el visor.
+- Errores de ejecución JavaScript capturados: 0.
+- El smoke test también abre la vista axonométrica del utillaje para cubrir el dibujador corregido.
+
+
 [ ] Abrir la aplicación en GitHub Pages y confirmar que no aparece pantalla blanca.
 [ ] Confirmar que la carga muestra solo el emblema industrial, sin el nombre escrito, y dura 5 segundos.
 [ ] Confirmar que pp59-engineering-upgrade.js carga sin error de consola.
