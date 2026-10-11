@@ -6,6 +6,7 @@ PRUEBAS PLEGAR PRO v59.0 · LISTA PENDIENTE DE VALIDACIÓN EN NAVEGADOR
 [ ] Girar la vista con ratón y pantalla táctil; probar rueda y control de zoom.
 [ ] Cambiar cámara y paso de plegado; comprobar que la trancha se anima al pausar/reanudar.
 [ ] Buscar referencias en el catálogo de utillaje, filtrar fabricante, abrir el perfil correspondiente y exportar CSV/JSON.
+[ ] Confirmar que las dimensiones ausentes se muestran como «No documentado» y que no se generan enlaces inválidos desde notas de procedencia.
 [ ] Ejecutar la auditoría: cada fuente debe guardar respuesta o error, fecha, bytes cuando se descargue y estado imported=false.
 [ ] Verificar recuento de útiles y candidatos a duplicados.
 [ ] Añadir una revisión de plano, recargar y comprobar persistencia local.
