@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v57.2 · Control 3D industrial</title>
+<title>Plegar Pro v58.1 · Control 3D industrial</title>
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -338,7 +338,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #23a9d426!important;bo
 <body>
 <div id="loader">
   <div class="loadBox">
-    <div class="logoMark"><span style="font-size:15px;line-height:1.05;text-align:center">PLEGAR<br>PRO</span></div>
+    <div class="logoMark pp-double-mark" aria-label="Logotipo Plegar Pro: dos letras P"><svg class="pp-double-symbol" viewBox="0 0 100 100" role="img" aria-hidden="true"><path class="pp-letter pp-letter-back" d="M25 78V18H49C68 18 68 45 49 45H25" /><path class="pp-letter pp-letter-front" d="M51 83V38H67C85 38 85 63 67 63H51" /></svg></div>
     <div class="logoText">PLEGAR <i>PRO</i></div>
     <div class="muted">AMS Engineering Solutions</div>
     <div class="loadBar"><i id="loadFill"></i></div>
@@ -2353,6 +2353,26 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  .stage .overlay{max-width:calc(100% - 20px);font-size:10px}
 }
 @media(prefers-reduced-motion:reduce){#loader .logoMark{animation:none}.visualToolbar .btn{transition:none}}
+
+/* v58.1 · identidad de carga PP de alto contraste */
+#loader .logoMark.pp-double-mark{
+  width:118px!important;height:118px!important;transform:none!important;
+  display:grid!important;place-items:center!important;overflow:visible!important;
+  border:1px solid rgba(94,218,255,.85)!important;border-radius:30px!important;
+  background:linear-gradient(145deg,rgba(19,54,75,.98),rgba(4,13,22,.98))!important;
+  box-shadow:0 0 0 7px rgba(53,169,224,.10),0 0 45px rgba(53,191,244,.35),inset 0 1px 0 #ffffff28!important;
+  animation:ppDoubleGlow 2.6s ease-in-out infinite!important;
+}
+#loader .pp-double-symbol{width:82px!important;height:82px!important;overflow:visible}
+#loader .pp-letter{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:8}
+#loader .pp-letter-back{stroke:#f3fbff;filter:drop-shadow(0 0 4px #ffffff55)}
+#loader .pp-letter-front{stroke:#46d6ff;filter:drop-shadow(0 0 8px #28caffaa)}
+#loader .logoText{font-size:clamp(36px,6vw,46px)!important;color:#f5fbff!important;letter-spacing:.09em!important;text-shadow:0 3px 28px #32b9f466!important}
+#loader .logoText i{color:#51d8ff!important}
+@keyframes ppDoubleGlow{0%,100%{box-shadow:0 0 0 6px #35a9e014,0 0 32px #35bff444,inset 0 1px 0 #ffffff28}50%{box-shadow:0 0 0 10px #35a9e01c,0 0 52px #35bff477,inset 0 1px 0 #ffffff40}}
+@media(max-width:720px){#loader .logoMark.pp-double-mark{width:104px!important;height:104px!important;border-radius:26px!important}#loader .pp-double-symbol{width:74px!important;height:74px!important}}
+@media(prefers-reduced-motion:reduce){#loader .logoMark.pp-double-mark{animation:none!important}}
+
 </style>
 <script id="pp57-draggable-overlays">
 (function(){
