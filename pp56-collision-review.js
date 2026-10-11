@@ -88,9 +88,9 @@ function drawCollision(){
  // Punch tip is drawn as a separate amber steel part; travel visibly changes its clearance.
  x.fillStyle='#d58a37';x.strokeStyle='#a96624';x.beginPath();x.moveTo(cx-70,top-4);x.lineTo(cx+70,top-4);x.lineTo(cx+42,tipY-8);x.lineTo(cx+10,tipY+2);x.lineTo(cx,tipY+4);x.lineTo(cx-10,tipY+2);x.lineTo(cx-42,tipY-8);x.closePath();x.fill();x.stroke();
  // Sheet is a bright metal profile, with a clear fold apex and two flanges.
- const sy=top+37, rise=Math.max(10,Math.min(45,(180-ang)*.27));
- x.strokeStyle='#8fa9b7';x.lineWidth=Math.max(5,Math.min(9,t*1.4));x.lineJoin='round';x.beginPath();x.moveTo(cx-145,sy+rise);x.lineTo(cx-50,sy+rise);x.lineTo(cx,sy);x.lineTo(cx+50,sy+rise);x.lineTo(cx+145,sy+rise);x.stroke();
- x.strokeStyle='#f8fdff';x.lineWidth=Math.max(2,Math.min(4,t*.65));x.beginPath();x.moveTo(cx-145,sy+rise-1);x.lineTo(cx-50,sy+rise-1);x.lineTo(cx,sy-1);x.lineTo(cx+50,sy+rise-1);x.lineTo(cx+145,sy+rise-1);x.stroke();
+ const insetSheetY=top+37, insetRise=Math.max(10,Math.min(45,(180-ang)*.27));
+ x.strokeStyle='#8fa9b7';x.lineWidth=Math.max(5,Math.min(9,t*1.4));x.lineJoin='round';x.beginPath();x.moveTo(cx-145,sy+rise);x.lineTo(cx-50,sy+rise);x.lineTo(cx,insetSheetY);x.lineTo(cx+50,sy+rise);x.lineTo(cx+145,sy+rise);x.stroke();
+ x.strokeStyle='#f8fdff';x.lineWidth=Math.max(2,Math.min(4,t*.65));x.beginPath();x.moveTo(cx-145,sy+rise-1);x.lineTo(cx-50,sy+rise-1);x.lineTo(cx,insetSheetY-1);x.lineTo(cx+50,sy+rise-1);x.lineTo(cx+145,sy+rise-1);x.stroke();
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('PUNZÓN',bx+16,by+67);x.fillText('CHAPA',bx+16,by+119);x.fillText('MATRIZ V'+v,bx+16,by+bh-15);
  x.fillStyle=travel>85?'#b83e37':'#087ea4';x.font='900 11px system-ui';x.textAlign='right';x.fillText(travel>85?'CARRERA CERCANA AL CONTACTO':('CARRERA '+Math.round(travel*100)+'%'),bx+bw-14,by+bh-15);x.textAlign='left';
  x.restore();
