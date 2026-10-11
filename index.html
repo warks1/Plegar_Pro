@@ -376,8 +376,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #23a9d426!important;bo
         <path class="pp-shine" d="M42 49 H99 Q124 49 130 67 M82 87 H137 Q162 87 168 105" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".85"/>
       </svg>
     </div>
-    <div class="logoText">PLEGAR <i>PRO</i></div>
-    <div class="pp-subtitle">INGENIERÍA · PROGRAMACIÓN · PLEGADO</div>
+    <div class="pp-subtitle">SISTEMA INDUSTRIAL · CONTROL · SIMULACIÓN</div>
     <div class="loadBar"><i id="loadFill"></i></div>
     <div id="loadState">Inicializando núcleo...</div>
     <div class="pp-loading-foot">PRECISIÓN EN CADA PLEGADO <span>© AMS · TODOS LOS DERECHOS RESERVADOS</span></div>
@@ -1727,7 +1726,7 @@ function audit(){
  let ids=[...document.querySelectorAll('[id]')].map(x=>x.id),dup=ids.filter((x,i)=>ids.indexOf(x)!==i);if(dup.length)issues.push('IDs duplicados: '+dup.join(','));
  return issues;
 }
-const PP_SPLASH_DURATION=4000;
+const PP_SPLASH_DURATION=5000;
 let ppSplashStart=performance.now();
 let ppBootReady=false;
 let ppSplashFinished=false;
