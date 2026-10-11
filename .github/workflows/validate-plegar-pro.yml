@@ -34,6 +34,8 @@ jobs:
           const system = read('pp57-system-integration.js');
           const v59 = read('pp59-engineering-upgrade.js');
           const failures = [];
+          if (html.includes('<div class="logoText">PLEGAR <i>PRO</i></div>')) failures.push('loader must use the industrial emblem without visible wordmark');
+          if (!html.includes('PP_SPLASH_DURATION=5000')) failures.push('loader duration must remain 5 seconds');
           for (const id of ['program3d', 'tooling']) {
             if (!html.includes('id="' + id + '"')) failures.push('index.html missing #' + id);
           }
