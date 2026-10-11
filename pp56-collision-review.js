@@ -88,7 +88,7 @@ function drawCollision(){
  // Punch tip is drawn as a separate amber steel part; travel visibly changes its clearance.
  x.fillStyle='#d58a37';x.strokeStyle='#a96624';x.beginPath();x.moveTo(cx-70,top-4);x.lineTo(cx+70,top-4);x.lineTo(cx+42,tipY-8);x.lineTo(cx+10,tipY+2);x.lineTo(cx,tipY+4);x.lineTo(cx-10,tipY+2);x.lineTo(cx-42,tipY-8);x.closePath();x.fill();x.stroke();
  // Sheet is a bright metal profile, with a clear fold apex and two flanges.
- const insetSheetY=top+37, insetRise=Math.max(10,Math.min(45,(180-ang)*.27)), sheetBase=insetSheetY+insetRise;
+ const insetSheetY=top+37+travel*22, insetRise=Math.max(0,Math.min(45,(180-ang)*.27))*travel, sheetBase=insetSheetY+insetRise;
  x.strokeStyle='#5b7687';x.lineWidth=Math.max(6,Math.min(10,t*1.4));x.lineJoin='round';x.beginPath();x.moveTo(cx-145,sheetBase);x.lineTo(cx-50,sheetBase);x.lineTo(cx,insetSheetY);x.lineTo(cx+50,sheetBase);x.lineTo(cx+145,sheetBase);x.stroke();
  x.strokeStyle='#f8fdff';x.lineWidth=Math.max(3,Math.min(5,t*.65));x.beginPath();x.moveTo(cx-145,sheetBase-1);x.lineTo(cx-50,sheetBase-1);x.lineTo(cx,insetSheetY-1);x.lineTo(cx+50,sheetBase-1);x.lineTo(cx+145,sheetBase-1);x.stroke();
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('PUNZÓN',bx+16,by+67);x.fillText('CHAPA',bx+16,by+119);x.fillText('MATRIZ V'+v,bx+16,by+bh-15);
