@@ -932,9 +932,13 @@ function calcDevelopmentForV(v){
  ensureDevelopment();let d=state.development,t=d.thickness||1,k=d.kfactor||.42;
  let sum=d.bends.reduce((s,b)=>s+(+b.leg||0),0),ba=0,bd=0;
  let actualRadius=Math.max(d.punchRadius||0,(+v||d.referenceV||16)*.16);
+ const programBends=Array.isArray(state.bends)?state.bends:[];
+ const linkedToProgram=d.bends.length===programBends.length&&d.bends.every((b,i)=>Math.abs((+b.leg||0)-(+programBends[i]?.leg||0))<.0001&&Math.abs((+b.angle||0)-(+programBends[i]?.angle||0))<.0001&&Math.abs((+b.radius||0)-(+programBends[i]?.radius||0))<.0001);
+ const terminalIndex=linkedToProgram?d.bends.length-1:-1;
  let rows=d.bends.map((b,i)=>{
    let angle=Math.max(1,Math.min(179,+b.angle||90));let theta=(180-angle)*Math.PI/180;
    let requested=+b.radius||actualRadius;let radius=Math.max(requested,actualRadius);
+   if(i===terminalIndex)return {i,allowance:0,deduction:0,setback:0,radius,terminal:true};
    let allowance=theta*(radius+k*t);
    let setback=(radius+t)*Math.tan(theta/2);
    let deduction=2*setback-allowance;
