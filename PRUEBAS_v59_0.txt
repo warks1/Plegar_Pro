@@ -5,6 +5,7 @@ PRUEBAS AUTOMÁTICAS EJECUTADAS EN GITHUB ACTIONS
 [x] Sintaxis JavaScript de pp54, pp55, pp56, pp57, pp59 y sw.js con Node.js 22.
 [x] Compilación sintáctica de todos los scripts inline de index.html sin ejecutarlos.
 [x] Enlaces de módulos y clave de caché del service worker.
+[x] Existencia de todos los archivos declarados en la caché offline.
 [x] Anclajes de integración entre visor CAD/CAM, módulos heredados y vista v59.
 [x] Ausencia de IDs duplicados en el HTML estático y carga única del módulo v59.
 [x] Persistencia declarada de cámara, órbita, zoom, paso, pausa y controles del visor.
