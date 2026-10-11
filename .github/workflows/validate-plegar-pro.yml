@@ -63,6 +63,7 @@ jobs:
           for (const id of ['program3d', 'tooling']) {
             if (!html.includes('id="' + id + '"')) failures.push('index.html missing #' + id);
           }
+          if (!cad.includes('function iso(points,col)')) failures.push('CAD tooling view missing axonometric face renderer');
           for (const id of ['pp55ToolSelect', 'pp55ToolCAD']) {
             if (!cad.includes(id)) failures.push('CAD module missing integration anchor ' + id);
           }
