@@ -1352,8 +1352,8 @@ function drawAll(){
  drawTechnical2D($('canvasP2'));if($('canvasProgram'))drawTechnical2D($('canvasProgram'));draw3D($('canvasP3'));drawTechnical2D($('canvasS2'),sim.s2Step);draw3D($('canvasS3'),sim.s3Step,true);drawCurve();
  $('overlayP2').innerHTML=`PROGRAMACIÓN 2D<br>${state.project.material} ${state.project.thickness} mm<br>Cotas, radios y ángulos sincronizados`;
  if($('overlayProgram'))$('overlayProgram').innerHTML=`VISTA EN TIEMPO REAL<br>${state.project.material} · ${(+state.project.thickness).toFixed(2)} mm<br>${state.bends.length} pliegues · Desarrollo ${calcProgramDevelopment().flat.toFixed(2)} mm`;let b=state.bends[sim.p3Active];$('overlayP3').innerHTML=b?`PLIEGUE ${sim.p3Active+1}<br>${b.leg} mm · ${b.angle}° · R${b.radius}<br>V${b.v} · X ${b.gauge} mm`:'Sin pliegues';
- let s2=state.bends[Math.max(0,sim.s2Step-1)];$('overlayS2').innerHTML=s2?`PASO ${sim.s2Step}/${state.bends.length}<br>${s2.angle}° · R${s2.radius} · ${s2.leg} mm`:'Pieza plana · desarrollo '+calcProgramDevelopment().flat.toFixed(2)+' mm';
- let s3=state.bends[Math.max(0,sim.s3Step-1)];$('overlayS3').innerHTML=s3?`PLIEGUE ${sim.s3Step}/${state.bends.length}<br>${s3.angle}° · R${s3.radius}<br>V${s3.v} · ${s3.punch}`:'Máquina preparada';
+ let s2Index=sim.s2Step>0?state.bends.findIndex((_,i)=>i<state.bends.length-1&&ppExecutionRank(i)===sim.s2Step-1):-1,s2=s2Index>=0?state.bends[s2Index]:null;$('overlayS2').innerHTML=s2?`PASO ${sim.s2Step}/${state.bends.length} · P${s2Index+1}<br>${s2.angle}° · R${s2.radius} · ${s2.leg} mm`:'Pieza plana · desarrollo '+calcProgramDevelopment().flat.toFixed(2)+' mm';
+ let s3Index=sim.s3Step>0?state.bends.findIndex((_,i)=>i<state.bends.length-1&&ppExecutionRank(i)===sim.s3Step-1):-1,s3=s3Index>=0?state.bends[s3Index]:null;$('overlayS3').innerHTML=s3?`PASO ${sim.s3Step}/${state.bends.length} · P${s3Index+1}<br>${s3.angle}° · R${s3.radius}<br>V${s3.v} · ${s3.punch}`:'Máquina preparada';
 }
 function refreshPage(page){
  if(page==='program')renderProgram();if(page==='program2d')render2DEditor();if(page==='program3d')populateP3();
