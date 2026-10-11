@@ -949,7 +949,7 @@ function calcDevelopmentForV(v){
 }
 function calcProgramDevelopment(){
  let t=+state.project.thickness||1,k=+state.project.kfactor||.42,v=+(state.bends[0]?.v||16),sum=state.bends.reduce((a,b)=>a+(+b.leg||0),0),bd=0,ba=0;
- state.bends.forEach(b=>{let angle=Math.max(1,Math.min(179,+b.angle||90)),theta=(180-angle)*Math.PI/180,r=Math.max(+b.radius||0,v*.16),allowance=theta*(r+k*t),setback=(r+t)*Math.tan(theta/2);ba+=allowance;bd+=2*setback-allowance});
+ state.bends.forEach((b,i)=>{if(isTerminalSegment(i))return;let angle=Math.max(1,Math.min(179,+b.angle||90)),theta=(180-angle)*Math.PI/180,r=Math.max(+b.radius||0,v*.16),allowance=theta*(r+k*t),setback=(r+t)*Math.tan(theta/2);ba+=allowance;bd+=2*setback-allowance});
  return {sum,ba,bd,flat:sum-bd};
 }
 function calcDevelopment(){return calcDevelopmentForV((state.development&&state.development.referenceV)||16)}
