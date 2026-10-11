@@ -65,7 +65,7 @@ function drawCollision(){
  }
  if(visible.stops){[-1,1].forEach(s=>{face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base+18,z:-175},{x:s*255,y:base+18,z:-175}],'#4c687a');face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base-15,z:-120},{x:s*255,y:base-15,z:-120}],'#9db3bf')})}
  // Bent sheet profile and thickness rendered as a bright metal edge.
- const half=260,rise=Math.max(12,Math.min(100,(180-ang)*.62)),sy=base+35;
+ const half=260,rise=Math.max(0,Math.min(100,(180-ang)*.62))*travel,sy=base+35;
  const sheet=[{x:-half,y:sy,z:0},{x:-half*.46,y:sy,z:0},{x:-half*.15,y:sy-rise*.48,z:0},{x:0,y:sy-rise,z:0},{x:half*.15,y:sy-rise*.48,z:0},{x:half*.46,y:sy,z:0},{x:half,y:sy,z:0}];
  line(x,w,h,sheet,'#91aebe',Math.max(9,Math.min(17,t*2.2)));line(x,w,h,sheet,'#effaff',Math.max(5,Math.min(11,t*1.2)));line(x,w,h,sheet,'#4385a0',2);
  dimension({x:-half,y:sy-32,z:0},{x:half,y:sy-32,z:0},'Chapa · espesor '+t.toFixed(2)+' mm');
