@@ -76,7 +76,25 @@ function drawCollision(){
  const legend=[['#d68b38','Punzón'],['#236b8d','Matriz'],['#effaff','Chapa'],['#7f9aa9','Mesa'],['#7795a7','Trancha']];
  legend.forEach((it,i)=>{const xx=26+i*155;x.fillStyle=it[0];x.fillRect(xx,h-46,15,15);x.fillStyle='#29485b';x.font='bold 13px system-ui';x.fillText(it[1],xx+22,h-34)});
  x.fillStyle='rgba(255,248,230,.97)';x.strokeStyle='#dfb95e';x.lineWidth=1;x.beginPath();x.roundRect(w-430,h-84,404,48,9);x.fill();x.stroke();x.fillStyle='#76500c';x.font='bold 13px system-ui';x.fillText('ESQUEMÁTICA · SIN CÁLCULO CAD CERTIFICADO',w-412,h-55);
- const st=$('pp56Status');if(st){st.className='pp56-status warn';st.textContent='Vista esquemática de la secuencia compartida. No calcula ni certifica colisiones CAD reales.'}
+ // Panel de sección ampliada: permite distinguir el perfil de la chapa y las herramientas sin depender de la vista isométrica.
+ const bx=w-430,by=h-322,bw=395,bh=226;
+ x.save();x.shadowColor='rgba(12,37,54,.18)';x.shadowBlur=16;x.fillStyle='rgba(255,255,255,.97)';x.strokeStyle='#91b8cc';x.lineWidth=2;x.beginPath();x.roundRect(bx,by,bw,bh,14);x.fill();x.stroke();x.shadowBlur=0;
+ x.fillStyle='#173246';x.font='900 13px system-ui';x.fillText('SECCIÓN DE PLEGADO · DETALLE',bx+15,by+24);
+ x.fillStyle='#607d8e';x.font='11px system-ui';x.fillText('Perfil de referencia · ángulo '+ang+'° · espesor '+t.toFixed(2)+' mm',bx+15,by+43);
+ const cx=bx+bw/2, top=by+78, floor=by+183, halfV=Math.max(48,Math.min(92,v*1.25)), tipY=top+Math.max(0,100-travel)*.55;
+ // Die block with machined V throat.
+ x.fillStyle='#236b8d';x.strokeStyle='#164c68';x.lineWidth=2;x.beginPath();x.moveTo(cx-halfV-45,floor);x.lineTo(cx-halfV-45,top+34);x.lineTo(cx-halfV*.32,top+34);x.lineTo(cx,floor-24);x.lineTo(cx+halfV*.32,top+34);x.lineTo(cx+halfV+45,top+34);x.lineTo(cx+halfV+45,floor);x.closePath();x.fill();x.stroke();
+ x.strokeStyle='#bceeff';x.lineWidth=3;x.beginPath();x.moveTo(cx-halfV*.32,top+34);x.lineTo(cx,floor-24);x.lineTo(cx+halfV*.32,top+34);x.stroke();
+ // Punch tip is drawn as a separate amber steel part; travel visibly changes its clearance.
+ x.fillStyle='#d58a37';x.strokeStyle='#a96624';x.beginPath();x.moveTo(cx-70,top-4);x.lineTo(cx+70,top-4);x.lineTo(cx+42,tipY-8);x.lineTo(cx+10,tipY+2);x.lineTo(cx,tipY+4);x.lineTo(cx-10,tipY+2);x.lineTo(cx-42,tipY-8);x.closePath();x.fill();x.stroke();
+ // Sheet is a bright metal profile, with a clear fold apex and two flanges.
+ const sy=top+37, rise=Math.max(10,Math.min(45,(180-ang)*.27));
+ x.strokeStyle='#8fa9b7';x.lineWidth=Math.max(5,Math.min(9,t*1.4));x.lineJoin='round';x.beginPath();x.moveTo(cx-145,sy+rise);x.lineTo(cx-50,sy+rise);x.lineTo(cx,sy);x.lineTo(cx+50,sy+rise);x.lineTo(cx+145,sy+rise);x.stroke();
+ x.strokeStyle='#f8fdff';x.lineWidth=Math.max(2,Math.min(4,t*.65));x.beginPath();x.moveTo(cx-145,sy+rise-1);x.lineTo(cx-50,sy+rise-1);x.lineTo(cx,sy-1);x.lineTo(cx+50,sy+rise-1);x.lineTo(cx+145,sy+rise-1);x.stroke();
+ x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('PUNZÓN',bx+16,by+67);x.fillText('CHAPA',bx+16,by+119);x.fillText('MATRIZ V'+v,bx+16,by+bh-15);
+ x.fillStyle=travel>85?'#b83e37':'#087ea4';x.font='900 11px system-ui';x.textAlign='right';x.fillText(travel>85?'CARRERA CERCANA AL CONTACTO':('CARRERA '+Math.round(travel*100)+'%'),bx+bw-14,by+bh-15);x.textAlign='left';
+ x.restore();
+ const st=$('pp56Status');if(st){st.className='pp56-status warn';st.textContent='Vista geométrica esquemática sincronizada con el paso seleccionado. El detalle ayuda a leer la sección, pero todavía no sustituye un motor de colisiones CAD real.'}
  if(S())S().collisionReview={step:step,foldIndex:idx,travel:travel,parts:{...visible},camera:camera,collisionCertification:false};
 }
 function setStep(n){const o=seq(),a=bs();step=Math.max(0,Math.min(Math.max(0,o.length-1),n));const idx=o[step]??0,b=a[idx]||{};if($('pp56Step'))$('pp56Step').value=String(step);$('pp56StepNum').textContent=(step+1)+' / '+Math.max(1,o.length);$('pp56Fold').textContent='P'+(idx+1);$('pp56Angle').textContent=(Number(b.angle)||90)+'°';$('pp56Th').textContent=th().toFixed(2)+' mm';if(S()){S().bendOrder=o.slice();try{if(typeof sim!=='undefined'&&sim){sim.p3Active=idx;sim.s2Step=step+1;sim.s3Step=step+1;if($('p3Active'))$('p3Active').value=String(idx);if(typeof loadP3Fields==='function')loadP3Fields()}}catch(e){}}try{if(typeof drawAll==='function')drawAll()}catch(e){}drawCollision()}
