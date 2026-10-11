@@ -16,6 +16,7 @@ Estas pruebas son estáticas/automáticas. No sustituyen la comprobación visual
 [ ] Confirmar que la carga muestra solo el emblema industrial, sin el nombre escrito, y dura 5 segundos.
 [ ] Confirmar que pp59-engineering-upgrade.js carga sin error de consola.
 [ ] Verificar que el gemelo 3D aparece dentro de Programación 3D y oculta la vista antigua esquemática.
+[ ] Abrir la revisión de colisiones desde el botón del visor y comprobar que mantiene la pieza activa.
 [ ] Revisar visualmente que la chapa queda simétrica, baja hacia la matriz y que la punta del punzón se alinea con el vértice al completar la carrera.
 [ ] Girar la vista con ratón y pantalla táctil; probar rueda y control de zoom.
 [ ] Cambiar cámara, orbitar, zoom y paso; recargar y comprobar que las preferencias se conservan.
