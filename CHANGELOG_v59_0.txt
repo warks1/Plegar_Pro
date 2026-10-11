@@ -1,0 +1,11 @@
+PLEGAR PRO v59.0 · ENGINEERING UPGRADE
+Fecha de preparación: 2026-10-11
+
+- Se añade pp59-engineering-upgrade.js sin eliminar los módulos anteriores.
+- Se añade un gemelo digital 3D visual con trancha móvil, portautillaje, punzón, matriz V, chapa, cámaras, órbita, zoom y selección de paso.
+- Se añade auditoría de fuentes con fecha, resultado HTTP o error, enlace y estado de importación explícito.
+- Se añade recuento de referencias únicas y candidatos a duplicado en el catálogo local.
+- Se amplía oficina técnica con historial de revisiones y metadatos de trazabilidad.
+- Se actualiza index.html y la caché del service worker a v59.
+
+No se han importado catálogos automáticamente. El gemelo es visual y no es CAD certificado. Deben comprobarse en navegador el arranque, la animación, los controles, el almacenamiento y las exportaciones antes de integrar en main.
