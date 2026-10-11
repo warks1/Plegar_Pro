@@ -1,10 +1,12 @@
 # Pruebas estáticas v57.0
 
 - [x] Sintaxis JavaScript del módulo de revisión.
-- [x] Sintaxis de scripts inline del index.html (18 bloques comprobados).
-- [ ] Sintaxis final del motor de secuencia y service worker tras guardar.
-- [ ] Arranque interactivo real en navegador.
-- [ ] Confirmación de publicación en GitHub Pages.
+- [x] Sintaxis del motor de secuencia tras la corrección de persistencia.
+- [x] Sintaxis del service worker tras actualizar la caché.
+- [x] Sintaxis de todos los bloques JavaScript inline de index.html; no se detectaron errores.
+- [x] Confirmación en GitHub de que v57.0 y la mejora de contraste están integradas en main.
+- [ ] Confirmación final de publicación en GitHub Pages para el último commit.
+- [ ] Prueba interactiva real en navegador (arranque, navegación, cámara, zoom, orden y persistencia).
 - [ ] Validación de colisiones con sólidos CAD oficiales.
 
-Importante: no declarar certificación de colisiones. La vista de esta versión es una representación esquemática y el estado avisa de que no calcula colisiones CAD exactas.
+Importante: la vista actual es esquemática y no certifica ni calcula colisiones CAD exactas. No usarla como validación de seguridad de una plegadora real.
