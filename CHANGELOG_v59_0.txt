@@ -24,3 +24,4 @@ No se han importado catálogos automáticamente. El gemelo es visual y no es CAD
 - Añade un acceso directo desde la vista de máquina a la revisión de colisiones, sin alterar la pieza ni la secuencia activa.
 - CI también compila todos los scripts JavaScript incrustados en `index.html`, además de los archivos externos, para detectar errores de sintaxis que podrían dejar la aplicación en blanco.
 - El selector de pasos del gemelo se resincroniza con los pliegues activos cuando cambia el programa; al elegir un paso, toma su ángulo real en vez de reutilizar siempre 90°.
+- El selector de pasos del gemelo se resincroniza con los pliegues activos cuando cambia el programa; al elegir un paso, toma su ángulo real en vez de reutilizar siempre 90°.
