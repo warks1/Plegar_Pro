@@ -186,6 +186,11 @@ tr:hover td{background:#10283a}
 @keyframes ppShine{0%{stroke-dashoffset:300;opacity:.2}50%{opacity:1}100%{stroke-dashoffset:0;opacity:.3}}
 @keyframes ppBarGlow{to{background-position:200% 0}}
 @media(prefers-reduced-motion:reduce){.pp-emblem,.pp-orbit,.pp-letter-back,.pp-letter-front,.pp-shine,.pp-loading .loadBar i{animation:none!important}}
+
+/* Responsive layout: preserve the same modules on desktop, tablet and mobile. */
+@media(max-width:900px){.app{grid-template-columns:minmax(0,1fr)}.side{position:relative;top:auto;height:auto;max-height:none;overflow:visible;padding:10px;border-right:0;border-bottom:1px solid var(--line)}.nav{display:flex;flex-wrap:wrap;gap:3px}.nav h4{width:100%;margin:9px 4px 3px}.nav button{width:auto;flex:1 1 145px;margin:0;padding:8px}.main{padding:10px;min-width:0}.topbar{align-items:flex-start;flex-wrap:wrap}.heading h1{font-size:clamp(18px,3vw,22px)}.syncBadge{font-size:11px}.c3,.c4,.c5,.c6,.c7,.c8,.c9{grid-column:span 6}.pp56-hmi-layout{grid-template-columns:minmax(0,1fr)!important}.pp56-hmi-rail{min-width:0}.pp56-canvas{min-width:0}.pp56-canvas canvas,.pp59 canvas{max-width:100%;height:auto}}
+@media(max-width:560px){.main{padding:7px}.grid{gap:8px}.card{padding:10px;border-radius:11px}.c3,.c4,.c5,.c6,.c7,.c8,.c9{grid-column:span 12}.fields{grid-template-columns:minmax(0,1fr)}.topbar{gap:7px}.topLeft{flex-wrap:wrap}.nav button{flex:1 1 125px;font-size:12px}.pp56-controls,.pp59 .controls{grid-template-columns:repeat(2,minmax(0,1fr))}.pp56-grid,.pp59 .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.pp56-hmi-rail{grid-template-columns:repeat(2,minmax(0,1fr))}.pp56-hmi-note{grid-column:1/-1}.pp56-canvas canvas{width:100%;height:auto}.pp56-actions,.pp59 .actions{gap:6px}.pp56-actions button,.pp59 .actions button{flex:1 1 130px;white-space:normal}.pp59 canvas{width:100%;height:auto}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v59.0 · Engineering Upgrade">
 <style id="pp515-visual-upgrade">
