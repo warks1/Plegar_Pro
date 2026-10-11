@@ -1,0 +1,16 @@
+PLEGAR PRO v57.3 — COMPROBACIONES
+=================================
+
+Comprobado automáticamente:
+- El nuevo script de paneles arrastrables compila sin error de sintaxis JavaScript.
+- La actualización conserva el HTML y los módulos existentes; los cambios visuales se añaden al final de index.html.
+- El panel informativo se mueve con pointer events (ratón/táctil), guarda posición por ID y se mantiene dentro de su visor.
+- El service worker pasa a plegar-pro-v57-10 para renovar la caché.
+
+Pendiente de comprobación manual en navegador real:
+- Confirmar contraste y animación de la pantalla de carga en escritorio y móvil.
+- Arrastrar el panel de Programación 2D y verificar que no impide marcar pliegues en el canvas.
+- Confirmar que la posición guardada se mantiene tras recargar y que el panel vuelve a quedar dentro del visor al redimensionar.
+- Confirmar el despliegue final de GitHub Pages tras la publicación.
+
+No se han validado dimensiones de herramientas ni seguridad de colisiones; esta actualización es de interfaz y no certifica programas CNC.
