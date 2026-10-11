@@ -1,0 +1,30 @@
+PLEGAR PRO v55.0 — COMPROBACIONES
+===================================
+
+Comprobaciones estáticas realizadas
+-----------------------------------
+- Sintaxis JavaScript de los bloques inline de index.html.
+- Sintaxis JavaScript de pp54-engineering.js.
+- Sintaxis JavaScript de pp55-cad-precision.js.
+- Sintaxis JavaScript de sw.js.
+- index.html carga pp55-cad-precision.js.
+- Service worker actualizado a plegar-pro-v55-0 y precarga pp55-cad-precision.js.
+- Tema inicial de estado cambiado a claro y select de tema muestra claro por defecto.
+- Verificados los controles añadidos de radio de punzón, hombro de matriz y modo K.
+- Verificados el modelo Bystronic Xpert Pro 100/3100 y la entrada configurable Trumpf V85.
+- Verificada la numeración directa por toque y el comportamiento de quitar el número con un segundo toque.
+- Verificado el panel de comparación V y el calibrador de K por desarrollo medido.
+- Verificados los enlaces de trazabilidad a catálogos y fichas técnicas.
+
+Pruebas manuales pendientes
+---------------------------
+- Abrir GitHub Pages en escritorio y móvil.
+- Confirmar que no hay errores de consola ni elementos que se solapen.
+- Confirmar que la animación de la plegadora se representa bien en distintos tamaños.
+- Confirmar el visor CAD/CAM para punzones y matrices de diferentes ángulos y alturas.
+- Validar resultados con una pieza medida, material, espesor, radio, V, ángulo y cotas conocidos.
+- Confirmar con el usuario las dimensiones exactas de su Trumpf V85 antes de utilizarla en comprobaciones de colisión.
+
+Precaución de fabricación
+-------------------------
+Los resultados actuales son cálculos de ingeniería estimados hasta que se cotejen las dimensiones exactas del utillaje y se calibre el proceso con una pieza real. No usar las entradas de herramientas orientativas ni la V85 incompleta para liberar un programa CNC o validar seguridad/colisiones.
