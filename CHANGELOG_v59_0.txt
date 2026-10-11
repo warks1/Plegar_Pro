@@ -20,3 +20,4 @@ No se han importado catálogos automáticamente. El gemelo es visual y no es CAD
 - La pausa conserva el fotograma actual; la chapa pasa de plana a plegada durante la carrera y permanece plegada durante el retorno de la trancha.
 - Refina el perfil de chapa de la vista: alas simétricas, espesor visual y descenso del vértice durante la carrera, alineado con la punta del punzón y el fondo de la matriz V (referencia visual, no análisis de interferencias).
 - Pantalla de carga: se elimina el texto de marca visible, se mantiene el emblema industrial y se fija la introducción a 5 segundos.
+- Service worker: solo guarda respuestas correctas del mismo origen y, sin conexión, reserva el fallback a `index.html` para navegación; no entrega HTML como si fuera un JavaScript/CSS ausente.
