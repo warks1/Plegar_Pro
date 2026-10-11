@@ -92,7 +92,7 @@ function drawCollision(){
  x.strokeStyle='#5b7687';x.lineWidth=Math.max(6,Math.min(10,t*1.4));x.lineJoin='round';x.beginPath();x.moveTo(cx-145,sheetBase);x.lineTo(cx-50,sheetBase);x.lineTo(cx,insetSheetY);x.lineTo(cx+50,sheetBase);x.lineTo(cx+145,sheetBase);x.stroke();
  x.strokeStyle='#f8fdff';x.lineWidth=Math.max(3,Math.min(5,t*.65));x.beginPath();x.moveTo(cx-145,sheetBase-1);x.lineTo(cx-50,sheetBase-1);x.lineTo(cx,insetSheetY-1);x.lineTo(cx+50,sheetBase-1);x.lineTo(cx+145,sheetBase-1);x.stroke();
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('PUNZÓN',bx+16,by+67);x.fillText('CHAPA',bx+16,by+119);x.fillText('MATRIZ V'+v,bx+16,by+bh-15);
- x.fillStyle=travel>85?'#b83e37':'#087ea4';x.font='900 11px system-ui';x.textAlign='right';x.fillText(travel>85?'CARRERA CERCANA AL CONTACTO':('CARRERA '+Math.round(travel*100)+'%'),bx+bw-14,by+bh-15);x.textAlign='left';
+ x.fillStyle=travel>0.85?'#b83e37':'#087ea4';x.font='900 11px system-ui';x.textAlign='right';x.fillText(travel>85?'CARRERA CERCANA AL CONTACTO':('CARRERA '+Math.round(travel*100)+'%'),bx+bw-14,by+bh-15);x.textAlign='left';
  x.restore();
  const st=$('pp56Status');if(st){st.className='pp56-status warn';st.textContent='Vista geométrica esquemática sincronizada con el paso seleccionado. El detalle ayuda a leer la sección, pero todavía no sustituye un motor de colisiones CAD real.'}
  if(S())S().collisionReview={step:step,foldIndex:idx,travel:travel,parts:{...visible},camera:camera,collisionCertification:false};
