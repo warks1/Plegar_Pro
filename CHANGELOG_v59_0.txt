@@ -11,3 +11,6 @@ Fecha de preparación: 2026-10-11
 No se han importado catálogos automáticamente. El gemelo es visual y no es CAD certificado. Deben comprobarse en navegador el arranque, la animación, los controles, el almacenamiento y las exportaciones antes de integrar en main.
 - Se amplían los ajustes con cámara inicial, zoom, animación y densidad visual persistentes, sin alterar datos de pieza.
 - Se añade índice de utillaje buscable por fabricante/referencia, con cotas disponibles, procedencia y exportación CSV/JSON.
+- Corrige el enlace entre el índice de utillaje y el visor CAD/CAM existente.
+- Evita mostrar valores de reserva como cotas oficiales: las dimensiones ausentes aparecen como «No documentado».
+- Refuerza el arranque del módulo con reintentos si los paneles de la versión anterior tardan en montarse.
