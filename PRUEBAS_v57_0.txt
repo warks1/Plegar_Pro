@@ -1,0 +1,10 @@
+# Pruebas estáticas v57.0
+
+- [x] Sintaxis JavaScript del módulo de revisión.
+- [x] Sintaxis de scripts inline del index.html (18 bloques comprobados).
+- [ ] Sintaxis final del motor de secuencia y service worker tras guardar.
+- [ ] Arranque interactivo real en navegador.
+- [ ] Confirmación de publicación en GitHub Pages.
+- [ ] Validación de colisiones con sólidos CAD oficiales.
+
+Importante: no declarar certificación de colisiones. La vista de esta versión es una representación esquemática y el estado avisa de que no calcula colisiones CAD exactas.
