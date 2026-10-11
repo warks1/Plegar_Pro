@@ -1,0 +1,15 @@
+PRUEBAS PLEGAR PRO v59.0 · LISTA PENDIENTE DE VALIDACIÓN EN NAVEGADOR
+
+[ ] Abrir la aplicación en GitHub Pages y confirmar que no aparece pantalla blanca.
+[ ] Confirmar que pp59-engineering-upgrade.js carga sin error de consola.
+[ ] Verificar que el gemelo 3D aparece dentro de Programación 3D y oculta la vista antigua esquemática.
+[ ] Girar la vista con ratón y pantalla táctil; probar rueda y control de zoom.
+[ ] Cambiar cámara y paso de plegado; comprobar que la trancha se anima al pausar/reanudar.
+[ ] Ejecutar la auditoría: cada fuente debe guardar respuesta o error, fecha y estado imported=false.
+[ ] Verificar recuento de útiles y candidatos a duplicados.
+[ ] Añadir una revisión de plano, recargar y comprobar persistencia local.
+[ ] Exportar auditoría, historial y paquete técnico JSON.
+[ ] Confirmar que los datos previos y módulos existentes siguen accesibles.
+[ ] Comprobar el service worker y que la versión v59 no sirve archivos antiguos en caché.
+
+Estado actual: archivos añadidos y enlazados en la rama de trabajo; estas comprobaciones de navegador no se marcan como realizadas hasta ejecutarlas.
