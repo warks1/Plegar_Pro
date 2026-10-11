@@ -1,0 +1,14 @@
+# Plegar Pro v56.0 — Mejora de legibilidad y revisión de colisiones
+
+## Cambios
+- Nueva sección **Revisión de colisiones**, accesible desde el menú lateral.
+- Vista 3D esquemática de la plegadora con controles para cámara isométrica, frontal, lateral, superior y órbita.
+- Reproducción y pausa del ciclo, avance/retroceso por pasos y control de carrera de trancha.
+- Controles independientes para mostrar u ocultar topes, matriz, punzón, trancha y mesa.
+- La secuencia de pasos lee el orden guardado en el programa y actualiza el pliegue activo de la simulación.
+- Añadidos paneles de desarrollo y comparador V directamente a Programación 2D y Programación 3D.
+- Mejoras de contraste en tema claro: paneles azul claro, texto oscuro, campos y tablas legibles.
+- Cache de service worker actualizada a v56.
+
+## Límites técnicos
+La vista de colisiones es una comprobación geométrica preliminar, no un cálculo certificado de interferencias. Para una verificación exacta hacen falta los sólidos CAD y dimensiones confirmadas de la máquina, topes, punzón, matriz y pieza. Los cálculos de desarrollo siguen siendo estimaciones hasta calibrarlos con cotas y primeras piezas reales.
