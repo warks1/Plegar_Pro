@@ -958,7 +958,8 @@ function calcDevelopmentForV(v){
 function calcProgramDevelopment(){
  let t=+state.project.thickness||1,k=+state.project.kfactor||.42,v=+(state.bends[0]?.v||state.development?.referenceV||16),material=String(state.project.material||state.development?.material||'S235'),ratio=/inox/i.test(material)?.20:/aluminio/i.test(material)?.14:/Hardox|antidesgaste/i.test(material)?.25:.16,sum=state.bends.reduce((a,b)=>a+(+b.leg||0),0),bd=0,ba=0;
  state.bends.forEach((b,i)=>{if(isTerminalSegment(i))return;let angle=Math.max(1,Math.min(179,+b.angle||90)),theta=(180-angle)*Math.PI/180,vb=+(b.v||v),r=Math.max(+b.radius||0,+b.punchRadius||0,vb*ratio),allowance=theta*(r+k*t),setback=(r+t)*Math.tan(theta/2);ba+=allowance;bd+=2*setback-allowance});
- return {sum,ba,bd,flat:sum-bd};
+ let dimensionType=String(state.development?.dimensionType||'exterior'),flat=(dimensionType==='interior'||dimensionType==='inside'||dimensionType==='tangent')?sum+ba:sum-bd;
+ return {sum,ba,bd,flat};
 }
 function calcDevelopment(){return calcDevelopmentForV((state.development&&state.development.referenceV)||16)}
 function readDevelopmentInputs(){
