@@ -198,6 +198,19 @@ jobs:
               const canvas = document.querySelector('#pp56Collision');
               return canvas && canvas.getBoundingClientRect().width > 0 && !!canvas.getContext('2d');
             }, null, { timeout: 10000 });
+            const contrastAudit = await page.evaluate(() => {
+              const targets = [...document.querySelectorAll('#collisions .pp56-hmi-top,#collisions .pp56-hmi-rail,#collisions .pp56-hmi-live,#collisions #pp56Status')];
+              const lum = value => {
+                const rgb = String(value).match(/[\\d.]+/g)?.slice(0,3).map(Number) || [0,0,0];
+                const linear = rgb.map(v => { v /= 255; return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; });
+                return .2126 * linear[0] + .7152 * linear[1] + .0722 * linear[2];
+              };
+              return targets.map(el => {
+                const s = getComputedStyle(el), fg = lum(s.color), bg = lum(s.backgroundColor);
+                return { id:el.id || el.className, foreground:s.color, background:s.backgroundColor, ratio:(Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05) };
+              });
+            });
+            if (contrastAudit.length < 4 || contrastAudit.some(x => x.ratio < 4.5)) throw new Error('Banner/card text contrast below 4.5:1: ' + JSON.stringify(contrastAudit));
             await page.waitForFunction(() => document.querySelectorAll('#pp56Step option').length >= 3, null, { timeout: 5000 });
             const collisionOrder = await page.locator('#pp56Step option').allTextContents();
             if (!collisionOrder[0]?.includes('P3') || !collisionOrder[1]?.includes('P1') || !collisionOrder[2]?.includes('P2')) {
