@@ -590,6 +590,15 @@ html body .page .stage .overlay {
 html body .nav button::after {pointer-events:none!important;mix-blend-mode:screen}
 </style>
 
+
+<style id="pp61-fast-menu-and-twin-visibility">
+/* Menú inmediato: eliminar brillos infinitos y reducir trabajo por hover. */
+#mainSidebar .nav button,.nav button{transition:background-color .09s linear,border-color .09s linear,color .09s linear,transform .09s ease,box-shadow .09s linear!important;will-change:auto!important}
+#mainSidebar .nav button::after,.nav button::after{animation:none!important;opacity:0!important}
+#mainSidebar .nav button.active,.nav button.active,#mainSidebar .nav button.active::before,.nav button.active::before{animation:none!important}
+#mainSidebar .nav button:hover,.nav button:hover{transform:translateX(2px)!important}
+@media(prefers-reduced-motion:reduce){#mainSidebar .nav button,.nav button{transition:none!important}}
+</style>
 </head>
 <body>
 <div id="loader" aria-label="Cargando Plegar Pro">
