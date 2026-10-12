@@ -22,10 +22,11 @@ jobs:
         run: |
           grep -Fq './pp59-engineering-upgrade.js' index.html
           grep -Fq './pp59-engineering-upgrade.js' sw.js
-          grep -Fq "plegar-pro-v63-6" sw.js
+          grep -Fq "plegar-pro-v63-7" sw.js
           grep -Fq "e.request.mode==='navigate'?caches.match('./index.html'):Response.error()" sw.js
           grep -Fq "if(r.ok&&r.type!=='opaque')" sw.js
           grep -Fq './pp55-cad-precision.js' index.html
+          grep -Fq 'window.tools=tools;' index.html
       - name: Check v59 integration anchors and persisted controls
         run: |
           node <<'NODE'
@@ -67,6 +68,7 @@ jobs:
             if (!html.includes('id="' + id + '"')) failures.push('index.html missing #' + id);
           }
           if (!cad.includes('function poly(points,col)')) failures.push('CAD tooling view missing axonometric face renderer');
+          if (!html.includes('window.tools=tools;')) failures.push('shared tool catalog must be exposed to the CAD and collision modules');
           for (const id of ['pp55ToolSelect', 'pp55ToolCAD']) {
             if (!cad.includes(id)) failures.push('CAD module missing integration anchor ' + id);
           }
