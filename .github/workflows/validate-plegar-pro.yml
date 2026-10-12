@@ -169,7 +169,7 @@ jobs:
               return { flat, bent, statusFlat, statusBent };
             });
             if (travelFrames.flat === travelFrames.bent) throw new Error('Collision sheet image did not change with ram travel');
-            if (!travelFrames.statusFlat.includes('SIN CONTACTO VISUAL') || !travelFrames.statusBent.includes('CONTACTO VISUAL')) throw new Error('Projected punch-sheet proximity status did not change with ram travel: ' + JSON.stringify({ flat: travelFrames.statusFlat, bent: travelFrames.statusBent }));
+            if (!travelFrames.statusFlat.includes('SIN CONTACTO VISUAL') || !travelFrames.statusBent.includes('CONTACTO VISUAL en la sección') || travelFrames.statusBent.includes('SIN CONTACTO VISUAL')) throw new Error('Projected punch-sheet proximity status did not change with ram travel: ' + JSON.stringify({ flat: travelFrames.statusFlat, bent: travelFrames.statusBent }));
             await page.setViewportSize({ width: 390, height: 844 });
             await page.waitForTimeout(250);
             const mobile = await page.evaluate(() => {
