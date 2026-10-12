@@ -1524,8 +1524,9 @@ function punchOptions(selected){
  return names.map(name=>`<option ${name===selected?'selected':''}>${name}</option>`).join('');
 }
 function toolDetails(t){
- if(t.type==='Matriz')return `V${t.v} · ${t.angle}° · R aprox. ${t.radius} mm · H ${t.height} mm · ${t.maxLoad} t/m`;
- return `${t.angle}° · R${t.radius} mm · ${t.shape} · H ${t.height} mm · ${t.maxLoad} t/m`;
+ const dims=t.type==='Matriz'? `V${t.v} · ${t.angle}° · R aprox. ${t.radius} mm · H ${t.height??'—'} mm · ${t.maxLoad??'—'} t/m` : `${t.angle}° · R${t.radius} mm · ${t.shape||'perfil sin clasificar'} · H ${t.height??'—'} mm · ${t.maxLoad??'—'} t/m`;
+ const source=t.sourceType?`<br><span class="toolWarning">REFERENCIA ORIENTATIVA · ${t.sourceType}</span> ${t.sourceNote||''} ${t.sourceUrl?`<a href="${t.sourceUrl}" target="_blank" rel="noopener">Ver ficha fuente</a>`:''}`:'';
+ return dims+source;
 }
 function renderTools(){
  const maker=$('toolMaker').value,type=$('toolType').value,q=$('toolSearch').value.trim().toLowerCase();
