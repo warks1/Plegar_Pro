@@ -1528,7 +1528,7 @@ function punchOptions(selected){
 }
 function toolDetails(t){
  const dims=t.type==='Matriz'? `V${t.v} · ${t.angle}° · R aprox. ${t.radius} mm · H ${t.height??'—'} mm · ${t.maxLoad??'—'} t/m` : `${t.angle}° · R${t.radius} mm · ${t.shape||'perfil sin clasificar'} · H ${t.height??'—'} mm · ${t.maxLoad??'—'} t/m`;
- const source=t.sourceType?`<br><span class="toolWarning">REFERENCIA ORIENTATIVA · ${t.sourceType}</span> ${t.sourceNote||''} ${t.sourceUrl?`<a href="${t.sourceUrl}" target="_blank" rel="noopener">Ver ficha fuente</a>`:''}`:'';
+ const source=t.sourceType?`<br><span class="toolWarning">REFERENCIA ORIENTATIVA · ${t.sourceType}</span> ${t.sourceNote||''} ${t.sourceUrl?`<a href="${t.sourceUrl}" target="_blank" rel="noopener">Ver ficha fuente</a>`:''} ${t.profileDownloadUrl?`<a href="${t.profileDownloadUrl}" target="_blank" rel="noopener">Descargar DXF (ZIP)</a>`:''}`:'';
  return dims+source;
 }
 function renderTools(){
