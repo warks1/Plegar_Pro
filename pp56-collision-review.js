@@ -21,11 +21,11 @@ function pointInPoly(p,poly){let inside=false;for(let i=0,j=poly.length-1;i<poly
 function distSegments(a,b,c,d){if(segmentsCross(a,b,c,d))return 0;return Math.min(distPointSegment(a,c,d),distPointSegment(b,c,d),distPointSegment(c,a,b),distPointSegment(d,a,b))}
 function segmentHitsPoly(a,b,poly,thickness=0){if(pointInPoly(a,poly)||pointInPoly(b,poly))return true;for(let i=0;i<poly.length;i++){const c=poly[i],d=poly[(i+1)%poly.length];if(segmentsCross(a,b,c,d)||distSegments(a,b,c,d)<=Math.max(0,thickness)/2)return true}return false}
 function collisionGeometry(stepIndex,foldIndex,travel,b,toolAudit,v){
- const t=th(),angle=Math.max(20,Math.min(160,Number(b?.angle)||90)),pr=Math.max(.1,Number(toolAudit.punch?.radius??b?.punchRadius??1)),dr=Math.max(.1,Number(toolAudit.die?.radius??v*.16)),dieAngle=Math.max(30,Math.min(150,Number(toolAudit.die?.angle)||90)),half=Math.max(v/2,Math.tan(dieAngle*Math.PI/360)*Math.max(v/2,1)),open=Math.max(v/2,Math.min(v,half)),height=Math.max(20,Number(toolAudit.punch?.height)||120),depth=Math.max(20,Number(toolAudit.die?.height)||60),gap=Math.max(0,1-travel)*Math.max(10,t*2+pr*2),modelSource=profileModelPhysical(stepIndex,travel,toolAudit,v),vertex=modelSource[Math.min(foldIndex+1,modelSource.length-1)]||{x:0,y:0},model=modelSource.map(p=>({x:p.x-vertex.x,y:p.y-vertex.y})),tipY=t*.5+gap;
+ const t=th(),angle=Math.max(20,Math.min(160,Number(b?.angle)||90)),pr=Math.max(.1,Number(toolAudit.punch?.radius??b?.punchRadius??1)),dr=Math.max(.1,Number(toolAudit.die?.radius??v*.16)),dieAngle=Math.max(30,Math.min(150,Number(toolAudit.die?.angle)||90)),half=Math.max(v/2,Math.tan(dieAngle*Math.PI/360)*Math.max(v/2,1)),open=Math.max(v/2,Math.min(v,half)),height=Math.max(20,Number(toolAudit.punch?.height)||120),depth=Math.max(20,Number(toolAudit.die?.height)||60),gap=Math.max(0,1-travel)*Math.max(10,t*2+pr*2),modelSource=profileModelPhysical(stepIndex,travel,toolAudit,v),reference=profileModel(stepIndex,travel),vertex=reference[Math.min(foldIndex+1,reference.length-1)]||{x:0,y:0},model=modelSource.map(p=>({...p,x:p.x-vertex.x,y:p.y-vertex.y})),tipY=t*.5+gap;
  const punch=[{x:-Math.tan((Number(toolAudit.punch?.angle)||30)*Math.PI/360)*height,y:height+tipY},{x:Math.tan((Number(toolAudit.punch?.angle)||30)*Math.PI/360)*height,y:height+tipY},{x:Math.tan((Number(toolAudit.punch?.angle)||30)*Math.PI/360)*Math.max(1,t+pr)+pr,y:tipY+pr},{x:pr,y:tipY},{x:-pr,y:tipY},{x:-Math.tan((Number(toolAudit.punch?.angle)||30)*Math.PI/360)*Math.max(1,t+pr)-pr,y:tipY+pr}];
  const die=[{x:-Math.max(v,open)-10,y:0},{x:-open,y:0},{x:0,y:-Math.max(1,Math.min(v*.6,depth*.45))},{x:open,y:0},{x:Math.max(v,open)+10,y:0},{x:Math.max(v,open)+10,y:-depth},{x:-Math.max(v,open)-10,y:-depth}];
  const sheetHitPunch=[],sheetHitDie=[];
- for(let i=0;i<model.length-1;i++){const a=model[i],z=model[i+1],adjacentToActiveBend=i===foldIndex||i===foldIndex+1;if(adjacentToActiveBend)continue;if(segmentHitsPoly(a,z,punch,t))sheetHitPunch.push(i);if(segmentHitsPoly(a,z,die,t))sheetHitDie.push(i)}
+ for(let i=0;i<model.length-1;i++){const a=model[i],z=model[i+1],legTags=[a.legIndex,z.legIndex].filter(Number.isInteger),activeLeg=legTags.some(k=>k===foldIndex||k===foldIndex+1),activeArc=a.bendIndex===foldIndex||z.bendIndex===foldIndex;if(activeLeg||activeArc)continue;if(segmentHitsPoly(a,z,punch,t))sheetHitPunch.push(Number.isInteger(a.legIndex)?a.legIndex:i);if(segmentHitsPoly(a,z,die,t))sheetHitDie.push(Number.isInteger(a.legIndex)?a.legIndex:i)}
  const flangeClearances=model.slice(0,-1).map((a,i)=>({i,d:Math.min(...punch.map(p=>distPointSegment(p,a,model[i+1])),...die.map(p=>distPointSegment(p,a,model[i+1])))})).filter(q=>q.i!==stepIndex);
  return {unit:'mm',punchInterferenceSegments:[...new Set(sheetHitPunch)],dieInterferenceSegments:[...new Set(sheetHitDie)],priorFoldInterference:sheetHitPunch.length>0||sheetHitDie.length>0,toolProfileSource:'parametric estimate from catalog angle/radius/height/V',officialGeometry:!!(toolAudit.punch?.officialVerified&&toolAudit.die?.officialVerified),travel:travel,tipClearanceMm:gap,dieOpeningMm:v,thicknessMm:t,method:'2D polygon/segment intersection in model millimetres; simplified tool solids; not safety-certified'};
 }
@@ -50,16 +50,16 @@ function profileModelPhysical(progressStep=Infinity,progressTravel=1,toolAudit={
   const inside=Math.max(Number(a[i]?.radius)||0,Number(toolAudit.punch?.radius)||0,Number(toolAudit.die?.radius)||0,Number(v)*.08,t*.16),radius=inside+t/2,distance=Math.abs(theta)>1e-5?radius*Math.tan(Math.min(Math.PI*.49,Math.abs(theta)/2)):0;
   bends.push({theta,radius,distance});
  }
- const pts=[{x:0,y:0}],push=p=>{const q=pts[pts.length-1];if(Math.hypot(p.x-q.x,p.y-q.y)>1e-6)pts.push(p)};
+ const pts=[{x:0,y:0,legIndex:0}],push=(p,meta={})=>{const q=pts[pts.length-1];if(Math.hypot(p.x-q.x,p.y-q.y)>1e-6)pts.push({...p,...meta})};
  let p={x:0,y:0},heading=0;
  for(let i=0;i<a.length;i++){
   const len=Math.max(0,Number(a[i]?.leg)||50),prev=bends[i-1]?.distance||0,next=bends[i]?.distance||0,straight=Math.max(0,len-prev-next);
-  p={x:p.x+straight*Math.cos(heading),y:p.y+straight*Math.sin(heading)};push(p);
+  p={x:p.x+straight*Math.cos(heading),y:p.y+straight*Math.sin(heading)};push(p,{legIndex:i});
   if(i<folds){
    const {theta,radius}=bends[i];
    if(Math.abs(theta)>1e-5){
     const sign=Math.sign(theta),center={x:p.x-sign*radius*Math.sin(heading),y:p.y+sign*radius*Math.cos(heading)},start=Math.atan2(p.y-center.y,p.x-center.x),segments=Math.max(4,Math.min(16,Math.ceil(Math.abs(theta)/(Math.PI/18))));
-    for(let j=1;j<=segments;j++){const phi=start+theta*j/segments;push({x:center.x+radius*Math.cos(phi),y:center.y+radius*Math.sin(phi)})}
+    for(let j=1;j<=segments;j++){const phi=start+theta*j/segments;push({x:center.x+radius*Math.cos(phi),y:center.y+radius*Math.sin(phi)},{bendIndex:i})}
     p=pts[pts.length-1];heading+=theta;
    }
   }
