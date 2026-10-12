@@ -91,15 +91,16 @@
     if(source!=='s3'&&$('s3Play')?.dataset.playing==='true')$('s3Pause')?.click();
     if(source!=='collisions'&&$('pp56Play')?.textContent?.includes('Pausar'))$('pp56Play').click();
     if(source!=='pp59'&&$('pp59play')?.textContent?.includes('Pausar'))$('pp59play').click();
+    if(source!=='machineTwin'&&$('pp58Pause')?.textContent?.includes('Pausar'))$('pp58Pause').click();
   }
   function syncPlaybackStep(detail){
     if(syncingPlayback||!detail)return;
     const source=String(detail.source||'');
     const s=getState(),bends=s?.bends||[];
     if(!bends.length)return;
+    const order=Array.isArray(s?.bendOrder)&&s.bendOrder.length?s.bendOrder:[...bends.keys()].slice(0,Math.max(0,bends.length-1));
     let pos=Math.max(0,Number(detail.step)||0);
     if(detail.complete)pos=Math.max(0,order.length-1);
-    const order=Array.isArray(s?.bendOrder)&&s.bendOrder.length?s.bendOrder:[...bends.keys()].slice(0,Math.max(0,bends.length-1));
     const maxPos=Math.max(0,Math.min(Math.max(0,order.length-1),pos));
     const foldIndex=Number.isInteger(detail.foldIndex)?detail.foldIndex:(order[maxPos]??maxPos);
     const coreStep=detail.complete?Math.max(0,Math.min(Math.max(0,bends.length-1),maxPos+1)):((source==='s2'||source==='s3')?Math.max(0,Number(detail.step)||0):maxPos);
@@ -141,6 +142,8 @@
         if($('s2Play')?.dataset.playing==='true')$('s2Pause')?.click();
         if($('s3Play')?.dataset.playing==='true')$('s3Pause')?.click();
         if($('pp56Play')?.textContent?.includes('Pausar'))$('pp56Play').click();
+        if($('pp59play')?.textContent?.includes('Pausar'))$('pp59play').click();
+        if($('pp58Pause')?.textContent?.includes('Pausar'))$('pp58Pause').click();
       }
     });
   }
