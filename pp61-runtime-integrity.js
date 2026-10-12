@@ -34,7 +34,7 @@
     return !!el&&(/^(INPUT|SELECT|TEXTAREA)$/.test(el.tagName)||el.isContentEditable);
   }
   function updateStatus(message){
-    document.querySelectorAll('#pp58SyncStatus').forEach(el=>{
+    document.querySelectorAll('[data-pp58-sync-status]').forEach(el=>{
       const s=getState();
       el.textContent=message||('Sincronización verificada · '+(s?.bends?.length||0)+' tramos · '+(s?.project?.material||'—')+' · '+(s?.project?.thickness??'—')+' mm');
       el.dataset.syncOk='true';
@@ -82,6 +82,56 @@
       syncCount,externalChanges
     };
   }
+  let syncingPlayback=false;
+  function stopCompetingPlayback(source){
+    if(source!=='s2'&&$('s2Play')?.dataset.playing==='true')$('s2Pause')?.click();
+    if(source!=='s3'&&$('s3Play')?.dataset.playing==='true')$('s3Pause')?.click();
+    if(source!=='collisions'&&$('pp56Play')?.textContent?.includes('Pausar'))$('pp56Play').click();
+    if(source!=='pp59'&&$('pp59play')?.textContent?.includes('Pausar'))$('pp59play').click();
+  }
+  function syncPlaybackStep(detail){
+    if(syncingPlayback||!detail)return;
+    const source=String(detail.source||'');
+    const s=getState(),bends=s?.bends||[];
+    if(!bends.length)return;
+    let pos=Number(detail.step)||0;
+    if(source==='s2'||source==='s3')pos=Math.max(0,pos-1);
+    const order=Array.isArray(s?.bendOrder)&&s.bendOrder.length?s.bendOrder:[...bends.keys()].slice(0,Math.max(0,bends.length-1));
+    const maxPos=Math.max(0,Math.min(Math.max(0,order.length-1),pos));
+    const foldIndex=Number.isInteger(detail.foldIndex)?detail.foldIndex:(order[maxPos]??maxPos);
+    syncingPlayback=true;
+    try{
+      if(typeof sim!=='undefined'&&sim){
+        sim.s2Step=maxPos+1;sim.s3Step=maxPos+1;sim.p3Active=foldIndex;
+        if($('p3Active'))$('p3Active').value=String(foldIndex);
+        if(typeof drawAll==='function')drawAll();
+      }
+      const collisionStep=$('pp56Step');
+      if(collisionStep&&source!=='collisions'&&Number(collisionStep.value)!==maxPos){
+        collisionStep.value=String(maxPos);
+        collisionStep.dispatchEvent(new Event('change',{bubbles:true}));
+      }
+      const twinStep=$('pp59step');
+      if(twinStep&&source!=='pp59'&&Number(twinStep.value)!==maxPos){
+        twinStep.value=String(Math.min(Math.max(0,twinStep.options.length-1),maxPos));
+        twinStep.dispatchEvent(new Event('change',{bubbles:true}));
+      }
+      lastFingerprint=fingerprint();
+      window.dispatchEvent(new CustomEvent('plegarpro:modules-synchronized',{detail:{reason:'playback-step',source,step:maxPos,foldIndex}}));
+    }catch(error){console.error('[Plegar Pro Runtime] Error al sincronizar el paso de reproducción',error)}
+    finally{syncingPlayback=false}
+  }
+  function installPlaybackSync(){
+    window.addEventListener('plegarpro:playback-start',e=>stopCompetingPlayback(String(e.detail?.source||'')));
+    window.addEventListener('plegarpro:playback-step',e=>syncPlaybackStep(e.detail));
+    document.addEventListener('visibilitychange',()=>{
+      if(document.hidden){
+        if($('s2Play')?.dataset.playing==='true')$('s2Pause')?.click();
+        if($('s3Play')?.dataset.playing==='true')$('s3Pause')?.click();
+        if($('pp56Play')?.textContent?.includes('Pausar'))$('pp56Play').click();
+      }
+    });
+  }
   function check(){
     installSyncHook();
     const next=fingerprint();
@@ -100,6 +150,7 @@
     window.setTimeout(normalizeWorkspace,700);
     window.setTimeout(normalizeWorkspace,1800);
     installSyncHook();
+    installPlaybackSync();
     lastFingerprint=fingerprint();
     document.addEventListener('focusout',()=>window.setTimeout(()=>{if(fingerprint()!==lastFingerprint)synchronize('editor-blur')},60),true);
     document.addEventListener('change',e=>{
