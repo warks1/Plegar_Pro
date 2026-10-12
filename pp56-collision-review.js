@@ -113,7 +113,7 @@ function drawCollision(){
  const included=180-(180-ang)*travel,arm=78,half=included*Math.PI/360,apexY=top+42+travel*25,leftX=cx-arm*Math.sin(half),rightX=cx+arm*Math.sin(half),endY=apexY+arm*Math.cos(half);
  // Conservative 2D screen-space proximity check: compares the rendered punch tip with the sheet apex.
  // This is an indicator for this schematic view, not a dimensionally calibrated CAD intersection test.
- const sheetHalfPx=Math.max(3,Math.min(5,t*.65))/2;
+ const sheetHalfPx=Math.max(6,Math.min(10,t*1.4))/2;
  const tipBottomY=tipY+4;
  const clearancePx=apexY-tipBottomY-sheetHalfPx;
  const contactState=clearancePx<=2?'CONTACTO VISUAL':clearancePx<=8?'HOLGURA REDUCIDA':'SIN CONTACTO VISUAL';
