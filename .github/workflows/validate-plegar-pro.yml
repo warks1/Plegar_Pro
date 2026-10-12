@@ -22,12 +22,13 @@ jobs:
         run: |
           grep -Fq './pp59-engineering-upgrade.js' index.html
           grep -Fq './pp59-engineering-upgrade.js' sw.js
-          grep -Fq "plegar-pro-v64-2" sw.js
+          grep -Fq "plegar-pro-v65-0" sw.js
           grep -Fq "e.request.mode==='navigate'?caches.match('./index.html'):Response.error()" sw.js
           grep -Fq "if(r.ok&&r.type!=='opaque')" sw.js
           grep -Fq './pp55-cad-precision.js' index.html
           grep -Fq 'window.tools=tools;' index.html
           grep -Fq 'id="pp64-visual-redesign"' index.html
+          grep -Fq 'id="pp65-banner-contrast-fix"' index.html
           grep -Fq "v64.2 · INDUSTRIAL EDITION" pp56-collision-review.js
           grep -Fq '.nav button.active:before' index.html
           grep -Fq '#dashboard .card:first-child' index.html
