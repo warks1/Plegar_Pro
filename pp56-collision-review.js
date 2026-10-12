@@ -79,7 +79,7 @@ function refreshPunchOptions(){const sel=$('pp56PunchSelect');if(!sel)return;con
  const c=$('pp56Collision');if(!c)return;const x=c.getContext('2d'),w=c.width,h=c.height;
  x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#fafdff');bg.addColorStop(.62,'#edf5fa');bg.addColorStop(1,'#dce8ef');x.fillStyle=bg;x.fillRect(0,0,w,h);
  x.save();x.strokeStyle='#d5e3eb';x.lineWidth=1;for(let i=0;i<w;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}for(let j=40;j<h;j+=40){x.beginPath();x.moveTo(0,j);x.lineTo(w,j);x.stroke()}x.restore();
- const base=500,travel=Number($('pp56Travel')?.value||0)/100,order=seq(),all=bs(),idx=order[Math.min(step,Math.max(0,order.length-1))]??0,b=all[idx]||{angle:90,leg:50,v:16},ang=Math.max(30,Math.min(150,Number(b.angle)||90)),t=th(),v=Math.max(6,Number(b.v||S()?.project?.selectedV||16)),py=base+230-travel*220,toolAudit=selectedToolAudit(b,v),punchAngle=Math.max(20,Math.min(90,Number(toolAudit.punch?.angle||b.punchAngle||30))),punchRadius=Math.max(0,Number(toolAudit.punch?.radius??b.punchRadius)||0);
+ const base=500,travel=Number($('pp56Travel')?.value||0)/100,order=seq(),all=bs(),idx=order[Math.min(step,Math.max(0,order.length-1))]??0,b=all[idx]||{angle:90,leg:50,v:16},ang=Math.max(30,Math.min(150,Number(b.angle)||90)),t=th(),v=Math.max(6,Number(b.v||S()?.project?.selectedV||16)),py=base+230-travel*220,toolAudit=selectedToolAudit(b,v),punchAngle=Math.max(20,Math.min(90,Number(toolAudit.punch?.angle||b.punchAngle||30))),punchRadius=Math.max(0,Number(toolAudit.punch?.radius??b.punchRadius)||0),dieAngle3D=Math.max(30,Math.min(150,Number(toolAudit.die?.angle)||90)),dieHalf3D=Math.max(16,Math.min(170,v*3.4375)),dieDepth3D=Math.min(85,dieHalf3D/Math.tan(dieAngle3D*Math.PI/360)),tipHalf3D=Math.max(8,Math.min(70,Math.tan(punchAngle*Math.PI/360)*70)),tipRadius3D=Math.max(2,Math.min(18,punchRadius*3.5));
  const face=(pts,col,stroke)=>poly(x,w,h,pts,col,stroke||'#587486');
  const tag=(txt,px,py0,kind='normal')=>{x.save();x.font='700 14px system-ui';const tw=x.measureText(txt).width+22;x.fillStyle=kind==='warn'?'#fff4dc':'rgba(255,255,255,.96)';x.strokeStyle=kind==='warn'?'#e6c16e':'#c3d8e5';x.lineWidth=1;x.beginPath();x.roundRect(px,py0-20,tw,30,8);x.fill();x.stroke();x.fillStyle=kind==='warn'?'#76500c':'#173246';x.fillText(txt,px+11,py0);x.restore()};
  const dimension=(a,b,label)=>{const A=project(a,w,h),B=project(b,w,h);x.save();x.strokeStyle='#087ea4';x.fillStyle='#075c7b';x.lineWidth=2;x.beginPath();x.moveTo(A.x,A.y);x.lineTo(B.x,B.y);x.stroke();const dx=B.x-A.x,dy=B.y-A.y,len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len;[A,B].forEach(p=>{x.beginPath();x.moveTo(p.x-nx*6,p.y-ny*6);x.lineTo(p.x+nx*6,p.y+ny*6);x.stroke()});x.font='bold 15px system-ui';x.textAlign='center';x.fillStyle='#075c7b';x.fillText(label,(A.x+B.x)/2+nx*19,(A.y+B.y)/2+ny*19);x.restore()};
@@ -100,10 +100,10 @@ function refreshPunchOptions(){const sel=$('pp56PunchSelect');if(!sel)return;con
  // V-die with two inclined faces and a deep, high-contrast throat.
  if(visible.die){
   face([{x:-330,y:base+4,z:-70},{x:330,y:base+4,z:-70},{x:330,y:base+24,z:70},{x:-330,y:base+24,z:70}],'#236b8d');
-  face([{x:-330,y:base+4,z:-70},{x:-55,y:base+4,z:-70},{x:0,y:base-20,z:0},{x:-330,y:base+24,z:70}],'#4595b5','#2c6f8e');
-  face([{x:55,y:base+4,z:-70},{x:330,y:base+4,z:-70},{x:330,y:base+24,z:70},{x:0,y:base-20,z:0}],'#1a5a79','#164c68');
-  line(x,w,h,[{x:-55,y:base+4,z:-70},{x:0,y:base-20,z:0},{x:55,y:base+4,z:-70}],'#103d55',8);
-  line(x,w,h,[{x:-330,y:base+4,z:-70},{x:-55,y:base+4,z:-70},{x:0,y:base-20,z:0},{x:55,y:base+4,z:-70},{x:330,y:base+4,z:-70}],'#bdeeff',3);
+  face([{x:-330,y:base+4,z:-70},{x:-dieHalf3D,y:base+4,z:-70},{x:0,y:base+4-dieDepth3D,z:0},{x:-330,y:base+24,z:70}],'#4595b5','#2c6f8e');
+  face([{x:dieHalf3D,y:base+4,z:-70},{x:330,y:base+4,z:-70},{x:330,y:base+24,z:70},{x:0,y:base+4-dieDepth3D,z:0}],'#1a5a79','#164c68');
+  line(x,w,h,[{x:-dieHalf3D,y:base+4,z:-70},{x:0,y:base+4-dieDepth3D,z:0},{x:dieHalf3D,y:base+4,z:-70}],'#103d55',8);
+  line(x,w,h,[{x:-330,y:base+4,z:-70},{x:-dieHalf3D,y:base+4,z:-70},{x:0,y:base+4-dieDepth3D,z:0},{x:dieHalf3D,y:base+4,z:-70},{x:330,y:base+4,z:-70}],'#bdeeff',3);
  }
  // Moving ram and a distinct punch tip. The travel closes toward the die.
  if(visible.ram){
@@ -113,9 +113,9 @@ function refreshPunchOptions(){const sel=$('pp56PunchSelect');if(!sel)return;con
  if(visible.punch){
   face([{x:-300,y:py+42,z:-48},{x:300,y:py+42,z:-48},{x:300,y:py+72,z:48},{x:-300,y:py+72,z:48}],'#bb772f');
   face([{x:-300,y:py+42,z:-48},{x:300,y:py+42,z:-48},{x:220,y:py-12,z:0},{x:-220,y:py-12,z:0}],'#efb45d','#b87932');
-  face([{x:-220,y:py-12,z:0},{x:220,y:py-12,z:0},{x:30,y:py-94,z:0},{x:-30,y:py-94,z:0}],'#d18a37','#a96624');
-  line(x,w,h,[{x:-30,y:py-94,z:0},{x:0,y:py-104,z:0},{x:30,y:py-94,z:0}],'#fff2d5',4);
-  line(x,w,h,[{x:-300,y:py+42,z:-48},{x:-220,y:py-12,z:0},{x:-30,y:py-94,z:0},{x:0,y:py-104,z:0},{x:30,y:py-94,z:0},{x:220,y:py-12,z:0},{x:300,y:py+42,z:-48}],'#fff0ce',2);
+  face([{x:-220,y:py-12,z:0},{x:220,y:py-12,z:0},{x:tipHalf3D,y:py-94,z:0},{x:-tipHalf3D,y:py-94,z:0}],'#d18a37','#a96624');
+  line(x,w,h,[{x:-tipHalf3D,y:py-94,z:0},{x:-tipRadius3D,y:py-100,z:0},{x:0,y:py-104,z:0},{x:tipRadius3D,y:py-100,z:0},{x:tipHalf3D,y:py-94,z:0}],'#fff2d5',4);
+  line(x,w,h,[{x:-300,y:py+42,z:-48},{x:-220,y:py-12,z:0},{x:-tipHalf3D,y:py-94,z:0},{x:-tipRadius3D,y:py-100,z:0},{x:0,y:py-104,z:0},{x:tipRadius3D,y:py-100,z:0},{x:tipHalf3D,y:py-94,z:0},{x:220,y:py-12,z:0},{x:300,y:py+42,z:-48}],'#fff0ce',2);
  }
  if(visible.stops){[-1,1].forEach(s=>{face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base+18,z:-175},{x:s*255,y:base+18,z:-175}],'#4c687a');face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base-15,z:-120},{x:s*255,y:base-15,z:-120}],'#9db3bf')})}
  // Bent sheet profile and thickness rendered as a bright metal edge.
