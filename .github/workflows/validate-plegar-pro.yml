@@ -98,7 +98,7 @@ jobs:
           if (!collision.includes('function profileModel(progressStep=Infinity,progressTravel=1)') || !collision.includes('const model=profileModel(step,travel)') || !collision.includes('rank===progressStep?Math.max(0,Math.min(1,progressTravel)):0')) failures.push('collision sheet must use the shared programmed profile and assigned fold order');
           if (!html.includes('@media(max-width:560px)') || !html.includes('.app{grid-template-columns:minmax(0,1fr)}')) failures.push('responsive mobile layout rules missing');
           const runtime = read('pp61-runtime-integrity.js');
-          if (!html.includes("if((Number(sim[key+'Step'])||0)>=state.bends.length)sim[key+'Step']=0")) failures.push('2D/3D playback must restart at the beginning after reaching the final step');
+          if (!html.includes("if((Number(sim[key+'Step'])||0)>=maxStep)sim[key+'Step']=0")) failures.push('2D/3D playback must restart at the beginning after reaching the final fold');
           if (!html.includes("plegarpro:playback-step") || !html.includes("plegarpro:playback-start")) failures.push('core playback must publish shared playback events');
           if (!collision.includes("if(step>=Math.max(0,seq().length-1))setStep(0)") || !collision.includes("if(!playing||!raf)")) failures.push('collision playback must start on first entry and restart after completion');
           if (!runtime.includes('function installPlaybackSync()') || !runtime.includes("addEventListener('plegarpro:playback-step'")) failures.push('shared playback synchronizer missing');
