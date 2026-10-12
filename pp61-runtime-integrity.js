@@ -97,15 +97,15 @@
     const source=String(detail.source||'');
     const s=getState(),bends=s?.bends||[];
     if(!bends.length)return;
-    let pos=Number(detail.step)||0;
-    if(source==='s2'||source==='s3')pos=Math.max(0,pos-1);
+    let pos=Math.max(0,Number(detail.step)||0);
+    if(detail.complete)pos=Math.max(0,order.length-1);
     const order=Array.isArray(s?.bendOrder)&&s.bendOrder.length?s.bendOrder:[...bends.keys()].slice(0,Math.max(0,bends.length-1));
     const maxPos=Math.max(0,Math.min(Math.max(0,order.length-1),pos));
     const foldIndex=Number.isInteger(detail.foldIndex)?detail.foldIndex:(order[maxPos]??maxPos);
     syncingPlayback=true;
     try{
       if(typeof sim!=='undefined'&&sim){
-        const coreStep=(source==='s2'||source==='s3')?Math.max(0,Number(detail.step)||0):maxPos+1;sim.s2Step=coreStep;sim.s3Step=coreStep;sim.p3Active=foldIndex;
+        const coreStep=detail.complete?Math.max(0,Math.min(Math.max(0,bends.length-1),maxPos+1)):((source==='s2'||source==='s3')?Math.max(0,Number(detail.step)||0):maxPos);sim.s2Step=coreStep;sim.s3Step=coreStep;sim.p3Active=foldIndex;
         if($('p3Active'))$('p3Active').value=String(foldIndex);
         if(typeof drawAll==='function')drawAll();
       }
@@ -113,6 +113,11 @@
       if(collisionStep&&source!=='collisions'&&Number(collisionStep.value)!==maxPos){
         collisionStep.value=String(maxPos);
         collisionStep.dispatchEvent(new Event('change',{bubbles:true}));
+      }
+      if(source==='s2'||source==='s3'){
+        const travel=$('pp56Travel');
+        if(travel)travel.value=(Number(detail.step)||0)>=order.length?'100':'0';
+        try{window.PLEGAR_PRO_COLLISIONS?.refresh?.()}catch(e){}
       }
       const twinStep=$('pp59step');
       if(twinStep&&source!=='pp59'&&Number(twinStep.value)!==maxPos){
