@@ -15,6 +15,20 @@
       development:s.development?{thickness:s.development.thickness,material:s.development.material,kfactor:s.development.kfactor,bendLength:s.development.bendLength}:null
     })}catch(e){return ''}
   }
+  function normalizeWorkspace(){
+    const main=document.querySelector('main.main');
+    if(!main)return;
+    // All navigation pages are intended to be siblings directly inside the main workspace.
+    document.querySelectorAll('section.page').forEach(page=>{
+      if(page.parentElement!==main)main.appendChild(page);
+    });
+    const page=main.querySelector(':scope > section.page#program3d');
+    const twin=$('pp59Twin');
+    if(page&&twin&&!page.contains(twin)){
+      const host=page.querySelector('.grid')||page;
+      host.appendChild(twin);
+    }
+  }
   function activeEditor(){
     const el=document.activeElement;
     return !!el&&(/^(INPUT|SELECT|TEXTAREA)$/.test(el.tagName)||el.isContentEditable);
@@ -82,6 +96,9 @@
     if(installed)return;
     if(!getState()||typeof window.syncAll!=='function'){timer=window.setTimeout(init,350);return}
     installed=true;
+    normalizeWorkspace();
+    window.setTimeout(normalizeWorkspace,700);
+    window.setTimeout(normalizeWorkspace,1800);
     installSyncHook();
     lastFingerprint=fingerprint();
     document.addEventListener('focusout',()=>window.setTimeout(()=>{if(fingerprint()!==lastFingerprint)synchronize('editor-blur')},60),true);
@@ -89,13 +106,14 @@
       if(!e.target?.matches?.('input,select,textarea'))return;
       window.setTimeout(()=>{if(fingerprint()!==lastFingerprint)synchronize('field-change')},0);
     },true);
-    window.addEventListener('pageshow',()=>window.setTimeout(()=>synchronize('pageshow'),250));
+    window.addEventListener('pageshow',()=>window.setTimeout(()=>{normalizeWorkspace();synchronize('pageshow')},250));
     window.addEventListener('plegarpro:state-changed',()=>synchronize('state-event'));
     window.setInterval(check,650);
     window.PLEGAR_PRO_V61={
       installed:true,
       refresh:()=>synchronize('manual',true),
       audit:()=>({installed:true,stateAvailable:!!getState(),syncFunction:typeof window.syncAll==='function',fingerprint:!!fingerprint(),playback:auditPlayback()}),
+      workspace:{program3dIsMainPage:!!document.querySelector('main.main > section.page#program3d'),engineeringTwinMounted:!!document.querySelector('main.main > section.page#program3d #pp59Twin')},
       playback:auditPlayback
     };
     updateStatus();
