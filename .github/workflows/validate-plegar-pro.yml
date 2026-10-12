@@ -42,7 +42,7 @@ jobs:
           if (!toolDraw || !toolDraw.includes('function poly(points,col)') || /\biso\(/.test(toolDraw)) failures.push('CAD tooling renderer must use the defined poly() helper consistently');
           if (!collision.includes('tipY=top+4+travel*55')) failures.push('collision section punch travel formula missing');
           if (!collision.includes('const clearancePx=apexY-tipBottomY-sheetHalfPx') || !collision.includes("clearancePx<=2?'CONTACTO VISUAL'") || !collision.includes('projectedClearancePx:clearancePx') || !collision.includes('.pp56-status.danger')) failures.push('projected sheet/punch clearance indicator or warning style missing');
-          if (!collision.includes('function selectedToolAudit(b,v)') || !collision.includes('collisionSolidUsesCatalogProfile:false') || !collision.includes('PERFIL DE HERRAMIENTA NO APLICADO')) failures.push('collision view must audit selected tools and disclose that catalog profiles are not yet used by the collision solid');
+          if (!collision.includes('function selectedToolAudit(b,v)') || !collision.includes('collisionSolidUsesCatalogProfile:false') || !collision.includes('PERFIL PRINCIPAL ESQUEMÁTICO')) failures.push('collision view must audit selected tools and disclose that catalog profiles are not yet used by the collision solid');
           if (!collision.includes('const included=180-(180-ang)*travel') || !collision.includes('apexY=top+42+travel*25') || !collision.includes('ÁNGULO ACTUAL')) failures.push('programmed section bend must show progressive included-angle deformation');
           const assetBlock = sw.match(/const ASSETS=\[(.*?)\]/s);
           if (!assetBlock) failures.push('service worker asset list missing');
