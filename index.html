@@ -602,6 +602,16 @@ html body .nav button::after {pointer-events:none!important;mix-blend-mode:scree
 
 
 
+
+<style id="pp69-loader-scroll-lock">
+/* La pantalla de carga ocupa el viewport completo y no debe mostrar la barra lateral del documento. */
+html.pp69-loading,body.pp69-loading{height:100%!important;min-height:100%!important;overflow:hidden!important;overscroll-behavior:none!important}
+#loader{overflow:hidden!important;overscroll-behavior:none!important;scrollbar-width:none!important}
+#loader::-webkit-scrollbar,#loader *::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+#loader .loadBox{max-height:100dvh;overflow:hidden!important;overscroll-behavior:none!important}
+@media(max-height:520px){#loader .pp-loading{padding:8px!important}#loader .pp-emblem{width:min(24vh,120px)!important;margin-bottom:4px!important}#loader .loadBar{margin-top:8px!important}#loader .pp-loading-foot{margin-top:6px!important}}
+</style>
+<script id="pp69-loader-scroll-lock-init">(function(){function lock(){if(!document.getElementById('loader'))return;document.documentElement.classList.add('pp69-loading');document.body.classList.add('pp69-loading')}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lock,{once:true});else lock();window.addEventListener('pp:boot-complete',function(){document.documentElement.classList.remove('pp69-loading');document.body.classList.remove('pp69-loading')});})();</script>
 </head>
 <body>
 <div id="loader" aria-label="Cargando Plegar Pro">
@@ -2904,26 +2914,34 @@ html body #collisions .pp56-hmi-live {
 <script id="pp68-loader-emergency-release">
 (function(){
   'use strict';
-  var finished=false;
+  var finished=false, watchdog=0;
+  function unlockScroll(){document.documentElement.classList.remove('pp69-loading');document.body.classList.remove('pp69-loading');}
   function release(reason){
-    if(finished)return;
     var loader=document.getElementById('loader');
-    if(!loader)return;
-    finished=true;
-    document.body.classList.add('boot-complete');
-    loader.classList.add('hidden');
-    loader.setAttribute('aria-hidden','true');
-    loader.style.setProperty('display','none','important');
-    var state=document.getElementById('loadState');
-    if(state && reason) state.textContent=reason;
-    console.warn('[Plegar Pro] Pantalla de carga liberada por seguridad.');
+    if(!loader)return false;
+    if(!finished){
+      finished=true;
+      document.body.classList.add('boot-complete');
+      loader.classList.add('hidden');
+      loader.setAttribute('aria-hidden','true');
+      loader.style.setProperty('display','none','important');
+      var state=document.getElementById('loadState');
+      if(state && reason) state.textContent=reason;
+      unlockScroll();
+      window.dispatchEvent(new Event('pp:boot-complete'));
+      if(watchdog)clearTimeout(watchdog);
+      console.info('[Plegar Pro] Inicio liberado:',reason||'Programa abierto');
+    }
+    return true;
   }
-  // Independent watchdog: works even if the main boot script fails to initialize.
-  window.setTimeout(function(){release('Programa abierto con recuperación automática');},9000);
-  window.addEventListener('load',function(){window.setTimeout(function(){release('Programa abierto');},7000);},{once:true});
-  window.addEventListener('pageshow',function(){if(document.body.classList.contains('boot-complete'))release('Programa abierto');});
-  window.addEventListener('error',function(){window.setTimeout(function(){release('Programa abierto con recuperación automática');},1500);});
-  window.addEventListener('unhandledrejection',function(){window.setTimeout(function(){release('Programa abierto con recuperación automática');},1500);});
+  // Independiente del cargador principal; la app nunca debe quedar bloqueada por una animación.
+  function scheduleRelease(reason,delay){window.setTimeout(function(){release(reason)},delay||0)}
+  watchdog=window.setTimeout(function(){release('Programa abierto con recuperación automática');},5200);
+  window.addEventListener('load',function(){scheduleRelease('Programa abierto',5200);},{once:true});
+  window.addEventListener('pageshow',function(){if(document.body.classList.contains('boot-complete')){unlockScroll();release('Programa abierto')}});
+  window.addEventListener('error',function(){scheduleRelease('Programa abierto con recuperación automática',900)});
+  window.addEventListener('unhandledrejection',function(){scheduleRelease('Programa abierto con recuperación automática',900)});
+  if(document.readyState!=='loading'&&document.body.classList.contains('boot-complete')){unlockScroll();release('Programa abierto')}
 })();
 </script>
 </body></html>
