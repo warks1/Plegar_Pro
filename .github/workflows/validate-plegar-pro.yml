@@ -135,10 +135,15 @@ jobs:
             if (splashMs < 4800) throw new Error('Loading screen closed too early: ' + splashMs + 'ms');
             await page.waitForSelector('#pp59canvas', { state: 'attached', timeout: 10000 });
             await page.locator('[data-page="program3d"]').click();
-            await page.waitForFunction(() => {
-              const canvas = document.querySelector('#pp59canvas');
-              return canvas && canvas.getBoundingClientRect().width > 0 && !!canvas.getContext('2d');
-            }, null, { timeout: 10000 });
+            await page.waitForTimeout(350);
+            const program3dDebug = await page.evaluate(() => ({
+              activePages: [...document.querySelectorAll('.page.active')].map(e => e.id),
+              canvas: (() => { const c = document.querySelector('#pp59canvas'); if (!c) return null; const r = c.getBoundingClientRect(); return { width: r.width, height: r.height, parent: c.parentElement?.id || c.parentElement?.className, visible: getComputedStyle(c).display }; })(),
+              pp59: !!window.PLEGAR_PRO_V59,
+              pp58: window.PLEGAR_PRO_V58?.audit?.(),
+              pp61: window.PLEGAR_PRO_V61?.audit?.()
+            }));
+            if (!program3dDebug.canvas || program3dDebug.canvas.width <= 0) throw new Error('Programación 3D canvas not visible after navigation: ' + JSON.stringify(program3dDebug));
             await page.locator('[data-page="tooling"]').click();
             await page.waitForFunction(() => {
               const canvas = document.querySelector('#pp55ToolCanvas');
