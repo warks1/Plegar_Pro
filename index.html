@@ -548,6 +548,48 @@ input:focus,select:focus,textarea:focus{outline:1px solid rgba(52,214,255,.65);b
 @media(prefers-reduced-motion:reduce){.nav button::after,.nav button.active,.page.active .card{animation:none!important}.nav button,.btn,.quick button,.topbar button{transition:none!important}}
 </style>
 
+
+<style id="pp71-global-readable-info-panels">
+/* v71: normaliza todos los recuadros informativos de los módulos, no solo Programar. */
+html body .page .note,
+html body .page [class~="note"],
+html body .page [id*="Status"],html body .page [id*="status"],
+html body .page [class*="status"],html body .page [class*="Status"],
+html body .page .pp-status-strip,html body .page .pp-module-form,
+html body .page .pp56-hmi-live,html body .page .pp56-hmi-top,html body .page .pp56-hmi-rail,
+html body .page .pp-ai-panel,html body .page .pp-library-summary>div {
+  color:#16384d!important;
+  background-color:#f0f8fc!important;
+  background-image:linear-gradient(125deg,#fbfdff 0%,#e7f4fa 100%)!important;
+  border-color:#b7d5e4!important;
+  text-shadow:none!important;
+  opacity:1!important;
+}
+html body .page .note *,
+html body .page [id*="Status"] *,html body .page [id*="status"] *,
+html body .page [class*="status"] *,html body .page [class*="Status"] *,
+html body .page .pp-status-strip *,html body .page .pp-module-form *,
+html body .page .pp56-hmi-live *,html body .page .pp56-hmi-top *,html body .page .pp56-hmi-rail *,
+html body .page .pp-ai-panel *,html body .page .pp-library-summary>div * {
+  color:#16384d!important;text-shadow:none!important;
+}
+html body .page .note button,html body .page [id*="Status"] button,
+html body .page [id*="status"] button,html body .page [class*="status"] button,
+html body .page .pp-module-form button,html body .page .pp56-hmi-top button,
+html body .page .pp56-hmi-rail button {
+  color:#fff!important;background:#075a78!important;
+}
+html body .page .stage .overlay,html body .page .stage .overlay * {
+  color:#16384d!important;text-shadow:none!important;
+}
+html body .page .stage .overlay {
+  background:linear-gradient(145deg,rgba(251,254,255,.99),rgba(226,244,251,.99))!important;
+  border-color:#8bbbd0!important;
+}
+/* El barrido del menú queda detrás del texto, sin interceptar clics. */
+html body .nav button::after {pointer-events:none!important;mix-blend-mode:screen}
+</style>
+
 </head>
 <body>
 <div id="loader" aria-label="Cargando Plegar Pro">
