@@ -26,7 +26,7 @@ jobs:
           grep -Fq './pp60-graphics-runtime.js' sw.js
           grep -Fq './pp61-runtime-integrity.js' sw.js
           grep -Fq './pp59-engineering-upgrade.js' sw.js
-          grep -Fq "plegar-pro-v107-0" sw.js
+          grep -Fq "plegar-pro-v108-0" sw.js
           grep -Fq 'id="pp70-startup-rescue"' index.html
           grep -Fq '#loader .side,#loader .sidebar,#loader .nav,#loader .mobileMenuBtn{display:none!important}' index.html
           grep -Fq "e.request.mode==='navigate'?caches.match('./index.html'):Response.error()" sw.js
@@ -98,7 +98,7 @@ jobs:
           if (!v59.includes('function executionOrder()') || !v59.includes('heading-=(Number(q.direction)||1)')) failures.push('v59 playback must consume the assigned execution order and fold toward the die');
           if (!html.includes('function ppExecutionRank(i)') || !html.includes('ppExecutionRank(i)<step')) failures.push('core 2D/3D playback must read the assigned order directly');
           if (engineering.includes('drawSelectedMarkers()') || !engineering.includes('drawFoldNumbers()')) failures.push('v54 drawing hook must call the existing fold marker renderer, not an undefined function');
-          if (!collision.includes('function profileModel(progressStep=Infinity,progressTravel=1)') || !collision.includes('const model=profileModel(step,travel)') || !collision.includes('rank===progressStep?Math.max(0,Math.min(1,progressTravel)):0')) failures.push('collision sheet must use the shared programmed profile and assigned fold order');
+          if (!collision.includes('function profileModel(progressStep=Infinity,progressTravel=1)') || !collision.includes('const model=profileModelPhysical(step,travel,toolAudit,v)') || !collision.includes('function profileModelPhysical(progressStep=Infinity,progressTravel=1,toolAudit={},v=16)') || !collision.includes('bendIndex:i') || !collision.includes('rank===progressStep?Math.max(0,Math.min(1,progressTravel)):0')) failures.push('collision sheet must use the shared programmed profile and assigned fold order');
           if (!html.includes('@media(max-width:560px)') || !html.includes('.app{grid-template-columns:minmax(0,1fr)}')) failures.push('responsive mobile layout rules missing');
           const runtime = read('pp61-runtime-integrity.js');
           if (!html.includes("if((Number(sim[key+'Step'])||0)>=maxStep)sim[key+'Step']=0")) failures.push('2D/3D playback must restart at the beginning after reaching the final fold');
@@ -115,7 +115,7 @@ jobs:
           if (!runtime.includes('if(detail.complete)pos=Math.max(0,order.length-1)')) failures.push('playback synchronizer must handle the final completed fold');
           if (!system.includes("el.id='pp58SyncStatus-'+id") || !system.includes("el.dataset.pp58SyncStatus='true'")) failures.push('module sync indicators must use unique IDs and shared data marker');
           if (system.includes("el.id='pp58SyncStatus';")) failures.push('duplicate synchronization status IDs remain');
-          if (!sw.includes('plegar-pro-v107-0')) failures.push('service worker cache was not bumped for runtime repairs');
+          if (!sw.includes('plegar-pro-v108-0')) failures.push('service worker cache was not bumped for runtime repairs');
           if (html.indexOf('./pp57-system-integration.js') > html.indexOf('./pp59-engineering-upgrade.js')) {
             failures.push('v59 must load after the existing system integration module');
           }
