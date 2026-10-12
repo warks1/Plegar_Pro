@@ -2714,27 +2714,21 @@ html body #collisions .pp56-hmi-live {
 <script id="pp67-banner-contrast-runtime">
 (function(){
   const roots = '.page [class*="banner"],.page [class*="Banner"],.page [class*="hero"],.page [class*="Hero"],.page .banner,.page .hero,#collisions .pp56-hmi-top,#collisions .pp56-hmi-rail,#collisions .pp56-hmi-live,#collisions [class*="banner"],#collisions [class*="Banner"],#collisions [class*="hero"],#collisions [class*="Hero"]';
+  function set(el,prop,value){
+    if(el.style.getPropertyValue(prop)!==value || el.style.getPropertyPriority(prop)!=='important') el.style.setProperty(prop,value,'important');
+  }
   function fixBannerContrast(){
     document.querySelectorAll(roots).forEach(el=>{
-      el.style.setProperty('background','#eef7fc','important');
-      el.style.setProperty('background-image','linear-gradient(115deg,#f8fcff,#e4f3fa)','important');
-      el.style.setProperty('color','#123349','important');
-      el.style.setProperty('border-color','#b7d5e4','important');
-      el.style.setProperty('text-shadow','none','important');
+      set(el,'background','#eef7fc');
+      set(el,'background-image','linear-gradient(115deg, #f8fcff, #e4f3fa)');
+      set(el,'color','#123349'); set(el,'border-color','#b7d5e4'); set(el,'text-shadow','none');
       el.querySelectorAll('*').forEach(child=>{
         if(child.matches('button,input,select,textarea,[role="button"]')) return;
-        child.style.setProperty('color','#123349','important');
-        child.style.setProperty('text-shadow','none','important');
+        set(child,'color','#123349'); set(child,'text-shadow','none');
       });
-      el.querySelectorAll('button,[role="button"]').forEach(btn=>{
-        btn.style.setProperty('background','#075a78','important');
-        btn.style.setProperty('color','#ffffff','important');
-      });
+      el.querySelectorAll('button,[role="button"]').forEach(btn=>{set(btn,'background','#075a78');set(btn,'color','#ffffff');});
     });
-    document.querySelectorAll('#collisions .pp56-hmi-live').forEach(el=>{
-      el.style.setProperty('background','#d9f3e8','important');
-      el.style.setProperty('color','#14533e','important');
-    });
+    document.querySelectorAll('#collisions .pp56-hmi-live').forEach(el=>{set(el,'background','#d9f3e8');set(el,'color','#14533e');});
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fixBannerContrast,{once:true}); else fixBannerContrast();
   const observer=new MutationObserver(()=>fixBannerContrast());
