@@ -410,6 +410,36 @@ input:focus,select:focus,textarea:focus{outline:1px solid rgba(52,214,255,.65);b
 #dashboard .card:first-child h2{font-size:18px}
 #dashboard .card:first-child h2:after{content:"WORKSPACE · AMS";margin-left:auto;font-size:9px;letter-spacing:.16em;color:#5c879e;font-weight:600}
 #loader{background:radial-gradient(ellipse at 50% 45%,#132b3b 0%,#08131d 44%,#050a10 100%)}
+
+/* Navegación con iconografía reconocible y acentos por módulo */
+.nav button:before{width:19px;height:19px;flex:0 0 19px;border:0;border-radius:6px;transform:none;background:rgba(52,214,255,.08);display:inline-grid;place-items:center;font-size:13px;line-height:1;box-shadow:inset 0 0 0 1px rgba(52,214,255,.08)}
+.nav button.active:before{background:rgba(52,214,255,.14);box-shadow:inset 0 0 0 1px rgba(52,214,255,.2);filter:saturate(1.25)}
+.nav button[data-page="dashboard"]:before{content:"⌂";color:#55dfff}
+.nav button[data-page="import"]:before{content:"↥";color:#a5a0ff}
+.nav button[data-page="technical"]:before{content:"⚙";color:#9bc7ff}
+.nav button[data-page="program"]:before{content:"▤";color:#62e8c1}
+.nav button[data-page="program2d"]:before{content:"⌗";color:#5de1ff}
+.nav button[data-page="program3d"]:before{content:"◇";color:#ffbd66}
+.nav button[data-page="sim2d"]:before{content:"◫";color:#64e2d1}
+.nav button[data-page="sim3d"]:before{content:"◈";color:#8ab5ff}
+.nav button[data-page="collisions"]:before{content:"⚠";color:#ff9a8a}
+.nav button[data-page="development"]:before{content:"⌁";color:#b2a0ff}
+.nav button[data-page="devcalculator"]:before{content:"∑";color:#67dfbc}
+.nav button[data-page="curve"]:before{content:"∿";color:#ffbf70}
+.nav button[data-page="vcompare"]:before{content:"▽";color:#66dfff}
+.nav button[data-page="engineering"]:before{content:"⚒";color:#ffca7a}
+.nav button[data-page="machineTwin"]:before{content:"▣";color:#69e3ff}
+.nav button[data-page="tooling"]:before{content:"⚒";color:#d2b0ff}
+.nav button[data-page="ai"]:before{content:"✧";color:#7fe6bc}
+.nav button[data-page="office"]:before{content:"▦";color:#8db9ff}
+.nav button[data-page="plans"]:before{content:"▧";color:#ffc67b}
+.nav button[data-page="clients"]:before{content:"♙";color:#73e0cf}
+.nav button[data-page="quotes"]:before{content:"€";color:#8ce5aa}
+.nav button[data-page="materials"]:before{content:"▤";color:#91c8ff}
+.nav button[data-page="production"]:before{content:"⚙";color:#ffc16b}
+.nav button[data-page="workorders"]:before{content:"☷";color:#8de2ff}
+.nav button:hover:before{filter:brightness(1.3) drop-shadow(0 0 5px currentColor)}
+
 @media(max-width:900px){.app{grid-template-columns:230px minmax(0,1fr)}.main{padding:16px}.topbar{margin:-16px -16px 20px;padding:11px 16px}}
 @media(max-width:700px){.app{grid-template-columns:minmax(0,1fr)}.side{box-shadow:18px 0 45px rgba(0,0,0,.4)}.main{padding:12px}.topbar{margin:-12px -12px 17px;padding:10px 12px;align-items:flex-start}.heading h1{font-size:22px}.card{padding:14px}.quick button{min-height:84px!important}}
 @media(prefers-reduced-motion:reduce){.page.active{animation:none!important}.nav button,.card,.quick button{transition:none!important}}
