@@ -282,7 +282,9 @@ jobs:
               sim.s2Step = 0; sim.s3Step = 0; drawAll();
               const play = document.querySelector('#s2Play'), pause = document.querySelector('#s2Pause');
               if (!play || !pause || typeof play.onclick !== 'function') return { error: 'Core 2D playback controls missing' };
-              play.click(); await new Promise(r => setTimeout(r, 280));
+              play.click();
+              const advanceDeadline = Date.now() + 1800;
+              while (sim.s2Step < 1 && Date.now() < advanceDeadline) await new Promise(r => setTimeout(r, 40));
               const advanced = sim.s2Step;
               pause.click(); const held = sim.s2Step;
               await new Promise(r => setTimeout(r, 180)); const paused = sim.s2Step;
@@ -291,7 +293,7 @@ jobs:
               while (sim.s2Step <= paused && Date.now() < resumeDeadline) await new Promise(r => setTimeout(r, 40));
               const resumed = sim.s2Step;
               pause.click();
-              return { advanced, held, paused, resumed, advanceOk: advanced > 0, pauseOk: paused === held, resumeOk: resumed > paused, crossModuleOk: sim.s2Step === sim.s3Step };
+              return { advanced, held, paused, resumed, bendCount: state.bends.length, maxStep: Math.max(0,state.bends.length-1), timerActive: !!sim.s2Timer, advanceOk: advanced > 0, pauseOk: paused === held, resumeOk: resumed > paused, crossModuleOk: sim.s2Step === sim.s3Step };
             });
             if (corePlayback.error || !corePlayback.advanceOk || !corePlayback.pauseOk || !corePlayback.resumeOk || !corePlayback.crossModuleOk) throw new Error('Core 2D/3D playback or cross-module step sync failed: ' + JSON.stringify(corePlayback));
             await page.locator('[data-page="collisions"]').click();
