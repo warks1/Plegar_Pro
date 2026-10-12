@@ -26,8 +26,8 @@
       el.dataset.syncOk='true';
     });
   }
-  function synchronize(reason){
-    if(syncing||activeEditor())return false;
+  function synchronize(reason,force){
+    if(syncing||(!force&&activeEditor()))return false;
     const fn=window.syncAll;
     if(typeof fn!=='function')return false;
     syncing=true;
@@ -94,7 +94,7 @@
     window.setInterval(check,650);
     window.PLEGAR_PRO_V61={
       installed:true,
-      refresh:()=>synchronize('manual'),
+      refresh:()=>synchronize('manual',true),
       audit:()=>({installed:true,stateAvailable:!!getState(),syncFunction:typeof window.syncAll==='function',fingerprint:!!fingerprint(),playback:auditPlayback()}),
       playback:auditPlayback
     };
