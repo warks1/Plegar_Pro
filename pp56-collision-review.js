@@ -152,25 +152,39 @@ function refreshPunchOptions(){const sel=$('pp56PunchSelect');if(!sel)return;con
  }
  // V-die with two inclined faces and a deep, high-contrast throat.
  if(visible.die){
+  if(Array.isArray(toolAudit.die?.profilePointsMm)&&toolAudit.die.profilePointsMm.length>=3){
+   const prof=toolAudit.die.profilePointsMm,sc=3.2,front=prof.map(p=>({x:Number(p.x)*sc,y:base+4+Number(p.y)*sc,z:-70})),back=prof.map(p=>({x:Number(p.x)*sc,y:base+4+Number(p.y)*sc,z:70}));
+   face(front,'#236b8d','#164c68');face(back,'#1a5a79','#164c68');
+   for(let q=0;q<front.length;q++){const n=(q+1)%front.length;face([front[q],front[n],back[n],back[q]],q%2?'#1a5a79':'#4595b5','#164c68')}
+   line(x,w,h,front.concat([front[0]]),'#bdeeff',3);
+  }else{
   face([{x:-330,y:base+4,z:-70},{x:330,y:base+4,z:-70},{x:330,y:base+24,z:70},{x:-330,y:base+24,z:70}],'#236b8d');
   face([{x:-330,y:base+4,z:-70},{x:-dieHalf3D,y:base+4,z:-70},{x:0,y:base+4-dieDepth3D,z:0},{x:-330,y:base+24,z:70}],'#4595b5','#2c6f8e');
   face([{x:dieHalf3D,y:base+4,z:-70},{x:330,y:base+4,z:-70},{x:330,y:base+24,z:70},{x:0,y:base+4-dieDepth3D,z:0}],'#1a5a79','#164c68');
   line(x,w,h,[{x:-dieHalf3D,y:base+4,z:-70},{x:0,y:base+4-dieDepth3D,z:0},{x:dieHalf3D,y:base+4,z:-70}],'#103d55',8);
   line(x,w,h,[{x:-330,y:base+4,z:-70},{x:-dieHalf3D,y:base+4,z:-70},{x:0,y:base+4-dieDepth3D,z:0},{x:dieHalf3D,y:base+4,z:-70},{x:330,y:base+4,z:-70}],'#bdeeff',3);
- }
- // Moving ram and a distinct punch tip. The travel closes toward the die.
+
+  }
+ } // Moving ram and a distinct punch tip. The travel closes toward the die.
  if(visible.ram){
   face([{x:-350,y:py+45,z:-80},{x:350,y:py+45,z:-80},{x:350,y:py+95,z:80},{x:-350,y:py+95,z:80}],'#7795a7');
   face([{x:-350,y:py+95,z:-80},{x:350,y:py+95,z:-80},{x:350,y:py+95,z:80},{x:-350,y:py+95,z:80}],'#d5e1e8');
  }
  if(visible.punch){
+  if(Array.isArray(toolAudit.punch?.profilePointsMm)&&toolAudit.punch.profilePointsMm.length>=3){
+   const prof=toolAudit.punch.profilePointsMm,sc=3.2,tipY3d=py-104,front=prof.map(p=>({x:Number(p.x)*sc,y:tipY3d+Number(p.y)*sc,z:-48})),back=prof.map(p=>({x:Number(p.x)*sc,y:tipY3d+Number(p.y)*sc,z:48}));
+   face(front,'#d18a37','#a96624');face(back,'#efb45d','#a96624');
+   for(let q=0;q<front.length;q++){const n=(q+1)%front.length;face([front[q],front[n],back[n],back[q]],q%2?'#d18a37':'#efb45d','#a96624')}
+   line(x,w,h,front.concat([front[0]]),'#fff0ce',2);
+  }else{
   face([{x:-300,y:py+42,z:-48},{x:300,y:py+42,z:-48},{x:300,y:py+72,z:48},{x:-300,y:py+72,z:48}],'#bb772f');
   face([{x:-300,y:py+42,z:-48},{x:300,y:py+42,z:-48},{x:220,y:py-12,z:0},{x:-220,y:py-12,z:0}],'#efb45d','#b87932');
   face([{x:-220,y:py-12,z:0},{x:220,y:py-12,z:0},{x:tipHalf3D,y:py-94,z:0},{x:-tipHalf3D,y:py-94,z:0}],'#d18a37','#a96624');
   line(x,w,h,[{x:-tipHalf3D,y:py-94,z:0},{x:-tipRadius3D,y:py-100,z:0},{x:0,y:py-104,z:0},{x:tipRadius3D,y:py-100,z:0},{x:tipHalf3D,y:py-94,z:0}],'#fff2d5',4);
   line(x,w,h,[{x:-300,y:py+42,z:-48},{x:-220,y:py-12,z:0},{x:-tipHalf3D,y:py-94,z:0},{x:-tipRadius3D,y:py-100,z:0},{x:0,y:py-104,z:0},{x:tipRadius3D,y:py-100,z:0},{x:tipHalf3D,y:py-94,z:0},{x:220,y:py-12,z:0},{x:300,y:py+42,z:-48}],'#fff0ce',2);
- }
- if(visible.stops){[-1,1].forEach(s=>{face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base+18,z:-175},{x:s*255,y:base+18,z:-175}],'#4c687a');face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base-15,z:-120},{x:s*255,y:base-15,z:-120}],'#9db3bf')})}
+
+  }
+ } if(visible.stops){[-1,1].forEach(s=>{face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base+18,z:-175},{x:s*255,y:base+18,z:-175}],'#4c687a');face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base-15,z:-120},{x:s*255,y:base-15,z:-120}],'#9db3bf')})}
  // Bent sheet profile and thickness rendered as a bright metal edge.
  const model=profileModelPhysical(step,travel,toolAudit,v),minX=Math.min(...model.map(p=>p.x)),maxX=Math.max(...model.map(p=>p.x)),minY=Math.min(...model.map(p=>p.y)),maxY=Math.max(...model.map(p=>p.y)),fit=Math.min(520/Math.max(1,maxX-minX),1.2),sy=base+4,offsetX=-(minX+maxX)*fit/2;const sheet=model.map(p=>({x:offsetX+p.x*fit,y:sy-p.y*fit,z:0}));
  line(x,w,h,sheet,'#426b7e',Math.max(14,Math.min(22,t*2.8)));line(x,w,h,sheet,'#f5fdff',Math.max(8,Math.min(14,t*1.6)));line(x,w,h,sheet,'#19b9e8',3);
@@ -216,7 +230,7 @@ function refreshPunchOptions(){const sel=$('pp56PunchSelect');if(!sel)return;con
   const hits=[...new Set([...geomCheck.punchInterferenceSegments,...geomCheck.dieInterferenceSegments])];
   st.textContent=(hits.length?'INTERFERENCIA ESTIMADA CON ALAS PREVIAMENTE PLEGADAS · segmentos '+hits.map(i=>'P'+(i+1)).join(', '):'SIN INTERFERENCIA DETECTADA ENTRE ALAS PREVIAMENTE PLEGADAS EN ESTE MODELO')+' · Holgura visual '+clearancePx.toFixed(1)+' px. Motor geométrico en mm: '+geomCheck.method+'. El contacto del pliegue activo sigue siendo solo visual. '+(geomCheck.officialGeometry?'Perfiles marcados verificados.':'Perfiles orientativos; validar cotas reales antes de fabricar.')+' No es una simulación 3D CAD completa ni una certificación de seguridad.';
  }
- if(S())S().collisionReview={step:step,foldIndex:idx,travel:travel,parts:{...visible},camera:camera,projectedClearancePx:clearancePx,visualContactState:contactState,toolAudit:{punch:toolAudit.punchLabel,die:toolAudit.dieLabel,punchAngle:punchAngle,punchRadius:punchRadius,punchVerified:toolAudit.punchVerified,dieVerified:toolAudit.dieVerified,punchAmbiguous:toolAudit.punchAmbiguous,punchCandidateCount:toolAudit.punchCandidateCount,dieAmbiguous:toolAudit.dieAmbiguous,dieCandidateCount:toolAudit.dieCandidateCount,collisionSolidUsesCatalogProfile:false},collisionCertification:false,dimensionalCollisionEngine:true,collisionGeometry:geomCheck,collisionModelUnit:'mm',priorFoldInterference:geomCheck.priorFoldInterference};
+ if(S())S().collisionReview={step:step,foldIndex:idx,travel:travel,parts:{...visible},camera:camera,projectedClearancePx:clearancePx,visualContactState:contactState,toolAudit:{punch:toolAudit.punchLabel,die:toolAudit.dieLabel,punchAngle:punchAngle,punchRadius:punchRadius,punchVerified:toolAudit.punchVerified,dieVerified:toolAudit.dieVerified,punchAmbiguous:toolAudit.punchAmbiguous,punchCandidateCount:toolAudit.punchCandidateCount,dieAmbiguous:toolAudit.dieAmbiguous,dieCandidateCount:toolAudit.dieCandidateCount,collisionSolidUsesCatalogProfile:!!(toolAudit.punch?.profilePointsMm||toolAudit.die?.profilePointsMm)},collisionCertification:false,dimensionalCollisionEngine:true,collisionGeometry:geomCheck,collisionModelUnit:'mm',priorFoldInterference:geomCheck.priorFoldInterference};
 }
 function setStep(n){const o=seq(),a=bs(),previousStep=step;step=Math.max(0,Math.min(Math.max(0,o.length-1),n));const idx=o[step]??0,b=a[idx]||{};if($('pp56Step'))$('pp56Step').value=String(step);refreshPunchOptions();refreshDieOptions();$('pp56StepNum').textContent=(step+1)+' / '+Math.max(1,o.length);$('pp56Fold').textContent='P'+(idx+1);$('pp56Angle').textContent=(Number(b.angle)||90)+'°';$('pp56Th').textContent=th().toFixed(2)+' mm';if($('pp56HmiStep'))$('pp56HmiStep').textContent=String(step+1).padStart(2,'0')+' / '+String(Math.max(1,o.length)).padStart(2,'0');if($('pp56HmiFold'))$('pp56HmiFold').textContent='P'+(idx+1);if($('pp56HmiAngle'))$('pp56HmiAngle').textContent=(Number(b.angle)||90)+'°';if($('pp56HmiV'))$('pp56HmiV').textContent='V'+Math.max(6,Number(b.v||S()?.project?.selectedV||16));if($('pp56HmiThickness'))$('pp56HmiThickness').textContent=th().toFixed(2)+' mm';if(S()){S().bendOrder=o.slice();try{if(typeof sim!=='undefined'&&sim){sim.p3Active=idx;sim.s2Step=step;sim.s3Step=step;if($('p3Active'))$('p3Active').value=String(idx);if(typeof loadP3Fields==='function')loadP3Fields()}}catch(e){}}try{if(typeof drawAll==='function')drawAll()}catch(e){}drawCollision();if(previousStep!==step)window.dispatchEvent(new CustomEvent('plegarpro:playback-step',{detail:{source:'collisions',step:step,foldIndex:idx}}))}
 function refreshSteps(){const sel=$('pp56Step');if(!sel)return;const o=seq(),a=bs();sel.dataset.sequence=o.join(',');sel.innerHTML=o.map((idx,i)=>'<option value="'+i+'">PASO '+(i+1)+' · P'+(idx+1)+' · '+(Number(a[idx]?.angle)||90)+'° · ala '+(Number(a[idx]?.leg)||50)+' mm</option>').join('')||'<option value="0">Añade pliegues al programa</option>';setStep(step)}
