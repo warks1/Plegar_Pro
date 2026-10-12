@@ -26,7 +26,7 @@ jobs:
           grep -Fq './pp60-graphics-runtime.js' sw.js
           grep -Fq './pp61-runtime-integrity.js' sw.js
           grep -Fq './pp59-engineering-upgrade.js' sw.js
-          grep -Fq "plegar-pro-v97-0" sw.js
+          grep -Fq "plegar-pro-v98-0" sw.js
           grep -Fq 'id="pp70-startup-rescue"' index.html
           grep -Fq '#loader .side,#loader .sidebar,#loader .nav,#loader .mobileMenuBtn{display:none!important}' index.html
           grep -Fq "e.request.mode==='navigate'?caches.match('./index.html'):Response.error()" sw.js
@@ -56,8 +56,8 @@ jobs:
           const toolDraw = cad.slice(cad.indexOf('function drawTool()'), cad.indexOf('\nfunction ', cad.indexOf('function drawTool()') + 10) > -1 ? cad.indexOf('\nfunction ', cad.indexOf('function drawTool()') + 10) : undefined);
           if (!toolDraw || !toolDraw.includes('function poly(points,col)') || /\biso\(/.test(toolDraw)) failures.push('CAD tooling renderer must use the defined poly() helper consistently');
           if (!collision.includes('tipY=top+4+travel*55')) failures.push('collision section punch travel formula missing');
-          if (!collision.includes('const clearancePx=apexY-tipBottomY-sheetHalfPx') || !collision.includes("clearancePx<=2?'CONTACTO VISUAL'") || !collision.includes('projectedClearancePx:clearancePx') || !collision.includes('.pp56-status.danger')) failures.push('projected sheet/punch clearance indicator or warning style missing');
-          if (!collision.includes('function selectedToolAudit(b,v)') || !collision.includes('collisionSolidUsesCatalogProfile:false') || !collision.includes('PERFIL PRINCIPAL ESQUEMÁTICO')) failures.push('collision view must audit selected tools and disclose that catalog profiles are not yet used by the collision solid');
+          if (!collision.includes('const clearancePx=apexY-tipBottomY-sheetHalfPx') || !collision.includes("clearancePx<0?'SOLAPAMIENTO PROYECTADO'") || !collision.includes('projectedClearancePx:clearancePx') || !collision.includes("clearancePx<0?'danger':'warn'")) failures.push('projected clearance indicator must preserve signed overlap and never imply verified safety');
+          if (!collision.includes('function selectedToolAudit(b,v)') || !collision.includes('collisionSolidUsesCatalogProfile:false') || !collision.includes('PERFIL PRINCIPAL ESQUEMÁTICO') || !collision.includes('dieAmbiguous:!die&&dieMatches.length>1')) failures.push('collision view must disclose schematic geometry and avoid arbitrary die selection when several catalog records match');
           if (!collision.includes('const included=180-(180-ang)*travel') || !collision.includes('apexY=top+42+travel*25') || !collision.includes('ÁNGULO ACTUAL')) failures.push('programmed section bend must show progressive included-angle deformation');
           const assetBlock = sw.match(/const ASSETS=\[(.*?)\]/s);
           if (!assetBlock) failures.push('service worker asset list missing');
@@ -114,7 +114,7 @@ jobs:
           if (!runtime.includes('if(detail.complete)pos=Math.max(0,order.length-1)')) failures.push('playback synchronizer must handle the final completed fold');
           if (!system.includes("el.id='pp58SyncStatus-'+id") || !system.includes("el.dataset.pp58SyncStatus='true'")) failures.push('module sync indicators must use unique IDs and shared data marker');
           if (system.includes("el.id='pp58SyncStatus';")) failures.push('duplicate synchronization status IDs remain');
-          if (!sw.includes('plegar-pro-v97-0')) failures.push('service worker cache was not bumped for runtime repairs');
+          if (!sw.includes('plegar-pro-v98-0')) failures.push('service worker cache was not bumped for runtime repairs');
           if (html.indexOf('./pp57-system-integration.js') > html.indexOf('./pp59-engineering-upgrade.js')) {
             failures.push('v59 must load after the existing system integration module');
           }
@@ -213,7 +213,7 @@ jobs:
               return { flat, bent, statusFlat, statusBent };
             });
             if (travelFrames.flat === travelFrames.bent) throw new Error('Collision sheet image did not change with ram travel');
-            if (!travelFrames.statusFlat.includes('SIN CONTACTO VISUAL') || !travelFrames.statusBent.includes('CONTACTO VISUAL en la sección') || travelFrames.statusBent.includes('SIN CONTACTO VISUAL')) throw new Error('Projected punch-sheet proximity status did not change with ram travel: ' + JSON.stringify({ flat: travelFrames.statusFlat, bent: travelFrames.statusBent }));
+            if (!travelFrames.statusFlat.includes('SIN CONTACTO VISUAL · NO VERIFICADO') || !travelFrames.statusBent.includes('SEPARACIÓN VISUAL BAJA') || !travelFrames.statusBent.includes('no equivale a mm')) throw new Error('Projected proximity status did not change conservatively with ram travel: ' + JSON.stringify({ flat: travelFrames.statusFlat, bent: travelFrames.statusBent }));
             await page.waitForFunction(() => !!window.PLEGAR_PRO_V61?.installed, null, { timeout: 10000 });
             await page.evaluate(() => {
               state.bendOrder = [1, 2, 0];
