@@ -201,7 +201,7 @@ jobs:
             const contrastAudit = await page.evaluate(() => {
               const targets = [...document.querySelectorAll('#collisions .pp56-hmi-top,#collisions .pp56-hmi-rail,#collisions .pp56-hmi-live,#collisions #pp56Status')];
               const lum = value => {
-                const rgb = String(value).match(/[\\d.]+/g)?.slice(0,3).map(Number) || [0,0,0];
+                const rgb = String(value).match(/[0-9.]+/g)?.slice(0,3).map(Number) || [0,0,0];
                 const linear = rgb.map(v => { v /= 255; return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; });
                 return .2126 * linear[0] + .7152 * linear[1] + .0722 * linear[2];
               };
