@@ -26,7 +26,7 @@ jobs:
           grep -Fq './pp60-graphics-runtime.js' sw.js
           grep -Fq './pp61-runtime-integrity.js' sw.js
           grep -Fq './pp59-engineering-upgrade.js' sw.js
-          grep -Fq "plegar-pro-v112-0" sw.js
+          grep -Fq "plegar-pro-v113-0" sw.js
           grep -Fq 'id="pp70-startup-rescue"' index.html
           grep -Fq '#loader .side,#loader .sidebar,#loader .nav,#loader .mobileMenuBtn{display:none!important}' index.html
           grep -Fq "e.request.mode==='navigate'?caches.match('./index.html'):Response.error()" sw.js
@@ -93,7 +93,7 @@ jobs:
           for (const id of ['pp58DbCard', 'pp58Office', 'pp58TwinCard']) {
             if (!system.includes(id)) failures.push('system module missing integration anchor ' + id);
           }
-          for (const token of ['function savePrefs()', 'prefs.camera=v', 'prefs.zoom=zoom', 'prefs.step=', 'prefs.yaw=yaw', 'prefs.pitch=pitch', 'syncStepOptions()', 'pp59collisions', 'framePending=false', 'function scheduleTick()', 'pausedCycle=0', 'function executionOrder()', 'order=executionOrder()', 'heading-=(Number(q.direction)||1)', 'PASO ']) {
+          for (const token of ['function savePrefs()', 'prefs.camera=v', 'prefs.zoom=zoom', 'prefs.step=', 'prefs.yaw=yaw', 'prefs.pitch=pitch', 'syncStepOptions()', 'pp59collisions', 'frameHandle=0', 'function scheduleTick()', 'pausedCycle=0', 'function executionOrder()', 'order=executionOrder()', 'heading-=(Number(q.direction)||1)', 'PASO ']) {
             if (!v59.includes(token)) failures.push('v59 missing expected persistence hook: ' + token);
           }
           if (!v59.includes('function executionOrder()') || !v59.includes('heading-=(Number(q.direction)||1)')) failures.push('v59 playback must consume the assigned execution order and fold toward the die');
@@ -116,11 +116,13 @@ jobs:
           if (!runtime.includes('if(detail.complete)pos=Math.max(0,order.length-1)')) failures.push('playback synchronizer must handle the final completed fold');
           if (!system.includes("el.id='pp58SyncStatus-'+id") || !system.includes("el.dataset.pp58SyncStatus='true'")) failures.push('module sync indicators must use unique IDs and shared data marker');
           if (system.includes("el.id='pp58SyncStatus';")) failures.push('duplicate synchronization status IDs remain');
-          if (!sw.includes('plegar-pro-v112-0')) failures.push('service worker cache was not bumped for runtime repairs');
+          if (!sw.includes('plegar-pro-v113-0')) failures.push('service worker cache was not bumped for runtime repairs');
           if (html.indexOf('./pp57-system-integration.js') > html.indexOf('./pp59-engineering-upgrade.js')) {
             failures.push('v59 must load after the existing system integration module');
           }
-          if (failures.length) {
+          if (!fs.readFileSync('pp56-collision-review.js','utf8').includes('function parseDxfProfile') || !fs.readFileSync('pp56-collision-review.js','utf8').includes('pp56ProfileImport')) failures.push('DXF dimensional profile import is missing');
+if (!fs.readFileSync('index.html','utf8').includes('UKB-25304') || !fs.readFileSync('index.html','utf8').includes('profileDownloadUrl')) failures.push('UKB DXF reference catalogue is missing');
+if (failures.length) {
             console.error(failures.join('\\n'));
             process.exit(1);
           }
