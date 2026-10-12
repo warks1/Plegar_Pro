@@ -135,7 +135,7 @@ function drawCollision(){
  const st=$('pp56Status');
  if(st){
   st.className='pp56-status '+(clearancePx<=2?'danger':clearancePx<=8?'warn':'ok');
-  st.textContent=contactState+' en sección 2D (holgura proyectada: '+clearancePx.toFixed(1)+' px). Utillaje: '+(toolAudit.punch?'punzón vinculado':'punzón sin ficha coincidente')+'; '+(toolAudit.die?'matriz vinculada por V':'matriz sin ficha coincidente')+'. El sólido dibujado aún no usa los perfiles de catálogo; no es una detección CAD dimensional ni una certificación de seguridad.';
+  st.textContent=contactState+' en la sección 2D (holgura proyectada: '+clearancePx.toFixed(1)+' px). Utillaje: '+(toolAudit.punch?'punzón vinculado':'punzón sin ficha coincidente')+'; '+(toolAudit.die?'matriz vinculada por V':'matriz sin ficha coincidente')+'. El sólido dibujado aún no usa los perfiles de catálogo; no es una detección CAD dimensional ni una certificación de seguridad.';
  }
  if(S())S().collisionReview={step:step,foldIndex:idx,travel:travel,parts:{...visible},camera:camera,projectedClearancePx:clearancePx,visualContactState:contactState,toolAudit:{punch:toolAudit.punchLabel,die:toolAudit.dieLabel,punchVerified:toolAudit.punchVerified,dieVerified:toolAudit.dieVerified,collisionSolidUsesCatalogProfile:false},collisionCertification:false,dimensionalCollisionEngine:false};
 }
