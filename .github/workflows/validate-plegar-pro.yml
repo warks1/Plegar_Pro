@@ -330,7 +330,7 @@ if (failures.length) {
             await page.locator('[data-page="collisions"]').click();
             await page.waitForFunction(() => document.querySelector('#collisions')?.classList.contains('active'), null, { timeout: 10000 });
 
-                        const sequenceAudit = await page.evaluate(() => {
+            const sequenceAudit = await page.evaluate(() => {
             const originalBends = state.bends, originalOrder = state.bendOrder;
             const samples = {
             U: [{leg:50,angle:90,direction:1},{leg:80,angle:90,direction:-1},{leg:80,angle:90,direction:-1},{leg:50,angle:90,direction:1}],
