@@ -218,7 +218,7 @@ jobs:
             const moduleSync = await page.evaluate(() => ({
               thickness: state.project.thickness,
               collisionThickness: document.querySelector('#pp56Th')?.textContent,
-              syncStatus: document.querySelector('#pp58SyncStatus')?.textContent,
+              syncStatus: document.querySelector('[data-pp58-sync-status]')?.textContent,
               fields: ['progThickness','p2Thickness','p3Thickness'].map(id => [id, document.getElementById(id)?.value]),
               audit: window.PLEGAR_PRO_V61.audit()
             }));
