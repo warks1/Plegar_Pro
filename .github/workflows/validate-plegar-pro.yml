@@ -95,6 +95,14 @@ jobs:
           if (!html.includes('function ppExecutionRank(i)') || !html.includes('ppExecutionRank(i)<step')) failures.push('core 2D/3D playback must read the assigned order directly');
           if (!collision.includes('function profileModel(progressStep=Infinity,progressTravel=1)') || !collision.includes('const model=profileModel(step,travel)') || !collision.includes('rank===progressStep?Math.max(0,Math.min(1,progressTravel)):0')) failures.push('collision sheet must use the shared programmed profile and assigned fold order');
           if (!html.includes('@media(max-width:560px)') || !html.includes('.app{grid-template-columns:minmax(0,1fr)}')) failures.push('responsive mobile layout rules missing');
+          const runtime = read('pp61-runtime-integrity.js');
+          if (!html.includes("if((Number(sim[key+'Step'])||0)>=state.bends.length)sim[key+'Step']=0")) failures.push('2D/3D playback must restart at the beginning after reaching the final step');
+          if (!html.includes("plegarpro:playback-step") || !html.includes("plegarpro:playback-start")) failures.push('core playback must publish shared playback events');
+          if (!collision.includes("if(step>=Math.max(0,seq().length-1))setStep(0)") || !collision.includes("if(!playing||!raf)")) failures.push('collision playback must start on first entry and restart after completion');
+          if (!runtime.includes('function installPlaybackSync()') || !runtime.includes("addEventListener('plegarpro:playback-step'")) failures.push('shared playback synchronizer missing');
+          if (!system.includes("el.id='pp58SyncStatus-'+id") || !system.includes("data-pp58-sync-status")) failures.push('module sync indicators must use unique IDs and shared data marker');
+          if (system.includes("el.id='pp58SyncStatus';")) failures.push('duplicate synchronization status IDs remain');
+          if (!sw.includes('plegar-pro-v91-0')) failures.push('service worker cache was not bumped for runtime repairs');
           if (html.indexOf('./pp57-system-integration.js') > html.indexOf('./pp59-engineering-upgrade.js')) {
             failures.push('v59 must load after the existing system integration module');
           }
