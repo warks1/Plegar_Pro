@@ -111,14 +111,25 @@ function drawCollision(){
  x.fillStyle='#d58a37';x.strokeStyle='#a96624';x.beginPath();x.moveTo(cx-70,top-4);x.lineTo(cx+70,top-4);x.lineTo(cx+42,tipY-8);x.lineTo(cx+10,tipY+2);x.lineTo(cx,tipY+4);x.lineTo(cx-10,tipY+2);x.lineTo(cx-42,tipY-8);x.closePath();x.fill();x.stroke();
  // Sheet is a bright metal profile, with a clear fold apex and two flanges.
  const included=180-(180-ang)*travel,arm=78,half=included*Math.PI/360,apexY=top+42+travel*25,leftX=cx-arm*Math.sin(half),rightX=cx+arm*Math.sin(half),endY=apexY+arm*Math.cos(half);
+ // Conservative 2D screen-space proximity check: compares the rendered punch tip with the sheet apex.
+ // This is an indicator for this schematic view, not a dimensionally calibrated CAD intersection test.
+ const sheetHalfPx=Math.max(3,Math.min(5,t*.65))/2;
+ const tipBottomY=tipY+4;
+ const clearancePx=apexY-tipBottomY-sheetHalfPx;
+ const contactState=clearancePx<=2?'CONTACTO VISUAL':clearancePx<=8?'HOLGURA REDUCIDA':'SIN CONTACTO VISUAL';
+ const contactColor=clearancePx<=2?'#b42332':clearancePx<=8?'#9a6200':'#087ea4';
  x.strokeStyle='#5b7687';x.lineWidth=Math.max(6,Math.min(10,t*1.4));x.lineJoin='round';x.lineCap='round';x.beginPath();x.moveTo(bx+20,endY);x.lineTo(leftX,endY);x.lineTo(cx,apexY);x.lineTo(rightX,endY);x.lineTo(bx+bw-20,endY);x.stroke();
  x.strokeStyle='#f8fdff';x.lineWidth=Math.max(3,Math.min(5,t*.65));x.beginPath();x.moveTo(bx+20,endY-1);x.lineTo(leftX,endY-1);x.lineTo(cx,apexY-1);x.lineTo(rightX,endY-1);x.lineTo(bx+bw-20,endY-1);x.stroke();
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('ÁNGULO ACTUAL '+included.toFixed(1)+'°',cx-66,by+bh-35);
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('PUNZÓN',bx+16,by+67);x.fillText('CHAPA',bx+16,by+119);x.fillText('MATRIZ V'+v,bx+16,by+bh-15);
- x.fillStyle=travel>0.85?'#b83e37':'#087ea4';x.font='900 11px system-ui';x.textAlign='right';x.fillText(travel>0.85?'CARRERA CERCANA AL CONTACTO':('CARRERA '+Math.round(travel*100)+'%'),bx+bw-14,by+bh-15);x.textAlign='left';
+ x.fillStyle=contactColor;x.font='900 11px system-ui';x.textAlign='right';x.fillText(contactState+' · '+Math.max(0,clearancePx).toFixed(1)+' px',bx+bw-14,by+bh-15);x.textAlign='left';
  x.restore();
- const st=$('pp56Status');if(st){st.className='pp56-status warn';st.textContent='Vista geométrica esquemática sincronizada con el paso seleccionado. El detalle ayuda a leer la sección, pero todavía no sustituye un motor de colisiones CAD real.'}
- if(S())S().collisionReview={step:step,foldIndex:idx,travel:travel,parts:{...visible},camera:camera,collisionCertification:false};
+ const st=$('pp56Status');
+ if(st){
+  st.className='pp56-status '+(clearancePx<=2?'danger':clearancePx<=8?'warn':'ok');
+  st.textContent=contactState+' en la sección 2D (holgura proyectada: '+clearancePx.toFixed(1)+' px). Indicador visual aproximado; no es una detección CAD dimensional ni una certificación de seguridad. Verifica las herramientas y cotas reales antes de usarlo en producción.';
+ }
+ if(S())S().collisionReview={step:step,foldIndex:idx,travel:travel,parts:{...visible},camera:camera,projectedClearancePx:clearancePx,visualContactState:contactState,collisionCertification:false,dimensionalCollisionEngine:false};
 }
 function setStep(n){const o=seq(),a=bs();step=Math.max(0,Math.min(Math.max(0,o.length-1),n));const idx=o[step]??0,b=a[idx]||{};if($('pp56Step'))$('pp56Step').value=String(step);$('pp56StepNum').textContent=(step+1)+' / '+Math.max(1,o.length);$('pp56Fold').textContent='P'+(idx+1);$('pp56Angle').textContent=(Number(b.angle)||90)+'°';$('pp56Th').textContent=th().toFixed(2)+' mm';if($('pp56HmiStep'))$('pp56HmiStep').textContent=String(step+1).padStart(2,'0')+' / '+String(Math.max(1,o.length)).padStart(2,'0');if($('pp56HmiFold'))$('pp56HmiFold').textContent='P'+(idx+1);if($('pp56HmiAngle'))$('pp56HmiAngle').textContent=(Number(b.angle)||90)+'°';if($('pp56HmiV'))$('pp56HmiV').textContent='V'+Math.max(6,Number(b.v||S()?.project?.selectedV||16));if($('pp56HmiThickness'))$('pp56HmiThickness').textContent=th().toFixed(2)+' mm';if(S()){S().bendOrder=o.slice();try{if(typeof sim!=='undefined'&&sim){sim.p3Active=idx;sim.s2Step=step+1;sim.s3Step=step+1;if($('p3Active'))$('p3Active').value=String(idx);if(typeof loadP3Fields==='function')loadP3Fields()}}catch(e){}}try{if(typeof drawAll==='function')drawAll()}catch(e){}drawCollision()}
 function refreshSteps(){const sel=$('pp56Step');if(!sel)return;const o=seq(),a=bs();sel.dataset.sequence=o.join(',');sel.innerHTML=o.map((idx,i)=>'<option value="'+i+'">PASO '+(i+1)+' · P'+(idx+1)+' · '+(Number(a[idx]?.angle)||90)+'° · ala '+(Number(a[idx]?.leg)||50)+' mm</option>').join('')||'<option value="0">Añade pliegues al programa</option>';setStep(step)}
