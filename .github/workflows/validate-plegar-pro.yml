@@ -119,7 +119,7 @@ jobs:
           if (!runtime.includes('if(detail.complete)pos=Math.max(0,order.length-1)')) failures.push('playback synchronizer must handle the final completed fold');
           if (!system.includes("el.id='pp58SyncStatus-'+id") || !system.includes("el.dataset.pp58SyncStatus='true'")) failures.push('module sync indicators must use unique IDs and shared data marker');
           if (system.includes("el.id='pp58SyncStatus';")) failures.push('duplicate synchronization status IDs remain');
-          if (!sw.includes('plegar-pro-v125-0')) failures.push('service worker cache was not bumped for runtime repairs');
+          if (!sw.includes('plegar-pro-v126-0')) failures.push('service worker cache was not bumped for runtime repairs');
           if (html.indexOf('./pp57-system-integration.js') > html.indexOf('./pp59-engineering-upgrade.js')) {
             failures.push('v59 must load after the existing system integration module');
           }
@@ -242,7 +242,7 @@ jobs:
             });
             if (travelFrames.flat === travelFrames.bent) throw new Error('Collision sheet image did not change with ram travel');
             const geometryState = await page.evaluate(() => state.collisionReview?.collisionGeometry);
-            if (!travelFrames.statusFlat.includes('Motor geométrico en mm') || !travelFrames.statusBent.includes('Motor geométrico en mm') || !geometryState || geometryState.unit !== 'mm' || !geometryState.method.includes('polygon/segment intersection') || geometryState.activeBendIntersectionChecked !== false || !geometryState.scope.includes('prior folded flanges only')) throw new Error('Millimetre-space collision geometry or its explicit scope disclosure is missing: ' + JSON.stringify({ flat: travelFrames.statusFlat, bent: travelFrames.statusBent, geometryState }));
+            if (!travelFrames.statusFlat.includes('Motor geométrico en mm') || !travelFrames.statusBent.includes('Motor geométrico en mm') || !geometryState || geometryState.unit !== 'mm' || !geometryState.method.includes('polygon/segment intersection') || geometryState.activeBendIntersectionChecked !== true || !geometryState.scope.includes('prior folded flanges')) throw new Error('Millimetre-space collision geometry or its explicit scope disclosure is missing: ' + JSON.stringify({ flat: travelFrames.statusFlat, bent: travelFrames.statusBent, geometryState }));
             await page.waitForFunction(() => !!window.PLEGAR_PRO_V61?.installed, null, { timeout: 10000 });
             await page.evaluate(() => {
               state.bendOrder = [1, 2, 0];
