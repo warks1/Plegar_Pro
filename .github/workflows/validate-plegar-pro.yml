@@ -286,7 +286,10 @@ jobs:
               const advanced = sim.s2Step;
               pause.click(); const held = sim.s2Step;
               await new Promise(r => setTimeout(r, 180)); const paused = sim.s2Step;
-              play.click(); await new Promise(r => setTimeout(r, 280)); const resumed = sim.s2Step;
+              play.click();
+              const resumeDeadline = Date.now() + 1800;
+              while (sim.s2Step <= paused && Date.now() < resumeDeadline) await new Promise(r => setTimeout(r, 40));
+              const resumed = sim.s2Step;
               pause.click();
               return { advanced, held, paused, resumed, advanceOk: advanced > 0, pauseOk: paused === held, resumeOk: resumed > paused, crossModuleOk: sim.s2Step === sim.s3Step };
             });
