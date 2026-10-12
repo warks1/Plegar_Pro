@@ -26,7 +26,7 @@ jobs:
           grep -Fq './pp60-graphics-runtime.js' sw.js
           grep -Fq './pp61-runtime-integrity.js' sw.js
           grep -Fq './pp59-engineering-upgrade.js' sw.js
-          grep -Fq "plegar-pro-v125-0" sw.js
+          grep -Fq "plegar-pro-v126-0" sw.js
           grep -Fq 'id="pp70-startup-rescue"' index.html
           grep -Fq '#loader .side,#loader .sidebar,#loader .nav,#loader .mobileMenuBtn{display:none!important}' index.html
           grep -Fq "e.request.mode==='navigate'?caches.match('./index.html'):Response.error()" sw.js
@@ -35,6 +35,7 @@ jobs:
           grep -Fq 'window.tools=tools;' index.html
           grep -Fq 'id="pp64-visual-redesign"' index.html
           grep -Fq 'id="pp67-banner-contrast-runtime"' index.html
+          grep -Fq 'id="pp70-light-readable-panels"' index.html
           grep -Fq 'id="pp68-loader-emergency-release"' index.html
           grep -Fq "attributeFilter:['class']" index.html
           grep -Fq "v64.8 · INDUSTRIAL EDITION" pp56-collision-review.js
@@ -58,6 +59,7 @@ jobs:
           if (!collision.includes('tipY=top+4+travel*55')) failures.push('collision section punch travel formula missing');
           if (!collision.includes('const clearancePx=apexY-tipBottomY-sheetHalfPx') || !collision.includes("clearancePx<0?'SOLAPAMIENTO PROYECTADO'") || !collision.includes('projectedClearancePx:clearancePx') || !collision.includes('function collisionGeometry(stepIndex,foldIndex,travel,b,toolAudit,v)') || !collision.includes('segmentsCross') || !collision.includes('function distSegments(a,b,c,d)') || !collision.includes('segmentHitsPoly(a,b,poly,thickness=0)') || !collision.includes('dieHalf3D=Math.max(16,Math.min(170,v*3.4375))') || !collision.includes('tipHalf3D=Math.max(8,Math.min(70,Math.tan(punchAngle*Math.PI/360)*70))') || !collision.includes("collisionModelUnit:'mm'")) failures.push('collision review must include signed visual clearance plus millimetre polygon intersection analysis');
           if (!html.includes('XNC-EV026-V24') || !html.includes('profilePointsMm') || !collision.includes('imported DXF profile points in physical mm')) failures.push('measured EV026 die cross-section must feed physical collision polygon with provenance');
+          if (!collision.includes('activeBendContact:{checked:true') || !collision.includes('activeBendIntersectionChecked:true')) failures.push('active bend contact audit missing');
           if (!collision.includes('function parseDxfProfile') || !html.includes('profileDownloadUrl') || !collision.includes('auditSequences:runSequenceRegressionTests')) failures.push('DXF import, source links, or U/Z/box sequence audit missing');
           if (!collision.includes('function selectedToolAudit(b,v)') || !collision.includes('collisionSolidUsesCatalogProfile:!!(punch?.profilePointsMm||die?.profilePointsMm)') || !collision.includes('PERFIL PRINCIPAL ESQUEMÁTICO') || !collision.includes('dieAmbiguous:!die&&dieMatches.length>1') || !collision.includes('punchAmbiguous:!punch&&punchMatches.length>1') || !collision.includes('id="pp56DieSelect"') || !collision.includes('id="pp56PunchSelect"') || !collision.includes('function refreshDieOptions()') || !collision.includes('function refreshPunchOptions()') || !collision.includes('.pp-module-form,.pp-module-form *{color:#f4f8fb!important}') || !collision.includes('catálogo AMADA AFH (fabricante)') || !collision.includes('biblioteca dimensional Xeon NC') || !collision.includes('matrices multi-V PBTC')) failures.push('collision view must disclose schematic geometry, require explicit tool selection, readable banners, and traceable catalog references');
           if (!collision.includes('const included=180-(180-ang)*travel') || !collision.includes('apexY=top+42+travel*25') || !collision.includes('ÁNGULO ACTUAL')) failures.push('programmed section bend must show progressive included-angle deformation');
