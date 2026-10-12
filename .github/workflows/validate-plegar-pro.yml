@@ -26,7 +26,7 @@ jobs:
           grep -Fq './pp60-graphics-runtime.js' sw.js
           grep -Fq './pp61-runtime-integrity.js' sw.js
           grep -Fq './pp59-engineering-upgrade.js' sw.js
-          grep -Fq "plegar-pro-v99-0" sw.js
+          grep -Fq "plegar-pro-v101-0" sw.js
           grep -Fq 'id="pp70-startup-rescue"' index.html
           grep -Fq '#loader .side,#loader .sidebar,#loader .nav,#loader .mobileMenuBtn{display:none!important}' index.html
           grep -Fq "e.request.mode==='navigate'?caches.match('./index.html'):Response.error()" sw.js
@@ -84,6 +84,7 @@ jobs:
           }
           if (!cad.includes('function poly(points,col)')) failures.push('CAD tooling view missing axonometric face renderer');
           if (!html.includes('window.tools=tools;')) failures.push('shared tool catalog must be exposed to the CAD and collision modules');
+           if (!html.includes('XNC-EV002') || !html.includes('PBTC-2009-V50') || !html.includes('sourceType') || !html.includes('Ver ficha fuente')) failures.push('secondary-catalog tooling must retain dimensions, source provenance, and links');
           if (!html.includes('id="pp64-visual-redesign"') || !html.includes('.nav button.active:before') || !html.includes('#dashboard .card:first-child')) failures.push('visible industrial UI redesign styles missing');
           for (const id of ['pp55ToolSelect', 'pp55ToolCAD']) {
             if (!cad.includes(id)) failures.push('CAD module missing integration anchor ' + id);
@@ -114,7 +115,7 @@ jobs:
           if (!runtime.includes('if(detail.complete)pos=Math.max(0,order.length-1)')) failures.push('playback synchronizer must handle the final completed fold');
           if (!system.includes("el.id='pp58SyncStatus-'+id") || !system.includes("el.dataset.pp58SyncStatus='true'")) failures.push('module sync indicators must use unique IDs and shared data marker');
           if (system.includes("el.id='pp58SyncStatus';")) failures.push('duplicate synchronization status IDs remain');
-          if (!sw.includes('plegar-pro-v99-0')) failures.push('service worker cache was not bumped for runtime repairs');
+          if (!sw.includes('plegar-pro-v101-0')) failures.push('service worker cache was not bumped for runtime repairs');
           if (html.indexOf('./pp57-system-integration.js') > html.indexOf('./pp59-engineering-upgrade.js')) {
             failures.push('v59 must load after the existing system integration module');
           }
