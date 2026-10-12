@@ -66,6 +66,7 @@
       lastFingerprint=fingerprint();
       syncCount++;
       updateStatus();
+      try{window.PLEGAR_PRO_V59?.refresh?.()}catch(error){console.warn('[Plegar Pro Runtime] No se pudo refrescar el gemelo tras sincronizar',error)}
       window.dispatchEvent(new CustomEvent('plegarpro:modules-synchronized',{detail:{reason:'syncAll',count:syncCount}}));
       return result;
     };
