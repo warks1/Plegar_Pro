@@ -102,7 +102,7 @@
     syncingPlayback=true;
     try{
       if(typeof sim!=='undefined'&&sim){
-        sim.s2Step=maxPos+1;sim.s3Step=maxPos+1;sim.p3Active=foldIndex;
+        const coreStep=(source==='s2'||source==='s3')?Math.max(0,Number(detail.step)||0):maxPos+1;sim.s2Step=coreStep;sim.s3Step=coreStep;sim.p3Active=foldIndex;
         if($('p3Active'))$('p3Active').value=String(foldIndex);
         if(typeof drawAll==='function')drawAll();
       }
