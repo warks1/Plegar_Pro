@@ -42,7 +42,7 @@ jobs:
           if (!toolDraw || !toolDraw.includes('function poly(points,col)') || /\biso\(/.test(toolDraw)) failures.push('CAD tooling renderer must use the defined poly() helper consistently');
           if (!collision.includes('tipY=top+4+travel*55')) failures.push('collision section punch travel formula missing');
           if (!collision.includes('travel>0.85?') || collision.includes('travel>85?')) failures.push('normalized near-contact threshold missing or stale comparison remains');
-          if (!collision.includes('insetSheetY=top+37+travel*22') || !collision.includes('(180-ang)*.27))*travel') || !collision.includes('sheetBase=insetSheetY-insetRise')) failures.push('progressive sheet bend missing or incorrectly oriented');
+          if (!collision.includes('const included=180-(180-ang)*travel') || !collision.includes('apexY=top+42+travel*25') || !collision.includes('ÁNGULO ACTUAL')) failures.push('programmed section bend must show progressive included-angle deformation');
           const assetBlock = sw.match(/const ASSETS=\[(.*?)\]/s);
           if (!assetBlock) failures.push('service worker asset list missing');
           else {
@@ -77,7 +77,7 @@ jobs:
           }
           if (!v59.includes('function executionOrder()') || !v59.includes('heading-=(Number(q.direction)||1)')) failures.push('v59 playback must consume the assigned execution order and fold toward the die');
           if (!html.includes('function ppExecutionRank(i)') || !html.includes('ppExecutionRank(i)<step')) failures.push('core 2D/3D playback must read the assigned order directly');
-          if (!collision.includes('const sy=base+35,folds=Math.max(0,all.length-1)') || !collision.includes('rank===step?travel:0')) failures.push('collision sheet must deform progressively in assigned fold order');
+          if (!collision.includes('function profileModel(progressStep=Infinity,progressTravel=1)') || !collision.includes('const model=profileModel(step,travel)') || !collision.includes('rank===progressStep?Math.max(0,Math.min(1,progressTravel)):0')) failures.push('collision sheet must use the shared programmed profile and assigned fold order');
           if (!html.includes('@media(max-width:560px)') || !html.includes('.app{grid-template-columns:minmax(0,1fr)}')) failures.push('responsive mobile layout rules missing');
           if (html.indexOf('./pp57-system-integration.js') > html.indexOf('./pp59-engineering-upgrade.js')) {
             failures.push('v59 must load after the existing system integration module');
