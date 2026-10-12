@@ -102,10 +102,11 @@
     const order=Array.isArray(s?.bendOrder)&&s.bendOrder.length?s.bendOrder:[...bends.keys()].slice(0,Math.max(0,bends.length-1));
     const maxPos=Math.max(0,Math.min(Math.max(0,order.length-1),pos));
     const foldIndex=Number.isInteger(detail.foldIndex)?detail.foldIndex:(order[maxPos]??maxPos);
+    const coreStep=detail.complete?Math.max(0,Math.min(Math.max(0,bends.length-1),maxPos+1)):((source==='s2'||source==='s3')?Math.max(0,Number(detail.step)||0):maxPos);
     syncingPlayback=true;
     try{
       if(typeof sim!=='undefined'&&sim){
-        const coreStep=detail.complete?Math.max(0,Math.min(Math.max(0,bends.length-1),maxPos+1)):((source==='s2'||source==='s3')?Math.max(0,Number(detail.step)||0):maxPos);sim.s2Step=coreStep;sim.s3Step=coreStep;sim.p3Active=foldIndex;
+        sim.s2Step=coreStep;sim.s3Step=coreStep;sim.p3Active=foldIndex;
         if($('p3Active'))$('p3Active').value=String(foldIndex);
         if(typeof drawAll==='function')drawAll();
       }
@@ -114,6 +115,9 @@
         collisionStep.value=String(maxPos);
         collisionStep.dispatchEvent(new Event('change',{bubbles:true}));
       }
+      // The collision module's change handler also updates sim steps; reapply the originating step last
+      // so a collision selector cannot overwrite a running 2D/3D playback tick.
+      if(typeof sim!=='undefined'&&sim){sim.s2Step=coreStep;sim.s3Step=coreStep;sim.p3Active=foldIndex;if($('p3Active'))$('p3Active').value=String(foldIndex);if(typeof drawAll==='function')drawAll()}
       if(source==='s2'||source==='s3'){
         const travel=$('pp56Travel');
         if(travel)travel.value=(Number(detail.step)||0)>=order.length?'100':'0';
