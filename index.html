@@ -2736,4 +2736,30 @@ html body #collisions .pp56-hmi-live {
 })();
 </script>
 
+
+<script id="pp68-loader-emergency-release">
+(function(){
+  'use strict';
+  var finished=false;
+  function release(reason){
+    if(finished)return;
+    var loader=document.getElementById('loader');
+    if(!loader)return;
+    finished=true;
+    document.body.classList.add('boot-complete');
+    loader.classList.add('hidden');
+    loader.setAttribute('aria-hidden','true');
+    loader.style.setProperty('display','none','important');
+    var state=document.getElementById('loadState');
+    if(state && reason) state.textContent=reason;
+    console.warn('[Plegar Pro] Pantalla de carga liberada por seguridad.');
+  }
+  // Independent watchdog: works even if the main boot script fails to initialize.
+  window.setTimeout(function(){release('Programa abierto con recuperación automática');},9000);
+  window.addEventListener('load',function(){window.setTimeout(function(){release('Programa abierto');},7000);},{once:true});
+  window.addEventListener('pageshow',function(){if(document.body.classList.contains('boot-complete'))release('Programa abierto');});
+  window.addEventListener('error',function(){window.setTimeout(function(){release('Programa abierto con recuperación automática');},1500);});
+  window.addEventListener('unhandledrejection',function(){window.setTimeout(function(){release('Programa abierto con recuperación automática');},1500);});
+})();
+</script>
 </body></html>
