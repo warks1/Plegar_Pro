@@ -22,7 +22,7 @@ jobs:
         run: |
           grep -Fq './pp59-engineering-upgrade.js' index.html
           grep -Fq './pp59-engineering-upgrade.js' sw.js
-          grep -Fq "plegar-pro-v63-7" sw.js
+          grep -Fq "plegar-pro-v63-8" sw.js
           grep -Fq "e.request.mode==='navigate'?caches.match('./index.html'):Response.error()" sw.js
           grep -Fq "if(r.ok&&r.type!=='opaque')" sw.js
           grep -Fq './pp55-cad-precision.js' index.html
@@ -131,6 +131,8 @@ jobs:
               const canvas = document.querySelector('#pp55ToolCanvas');
               return canvas && canvas.getBoundingClientRect().width > 0 && !!canvas.getContext('2d');
             }, null, { timeout: 10000 });
+            const catalogAudit = await page.evaluate(() => ({ count: Array.isArray(window.tools) ? window.tools.length : 0, punches: Array.isArray(window.tools) ? window.tools.filter(t => /punz[oó]n|punch/i.test(String(t.type || t.name || ''))).length : 0, dies: Array.isArray(window.tools) ? window.tools.filter(t => /matriz|die/i.test(String(t.type || t.name || ''))).length : 0 }));
+            if (catalogAudit.count < 1 || catalogAudit.punches < 1 || catalogAudit.dies < 1) throw new Error('Shared tooling catalog not available to CAD/collision modules: ' + JSON.stringify(catalogAudit));
             await page.locator('#pp55ToolView').selectOption('iso');
             await page.locator('[data-page="program3d"]').click();
             await page.locator('#pp59cam').selectOption('front');
