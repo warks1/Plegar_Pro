@@ -2618,4 +2618,45 @@ html,body{background:var(--pp62-bg);color:var(--pp62-ink)}
 /* The industrial splash uses only the emblem; the app name remains in the main workspace. */
 #loader .logoText{display:none!important}
 </style>
-</body></html>
+
+<style id="pp65-banner-contrast-fix">
+/* v65: contraste alto en cabeceras y banners; el texto no puede heredar tonos oscuros sobre fondos oscuros. */
+.page .banner,.page .hero,.page [class*="banner"],.page [class*="Banner"],.page [class*="hero"],.page [class*="Hero"],
+.banner,.hero,[class*="banner"],[class*="Banner"],[class*="hero"],[class*="Hero"],
+.pp-status-strip,.pp-module-form,.pp56-hmi-top,.pp56-hmi-live,.pp56-hmi-rail{
+  background:linear-gradient(115deg,#f4faff 0%,#e5f4fb 100%)!important;
+  background-color:#edf7fc!important;
+  color:#123349!important;
+  border-color:#b9d9e8!important;
+  text-shadow:none!important;
+}
+.page .banner :not(button):not(input):not(select):not(textarea),
+.page .hero :not(button):not(input):not(select):not(textarea),
+.page [class*="banner"] :not(button):not(input):not(select):not(textarea),
+.page [class*="Banner"] :not(button):not(input):not(select):not(textarea),
+.page [class*="hero"] :not(button):not(input):not(select):not(textarea),
+.page [class*="Hero"] :not(button):not(input):not(select):not(textarea),
+.banner :not(button):not(input):not(select):not(textarea),
+.hero :not(button):not(input):not(select):not(textarea),
+[class*="banner"] :not(button):not(input):not(select):not(textarea),
+[class*="Banner"] :not(button):not(input):not(select):not(textarea),
+[class*="hero"] :not(button):not(input):not(select):not(textarea),
+[class*="Hero"] :not(button):not(input):not(select):not(textarea),
+.pp-status-strip,.pp-module-form,.pp56-hmi-top,.pp56-hmi-live,.pp56-hmi-rail{
+  color:#123349!important;
+  text-shadow:none!important;
+}
+.page .banner h1,.page .banner h2,.page .banner h3,.page .banner p,.page .banner span,.page .banner small,.page .banner label,.page .banner strong,.page .banner b,
+.page .hero h1,.page .hero h2,.page .hero h3,.page .hero p,.page .hero span,.page .hero small,.page .hero label,.page .hero strong,.page .hero b,
+[class*="banner"] h1,[class*="banner"] h2,[class*="banner"] h3,[class*="banner"] p,[class*="banner"] span,[class*="banner"] small,[class*="banner"] label,[class*="banner"] strong,[class*="banner"] b,
+[class*="Banner"] h1,[class*="Banner"] h2,[class*="Banner"] h3,[class*="Banner"] p,[class*="Banner"] span,[class*="Banner"] small,[class*="Banner"] label,[class*="Banner"] strong,[class*="Banner"] b,
+[class*="hero"] h1,[class*="hero"] h2,[class*="hero"] h3,[class*="hero"] p,[class*="hero"] span,[class*="hero"] small,[class*="hero"] label,[class*="hero"] strong,[class*="hero"] b,
+[class*="Hero"] h1,[class*="Hero"] h2,[class*="Hero"] h3,[class*="Hero"] p,[class*="Hero"] span,[class*="Hero"] small,[class*="Hero"] label,[class*="Hero"] strong,[class*="Hero"] b,
+.pp-status-strip,.pp-module-form,.pp56-hmi-top,.pp56-hmi-live,.pp56-hmi-rail{
+  color:#123349!important;
+}
+.pp56-hmi-top,.pp56-hmi-rail{box-shadow:0 8px 22px rgba(18,51,73,.08)!important}
+.pp56-hmi-top small,.pp56-hmi-live,.pp56-hmi-rail small,.pp56-hmi-rail .pp56-rail-head,.pp56-hmi-rail .pp56-hmi-note{color:#365a70!important}
+.pp56-hmi-live{background:#d9f3e8!important;border-color:#9ed9c5!important}
+</style>
+\n</body></html>
