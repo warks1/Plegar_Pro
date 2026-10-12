@@ -122,8 +122,8 @@ jobs:
             failures.push('v59 must load after the existing system integration module');
           }
           if (!fs.readFileSync('pp56-collision-review.js','utf8').includes('function parseDxfProfile') || !fs.readFileSync('pp56-collision-review.js','utf8').includes('pp56ProfileImport')) failures.push('DXF dimensional profile import is missing');
-if (!fs.readFileSync('index.html','utf8').includes('UKB-25304') || !fs.readFileSync('index.html','utf8').includes('profileDownloadUrl')) failures.push('UKB DXF reference catalogue is missing');
-if (failures.length) {
+          if (!fs.readFileSync('index.html','utf8').includes('UKB-25304') || !fs.readFileSync('index.html','utf8').includes('profileDownloadUrl')) failures.push('UKB DXF reference catalogue is missing');
+          if (failures.length) {
             console.error(failures.join('\\n'));
             process.exit(1);
           }
