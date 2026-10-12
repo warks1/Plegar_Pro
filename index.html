@@ -2732,7 +2732,7 @@ html body #collisions .pp56-hmi-live {
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fixBannerContrast,{once:true}); else fixBannerContrast();
   const observer=new MutationObserver(()=>fixBannerContrast());
-  observer.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
+  observer.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
 })();
 </script>
 
