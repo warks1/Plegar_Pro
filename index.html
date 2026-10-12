@@ -1832,11 +1832,14 @@ function bind(){
  $('saveProject').onclick=saveProject;$('loadProject').onclick=loadProject;$('exportProject').onclick=()=>download(`${state.project.ref}.json`,JSON.stringify(state,null,2));
  $('clearProject').onclick=()=>{if(confirm('¿Borrar el proyecto guardado?')){storageRemove(STORAGE);toast('Proyecto guardado eliminado')}};
  function simButtons(prefix,key){
-  $(prefix+'Play').onclick=()=>{clearInterval(sim[key+'Timer']);sim[key+'Timer']=setInterval(()=>{sim[key+'Step']++;if(sim[key+'Step']>state.bends.length){clearInterval(sim[key+'Timer']);sim[key+'Timer']=null;sim[key+'Step']=state.bends.length}drawAll()},state.settings.simulationSpeed||700)};
-  $(prefix+'Pause').onclick=()=>{clearInterval(sim[key+'Timer']);sim[key+'Timer']=null};
-  $(prefix+'Prev').onclick=()=>{sim[key+'Step']=Math.max(0,sim[key+'Step']-1);drawAll()};
-  $(prefix+'Next').onclick=()=>{sim[key+'Step']=Math.min(state.bends.length,sim[key+'Step']+1);drawAll()};
-  $(prefix+'Reset').onclick=()=>{sim[key+'Step']=0;drawAll()};
+  const play=$(prefix+'Play'),pause=$(prefix+'Pause');
+  const stop=()=>{clearInterval(sim[key+'Timer']);sim[key+'Timer']=null;if(play){play.dataset.playing='false';play.textContent='▶ Reproducir'}};
+  const emitStep=()=>window.dispatchEvent(new CustomEvent('plegarpro:playback-step',{detail:{source:key,step:Number(sim[key+'Step'])||0}}));
+  play.onclick=()=>{stop();if(!Array.isArray(state.bends)||!state.bends.length){toast('Añade una pieza con pliegues antes de reproducir');return}if((Number(sim[key+'Step'])||0)>=state.bends.length)sim[key+'Step']=0;play.dataset.playing='true';play.textContent='Ⅱ Reproduciendo';window.dispatchEvent(new CustomEvent('plegarpro:playback-start',{detail:{source:key}}));drawAll();emitStep();sim[key+'Timer']=setInterval(()=>{sim[key+'Step']=(Number(sim[key+'Step'])||0)+1;if(sim[key+'Step']>state.bends.length){stop();sim[key+'Step']=state.bends.length;drawAll();emitStep();return}drawAll();emitStep()},Math.max(100,Number(state.settings.simulationSpeed)||700))};
+  pause.onclick=()=>{stop();window.dispatchEvent(new CustomEvent('plegarpro:playback-stop',{detail:{source:key}}))};
+  $(prefix+'Prev').onclick=()=>{stop();sim[key+'Step']=Math.max(0,(Number(sim[key+'Step'])||0)-1);drawAll();emitStep()};
+  $(prefix+'Next').onclick=()=>{stop();sim[key+'Step']=Math.min(state.bends.length,(Number(sim[key+'Step'])||0)+1);drawAll();emitStep()};
+  $(prefix+'Reset').onclick=()=>{stop();sim[key+'Step']=0;drawAll();emitStep()};
  }
  simButtons('s2','s2');simButtons('s3','s3');
  $('p3Camera').onchange=()=>{applyCameraPreset($('p3Camera').value,'P3');drawAll()};$('s3Camera').onchange=()=>{applyCameraPreset($('s3Camera').value,'S3');drawAll()};$('s2Camera').onchange=drawAll;$('s3Machine').onchange=drawAll;$('s3Dims').onchange=drawAll;
