@@ -3025,4 +3025,69 @@ html body .page [class*="banner"] *,html body .page [class*="Banner"] *,html bod
   if(document.readyState!=='loading'&&document.body.classList.contains('boot-complete')){unlockScroll();release('Programa abierto')}
 })();
 </script>
+
+<style id="pp70-light-readable-panels">
+/* PP70: elimina tarjetas y bloques azul marino que ocultaban texto en módulos internos. */
+html body .page .card:not(.pp56-canvas),
+html body .page .panel:not(canvas),
+html body .page .box:not(canvas),
+html body .page fieldset,
+html body .page [class*="pp56-data"] > div,
+html body .page [class*="pp56-controls"] > div,
+html body .page [class*="pp56-table"],
+html body .page [class*="pp56-rail"],
+html body .page [class*="pp56-status"],
+html body .page [class*="pp56-metric"],
+html body .page [class*="pp56-kpi"],
+html body .page [class*="pp-module-form"],
+html body .page [class*="tool-card"],
+html body .page [class*="metric-card"] {
+  background-color:#f2f7fa!important;
+  background-image:linear-gradient(145deg,#ffffff 0%,#edf5f9 100%)!important;
+  color:#183448!important;
+  border-color:#c5d9e4!important;
+  box-shadow:0 5px 16px rgba(18,51,73,.07)!important;
+  text-shadow:none!important;
+}
+html body .page .card:not(.pp56-canvas) :not(canvas):not(svg):not(path):not(button):not(input):not(select):not(textarea),
+html body .page fieldset label,
+html body .page [class*="pp56-data"] > div *,
+html body .page [class*="pp56-controls"] > div *,
+html body .page [class*="pp56-table"] *,
+html body .page [class*="pp56-rail"] *,
+html body .page [class*="pp56-status"] *,
+html body .page [class*="pp56-metric"] *,
+html body .page [class*="pp56-kpi"] *,
+html body .page [class*="pp-module-form"] *,
+html body .page [class*="tool-card"] *,
+html body .page [class*="metric-card"] * {
+  color:#183448!important;
+  text-shadow:none!important;
+}
+html body .page .card button,
+html body .page [class*="pp56-rail"] button,
+html body .page [class*="pp-module-form"] button {
+  color:#fff!important;
+  background:linear-gradient(135deg,#075a78,#087fa4)!important;
+  border-color:#087fa4!important;
+}
+html body .page .card input,
+html body .page .card select,
+html body .page .card textarea,
+html body .page [class*="pp-module-form"] input,
+html body .page [class*="pp-module-form"] select,
+html body .page [class*="pp-module-form"] textarea {
+  color:#173246!important;
+  background:#fff!important;
+  border-color:#9fb9c9!important;
+}
+html body .page .pp56-hmi-top,
+html body .page .pp56-hmi-top *,
+html body .page .pp56-hmi-live,
+html body .page .pp56-hmi-live * {
+  color:#f4fbff!important;
+}
+html body .page .pp56-hmi-live {background:#14533e!important}
+</style>
+
 </body></html>
