@@ -248,6 +248,17 @@ jobs:
             });
             if (machinePlayback.error || !machinePlayback.pauseOk || !machinePlayback.resumeOk) throw new Error('3D machine playback failed pause/resume: ' + JSON.stringify(machinePlayback));
             await page.locator('[data-page="dashboard"]').click();
+            await page.waitForTimeout(700);
+            const twinMount = await page.evaluate(() => ({
+              pageActive: document.querySelector('#dashboard')?.classList.contains('active'),
+              machineCanvas: !!document.querySelector('#pp55MachineCanvas'),
+              twinCard: !!document.querySelector('#pp58TwinCard'),
+              twinCanvas: !!document.querySelector('#pp58Twin'),
+              twinButton: !!document.querySelector('#pp58Pause'),
+              systemAudit: window.PLEGAR_PRO_V58?.audit?.(),
+              runtimeAudit: window.PLEGAR_PRO_V61?.audit?.()
+            }));
+            if (!twinMount.twinButton) throw new Error('Machine twin not mounted on dashboard: ' + JSON.stringify(twinMount));
             await page.waitForSelector('#pp58Pause', { state: 'visible', timeout: 10000 });
             const twinPlayback = await page.evaluate(async () => {
               const btn = document.querySelector('#pp58Pause'), canvas = document.querySelector('#pp58Twin');
