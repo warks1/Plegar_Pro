@@ -331,6 +331,15 @@ jobs:
             await page.locator('[data-page="collisions"]').click();
             await page.waitForFunction(() => document.querySelector('#collisions')?.classList.contains('active'), null, { timeout: 10000 });
 
+            const sequenceAudit = await page.evaluate(() => window.PLEGAR_PRO_COLLISIONS.auditSequences());
+            if (!sequenceAudit.ok) throw new Error('U/Z/box final-fold audit failed: ' + JSON.stringify(sequenceAudit));
+            await page.locator('#pp56ProfileV').fill(String(await page.evaluate(() => state.bends[0]?.v || 16)));
+            await page.locator('#pp56ProfileName').fill('DXF regression profile');
+            await page.locator('#pp56ProfileFile').setInputFiles({name:'regression.dxf',mimeType:'text/plain',buffer:Buffer.from('0\\nSECTION\\n2\\nENTITIES\\n0\\nLWPOLYLINE\\n90\\n6\\n70\\n1\\n10\\n-20\\n20\\n0\\n10\\n-8\\n20\\n-20\\n10\\n0\\n20\\n-30\\n10\\n8\\n20\\n-20\\n10\\n20\\n20\\n0\\n10\\n20\\n20\\n-40\\n0\\nENDSEC\\n0\\nEOF\\n')});
+            await page.locator('#pp56ProfileImport').click();
+            await page.waitForFunction(() => document.querySelector('#pp56ProfileStatus')?.textContent.includes('Importado:'), null, {timeout:5000});
+            const dxfAudit = await page.evaluate(() => { const t=window.tools.find(x=>x.profileSourceFile==='regression.dxf'); const g=window.PLEGAR_PRO_COLLISIONS.getGeometry(); return {points:t?.profilePointsMm?.length,selected:document.querySelector('#pp56DieSelect')?.value===t?.id,source:g.toolProfileSource,profileUsed:g.profilePointCount>0}; });
+            if (dxfAudit.points < 6 || !dxfAudit.selected || !String(dxfAudit.source).includes('imported DXF') || !dxfAudit.profileUsed) throw new Error('DXF profile did not reach physical collision geometry: '+JSON.stringify(dxfAudit));
             const syncAudit = await page.evaluate(() => window.PLEGAR_PRO_V61.audit());
             if (!syncAudit.stateAvailable || !syncAudit.syncFunction || !syncAudit.playback.collision.hasHandler || !syncAudit.playback.engineeringTwin.hasHandler) throw new Error('Runtime module integration audit failed: ' + JSON.stringify(syncAudit));
 
