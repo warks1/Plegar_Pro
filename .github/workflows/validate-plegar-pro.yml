@@ -57,7 +57,7 @@ jobs:
           if (!toolDraw || !toolDraw.includes('function poly(points,col)') || /\biso\(/.test(toolDraw)) failures.push('CAD tooling renderer must use the defined poly() helper consistently');
           if (!collision.includes('tipY=top+4+travel*55')) failures.push('collision section punch travel formula missing');
           if (!collision.includes('const clearancePx=apexY-tipBottomY-sheetHalfPx') || !collision.includes("clearancePx<0?'SOLAPAMIENTO PROYECTADO'") || !collision.includes('projectedClearancePx:clearancePx') || !collision.includes("clearancePx<0?'danger':'warn'")) failures.push('projected clearance indicator must preserve signed overlap and never imply verified safety');
-          if (!collision.includes('function selectedToolAudit(b,v)') || !collision.includes('collisionSolidUsesCatalogProfile:false') || !collision.includes('PERFIL PRINCIPAL ESQUEMÁTICO') || !collision.includes('dieAmbiguous:!die&&dieMatches.length>1') || !collision.includes('id="pp56DieSelect"') || !collision.includes('function refreshDieOptions()')) failures.push('collision view must disclose schematic geometry and require explicit die selection when multiple catalog records match');
+          if (!collision.includes('function selectedToolAudit(b,v)') || !collision.includes('collisionSolidUsesCatalogProfile:false') || !collision.includes('PERFIL PRINCIPAL ESQUEMÁTICO') || !collision.includes('dieAmbiguous:!die&&dieMatches.length>1') || !collision.includes('punchAmbiguous:!punch&&punchMatches.length>1') || !collision.includes('id="pp56DieSelect"') || !collision.includes('id="pp56PunchSelect"') || !collision.includes('function refreshDieOptions()') || !collision.includes('function refreshPunchOptions()')) failures.push('collision view must disclose schematic geometry and require explicit punch/die selection when catalog matches are ambiguous');
           if (!collision.includes('const included=180-(180-ang)*travel') || !collision.includes('apexY=top+42+travel*25') || !collision.includes('ÁNGULO ACTUAL')) failures.push('programmed section bend must show progressive included-angle deformation');
           const assetBlock = sw.match(/const ASSETS=\[(.*?)\]/s);
           if (!assetBlock) failures.push('service worker asset list missing');
@@ -204,9 +204,11 @@ jobs:
             }
             const dieSelector = page.locator('#pp56DieSelect');
             await dieSelector.selectOption('MEC-M-V16');
+            const punchSelector = page.locator('#pp56PunchSelect');
+            await punchSelector.selectOption('MEC-P-3');
             const selectedDie = await page.evaluate(() => state.collisionReview?.toolAudit);
-            if (!selectedDie?.die?.includes('Mecos') || selectedDie?.dieAmbiguous || selectedDie?.collisionSolidUsesCatalogProfile !== false) {
-              throw new Error('Collision review did not apply the explicit MECOS V16 selection or disclose schematic solid: ' + JSON.stringify(selectedDie));
+            if (!selectedDie?.die?.includes('Mecos') || selectedDie?.dieAmbiguous || !selectedDie?.punch?.includes('Mecos') || selectedDie?.punchAmbiguous || selectedDie?.collisionSolidUsesCatalogProfile !== false) {
+              throw new Error('Collision review did not apply the explicit MECOS punch/die selection or disclose schematic solid: ' + JSON.stringify(selectedDie));
             }
             const travelFrames = await page.evaluate(() => {
               const slider = document.querySelector('#pp56Travel'), canvas = document.querySelector('#pp56Collision');
