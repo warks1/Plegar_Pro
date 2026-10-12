@@ -2710,4 +2710,36 @@ html body #collisions .pp56-hmi-live {
 }
 </style>
 
+
+<script id="pp67-banner-contrast-runtime">
+(function(){
+  const roots = '.page [class*="banner"],.page [class*="Banner"],.page [class*="hero"],.page [class*="Hero"],.page .banner,.page .hero,#collisions .pp56-hmi-top,#collisions .pp56-hmi-rail,#collisions .pp56-hmi-live,#collisions [class*="banner"],#collisions [class*="Banner"],#collisions [class*="hero"],#collisions [class*="Hero"]';
+  function fixBannerContrast(){
+    document.querySelectorAll(roots).forEach(el=>{
+      el.style.setProperty('background','#eef7fc','important');
+      el.style.setProperty('background-image','linear-gradient(115deg,#f8fcff,#e4f3fa)','important');
+      el.style.setProperty('color','#123349','important');
+      el.style.setProperty('border-color','#b7d5e4','important');
+      el.style.setProperty('text-shadow','none','important');
+      el.querySelectorAll('*').forEach(child=>{
+        if(child.matches('button,input,select,textarea,[role="button"]')) return;
+        child.style.setProperty('color','#123349','important');
+        child.style.setProperty('text-shadow','none','important');
+      });
+      el.querySelectorAll('button,[role="button"]').forEach(btn=>{
+        btn.style.setProperty('background','#075a78','important');
+        btn.style.setProperty('color','#ffffff','important');
+      });
+    });
+    document.querySelectorAll('#collisions .pp56-hmi-live').forEach(el=>{
+      el.style.setProperty('background','#d9f3e8','important');
+      el.style.setProperty('color','#14533e','important');
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fixBannerContrast,{once:true}); else fixBannerContrast();
+  const observer=new MutationObserver(()=>fixBannerContrast());
+  observer.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
+})();
+</script>
+
 </body></html>
