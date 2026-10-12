@@ -138,7 +138,7 @@ jobs:
             await page.waitForTimeout(350);
             const program3dDebug = await page.evaluate(() => ({
               activePages: [...document.querySelectorAll('.page.active')].map(e => e.id),
-              canvas: (() => { const c = document.querySelector('#pp59canvas'); if (!c) return null; const r = c.getBoundingClientRect(); return { width: r.width, height: r.height, parent: c.parentElement?.id || c.parentElement?.className, visible: getComputedStyle(c).display }; })(),
+              canvas: (() => { const c = document.querySelector('#pp59canvas'); if (!c) return null; const r = c.getBoundingClientRect(); const ancestors=[]; let n=c; while(n&&ancestors.length<7){const q=n.getBoundingClientRect(),cs=getComputedStyle(n);ancestors.push({tag:n.tagName,id:n.id,cls:String(n.className).slice(0,70),width:q.width,height:q.height,display:cs.display,visibility:cs.visibility});n=n.parentElement} return { width: r.width, height: r.height, parent: c.parentElement?.id || c.parentElement?.className, visible: getComputedStyle(c).display, ancestors }; })(),
               pp59: !!window.PLEGAR_PRO_V59,
               pp58: window.PLEGAR_PRO_V58?.audit?.(),
               pp61: window.PLEGAR_PRO_V61?.audit?.()
