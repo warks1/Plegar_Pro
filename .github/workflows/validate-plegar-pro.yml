@@ -28,6 +28,7 @@ jobs:
           grep -Fq './pp55-cad-precision.js' index.html
           grep -Fq 'window.tools=tools;' index.html
           grep -Fq 'id="pp64-visual-redesign"' index.html
+          grep -Fq "v64.2 · INDUSTRIAL EDITION" pp56-collision-review.js
           grep -Fq '.nav button.active:before' index.html
           grep -Fq '#dashboard .card:first-child' index.html
       - name: Check v59 integration anchors and persisted controls
