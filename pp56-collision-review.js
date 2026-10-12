@@ -110,9 +110,10 @@ function drawCollision(){
  // Punch tip is drawn as a separate amber steel part; travel visibly changes its clearance.
  x.fillStyle='#d58a37';x.strokeStyle='#a96624';x.beginPath();x.moveTo(cx-70,top-4);x.lineTo(cx+70,top-4);x.lineTo(cx+42,tipY-8);x.lineTo(cx+10,tipY+2);x.lineTo(cx,tipY+4);x.lineTo(cx-10,tipY+2);x.lineTo(cx-42,tipY-8);x.closePath();x.fill();x.stroke();
  // Sheet is a bright metal profile, with a clear fold apex and two flanges.
- const insetSheetY=top+37+travel*22, insetRise=Math.max(0,Math.min(45,(180-ang)*.27))*travel, sheetBase=insetSheetY-insetRise;
- x.strokeStyle='#5b7687';x.lineWidth=Math.max(6,Math.min(10,t*1.4));x.lineJoin='round';x.beginPath();x.moveTo(cx-145,sheetBase);x.lineTo(cx-50,sheetBase);x.lineTo(cx,insetSheetY);x.lineTo(cx+50,sheetBase);x.lineTo(cx+145,sheetBase);x.stroke();
- x.strokeStyle='#f8fdff';x.lineWidth=Math.max(3,Math.min(5,t*.65));x.beginPath();x.moveTo(cx-145,sheetBase-1);x.lineTo(cx-50,sheetBase-1);x.lineTo(cx,insetSheetY-1);x.lineTo(cx+50,sheetBase-1);x.lineTo(cx+145,sheetBase-1);x.stroke();
+ const included=180-(180-ang)*travel,arm=78,half=included*Math.PI/360,apexY=top+42+travel*25,leftX=cx-arm*Math.sin(half),rightX=cx+arm*Math.sin(half),endY=apexY+arm*Math.cos(half);
+ x.strokeStyle='#5b7687';x.lineWidth=Math.max(6,Math.min(10,t*1.4));x.lineJoin='round';x.lineCap='round';x.beginPath();x.moveTo(bx+20,endY);x.lineTo(leftX,endY);x.lineTo(cx,apexY);x.lineTo(rightX,endY);x.lineTo(bx+bw-20,endY);x.stroke();
+ x.strokeStyle='#f8fdff';x.lineWidth=Math.max(3,Math.min(5,t*.65));x.beginPath();x.moveTo(bx+20,endY-1);x.lineTo(leftX,endY-1);x.lineTo(cx,apexY-1);x.lineTo(rightX,endY-1);x.lineTo(bx+bw-20,endY-1);x.stroke();
+ x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('ÁNGULO ACTUAL '+included.toFixed(1)+'°',cx-66,by+bh-35);
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('PUNZÓN',bx+16,by+67);x.fillText('CHAPA',bx+16,by+119);x.fillText('MATRIZ V'+v,bx+16,by+bh-15);
  x.fillStyle=travel>0.85?'#b83e37':'#087ea4';x.font='900 11px system-ui';x.textAlign='right';x.fillText(travel>0.85?'CARRERA CERCANA AL CONTACTO':('CARRERA '+Math.round(travel*100)+'%'),bx+bw-14,by+bh-15);x.textAlign='left';
  x.restore();
