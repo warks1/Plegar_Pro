@@ -2713,7 +2713,7 @@ html body #collisions .pp56-hmi-live {
 
 <script id="pp67-banner-contrast-runtime">
 (function(){
-  const roots = '.page [class*="banner"],.page [class*="Banner"],.page [class*="hero"],.page [class*="Hero"],.page .banner,.page .hero,#collisions .pp56-hmi-top,#collisions .pp56-hmi-rail,#collisions .pp56-hmi-live,#collisions [class*="banner"],#collisions [class*="Banner"],#collisions [class*="hero"],#collisions [class*="Hero"]';
+  const roots = '.banner,.hero,[class*="banner"],[class*="Banner"],[class*="hero"],[class*="Hero"],.pp-status-strip,.pp-module-form,.pp56-hmi-top,.pp56-hmi-rail,.pp56-hmi-live';
   function set(el,prop,value){
     if(el.style.getPropertyValue(prop)!==value || el.style.getPropertyPriority(prop)!=='important') el.style.setProperty(prop,value,'important');
   }
