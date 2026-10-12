@@ -129,9 +129,9 @@ function ensureMachineTwin(){
   if(twinMountAttempts++<40) twinMountTimer=window.setTimeout(ensureMachineTwin,250);
   return;
  }
- twinMountAttempts=0;
  addMachine();
- if(!$('pp58TwinCard')&&twinMountAttempts++<40) twinMountTimer=window.setTimeout(ensureMachineTwin,250);
+ if($('pp58TwinCard')){twinMountAttempts=0;return}
+ if(twinMountAttempts++<40) twinMountTimer=window.setTimeout(ensureMachineTwin,250);
 }
 function init(){
  if(initialized){ensureMachineTwin();return}
