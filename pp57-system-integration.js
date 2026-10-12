@@ -3,7 +3,7 @@
 'use strict';
 const $=id=>document.getElementById(id), KEY='plegarPro.v58';
 let prefs={};try{prefs=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
-let raf=0,start=0,paused=false,zoom=1,rotation=0,drag=null,initialized=false,twinMountAttempts=0,twinMountTimer=0;
+let raf=0,start=0,paused=false,zoom=1,rotation=0,drag=null;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const S=()=>{try{return typeof state!=='undefined'?state:null}catch(e){return null}};
 const T=()=>Array.isArray(window.tools)?window.tools:[];
@@ -123,24 +123,7 @@ function addSync(){
  let pending=false;document.addEventListener('input',e=>{const el=e.target;if(!el?.id||!fields[el.id])return;const s=S();if(!s)return;const key=fields[el.id],v=el.value;if(key==='material')s.project.material=v;if(key==='thickness')s.project.thickness=Math.max(.1,Number(String(v).replace(',','.'))||1);if(key==='sheetLength'){s.programMeta=s.programMeta||{};s.programMeta.sheetLength=Math.max(1,Number(String(v).replace(',','.'))||1200)}if(key==='bendLength'){s.programMeta=s.programMeta||{};s.programMeta.bendLength=Math.max(1,Number(String(v).replace(',','.'))||1000)}if(!pending){pending=true;requestAnimationFrame(()=>{pending=false;syncLinked();if(typeof drawAll==='function')drawAll()})}},true);
  document.addEventListener('change',e=>{if(!e.target?.id||!fields[e.target.id])return;setTimeout(()=>{try{if(typeof window.syncAll==='function')window.syncAll();if(typeof window.autoSave==='function')window.autoSave()}catch(e){}},0)},true);
 }
-function ensureMachineTwin(){
- if($('pp58TwinCard'))return;
- if(!$('pp55MachineCanvas')||!$('dashboard')?.querySelector('.grid')){
-  if(twinMountAttempts++<40) twinMountTimer=window.setTimeout(ensureMachineTwin,250);
-  return;
- }
- addMachine();
- if($('pp58TwinCard')){twinMountAttempts=0;return}
- if(twinMountAttempts++<40) twinMountTimer=window.setTimeout(ensureMachineTwin,250);
-}
-function init(){
- if(initialized){ensureMachineTwin();return}
- if(!$('settings')||!$('tooling')){window.setTimeout(init,250);return}
- initialized=true;
- style();ensureMachineTwin();addToolDetail();addDatabase();addOffice();addSettings();addSync();hookSync();syncLinked();
- window.PLEGAR_PRO_V58={audit:()=>({version:'58.1',tools:T().length,modules:['program','program2d','program3d','sim2d','sim3d','development','curve','vcompare','collisions','tooling','office','settings'].filter(id=>!!$(id)),sync:!!window.syncAll?.__pp58,twinMounted:!!$('pp58TwinCard')}),refresh:()=>{hookSync();syncLinked();window.syncAll?.();drawTool();drawTwin(performance.now());ensureMachineTwin()}};
- document.documentElement.dataset.ppVersion='58.1';
-}
+function init(){if(!$('settings')||!$('tooling'))return;style();addMachine();window.setTimeout(addMachine,500);addToolDetail();addDatabase();addOffice();addSettings();addSync();hookSync();syncLinked();window.PLEGAR_PRO_V58={audit:()=>({version:'58.0',tools:T().length,modules:['program','program2d','program3d','sim2d','sim3d','development','curve','vcompare','collisions','tooling','office','settings'].filter(id=>!!$(id)),sync:!!window.syncAll?.__pp58}),refresh:()=>{hookSync();syncLinked();window.syncAll?.();drawTool();drawTwin(performance.now())}};document.documentElement.dataset.ppVersion='58.0'}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,650),{once:true});else setTimeout(init,650);
-window.addEventListener('pageshow',()=>setTimeout(()=>{if(!$('pp58Twin'))ensureMachineTwin();else{hookSync();syncLinked();drawTool();drawTwin(performance.now())}},450));
+window.addEventListener('pageshow',()=>setTimeout(()=>{if(!$('pp58Twin')){addMachine();window.setTimeout(addMachine,500)}else{hookSync();syncLinked();drawTool();drawTwin(performance.now())}},450));
 })();
