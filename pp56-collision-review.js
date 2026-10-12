@@ -19,7 +19,7 @@ function drawPart(id,n,g){
  const a=bs(),legs=a.map(b=>Math.max(10,Number(b.leg)||50));if(legs.length<2)legs.push(60);
  const total=legs.reduce((q,v)=>q+v,0),sc=Math.min((w-200)/Math.max(total,1),1.45),pts=[{x:Math.max(80,(w-total*sc)/2),y:h*.68}];let heading=0;
  legs.forEach((len,i)=>{const p=pts[pts.length-1];pts.push({x:p.x+Math.cos(heading)*len*sc,y:p.y-Math.sin(heading)*len*sc});if(i<a.length-1){const b=a[i]||{},angle=Math.max(1,Math.min(179,Number(b.angle)||90)),dir=Number(b.direction)===-1?-1:1;heading+=dir*(180-angle)*Math.PI/180}});
- x.lineJoin='round';x.lineCap='round';x.strokeStyle='#365c70';x.lineWidth=Math.max(14,Math.min(20,Number(th())*2.5);x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.stroke();
+ x.lineJoin='round';x.lineCap='round';x.strokeStyle='#365c70';x.lineWidth=Math.max(14,Math.min(20,Number(th())*2.5));x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.stroke();
  x.strokeStyle='#e8f8ff';x.lineWidth=Math.max(8,Math.min(12,Number(th())*1.5));x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.stroke();
  x.strokeStyle='#00a6d6';x.lineWidth=2.5;x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.stroke();
  x.font='bold 15px system-ui';pts.forEach((p,i)=>{x.fillStyle='#087ea4';x.beginPath();x.arc(p.x,p.y,5,0,Math.PI*2);x.fill();if(i<legs.length){const q=pts[i+1];x.fillStyle='#173246';x.fillText(Math.round(legs[i])+' mm',(p.x+q.x)/2-18,(p.y+q.y)/2-12)}});
