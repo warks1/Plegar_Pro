@@ -2659,4 +2659,55 @@ html,body{background:var(--pp62-bg);color:var(--pp62-ink)}
 .pp56-hmi-top small,.pp56-hmi-live,.pp56-hmi-rail small,.pp56-hmi-rail .pp56-rail-head,.pp56-hmi-rail .pp56-hmi-note{color:#365a70!important}
 .pp56-hmi-live{background:#d9f3e8!important;border-color:#9ed9c5!important}
 </style>
-\n</body></html>
+\n
+<style id="pp66-force-banner-contrast">
+/* v66: reglas específicas para vencer fondos oscuros heredados por selectores con ID. */
+html body #collisions .pp56-hmi-top,
+html body #collisions .pp56-hmi-rail,
+html body #collisions .pp56-hmi-live,
+html body #collisions [class*="banner"],
+html body #collisions [class*="Banner"],
+html body #collisions [class*="hero"],
+html body #collisions [class*="Hero"],
+html body .page [class*="banner"],
+html body .page [class*="Banner"],
+html body .page [class*="hero"],
+html body .page [class*="Hero"],
+html body .page .banner,
+html body .page .hero {
+  background:#eef7fc!important;
+  background-image:linear-gradient(115deg,#f8fcff,#e4f3fa)!important;
+  color:#123349!important;
+  border-color:#b7d5e4!important;
+  text-shadow:none!important;
+}
+html body #collisions .pp56-hmi-top *,
+html body #collisions .pp56-hmi-rail *,
+html body #collisions .pp56-hmi-live *,
+html body #collisions [class*="banner"] *,
+html body #collisions [class*="Banner"] *,
+html body #collisions [class*="hero"] *,
+html body #collisions [class*="Hero"] *,
+html body .page [class*="banner"] *,
+html body .page [class*="Banner"] *,
+html body .page [class*="hero"] *,
+html body .page [class*="Hero"] *,
+html body .page .banner *,
+html body .page .hero * {
+  color:#123349!important;
+  text-shadow:none!important;
+}
+html body #collisions .pp56-hmi-top button,
+html body #collisions .pp56-hmi-rail button,
+html body .page [class*="banner"] button,
+html body .page [class*="hero"] button {
+  color:#fff!important;
+  background:#075a78!important;
+}
+html body #collisions .pp56-hmi-live {
+  background:#d9f3e8!important;
+  color:#14533e!important;
+}
+</style>
+
+</body></html>
