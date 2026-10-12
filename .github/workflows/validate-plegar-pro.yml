@@ -14,15 +14,17 @@ jobs:
           node-version: 22
       - name: Check JavaScript syntax
         run: |
-          for file in pp54-engineering.js pp55-cad-precision.js pp56-collision-review.js pp57-system-integration.js pp59-engineering-upgrade.js sw.js; do
+          for file in pp54-engineering.js pp55-cad-precision.js pp56-collision-review.js pp57-system-integration.js pp59-engineering-upgrade.js pp60-graphics-runtime.js sw.js; do
             echo "Checking $file"
             node --check "$file"
           done
       - name: Verify module and cache wiring
         run: |
           grep -Fq './pp59-engineering-upgrade.js' index.html
+          grep -Fq './pp60-graphics-runtime.js' index.html
+          grep -Fq './pp60-graphics-runtime.js' sw.js
           grep -Fq './pp59-engineering-upgrade.js' sw.js
-          grep -Fq "plegar-pro-v73-0" sw.js
+          grep -Fq "plegar-pro-v74-0" sw.js
           grep -Fq "e.request.mode==='navigate'?caches.match('./index.html'):Response.error()" sw.js
           grep -Fq "if(r.ok&&r.type!=='opaque')" sw.js
           grep -Fq './pp55-cad-precision.js' index.html
@@ -69,6 +71,7 @@ jobs:
           const duplicateIds = Object.entries(counts).filter(([, count]) => count > 1).map(([id]) => id);
           if (duplicateIds.length) failures.push('duplicate static HTML ids: ' + duplicateIds.join(', '));
           if ((html.match(/\.\/pp59-engineering-upgrade\.js/g) || []).length !== 1) failures.push('v59 script must be wired exactly once in index.html');
+          if ((html.match(/\.\/pp60-graphics-runtime\.js/g) || []).length !== 1) failures.push('v60 graphics runtime must be wired exactly once in index.html');
           if (html.includes('<div class="logoText">PLEGAR <i>PRO</i></div>')) failures.push('loader must use the industrial emblem without visible wordmark');
           if (!html.includes('PP_SPLASH_DURATION=5000')) failures.push('loader duration must remain 5 seconds');
           for (const id of ['program3d', 'tooling']) {
