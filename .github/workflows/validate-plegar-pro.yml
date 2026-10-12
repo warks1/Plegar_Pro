@@ -24,7 +24,7 @@ jobs:
           grep -Fq './pp60-graphics-runtime.js' index.html
           grep -Fq './pp60-graphics-runtime.js' sw.js
           grep -Fq './pp59-engineering-upgrade.js' sw.js
-          grep -Fq "plegar-pro-v75-0" sw.js
+          grep -Fq "plegar-pro-v76-0" sw.js
           grep -Fq "e.request.mode==='navigate'?caches.match('./index.html'):Response.error()" sw.js
           grep -Fq "if(r.ok&&r.type!=='opaque')" sw.js
           grep -Fq './pp55-cad-precision.js' index.html
