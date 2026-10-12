@@ -47,10 +47,14 @@ function line(x,w,h,pts,col,width){x.beginPath();pts.map(p=>project(p,w,h)).forE
 function selectedToolAudit(b,v){
  const catalog=Array.isArray(window.tools)?window.tools:[];
  const punchName=String(b?.punch||'').trim();
- const punch=catalog.find(t=>/punz[oó]n|punch/i.test(String(t.type||t.name||''))&&punchName&&[t.name,t.id,t.ref,t.code].some(q=>String(q||'').trim().toLowerCase()===punchName.toLowerCase()))||null;
- const die=catalog.find(t=>/matriz|die/i.test(String(t.type||t.name||''))&&Number(t.v)===Number(v))||null;
- const describe=t=>t?[String(t.maker||'Sin fabricante'),String(t.name||t.id||'Sin referencia')].join(' · '):'Sin ficha coincidente';
- return {punch,die,punchLabel:describe(punch),dieLabel:describe(die),punchVerified:!!punch?.officialVerified,dieVerified:!!die?.officialVerified,catalogCount:catalog.length,collisionSolidUsesCatalogProfile:false};
+ const same=(a,b)=>String(a||'').trim().toLowerCase()===String(b||'').trim().toLowerCase();
+ const punch=catalog.find(t=>/punz[oó]n|punch/i.test(String(t.type||t.name||''))&&punchName&&[t.name,t.id,t.ref,t.code].some(q=>same(q,punchName)))||null;
+ const dieMatches=catalog.filter(t=>/matriz|die/i.test(String(t.type||t.name||''))&&Number(t.v)===Number(v));
+ const requestedDie=String(b?.die||b?.matrix||b?.matriz||'').trim();
+ const die=requestedDie?(dieMatches.find(t=>[t.name,t.id,t.ref,t.code].some(q=>same(q,requestedDie)))||null):(dieMatches.length===1?dieMatches[0]:null);
+ const describe=t=>t?[String(t.maker||'Fabricante sin identificar'),String(t.name||t.id||'Referencia sin identificar')].join(' · '):'Sin selección inequívoca';
+ const dieLabel=die?describe(die):dieMatches.length>1?('Varias fichas V'+v+' ('+dieMatches.length+'); fabricante/referencia sin seleccionar'):'Sin ficha coincidente para V'+v;
+ return {punch,die,punchLabel:describe(punch),dieLabel,punchVerified:!!punch?.officialVerified,dieVerified:!!die?.officialVerified,dieCandidateCount:dieMatches.length,dieAmbiguous:!die&&dieMatches.length>1,catalogCount:catalog.length,collisionSolidUsesCatalogProfile:false};
 }
 function drawCollision(){
  const c=$('pp56Collision');if(!c)return;const x=c.getContext('2d'),w=c.width,h=c.height;
@@ -102,7 +106,7 @@ function drawCollision(){
  x.fillStyle='#173246';x.font='900 24px system-ui';x.fillText('PLEGAR PRO  /  CONTROL 3D INDUSTRIAL',26,38);
  x.fillStyle='#526f82';x.font='14px system-ui';x.fillText('Cámara '+camera+'   ·   Paso '+(step+1)+' / '+Math.max(1,order.length)+'   ·   P'+(idx+1)+'   ·   Ángulo '+ang+'°',27,64);
  tag('PUNZÓN · '+String(b.punch||toolAudit.punch?.name||'SIN FICHA').slice(0,30),w-430,105,toolAudit.punch?'normal':'warn');
- tag('MATRIZ · '+(toolAudit.die?String(toolAudit.die.maker||'')+' V'+v:'V'+v+' · SIN FICHA'),w-430,145,toolAudit.die?'normal':'warn');tag('MATERIAL '+mat()+' · '+t.toFixed(2)+' mm',w-430,185);
+ tag('MATRIZ · '+(toolAudit.die?String(toolAudit.die.maker||'')+' V'+v:toolAudit.dieAmbiguous?'V'+v+' · SELECCIÓN AMBIGUA':'V'+v+' · SIN FICHA'),w-430,145,toolAudit.die?'normal':'warn');tag('MATERIAL '+mat()+' · '+t.toFixed(2)+' mm',w-430,185);
  const legend=[['#d68b38','Punzón'],['#236b8d','Matriz'],['#effaff','Chapa'],['#7f9aa9','Mesa'],['#7795a7','Trancha']];
  legend.forEach((it,i)=>{const xx=26+i*155;x.fillStyle=it[0];x.fillRect(xx,h-46,15,15);x.fillStyle='#29485b';x.font='bold 13px system-ui';x.fillText(it[1],xx+22,h-34)});
  x.fillStyle='rgba(255,248,230,.97)';x.strokeStyle='#dfb95e';x.lineWidth=1;x.beginPath();x.roundRect(w-430,h-84,404,48,9);x.fill();x.stroke();x.fillStyle='#76500c';x.font='bold 13px system-ui';x.fillText('PERFIL PRINCIPAL ESQUEMÁTICO · DETALLE PARAMÉTRICO',w-412,h-55);
@@ -125,18 +129,18 @@ function drawCollision(){
  const sheetHalfPx=Math.max(6,Math.min(10,t*1.4))/2;
  const tipBottomY=tipY+4;
  const clearancePx=apexY-tipBottomY-sheetHalfPx;
- const contactState=clearancePx<=2?'CONTACTO VISUAL':clearancePx<=8?'HOLGURA REDUCIDA':'SIN CONTACTO VISUAL';
- const contactColor=clearancePx<=2?'#b42332':clearancePx<=8?'#9a6200':'#087ea4';
+ const contactState=clearancePx<0?'SOLAPAMIENTO PROYECTADO':clearancePx<=2?'PROXIMIDAD VISUAL':clearancePx<=8?'SEPARACIÓN VISUAL BAJA':'SIN CONTACTO VISUAL · NO VERIFICADO';
+ const contactColor=clearancePx<0?'#b42332':clearancePx<=8?'#9a6200':'#087ea4';
  x.strokeStyle='#5b7687';x.lineWidth=Math.max(6,Math.min(10,t*1.4));x.lineJoin='round';x.lineCap='round';x.beginPath();x.moveTo(bx+20,endY);x.lineTo(leftX,endY);x.lineTo(cx,apexY);x.lineTo(rightX,endY);x.lineTo(bx+bw-20,endY);x.stroke();
  x.strokeStyle='#f8fdff';x.lineWidth=Math.max(3,Math.min(5,t*.65));x.beginPath();x.moveTo(bx+20,endY-1);x.lineTo(leftX,endY-1);x.lineTo(cx,apexY-1);x.lineTo(rightX,endY-1);x.lineTo(bx+bw-20,endY-1);x.stroke();
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('ÁNGULO ACTUAL '+included.toFixed(1)+'°',cx-66,by+bh-35);
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('PUNZÓN '+punchAngle+'° · R'+punchRadius.toFixed(1),bx+16,by+67);x.fillText('CHAPA',bx+16,by+119);x.fillText('MATRIZ V'+v,bx+16,by+bh-15);
- x.fillStyle=contactColor;x.font='900 11px system-ui';x.textAlign='right';x.fillText(contactState+' · '+Math.max(0,clearancePx).toFixed(1)+' px',bx+bw-14,by+bh-15);x.textAlign='left';
+ x.fillStyle=contactColor;x.font='900 11px system-ui';x.textAlign='right';x.fillText(contactState+' · '+clearancePx.toFixed(1)+' px',bx+bw-14,by+bh-15);x.textAlign='left';
  x.restore();
  const st=$('pp56Status');
  if(st){
-  st.className='pp56-status '+(clearancePx<=2?'danger':clearancePx<=8?'warn':'ok');
-  st.textContent=contactState+' en la sección 2D (holgura proyectada: '+clearancePx.toFixed(1)+' px). Utillaje: '+(toolAudit.punch?'punzón vinculado':'punzón sin ficha coincidente')+'; '+(toolAudit.die?'matriz vinculada por V':'matriz sin ficha coincidente')+'. El sólido principal sigue siendo esquemático; el detalle solo usa ángulo/radio si hay ficha coincidente. No es detección CAD dimensional ni certificación de seguridad.';
+  st.className='pp56-status '+(clearancePx<0?'danger':'warn');
+  st.textContent=contactState+' en la sección 2D (holgura proyectada: '+clearancePx.toFixed(1)+' px; no equivale a mm). Utillaje: '+(toolAudit.punch?'punzón vinculado':'punzón sin ficha coincidente')+'; '+(toolAudit.die?'matriz vinculada':'matriz sin selección inequívoca')+'. El sólido principal sigue siendo esquemático. No es detección CAD dimensional ni certificación de seguridad.';
  }
  if(S())S().collisionReview={step:step,foldIndex:idx,travel:travel,parts:{...visible},camera:camera,projectedClearancePx:clearancePx,visualContactState:contactState,toolAudit:{punch:toolAudit.punchLabel,die:toolAudit.dieLabel,punchAngle:punchAngle,punchRadius:punchRadius,punchVerified:toolAudit.punchVerified,dieVerified:toolAudit.dieVerified,collisionSolidUsesCatalogProfile:false},collisionCertification:false,dimensionalCollisionEngine:false};
 }
