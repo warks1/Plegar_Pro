@@ -2459,4 +2459,42 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 @media(max-width:900px){body .app{display:block!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:100%!important}body .side{position:fixed!important;inset:0 auto 0 0!important;width:min(310px,88vw)!important;height:100dvh!important;max-height:100dvh!important;transform:translateX(-105%)!important;overflow:auto!important;z-index:90!important}body .side.open,body.menu-open .side,#menuToggle:checked~.side{transform:translateX(0)!important}body .main{width:100%!important;min-width:0!important;max-width:100%!important;padding:10px!important}.nav button{min-width:0!important}}
 @media(max-width:560px){body .main{padding:7px!important;overflow-x:clip!important}.tableWrap,.tablewrap,.pp56-table{max-width:100%!important;overflow-x:auto!important}.pp56-hmi-layout,.pp56-canvas,.pp56-card,.pp59{min-width:0!important;max-width:100%!important}.pp56-canvas canvas,.pp59 canvas{display:block;width:100%!important;height:auto!important;min-height:0!important;max-width:100%!important}i.table,.pp56-rail-legend i.table{display:inline-block!important;width:14px!important;min-width:14px!important;max-width:14px!important;height:14px!important;flex:0 0 14px!important}.pp56-controls,.pp59 .controls{grid-template-columns:repeat(2,minmax(0,1fr))!important}.pp56-actions button,.pp59 .actions button{min-width:0!important;white-space:normal!important}}
 </style>
+
+<style id="pp61-visibility-and-menu">
+:root{--pp61-ink:#152638;--pp61-panel:#f4f8fc;--pp61-cyan:#00c9ed}
+#mainSidebar.side{background:linear-gradient(180deg,#102638 0%,#071522 100%)!important;color:#f2f8fc!important;box-shadow:12px 0 34px #06111d55;z-index:120!important}
+#mainSidebar.side *{color:inherit}
+#mainSidebar.side button,#mainSidebar.side a{min-height:42px;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+#mainSidebar.side button.active,#mainSidebar.side a.active{background:#dff7ff!important;color:#102638!important;border:1px solid #6be1f7!important}
+#mainSidebar.side button.active *,#mainSidebar.side a.active *{color:#102638!important}
+.card,.panel,.banner,.hero,.stat-card,[class*="banner"],[class*="Banner"],[class*="hero"],[class*="Hero"]{text-shadow:none}
+.banner,.hero,[class*="banner"],[class*="Banner"],[class*="hero"],[class*="Hero"]{background-color:#eaf4fb}
+.banner::before,.hero::before,[class*="banner"]::before,[class*="hero"]::before{opacity:.16!important}
+.banner p,.banner span,.banner h1,.banner h2,.hero p,.hero span,.hero h1,.hero h2,[class*="banner"] p,[class*="banner"] span,[class*="banner"] h1,[class*="banner"] h2,[class*="hero"] p,[class*="hero"] span,[class*="hero"] h1,[class*="hero"] h2{color:#102638}
+@media(max-width:900px){#mainSidebar.side{position:fixed!important;inset:0 auto 0 0!important;width:min(320px,88vw)!important;height:100dvh!important;max-height:100dvh!important;overflow-y:auto!important;transform:translateX(-105%);transition:transform .22s ease;z-index:9999!important}#mainSidebar.side.open,#mainSidebar.side.show,#mainSidebar.side.active{transform:translateX(0)}body{max-width:100%;overflow-x:hidden}main,.main,.content{min-width:0;max-width:100%;width:100%}}
+@media(max-width:560px){.grid,.row,.cards,[class*="grid"]{min-width:0;max-width:100%}canvas{max-width:100%;height:auto}button,select,input{max-width:100%}}
+#pp61-update{position:fixed;right:14px;bottom:14px;z-index:10000;border:1px solid #62d9f4;border-radius:12px;padding:11px 15px;background:#102638;color:#fff;font-weight:700;box-shadow:0 6px 22px #0004;cursor:pointer}
+#pp61-update-status{position:fixed;right:14px;bottom:68px;z-index:10000;max-width:min(360px,90vw);padding:10px 12px;background:#fff;color:#102638;border:1px solid #9bb7c7;border-radius:10px;display:none}
+</style>
+<button id="pp61-update" type="button" title="Comprobar y aplicar actualización">↻ Actualizar programa</button><div id="pp61-update-status" role="status" aria-live="polite"></div>
+<script>
+(function(){
+ const b=document.getElementById('pp61-update'),s=document.getElementById('pp61-update-status');
+ if(!b||!s)return;
+ b.addEventListener('click',async()=>{
+  s.style.display='block';s.textContent='Comprobando actualizaciones…';b.disabled=true;
+  try{
+   if(!('serviceWorker' in navigator)){s.textContent='Este navegador no permite actualizar automáticamente. Recarga la página con Ctrl+F5.';return}
+   const regs=await navigator.serviceWorker.getRegistrations();
+   await Promise.all(regs.map(r=>r.update().catch(()=>null)));
+   const waiting=regs.find(r=>r.waiting);
+   if(waiting){waiting.postMessage({type:'SKIP_WAITING'});s.textContent='Actualización descargada. Recargando…';setTimeout(()=>location.reload(),700);return}
+   const installing=regs.some(r=>r.installing);
+   if(installing){s.textContent='Descargando actualización. La página se recargará al activarse.';return}
+   s.textContent='No hay una versión nueva disponible. Puedes seguir trabajando.';
+  }catch(e){s.textContent='No se pudo comprobar la actualización. Comprueba la conexión y vuelve a intentarlo.'}
+  finally{b.disabled=false}
+ });
+})();
+</script>
 </body></html>
