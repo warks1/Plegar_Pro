@@ -3,7 +3,7 @@
   'use strict';
   if(window.PLEGAR_PRO_V61?.installed)return;
   const $=id=>document.getElementById(id);
-  let installed=false, syncing=false, timer=0, lastFingerprint='', syncCount=0, externalChanges=0;
+  let installed=false, syncing=false, timer=0, lastFingerprint='', syncCount=0, externalChanges=0, lastSyncError='';
   const getState=()=>{try{return typeof state!=='undefined'?state:(window.state||null)}catch(e){return window.state||null}};
   function fingerprint(){
     const s=getState(); if(!s)return '';
@@ -53,6 +53,7 @@
       window.dispatchEvent(new CustomEvent('plegarpro:modules-synchronized',{detail:{reason:reason||'state-change',count:syncCount}}));
       return true;
     }catch(error){
+      lastSyncError=String(error?.stack||error);
       console.error('[Plegar Pro Runtime] Falló la sincronización compartida',error);
       updateStatus('Error de sincronización · revisa consola');
       return false;
@@ -165,7 +166,7 @@
     window.PLEGAR_PRO_V61={
       installed:true,
       refresh:()=>synchronize('manual',true),
-      audit:()=>({installed:true,stateAvailable:!!getState(),syncFunction:typeof window.syncAll==='function',fingerprint:!!fingerprint(),playback:auditPlayback()}),
+      audit:()=>({installed:true,stateAvailable:!!getState(),syncFunction:typeof window.syncAll==='function',fingerprint:!!fingerprint(),syncing,syncCount,externalChanges,lastSyncError,playback:auditPlayback()}),
       workspace:{program3dIsMainPage:!!document.querySelector('main.main > section.page#program3d'),engineeringTwinMounted:!!document.querySelector('main.main > section.page#program3d #pp59Twin')},
       playback:auditPlayback
     };
