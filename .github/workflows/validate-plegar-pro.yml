@@ -328,9 +328,34 @@ jobs:
               return { advanced, held, paused, resumed, bendCount: state.bends.length, maxStep: Math.max(0,state.bends.length-1), timerActive: !!sim.s2Timer, advanceOk: advanced > 0, pauseOk: paused === held, resumeOk: resumed > paused, crossModuleOk: sim.s2Step === sim.s3Step };
             });
             if (corePlayback.error || !corePlayback.advanceOk || !corePlayback.pauseOk || !corePlayback.resumeOk || !corePlayback.crossModuleOk) throw new Error('Core 2D/3D playback or cross-module step sync failed: ' + JSON.stringify(corePlayback));
+            const finalCoreFold = await page.evaluate(async () => {
+              const maxStep = Math.max(0, state.bends.length - 1), play = document.querySelector('#s2Play'), pause = document.querySelector('#s2Pause');
+              sim.s2Step = Math.max(0, maxStep - 1); sim.s3Step = sim.s2Step; drawAll(); play.click();
+              const deadline = Date.now() + 2200;
+              while (play.dataset.playing === 'true' && Date.now() < deadline) await new Promise(r => setTimeout(r, 25));
+              const result = {maxStep, finalStep: sim.s2Step, stopped: play.dataset.playing !== 'true', synchronized: sim.s2Step === sim.s3Step};
+              if (play.dataset.playing === 'true') pause.click();
+              return result;
+            });
+            if (!finalCoreFold.stopped || finalCoreFold.finalStep !== finalCoreFold.maxStep || !finalCoreFold.synchronized) throw new Error('Core simulation did not execute the final programmed fold: ' + JSON.stringify(finalCoreFold));
             await page.locator('[data-page="collisions"]').click();
             await page.waitForFunction(() => document.querySelector('#collisions')?.classList.contains('active'), null, { timeout: 10000 });
 
+            const finalCollisionFold = await page.evaluate(async () => {
+              const originalBends = state.bends, originalOrder = state.bendOrder;
+              state.bends = [{leg:50,angle:90,direction:1},{leg:50,angle:90,direction:-1}]; state.bendOrder = [0];
+              window.PLEGAR_PRO_COLLISIONS.refresh();
+              const btn = document.querySelector('#pp56Play'), slider = document.querySelector('#pp56Travel'), selector = document.querySelector('#pp56Step');
+              if (btn.textContent.includes('Pausar')) btn.click();
+              selector.value = '0'; selector.dispatchEvent(new Event('change',{bubbles:true})); slider.value = '0'; slider.dispatchEvent(new Event('input',{bubbles:true}));
+              btn.click(); const deadline = Date.now() + 3300;
+              while (btn.textContent.includes('Pausar') && Date.now() < deadline) await new Promise(r => setTimeout(r,30));
+              const result = {stopped:!btn.textContent.includes('Pausar'),finalTravel:Number(slider.value),step:window.PLEGAR_PRO_COLLISIONS.getStep()};
+              if (btn.textContent.includes('Pausar')) btn.click();
+              state.bends = originalBends; state.bendOrder = originalOrder; window.PLEGAR_PRO_COLLISIONS.refresh();
+              return result;
+            });
+            if (!finalCollisionFold.stopped || finalCollisionFold.finalTravel !== 100 || finalCollisionFold.step !== 0) throw new Error('Collision simulation did not complete its final fold: ' + JSON.stringify(finalCollisionFold));
             const sequenceAudit = await page.evaluate(() => window.PLEGAR_PRO_COLLISIONS.auditSequences());
             if (!sequenceAudit.ok) throw new Error('U/Z/box final-fold audit failed: ' + JSON.stringify(sequenceAudit));
             await page.locator('#pp56ProfileV').fill(String(await page.evaluate(() => state.bends[0]?.v || 16)));
