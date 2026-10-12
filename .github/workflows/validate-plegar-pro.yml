@@ -26,7 +26,7 @@ jobs:
           grep -Fq './pp60-graphics-runtime.js' sw.js
           grep -Fq './pp61-runtime-integrity.js' sw.js
           grep -Fq './pp59-engineering-upgrade.js' sw.js
-          grep -Fq "plegar-pro-v95-0" sw.js
+          grep -Fq "plegar-pro-v96-0" sw.js
           grep -Fq "e.request.mode==='navigate'?caches.match('./index.html'):Response.error()" sw.js
           grep -Fq "if(r.ok&&r.type!=='opaque')" sw.js
           grep -Fq './pp55-cad-precision.js' index.html
@@ -102,6 +102,9 @@ jobs:
           if (!html.includes("plegarpro:playback-step") || !html.includes("plegarpro:playback-start")) failures.push('core playback must publish shared playback events');
           if (!collision.includes("if(step>=Math.max(0,seq().length-1))setStep(0)") || !collision.includes("if(!playing||!raf)")) failures.push('collision playback must start on first entry and restart after completion');
           if (!runtime.includes('function installPlaybackSync()') || !runtime.includes("addEventListener('plegarpro:playback-step'")) failures.push('shared playback synchronizer missing');
+          if (runtime.indexOf('const order=Array.isArray(s?.bendOrder)') > runtime.indexOf('if(detail.complete)pos=Math.max(0,order.length-1)')) failures.push('playback completion reads order before initialization');
+          if (!runtime.includes("$('pp59play')?.textContent?.includes('Pausar')")) failures.push('visibility handler must stop the engineering twin playback');
+          if (!v59.includes('(playing?Number(b.angle):Number($(\'pp59angle\')?.value)')) failures.push('3D playback must use each bend own angle');
           if (!html.includes('const maxStep=Math.max(0,(Array.isArray(state.bends)?state.bends.length:0)-1)')) failures.push('core playback must stop at the actual number of folds');
           if (!html.includes("Math.min(Math.max(0,state.bends.length-1),(Number(sim[key+'Step'])||0)+1)")) failures.push('manual playback next-step must stay inside the fold sequence');
           if (!collision.includes('sim.s2Step=step;sim.s3Step=step;')) failures.push('collision step must map to the same shared sequence index');
@@ -109,7 +112,7 @@ jobs:
           if (!runtime.includes('if(detail.complete)pos=Math.max(0,order.length-1)')) failures.push('playback synchronizer must handle the final completed fold');
           if (!system.includes("el.id='pp58SyncStatus-'+id") || !system.includes("el.dataset.pp58SyncStatus='true'")) failures.push('module sync indicators must use unique IDs and shared data marker');
           if (system.includes("el.id='pp58SyncStatus';")) failures.push('duplicate synchronization status IDs remain');
-          if (!sw.includes('plegar-pro-v95-0')) failures.push('service worker cache was not bumped for runtime repairs');
+          if (!sw.includes('plegar-pro-v96-0')) failures.push('service worker cache was not bumped for runtime repairs');
           if (html.indexOf('./pp57-system-integration.js') > html.indexOf('./pp59-engineering-upgrade.js')) {
             failures.push('v59 must load after the existing system integration module');
           }
