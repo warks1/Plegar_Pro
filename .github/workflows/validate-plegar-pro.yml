@@ -125,7 +125,8 @@ jobs:
           const { chromium } = require('playwright');
           (async () => {
             const browser = await chromium.launch({ headless: true });
-            const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+            const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, serviceWorkers: 'block' });
+            const page = await context.newPage();
             const errors = [];
             page.on('pageerror', error => errors.push(error.message));
             const started = Date.now();
