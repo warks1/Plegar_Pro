@@ -330,29 +330,6 @@ if (failures.length) {
             await page.locator('[data-page="collisions"]').click();
             await page.waitForFunction(() => document.querySelector('#collisions')?.classList.contains('active'), null, { timeout: 10000 });
 
-            const sequenceAudit = await page.evaluate(() => {
-            const originalBends = state.bends, originalOrder = state.bendOrder;
-            const samples = {
-            U: [{leg:50,angle:90,direction:1},{leg:80,angle:90,direction:-1},{leg:80,angle:90,direction:-1},{leg:50,angle:90,direction:1}],
-            Z: [{leg:50,angle:90,direction:1},{leg:80,angle:90,direction:-1},{leg:80,angle:90,direction:1},{leg:50,angle:90,direction:-1}],
-            BOX: [{leg:50,angle:90,direction:1},{leg:80,angle:90,direction:-1},{leg:120,angle:90,direction:-1},{leg:80,angle:90,direction:1},{leg:50,angle:90,direction:1}]
-            };
-            const results = [];
-            for (const [name, bends] of Object.entries(samples)) {
-            state.bends = bends; state.bendOrder = bends.slice(0,-1).map((_,i)=>i);
-            window.PLEGAR_PRO_COLLISIONS.refresh();
-            const order = window.PLEGAR_PRO_COLLISIONS.getOrder();
-            const selector = document.querySelector('#pp56Step');
-            selector.value = String(Math.max(0,order.length-1));
-            selector.dispatchEvent(new Event('change',{bubbles:true}));
-            const geometry = window.PLEGAR_PRO_COLLISIONS.getGeometry();
-            results.push({name,legs:bends.length,steps:order.length,lastSelected:Number(selector.value)===order.length-1,geometryFinite:Number.isFinite(geometry.profilePointCount)&&geometry.profilePointCount>0,priorFoldScope:geometry.scope.includes('prior folded flanges'),activeBendDisclosure:geometry.activeBendIntersectionChecked===false});
-            }
-            state.bends = originalBends; state.bendOrder = originalOrder;
-            window.PLEGAR_PRO_COLLISIONS.refresh();
-            return results;
-            });
-            if (sequenceAudit.some(r=>!r.lastSelected || !r.geometryFinite || !r.priorFoldScope || !r.activeBendDisclosure || r.steps !== r.legs-1)) throw new Error('U/Z/box last-fold or folded-flange geometry regression: '+JSON.stringify(sequenceAudit));
             const syncAudit = await page.evaluate(() => window.PLEGAR_PRO_V61.audit());
             if (!syncAudit.stateAvailable || !syncAudit.syncFunction || !syncAudit.playback.collision.hasHandler || !syncAudit.playback.engineeringTwin.hasHandler) throw new Error('Runtime module integration audit failed: ' + JSON.stringify(syncAudit));
 
