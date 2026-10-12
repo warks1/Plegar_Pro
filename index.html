@@ -612,6 +612,48 @@ html.pp69-loading,body.pp69-loading{height:100%!important;min-height:100%!import
 @media(max-height:520px){#loader .pp-loading{padding:8px!important}#loader .pp-emblem{width:min(24vh,120px)!important;margin-bottom:4px!important}#loader .loadBar{margin-top:8px!important}#loader .pp-loading-foot{margin-top:6px!important}}
 </style>
 <script id="pp69-loader-scroll-lock-init">(function(){function lock(){if(!document.getElementById('loader'))return;document.documentElement.classList.add('pp69-loading');document.body.classList.add('pp69-loading')}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',lock,{once:true});else lock();window.addEventListener('pp:boot-complete',function(){document.documentElement.classList.remove('pp69-loading');document.body.classList.remove('pp69-loading')});})();</script>
+
+<style id="pp70-startup-rescue-style">
+/* PP70: el menú de navegación nunca forma parte de la pantalla de carga. */
+#loader .side,#loader .sidebar,#loader .nav,#loader .mobileMenuBtn{display:none!important}
+body:not(.boot-complete) > .app{visibility:hidden}
+#loader{z-index:2147483000!important;isolation:isolate}
+#loader.hidden{display:none!important}
+</style>
+<script id="pp70-startup-rescue">
+(function(){
+  'use strict';
+  var started=Date.now(),released=false;
+  function release(){
+    if(released)return;
+    var loader=document.getElementById('loader');
+    if(!loader)return;
+    released=true;
+    document.body.classList.add('boot-complete');
+    document.documentElement.classList.remove('pp69-loading');
+    document.body.classList.remove('pp69-loading');
+    loader.classList.add('hidden');
+    loader.setAttribute('aria-hidden','true');
+    loader.style.setProperty('display','none','important');
+    window.dispatchEvent(new Event('pp:boot-complete'));
+    console.info('[Plegar Pro] Pantalla de carga liberada por PP70.');
+  }
+  /* Este temporizador se instala en el <head>, antes de los módulos que pueden bloquear el arranque. */
+  window.setInterval(function(){
+    if(released)return;
+    if(document.getElementById('loader') && Date.now()-started>=5200)release();
+    else if(Date.now()-started>=12000 && document.body) {
+      document.body.classList.add('boot-complete');
+      document.documentElement.classList.remove('pp69-loading');
+      document.body.classList.remove('pp69-loading');
+      var l=document.getElementById('loader');
+      if(l){l.classList.add('hidden');l.style.setProperty('display','none','important');}
+      released=true;
+    }
+  },250);
+  window.addEventListener('pageshow',function(){if(document.body.classList.contains('boot-complete'))release()});
+})();
+</script>
 </head>
 <body>
 <div id="loader" aria-label="Cargando Plegar Pro">
