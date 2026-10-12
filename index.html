@@ -494,6 +494,60 @@ input:focus,select:focus,textarea:focus{outline:1px solid rgba(52,214,255,.65);b
 @keyframes pp69-card-arrive{from{opacity:.72;transform:translateY(9px) scale(.995)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(prefers-reduced-motion:reduce){.nav button:after,.nav button.active,.nav button.active:before,.card{animation:none!important}.nav button,.btn,.kpi{transition:none!important}}
 </style>
+
+<style id="pp70-contrast-motion-repair">
+/* Corrección de contraste para paneles informativos: nunca texto oscuro sobre caja oscura. */
+.page .note,.page [id*="Status"],.page [id*="status"],.page [class*="status"],.page [class*="Status"],
+.page .banner,.page .hero,.page [class*="banner"],.page [class*="Banner"],.page [class*="hero"],.page [class*="Hero"],
+.page .pp-status-strip,.page .pp-module-form {
+  color:#15364b!important;
+  background:#eef8fd!important;
+  background-image:linear-gradient(125deg,#f9fdff 0%,#e4f3fa 100%)!important;
+  border:1px solid #b7d5e4!important;
+  border-left:4px solid #00a4d3!important;
+  text-shadow:none!important;
+  opacity:1!important;
+}
+.page .note *, .page [id*="Status"] *, .page [id*="status"] *,
+.page [class*="status"] *, .page [class*="Status"] *,
+.page .banner *, .page .hero *, .page [class*="banner"] *, .page [class*="Banner"] *,
+.page [class*="hero"] *, .page [class*="Hero"] * {
+  color:#15364b!important;text-shadow:none!important;
+}
+.page .note button,.page [id*="Status"] button,.page [id*="status"] button,
+.page [class*="status"] button,.page [class*="Status"] button,
+.page .banner button,.page .hero button {background:#075a78!important;color:#fff!important}
+.page .stage .overlay {
+  color:#15364b!important;
+  background:linear-gradient(145deg,rgba(250,253,255,.98),rgba(225,243,251,.98))!important;
+  border:1px solid #8bbbd0!important;
+  box-shadow:0 8px 24px rgba(10,45,66,.18),inset 0 1px 0 #fff!important;
+  text-shadow:none!important;
+  backdrop-filter:blur(8px);
+}
+.page .stage .overlay * {color:#15364b!important;text-shadow:none!important}
+.page .stage .overlay:before {color:#007da6!important}
+
+/* Menú animado estable: el brillo no tapa ni recorta las etiquetas. */
+.nav button{position:relative;isolation:isolate;overflow:hidden;will-change:transform,box-shadow}
+.nav button::after{content:"";position:absolute;z-index:0;top:-20%;bottom:-20%;left:-140%;width:48%;
+  transform:skewX(-22deg);background:linear-gradient(90deg,transparent,rgba(102,229,255,.25),transparent);
+  pointer-events:none;animation:pp70-menu-glint 4.8s ease-in-out infinite}
+.nav button>*{position:relative;z-index:1}
+.nav button.active{animation:pp70-menu-active 2.4s ease-in-out infinite}
+.nav button:hover{transform:translateX(4px)!important;box-shadow:0 0 0 1px rgba(61,216,255,.42),0 8px 22px rgba(0,191,255,.16)!important}
+.page.active .card{animation:pp70-card-enter .38s ease-out both}
+.page.active .card:nth-child(2){animation-delay:.04s}
+.page.active .card:nth-child(3){animation-delay:.08s}
+.page.active .card:nth-child(4){animation-delay:.12s}
+.btn,.quick button,.topbar button{transition:transform .2s ease,filter .2s ease,box-shadow .2s ease!important}
+.btn:hover,.quick button:hover,.topbar button:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 8px 20px rgba(0,169,213,.22)}
+@keyframes pp70-menu-glint{0%,65%,100%{left:-140%;opacity:0}72%{opacity:1}94%{left:150%;opacity:0}}
+@keyframes pp70-menu-active{0%,100%{box-shadow:inset 3px 0 #34d6ff,0 4px 14px rgba(0,200,255,.06)}50%{box-shadow:inset 3px 0 #34d6ff,0 4px 24px rgba(0,200,255,.24)}}
+@keyframes pp70-card-enter{from{opacity:.85;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.nav button::after,.nav button.active,.page.active .card{animation:none!important}.nav button,.btn,.quick button,.topbar button{transition:none!important}}
+</style>
+
 </head>
 <body>
 <div id="loader" aria-label="Cargando Plegar Pro">
