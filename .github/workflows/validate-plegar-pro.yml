@@ -230,6 +230,43 @@ jobs:
               return { moved, held, paused, resumed, movedOk: moved > 0, pauseOk: paused === held, resumeOk: resumed !== paused };
             });
             if (playback.error || !playback.movedOk || !playback.pauseOk || !playback.resumeOk) throw new Error('Collision playback failed to advance/pause/resume: ' + JSON.stringify(playback));
+            await page.locator('[data-page="program3d"]').click();
+            await page.waitForSelector('#pp59play', { state: 'visible', timeout: 10000 });
+            const machinePlayback = await page.evaluate(async () => {
+              const btn = document.querySelector('#pp59play'), canvas = document.querySelector('#pp59canvas');
+              if (!btn || !canvas || typeof btn.onclick !== 'function') return { error: '3D playback controls missing' };
+              if (btn.textContent.includes('Pausar')) btn.click();
+              await new Promise(r => setTimeout(r, 250));
+              const still = canvas.toDataURL();
+              await new Promise(r => setTimeout(r, 250));
+              const held = canvas.toDataURL();
+              btn.click();
+              await new Promise(r => setTimeout(r, 450));
+              const resumed = canvas.toDataURL();
+              btn.click();
+              return { pauseOk: still === held, resumeOk: resumed !== held };
+            });
+            if (machinePlayback.error || !machinePlayback.pauseOk || !machinePlayback.resumeOk) throw new Error('3D machine playback failed pause/resume: ' + JSON.stringify(machinePlayback));
+            await page.locator('[data-page="tooling"]').click();
+            await page.waitForSelector('#pp58Pause', { state: 'visible', timeout: 10000 });
+            const twinPlayback = await page.evaluate(async () => {
+              const btn = document.querySelector('#pp58Pause'), canvas = document.querySelector('#pp58Twin');
+              if (!btn || !canvas || typeof btn.onclick !== 'function') return { error: 'Machine twin playback controls missing' };
+              if (btn.textContent.includes('Pausar')) btn.click();
+              await new Promise(r => setTimeout(r, 250));
+              const still = canvas.toDataURL();
+              await new Promise(r => setTimeout(r, 250));
+              const held = canvas.toDataURL();
+              btn.click();
+              await new Promise(r => setTimeout(r, 450));
+              const resumed = canvas.toDataURL();
+              btn.click();
+              return { pauseOk: still === held, resumeOk: resumed !== held };
+            });
+            if (twinPlayback.error || !twinPlayback.pauseOk || !twinPlayback.resumeOk) throw new Error('Machine twin playback failed pause/resume: ' + JSON.stringify(twinPlayback));
+            await page.locator('[data-page="collisions"]').click();
+            await page.waitForFunction(() => document.querySelector('#collisions')?.classList.contains('active'), null, { timeout: 10000 });
+
             const syncAudit = await page.evaluate(() => window.PLEGAR_PRO_V61.audit());
             if (!syncAudit.stateAvailable || !syncAudit.syncFunction || !syncAudit.playback.collision.hasHandler || !syncAudit.playback.engineeringTwin.hasHandler) throw new Error('Runtime module integration audit failed: ' + JSON.stringify(syncAudit));
 
