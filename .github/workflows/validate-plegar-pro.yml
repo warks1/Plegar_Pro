@@ -65,6 +65,9 @@ jobs:
           grep -Fq "if(r.ok&&r.type!=='opaque')" sw.js
           grep -Fq './pp55-cad-precision.js' index.html
           grep -Fq 'window.tools=tools;' index.html
+          grep -Fq 'id="machine"><option value="Bystronic Xpert Pro 3100 × 100 T"' index.html
+          grep -Fq 'value="TRUMPF TrumaBend V85"' index.html
+          if grep -Fq 'Bystronic Xpert 3200 × 150 T' index.html || grep -Fq '<option>Personalizada</option>' index.html; then echo 'Unsupported machine options must not reuse a reference-machine geometry'; exit 1; fi
           grep -Fq 'id="pp64-visual-redesign"' index.html
           grep -Fq 'id="pp67-banner-contrast-runtime"' index.html
           grep -Fq 'id="pp70-light-readable-panels"' index.html
