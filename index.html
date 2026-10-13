@@ -2072,6 +2072,9 @@ let ppBootReady=false;
 let ppSplashFinished=false;
 function ppSplashClose(message='Programa listo'){
  if(ppSplashFinished)return;
+ // Ningún watchdog o error secundario puede saltarse los 5 s mínimos de la pantalla de inicio.
+ const remaining=PP_SPLASH_DURATION-(performance.now()-ppSplashStart);
+ if(remaining>0){setTimeout(()=>ppSplashClose(message),remaining);return;}
  ppSplashFinished=true;
  const ld=safeElement('loader'),st=safeElement('loadState'),fill=safeElement('loadFill');
  if(st)st.textContent=message;if(fill)fill.style.width='100%';
