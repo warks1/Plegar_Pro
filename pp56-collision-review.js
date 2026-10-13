@@ -164,7 +164,7 @@ function runSequenceRegressionTests(){
    const lastBend=bends[order[order.length-1]]||{},v=Math.max(6,Number(lastBend.v||16));
    const model=profileModelPhysical(Infinity,1,selectedToolAudit(lastBend,v),v);
    const scope=typeof g?.scope==='string'?g.scope:'';
-   results.push({name,legs:bends.length,expectedFolds:bends.length-1,actualFolds:order.length,lastStepSelected:step===order.length-1,profilePoints:model.length,geometryFinite:model.length>0&&model.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)),geometryAvailable:!!g,priorFoldCheckPresent:typeof g?.priorFoldInterference==='boolean'&&scope.includes('prior folded flanges'),priorFoldInterference:typeof g?.priorFoldInterference==='boolean'?g.priorFoldInterference:null,priorFoldSegments:Number.isFinite(g?.priorFoldSegmentCount)?g.priorFoldSegmentCount:null,activeBendContactChecked:g?.activeBendIntersectionChecked===true&&g?.activeBendContact?.checked===true});
+   results.push({name,legs:bends.length,expectedFolds:bends.length-1,actualFolds:order.length,lastStepSelected:step===order.length-1,profilePoints:model.length,geometryFinite:model.length>0&&model.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)),geometryAvailable:!!g,priorFoldCheckPresent:typeof g?.priorFoldInterference==='boolean'&&scope.includes('prior folded flanges'),priorFoldInterference:typeof g?.priorFoldInterference==='boolean'?g.priorFoldInterference:null,priorFoldSegments:Number.isFinite(g?.priorFoldSegmentCount)?g.priorFoldSegmentCount:null,priorFoldBendSegments:Number.isFinite(g?.priorFoldBendSegmentCount)?g.priorFoldBendSegmentCount:null,activeBendContactChecked:g?.activeBendIntersectionChecked===true&&g?.activeBendContact?.checked===true});
   }
  }catch(e){results.push({name:'error',error:String(e?.message||e)});}
  finally{
@@ -172,7 +172,7 @@ function runSequenceRegressionTests(){
   try{refreshSteps();setStep(previousStep);if($('pp56Travel'))$('pp56Travel').value=previousTravel;drawCollision();}
   catch(restoreError){results.push({name:'restore',error:'No se pudo restaurar completamente la vista: '+String(restoreError?.message||restoreError)});}
  }
- const ok=results.length===3&&results.every(r=>r.expectedFolds===r.actualFolds&&r.lastStepSelected&&r.geometryFinite&&r.geometryAvailable&&r.priorFoldCheckPresent&&r.activeBendContactChecked);
+ const ok=results.length===3&&results.every(r=>r.expectedFolds===r.actualFolds&&r.lastStepSelected&&r.geometryFinite&&r.geometryAvailable&&r.priorFoldCheckPresent&&r.priorFoldBendSegments>0&&r.activeBendContactChecked);
  return {ok,results,disclosure:'Modelo paramétrico orientativo; no certifica contacto del pliegue activo ni seguridad CNC.'};
 }
 function bindSequenceTests(){const btn=$('pp56TestSequences');if(!btn||btn.dataset.bound)return;btn.dataset.bound='1';btn.onclick=()=>{const r=runSequenceRegressionTests(),status=$('pp56ProfileStatus');if(!status)return;if(!Array.isArray(r.results)){status.textContent='NO SE PUDIERON EJECUTAR LAS PRUEBAS · '+String(r.error||'No hay resultados disponibles.');return}status.textContent=(r.ok?'PRUEBAS SUPERADAS':'REVISAR RESULTADOS')+' · '+r.results.map(x=>x.error?(x.name+': ERROR · '+x.error):(x.name+': '+(x.actualFolds??'—')+'/'+(x.expectedFolds??'—')+' pliegues, último '+(x.lastStepSelected?'OK':'FALLO')+', alas previas '+(x.priorFoldCheckPresent?'evaluadas':'no verificadas')+', contacto activo '+(x.activeBendContactChecked?'evaluado':'no verificado'))).join(' · ')+' · '+(r.disclosure||'Modelo orientativo; no certifica seguridad CNC.');};}
