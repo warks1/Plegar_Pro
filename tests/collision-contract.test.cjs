@@ -30,8 +30,11 @@ assert.match(html, /Build a thin sheet-metal wall/);
 assert.match(html, /getSelectedToolProfiles/);
 
 // Keep the deployed offline shell wired to the same collision/twin modules.
-assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=154"><\/script>/, 'page and service worker must load the same collision module version');
-assert.match(sw, /\.\/pp56-collision-review\.js\?v=154/);
+assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=155"><\/script>/, 'page and service worker must load the same collision module version');
+assert.match(sw, /\.\/pp56-collision-review\.js\?v=155/);
+assert.match(collision, /function setStep\(n,forceSync=false\)/);
+assert.match(collision, /previousStep!==step\|\|forceSync/);
+assert.match(collision, /\$\('pp56Step'\)\.onchange=\(\)=>setStep\(Number\(\$\('pp56Step'\)\.value\)\|\|0,true\)/);
 assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=150/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
