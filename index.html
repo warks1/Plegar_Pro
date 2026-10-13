@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plegar Pro v63.0 · Ordered Simulation</title>
+<title>Plegar Pro v64.9 · Estabilización</title>
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -192,7 +192,7 @@ tr:hover td{background:#10283a}
 @media(max-width:560px){.main{padding:7px}.grid{gap:8px}.card{padding:10px;border-radius:11px}.c3,.c4,.c5,.c6,.c7,.c8,.c9{grid-column:span 12}.fields{grid-template-columns:minmax(0,1fr)}.topbar{gap:7px}.topLeft{flex-wrap:wrap}.nav button{flex:1 1 125px;font-size:12px}.pp56-controls,.pp59 .controls{grid-template-columns:repeat(2,minmax(0,1fr))}.pp56-grid,.pp59 .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.pp56-hmi-rail{grid-template-columns:repeat(2,minmax(0,1fr))}.pp56-hmi-note{grid-column:1/-1}.pp56-canvas canvas{width:100%;height:auto}.pp56-actions,.pp59 .actions{gap:6px}.pp56-actions button,.pp59 .actions button{flex:1 1 130px;white-space:normal}.pp59 canvas{width:100%;height:auto}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v59.0 · Engineering Upgrade">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="application-name" content="Plegar Pro v64.9 · Estabilización">
 <style id="pp515-visual-upgrade">
 :root{--bg:#071017;--panel:#0d1821;--panel2:#111f2a;--line:#253946;--text:#edf7fb;--muted:#91a9b7;--accent:#31c8ff;--accent2:#7ce3b2;--danger:#ff6b6b;--radius:12px;--shadow:0 14px 36px rgba(0,0,0,.28)}
 body{background:radial-gradient(circle at 70% -10%,rgba(49,200,255,.09),transparent 32%),linear-gradient(180deg,#071017,#09131b 55%,#061016);letter-spacing:.01em}
@@ -654,6 +654,25 @@ body:not(.boot-complete) > .app{visibility:hidden}
   window.addEventListener('pageshow',function(){if(document.body.classList.contains('boot-complete'))release()});
 })();
 </script>
+<style id="pp649-stability-core">
+/* Estabilización de la interfaz: reglas acotadas y legibles, sin alterar los datos del proyecto. */
+.page#dashboard .card{background:linear-gradient(145deg,#f8fbfd,#eaf3f7)!important;color:#173246!important;border-color:#c7dce6!important}
+.page#dashboard .card h1,.page#dashboard .card h2,.page#dashboard .card h3,.page#dashboard .card p,.page#dashboard .card label,.page#dashboard .card small,.page#dashboard .card span,.page#dashboard .card b{color:#173246!important}
+.page#dashboard .card .muted,.page#dashboard .card .note{color:#415c6b!important}
+.page#dashboard .quick button{background:#fff!important;color:#173246!important;border:1px solid #c7dce6!important;box-shadow:0 3px 12px #1732460b}
+.page#dashboard .quick button b{display:block;color:#123e58!important;line-height:1.35}
+.page#dashboard .quick button small{display:block;color:#496372!important;line-height:1.45;margin-top:5px}
+.page#dashboard .kpi{background:#fff!important;border:1px solid #d1e1e8!important;color:#173246!important}
+.page#dashboard .kpi span{color:#526c7a!important}.page#dashboard .kpi b{color:#123e58!important}
+.heading{min-width:0}.heading h1{max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.2}
+.pp524-machine-preview{min-height:220px!important;background:linear-gradient(180deg,#eaf4f9,#c9dce6)!important;border-color:#8eacbc!important}
+.pp524-machine-preview .frame{border-color:#405a6b!important;border-bottom-color:#243e50!important;box-shadow:inset 0 0 0 3px #dce7ed,0 5px 12px #17324622}
+.pp524-machine-preview .ram{background:linear-gradient(#eaf0f4,#8298a7)!important;border:2px solid #506777!important;box-shadow:0 4px 8px #17324633}
+.pp524-machine-preview .bed{background:linear-gradient(#718999,#3c5362)!important;border:1px solid #2e4655!important}
+.pp524-machine-preview .tool{background:linear-gradient(90deg,#526b7b,#f4f8fa,#526b7b)!important;box-shadow:0 0 0 1px #304958}
+@media(max-width:700px){.page#dashboard .quick{grid-template-columns:repeat(2,minmax(0,1fr))}.page#dashboard .quick button{min-width:0;white-space:normal}.page#dashboard .quick button small{overflow-wrap:anywhere}}
+@media(max-width:420px){.page#dashboard .quick{grid-template-columns:minmax(0,1fr)}}
+</style>
 </head>
 <body>
 <div id="loader" aria-label="Cargando Plegar Pro">
@@ -683,7 +702,7 @@ body:not(.boot-complete) > .app{visibility:hidden}
 <input type="checkbox" id="menuToggle" class="menuToggle" aria-hidden="true">
 <aside class="side" id="mainSidebar">
   <div class="brand">PLEGAR <span>PRO</span></div>
-  <div class="version">v59.0 · ENGINEERING EDITION</div>
+  <div class="version">v64.9 · ENGINEERING EDITION</div>
   <nav class="nav">
     <h4>PRINCIPAL</h4>
     <button class="active" data-page="dashboard">Panel de control</button>
@@ -1027,7 +1046,7 @@ body:not(.boot-complete) > .app{visibility:hidden}
 <div class="card c8"><h2>Comparación multiplegado por V</h2><div class="fields"><div><label>V candidatas</label><input id="pp527Vs" value="6,8,10,12,16,22,24,32,36,40,50"></div><div><label>Prioridad</label><select id="pp527Priority"><option value="balanced">Equilibrada</option><option value="precision">Precisión</option><option value="force">Menor fuerza</option><option value="radius">Menor radio</option><option value="marks">Menor marcado</option></select></div><div><label>Tolerancia acumulada (mm)</label><input id="pp527Tolerance" type="number" step="0.01" value="0.50"></div><div><label>Fuerza máxima (t)</label><input id="pp527MaxForce" type="number" step="0.1" value="999"></div></div><div class="tableWrap"><table class="table"><thead><tr><th>V</th><th>Desarrollo total</th><th>Δ acumulada</th><th>Radio</th><th>Fuerza</th><th>Ala mín.</th><th>Riesgo</th><th>Puntuación</th><th>Resultado</th></tr></thead><tbody id="pp527Rows"></tbody></table></div><div id="pp527Recommendation" class="note">Pulsa “Analizar V multiplegado”.</div></div>
 <div class="card c12"><h2>Historial de versiones</h2><div class="fields"><div><label>Versión A</label><select id="pp527A"></select></div><div><label>Versión B</label><select id="pp527B"></select></div><div class="actions"><button class="btn secondary" id="pp527Compare">Comparar seleccionadas</button></div></div><div id="pp527Diff" class="note">Guarda al menos dos versiones para comparar.</div><div class="tableWrap"><table class="table"><thead><tr><th>Fecha</th><th>Nombre</th><th>Material</th><th>Espesor</th><th>V ref.</th><th>Pliegues</th><th>Desarrollo</th><th>Acciones</th></tr></thead><tbody id="pp527History"></tbody></table></div></div>
 </div></section>
-<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v59.0</b><br>Código: PP-590-ENGINEERING-UPGRADE<br>Mejora acumulativa sobre la base existente.<br>Incluye gemelo digital visual, auditoría de fuentes y trazabilidad de oficina técnica.<br><br>Las dimensiones sin plano verificable y la simulación visual no certifican un programa CNC ni la ausencia de colisiones.</div></div></div></section>
+<section class="page" id="about"><div class="grid"><div class="card c8"><h2>Información del propietario</h2><div id="aboutOwner" class="note"></div><div class="actions"><button class="btn secondary" data-go="settings">Editar datos del propietario</button></div><p class="muted">Los datos se guardan localmente en este dispositivo y se muestran aquí automáticamente.</p></div><div class="card c4"><h2>Versión instalada</h2><div class="note"><b>Plegar Pro v64.9</b><br>Código: PP-590-ENGINEERING-UPGRADE<br>Mejora acumulativa sobre la base existente.<br>Incluye gemelo digital visual, auditoría de fuentes y trazabilidad de oficina técnica.<br><br>Las dimensiones sin plano verificable y la simulación visual no certifican un programa CNC ni la ausencia de colisiones.</div></div></div></section>
 
 <footer class="legalFooter" id="legalFooter"></footer></main></div>
 <div id="toast" class="hidden"></div>
@@ -1126,14 +1145,18 @@ function commit(text,fn){snapshot(text);fn();syncAll();autoSave()}
 function undo(){if(!undoStack.length)return toast('No hay cambios que deshacer');redoStack.push(deep(state));state=undoStack.pop();logAction('Deshacer');syncAll();autoSave()}
 function redo(){if(!redoStack.length)return toast('No hay cambios que rehacer');undoStack.push(deep(state));state=redoStack.pop();logAction('Rehacer');syncAll();autoSave()}
 function go(page,remember=true){
- if(!$(page))return toast('Módulo no disponible');
+ const target=$(page);
+ if(!target)return toast('Módulo no disponible: '+String(page));
  if(remember&&page!==currentPage)pageHistory.push(page);
  currentPage=page;
  document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===page));
  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
- $('pageTitle').textContent=titles[page][0];$('pageSub').textContent=titles[page][1];
- refreshPage(page);
- // v50.8: centrar y ajustar automáticamente las vistas al entrar.
+ const meta=titles[page]||[document.querySelector('.nav button[data-page="'+page+'"]')?.textContent?.trim()||target.querySelector('h1,h2')?.textContent?.trim()||String(page),'Sección de Plegar Pro'];
+ const titleEl=$('pageTitle'),subEl=$('pageSub');
+ if(titleEl)titleEl.textContent=meta[0];
+ if(subEl)subEl.textContent=meta[1];
+ try{refreshPage(page)}catch(err){console.error('[Plegar Pro] Error al actualizar el módulo "'+page+'"',err);toast('Se ha abierto "'+meta[0]+'", pero falló su actualización. Consulta la consola para ver el error.')}
+ // Centrar las vistas al entrar sin bloquear la navegación si un canvas falla.
  requestAnimationFrame(()=>{
   try{
    if(page==='program'){sim.zoomProgram=1;sim.panProgramX=0;sim.panProgramY=0;drawAll()}
@@ -1141,7 +1164,7 @@ function go(page,remember=true){
    if(page==='program3d'){sim.zoomP3=1;sim.panP3X=0;sim.panP3Y=0;drawAll()}
    if(page==='sim2d'){sim.zoomS2=1;sim.panS2X=0;sim.panS2Y=0;drawAll()}
    if(page==='sim3d'){sim.zoomS3=1;sim.panS3X=0;sim.panS3Y=0;drawAll()}
-  }catch(err){console.warn('Centrado automático',err)}
+  }catch(err){console.error('[Plegar Pro] Falló el centrado automático de "'+page+'"',err)}
  });
 }
 function back(){if(pageHistory.length<=1)return toast('Ya estás en la primera pantalla');pageHistory.pop();go(pageHistory[pageHistory.length-1],false)}
