@@ -197,7 +197,15 @@ function refreshPunchOptions(){const sel=$('pp56PunchSelect');if(!sel)return;con
  } if(visible.stops){[-1,1].forEach(s=>{face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base+18,z:-175},{x:s*255,y:base+18,z:-175}],'#4c687a');face([{x:s*255,y:base-15,z:-175},{x:s*235,y:base-15,z:-175},{x:s*235,y:base-15,z:-120},{x:s*255,y:base-15,z:-120}],'#9db3bf')})}
  // Bent sheet profile and thickness rendered as a bright metal edge.
  const model=profileModelPhysical(step,travel,toolAudit,v),minX=Math.min(...model.map(p=>p.x)),maxX=Math.max(...model.map(p=>p.x)),minY=Math.min(...model.map(p=>p.y)),maxY=Math.max(...model.map(p=>p.y)),fit=Math.min(520/Math.max(1,maxX-minX),1.2),sy=base+4,offsetX=-(minX+maxX)*fit/2;const sheet=model.map(p=>({x:offsetX+p.x*fit,y:sy-p.y*fit,z:0}));
- line(x,w,h,sheet,'#426b7e',Math.max(14,Math.min(22,t*2.8)));line(x,w,h,sheet,'#f5fdff',Math.max(8,Math.min(14,t*1.6)));line(x,w,h,sheet,'#19b9e8',3);
+ // Chapa como banda poligonal con espesor aparente, no solo una línea gruesa.
+ const sheetHalf=Math.max(2.2,Math.min(11,t*fit*.48)),edgeA=[],edgeB=[];
+ for(let si=0;si<sheet.length;si++){
+  const prev=sheet[Math.max(0,si-1)],next=sheet[Math.min(sheet.length-1,si+1)],dx=next.x-prev.x,dy=next.y-prev.y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;
+  edgeA.push({x:sheet[si].x+nx*sheetHalf,y:sheet[si].y+ny*sheetHalf,z:sheet[si].z});
+  edgeB.push({x:sheet[si].x-nx*sheetHalf,y:sheet[si].y-ny*sheetHalf,z:sheet[si].z});
+ }
+ face(edgeA.concat(edgeB.slice().reverse()),'#a9c2cf','#466c7e');
+ line(x,w,h,edgeA,'#f7fdff',2.4);line(x,w,h,edgeB,'#496d80',2.4);line(x,w,h,sheet,'#dcebf2',1.2);line(x,w,h,sheet,'#19b9e8',1.5);
  dimension({x:sheet[0].x,y:sheet[0].y-32,z:0},{x:sheet[sheet.length-1].x,y:sheet[sheet.length-1].y-32,z:0},'Chapa · espesor '+t.toFixed(2)+' mm');
  x.fillStyle='#173246';x.font='900 24px system-ui';x.fillText('PLEGAR PRO  /  CONTROL 3D INDUSTRIAL',26,38);
  x.fillStyle='#526f82';x.font='14px system-ui';x.fillText('Cámara '+camera+'   ·   Paso '+(step+1)+' / '+Math.max(1,order.length)+'   ·   P'+(idx+1)+'   ·   Ángulo '+ang+'°',27,64);
