@@ -320,6 +320,25 @@ jobs:
                 !moduleSync.fields.every(x => Number(x[1]) === 3)) {
               throw new Error('Shared thickness was not propagated to all modules: ' + JSON.stringify(moduleSync));
             }
+            const selectedStepSync = await page.evaluate(async () => {
+              const collision = document.querySelector('#pp56Step');
+              const twin = document.querySelector('#pp59step');
+              if (!collision || !twin || collision.options.length < 3 || twin.options.length < 3) return { error: 'Step selectors unavailable' };
+              collision.value = '0';
+              collision.dispatchEvent(new Event('change', { bubbles: true }));
+              await new Promise(r => setTimeout(r, 80));
+              const fromCollision = { collision: Number(collision.value), twin: Number(twin.value), activeFold: sim.p3Active, expectedFold: state.bendOrder[0] };
+              twin.value = '2';
+              twin.dispatchEvent(new Event('change', { bubbles: true }));
+              await new Promise(r => setTimeout(r, 80));
+              const fromTwin = { collision: Number(collision.value), twin: Number(twin.value), activeFold: sim.p3Active, expectedFold: state.bendOrder[2] };
+              return { fromCollision, fromTwin };
+            });
+            if (selectedStepSync.error ||
+                selectedStepSync.fromCollision.twin !== 0 || selectedStepSync.fromCollision.activeFold !== selectedStepSync.fromCollision.expectedFold ||
+                selectedStepSync.fromTwin.collision !== 2 || selectedStepSync.fromTwin.activeFold !== selectedStepSync.fromTwin.expectedFold) {
+              throw new Error('Selecting a fold did not synchronize its exact active bend across collision review, machine twin and core geometry: ' + JSON.stringify(selectedStepSync));
+            }
             const playback = await page.evaluate(async () => {
               const btn = document.querySelector('#pp56Play'), stop = document.querySelector('#pp56Stop'), slider = document.querySelector('#pp56Travel');
               if (!btn || !stop || !slider || typeof btn.onclick !== 'function') return { error: 'Collision playback controls or click handler missing' };
