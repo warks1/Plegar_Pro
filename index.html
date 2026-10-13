@@ -3032,7 +3032,7 @@ html body .page [class*="banner"] *,html body .page [class*="Banner"] *,html bod
 <script id="pp68-loader-emergency-release">
 (function(){
   'use strict';
-  var finished=false, watchdog=0;
+  var finished=false, watchdog=0, started=Date.now();
   function unlockScroll(){document.documentElement.classList.remove('pp69-loading');document.body.classList.remove('pp69-loading');}
   function release(reason){
     var loader=document.getElementById('loader');
@@ -3053,7 +3053,7 @@ html body .page [class*="banner"] *,html body .page [class*="Banner"] *,html bod
     return true;
   }
   // Independiente del cargador principal; la app nunca debe quedar bloqueada por una animación.
-  function scheduleRelease(reason,delay){window.setTimeout(function(){release(reason)},delay||0)}
+  function scheduleRelease(reason,delay){var remaining=Math.max(0,5200-(Date.now()-started));window.setTimeout(function(){release(reason)},Math.max(Number(delay)||0,remaining))}
   watchdog=window.setTimeout(function(){release('Programa abierto con recuperación automática');},5200);
   window.addEventListener('load',function(){scheduleRelease('Programa abierto',5200);},{once:true});
   window.addEventListener('pageshow',function(){if(document.body.classList.contains('boot-complete')){unlockScroll();release('Programa abierto')}});
