@@ -3,7 +3,7 @@
 (function(){
  'use strict';
  if(window.PLEGAR_PRO_PP62?.installed)return;
- const css=`
+ let css=`
  /* Los formularios añadidos dinámicamente ya no usan paneles azul marino con texto de bajo contraste. */
  html body .page .pp-module-form,
  html body .page [class*="pp56-rail"],
@@ -207,6 +207,6 @@
    requestAnimationFrame(()=>syncStep(e.detail))
  });
  window.addEventListener('plegarpro:state-changed',()=>{lastStep=-1});
- window.PLEGAR_PRO_PP62={installed:true,version:'62.2',contrastStyle:true,playbackGuard:true,audit:()=>({installed:true,step:lastStep,maxStep:maxStep(),bends:getState()?.bends?.length||0,collisionApi:!!window.PLEGAR_PRO_COLLISIONS?.setStep,sim2d:!!$('s2Play'),sim3d:!!$('s3Play')})};
+ window.PLEGAR_PRO_PP62={installed:true,version:'62.3',contrastStyle:true,playbackGuard:true,audit:()=>({installed:true,step:lastStep,maxStep:maxStep(),bends:getState()?.bends?.length||0,collisionApi:!!window.PLEGAR_PRO_COLLISIONS?.setStep,sim2d:!!$('s2Play'),sim3d:!!$('s3Play')})};
  console.info('[Plegar Pro PP62] Contraste y sincronización de reproducción instalados.');
 })();
