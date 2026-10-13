@@ -50,16 +50,42 @@ function machineMesh(machineId){
   boxMesh({x:-col,y:baseY+170,z:-depth/2},{x:col,y:baseY+260,z:depth/2},'table-estimate')
  ];
 }
+function triangulateSection(poly){
+ const cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+ const area=poly.reduce((s,p,i)=>s+p[0]*poly[(i+1)%poly.length][1]-poly[(i+1)%poly.length][0]*p[1],0);
+ if(Math.abs(area)<1e-10)return [];
+ const sign=Math.sign(area),remaining=poly.map((_,i)=>i),out=[];
+ const inTriangle=(p,a,b,c)=>{const x=cross(a,b,p)*sign,y=cross(b,c,p)*sign,z=cross(c,a,p)*sign;return x>=-1e-9&&y>=-1e-9&&z>=-1e-9};
+ let guard=poly.length*poly.length;
+ while(remaining.length>3&&guard-->0){
+  let clipped=false;
+  for(let k=0;k<remaining.length;k++){
+   const ia=remaining[(k+remaining.length-1)%remaining.length],ib=remaining[k],ic=remaining[(k+1)%remaining.length],a=poly[ia],b=poly[ib],c=poly[ic];
+   if(cross(a,b,c)*sign<=1e-9)continue;
+   let occupied=false;
+   for(const ix of remaining){if(ix!==ia&&ix!==ib&&ix!==ic&&inTriangle(poly[ix],a,b,c)){occupied=true;break}}
+   if(occupied)continue;
+   out.push([ia,ib,ic]);remaining.splice(k,1);clipped=true;break;
+  }
+  if(!clipped)return [];
+ }
+ if(remaining.length===3&&Math.abs(cross(poly[remaining[0]],poly[remaining[1]],poly[remaining[2]]))>1e-9)out.push(remaining.slice());
+ return out;
+}
 function prismMesh(section,zMin,zMax,name){
- const clean=(section||[]).filter(p=>Number.isFinite(+p.x)&&Number.isFinite(+p.y)).map(p=>[+p.x,+p.y]);
+ const raw=(section||[]).filter(p=>Number.isFinite(+p.x)&&Number.isFinite(+p.y)).map(p=>[+p.x,+p.y]),clean=[];
+ for(const p of raw){const q=clean[clean.length-1];if(!q||Math.hypot(p[0]-q[0],p[1]-q[1])>1e-8)clean.push(p)}
+ if(clean.length>2&&Math.hypot(clean[0][0]-clean[clean.length-1][0],clean[0][1]-clean[clean.length-1][1])<1e-8)clean.pop();
  if(clean.length<3||!Number.isFinite(zMin)||!Number.isFinite(zMax)||zMax<=zMin)return null;
  const n=clean.length,vertices=[];
  clean.forEach(p=>vertices.push([p[0],p[1],zMin]));
  clean.forEach(p=>vertices.push([p[0],p[1],zMax]));
+ const cap=triangulateSection(clean);
+ if(cap.length!==n-2)return null;
  const triangles=[];
- for(let i=1;i<n-1;i++){triangles.push([0,i+1,i],[n,n+i,n+i+1]);}
+ cap.forEach(t=>{triangles.push([t[0],t[2],t[1]],[n+t[0],n+t[1],n+t[2]])});
  for(let i=0;i<n;i++){const j=(i+1)%n;triangles.push([i,j,n+j],[i,n+j,n+i]);}
- return {name,vertices,triangles,section:clean,zMin,zMax,source:'extruded measured/parametric section'};
+ return {name,vertices,triangles,section:clean,zMin,zMax,source:'extruded measured/parametric section; ear-clipped polygon caps'};
 }
 function segmentPrism(a,b,thickness,zMin,zMax,name){
  const dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy)||1,nx=-dy/L*(Math.max(0,thickness)/2),ny=dx/L*(Math.max(0,thickness)/2);
