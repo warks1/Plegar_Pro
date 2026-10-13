@@ -73,13 +73,14 @@ assert.match(html, /const meta=titles\[page\]\|\|\[/, 'navigation must tolerate 
 assert.match(html, /Error al actualizar el módulo/, 'navigation failures must be surfaced instead of silently swallowed');
 assert.match(html, /window\.__PP_CLICK_TRACKER__=\{has:function\(el\)\{return ppClickBound\.has\(el\)\}\}/, 'button audit must account for addEventListener click handlers');
 assert.match(html, /window\.__PP_CLICK_TRACKER__\?\.has\(b\)/, 'button audit must not misreport listener-bound controls as inert');
+assert.match(html, /bindingAuditNote='unbound significa sin listener directo detectable/, 'audit must not equate missing direct listeners with missing button actions');
 assert.match(html, /id="pp649-stability-core"/, 'dashboard contrast and live-machine visibility fixes must be loaded');
 assert.match(html, /\.page#dashboard \.quick button small\{display:block;color:#496372!important/, 'dashboard quick-action descriptions must meet readable contrast');
 assert.match(collision, /Sin matrices disponibles para V/, 'empty die catalogs must show a clear explanatory option');
 assert.match(collision, /\.pp56-controls select option\{background:#fff!important;color:#173246!important\}/, 'collision selectors must keep readable option text');
 
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.2/);
-assert.match(sw, /plegar-pro-v151-29/);
+assert.match(sw, /plegar-pro-v151-30/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 
