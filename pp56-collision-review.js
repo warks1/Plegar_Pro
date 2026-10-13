@@ -128,7 +128,7 @@ function parseDxfProfile(text,unitFactor){
   chains.forEach((p,ci)=>{const opts=[{d:Math.hypot(end.x-p[0].x,end.y-p[0].y),mode:'append'},{d:Math.hypot(end.x-p[p.length-1].x,end.y-p[p.length-1].y),mode:'appendReverse'},{d:Math.hypot(start.x-p[p.length-1].x,start.y-p[p.length-1].y),mode:'prepend'},{d:Math.hypot(start.x-p[0].x,start.y-p[0].y),mode:'prependReverse'}];opts.forEach(o=>{if(o.d<best.d)best={...o,ci}})});
   if(best.d>tol)throw new Error('El DXF contiene tramos desconectados (separación '+best.d.toFixed(2)+' mm). Importa únicamente el contorno del útil, con entidades conectadas.');
   let next=chains.splice(best.ci,1)[0];if(best.mode==='appendReverse'||best.mode==='prependReverse')next.reverse();
-  if(best.mode==='append'||best.mode==='appendReverse')chain.push(...next.slice(1));else if(best.mode==='prepend')chain.unshift(...next.slice(0,-1));else chain.unshift(...next.slice(1));
+  if(best.mode==='append'||best.mode==='appendReverse')chain.push(...next.slice(1));else chain.unshift(...next.slice(0,-1));
  }
  const unique=[];chain.forEach(p=>{if(Number.isFinite(p.x)&&Number.isFinite(p.y)&&(!unique.length||Math.hypot(unique[unique.length-1].x-p.x,unique[unique.length-1].y-p.y)>.02))unique.push(p)});
  if(unique.length>2&&near(unique[0],unique[unique.length-1]))unique.pop();
