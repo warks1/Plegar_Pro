@@ -151,7 +151,7 @@ function runSequenceRegressionTests(){
    const lastBend=bends[order[order.length-1]]||{},v=Math.max(6,Number(lastBend.v||16));
    const model=profileModelPhysical(Infinity,1,selectedToolAudit(lastBend,v),v);
    const scope=typeof g?.scope==='string'?g.scope:'';
-   results.push({name,legs:bends.length,expectedFolds:bends.length-1,actualFolds:order.length,lastStepSelected:step===order.length-1,profilePoints:model.length,geometryFinite:model.length>0&&model.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)),geometryAvailable:!!g,priorFoldCheckPresent:typeof g?.priorFoldInterference==='boolean'&&scope.includes('prior folded flanges only'),priorFoldInterference:typeof g?.priorFoldInterference==='boolean'?g.priorFoldInterference:null,priorFoldSegments:Number.isFinite(g?.priorFoldSegmentCount)?g.priorFoldSegmentCount:null,activeBendContactChecked:g?.activeBendIntersectionChecked===true&&g?.activeBendContact?.checked===true});
+   results.push({name,legs:bends.length,expectedFolds:bends.length-1,actualFolds:order.length,lastStepSelected:step===order.length-1,profilePoints:model.length,geometryFinite:model.length>0&&model.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)),geometryAvailable:!!g,priorFoldCheckPresent:typeof g?.priorFoldInterference==='boolean'&&scope.includes('prior folded flanges'),priorFoldInterference:typeof g?.priorFoldInterference==='boolean'?g.priorFoldInterference:null,priorFoldSegments:Number.isFinite(g?.priorFoldSegmentCount)?g.priorFoldSegmentCount:null,activeBendContactChecked:g?.activeBendIntersectionChecked===true&&g?.activeBendContact?.checked===true});
   }
  }catch(e){results.push({name:'error',error:String(e?.message||e)});}
  finally{
