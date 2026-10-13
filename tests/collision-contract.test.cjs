@@ -87,7 +87,7 @@ assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 // Guard against conflicting machine labels: UI dimensions must agree with the
 // declared reference model, and unknown variant-specific values stay explicit.
 assert.match(twin, /name:'TRUMPF TruBend V85',capacity:'85 t',workingLength:'2050 mm\*'/, 'the selected Trumpf model must use the correct product name and show reference capacity/length');
-assert.doesNotMatch(twin, /name:'TRUBEND V85'/, 'the misspelled machine label must not return');
+assert.doesNotMatch(twin, /name:'TRUMABEND V85'/, 'the misspelled machine label must not return');
 assert.match(twin, /throat:'410 mm\*',stroke:'215 mm\*',openHeight:'No verificada',overall:'2680 × 2100 × 2375 mm\*'/);
 assert.match(twin, /throat:'No verificada',stroke:'250 mm\*',openHeight:'No verificada',overall:'3900 × 1900 × 2800 mm\*'/);
 assert.match(twin, /cotas exteriores estimadas y carrera pendiente de cotejo/);
