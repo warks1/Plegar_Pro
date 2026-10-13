@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const assert = require('node:assert/strict');
+const vm = require('node:vm');
 
 const html = fs.readFileSync('index.html', 'utf8');
 const collision = fs.readFileSync('pp56-collision-review.js', 'utf8');
@@ -34,3 +35,41 @@ assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=149/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 console.log('Collision UI contract verified: prior-flange interference, active contact, OEM-CAD disclosure, tool-profile integration and offline cache wiring.');
+
+const modelSource = fs.readFileSync('pp63-v85-parametric-model.js', 'utf8');
+const modelWindow = {};
+vm.runInNewContext(modelSource, { window: modelWindow, Math, Number, String, Object, Array });
+const prismEngine = modelWindow.PP63V85Model;
+assert.ok(prismEngine, '3D prism geometry engine must export its testable API');
+
+const rect = (x1, y1, x2, y2) => [
+  { x: x1, y: y1 }, { x: x2, y: y1 },
+  { x: x2, y: y2 }, { x: x1, y: y2 }
+];
+const base = prismEngine.prismMesh(rect(0, 0, 10, 10), -5, 5, 'base');
+const overlap = prismEngine.prismMesh(rect(5, 5, 15, 15), -5, 5, 'overlap');
+const outside = prismEngine.prismMesh(rect(11, 0, 20, 10), -5, 5, 'outside');
+const zSeparated = prismEngine.prismMesh(rect(2, 2, 8, 8), 5.1, 10, 'z-separated');
+const zTouching = prismEngine.prismMesh(rect(2, 2, 8, 8), 5, 10, 'z-touching');
+
+assert.ok(base && overlap && outside && zSeparated && zTouching, 'valid rectangular prisms should build');
+assert.equal(prismEngine.intersectPrisms(base, overlap).intersects, true,
+  'overlapping cross-sections and overlapping Z spans should intersect');
+assert.equal(prismEngine.intersectPrisms(base, outside).intersects, false,
+  'separated cross-sections must not intersect');
+assert.equal(prismEngine.intersectPrisms(base, zSeparated).intersects, false,
+  'separated Z spans must not intersect');
+assert.equal(prismEngine.intersectPrisms(base, zTouching).intersects, false,
+  'face-only Z contact must not be reported as volumetric overlap');
+
+const concave = prismEngine.prismMesh([
+  { x: 0, y: 0 }, { x: 4, y: 0 }, { x: 4, y: 4 }, { x: 3, y: 4 },
+  { x: 3, y: 1 }, { x: 1, y: 1 }, { x: 1, y: 4 }, { x: 0, y: 4 }
+], -2, 2, 'concave-U');
+assert.ok(concave, 'ear-clipped concave sections should produce a prism');
+assert.equal(prismEngine.intersectPrisms(concave, prismEngine.prismMesh(rect(1.5, 2, 2.5, 3), -1, 1, 'inside-notch')).intersects, false,
+  'a prism entirely in the concave notch must not be a false positive');
+assert.equal(prismEngine.intersectPrisms(concave, prismEngine.prismMesh(rect(.2, 2, .8, 3), -1, 1, 'inside-material')).intersects, true,
+  'a prism inside the concave material section should intersect');
+
+console.log('Prism geometry tests passed: XY overlap, XY separation, Z separation/touching, and concave-section cases.');
