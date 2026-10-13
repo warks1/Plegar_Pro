@@ -465,6 +465,12 @@ jobs:
             await page.waitForFunction(() => document.querySelector('#pp56ProfileStatus')?.textContent.includes('Importado:'), null, {timeout:5000});
             const dxfAudit = await page.evaluate(() => { const t=window.tools.find(x=>x.profileSourceFile==='regression.dxf'); const g=window.PLEGAR_PRO_COLLISIONS.getGeometry(); return {points:t?.profilePointsMm?.length,selected:document.querySelector('#pp56DieSelect')?.value===t?.id,source:g.toolProfileSource,profileUsed:g.profilePointCount>0}; });
             if (dxfAudit.points < 6 || !dxfAudit.selected || !String(dxfAudit.source?.die||dxfAudit.source?.punch||dxfAudit.source).includes('imported DXF') || !dxfAudit.profileUsed) throw new Error('DXF profile did not reach physical collision geometry: '+JSON.stringify(dxfAudit));
+            const bulgeAudit = await page.evaluate(() => {
+              const dxf = '0\nSECTION\n2\nENTITIES\n0\nLWPOLYLINE\n90\n4\n70\n1\n10\n-10\n20\n0\n42\n1\n10\n10\n20\n0\n10\n10\n20\n-20\n10\n-10\n20\n-20\n0\nENDSEC\n0\nEOF\n';
+              const result = window.PLEGAR_PRO_V57.parseDxfProfileForTest(dxf, 1, 'Matriz');
+              return {points:result?.length, error:result?.error, minY:result?.length?Math.min(...result.map(p=>p.y)):null, maxY:result?.length?Math.max(...result.map(p=>p.y)):null};
+            });
+            if (bulgeAudit.error || bulgeAudit.points < 12 || !(bulgeAudit.minY < -8) || !(bulgeAudit.maxY === 0)) throw new Error('DXF LWPOLYLINE bulge arc was flattened or misoriented: '+JSON.stringify(bulgeAudit));
             const syncAudit = await page.evaluate(() => window.PLEGAR_PRO_V61.audit());
             if (!syncAudit.stateAvailable || !syncAudit.syncFunction || !syncAudit.playback.collision.hasHandler || !syncAudit.playback.engineeringTwin.hasHandler) throw new Error('Runtime module integration audit failed: ' + JSON.stringify(syncAudit));
 
