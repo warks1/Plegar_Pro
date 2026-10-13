@@ -200,7 +200,7 @@ function runSequenceRegressionTests(){
    if($('pp59step')&&previousSync.twinStep!==undefined)$('pp59step').value=previousSync.twinStep;
    if(typeof sim!=='undefined'&&sim){for(const k of ['s2Step','s3Step','p3Active','machineTravel'])if(previousSync[k]!==undefined)sim[k]=previousSync[k];}
    if($('p3Active')&&previousSync.p3Input!==undefined)$('p3Active').value=previousSync.p3Input;
-   renderSequenceBar();if(typeof drawAll==='function')drawAll();drawCollision();
+   renderSequenceBar();if(typeof drawAll==='function')drawAll();try{window.PLEGAR_PRO_V59?.refresh?.()}catch(refreshError){console.warn('[Plegar Pro] No se pudo refrescar el gemelo tras la auditoría de secuencia',refreshError)}drawCollision();
   }
   catch(restoreError){results.push({name:'restore',error:'No se pudo restaurar completamente la vista: '+String(restoreError?.message||restoreError)});}
  }
