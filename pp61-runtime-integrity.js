@@ -133,6 +133,9 @@
         if(travel){const next=String(Math.max(0,Math.min(100,Number(detail.travel))));if(travel.value!==next){travel.value=next;travel.dispatchEvent(new Event('input',{bubbles:true}))}}
         try{window.PLEGAR_PRO_COLLISIONS?.refresh?.()}catch(e){}
       }
+      // A manually selected collision step must take control from the twin's autonomous cycle.
+      // Otherwise its next animation frame can overwrite the selected step before the sync settles.
+      if(source==='collisions'&&$('pp59play')?.textContent?.includes('Pausar'))$('pp59play').click();
       const twinStep=$('pp59step');
       if(twinStep&&source!=='pp59'&&Number(twinStep.value)!==maxPos){
         twinStep.value=String(Math.min(Math.max(0,twinStep.options.length-1),maxPos));
