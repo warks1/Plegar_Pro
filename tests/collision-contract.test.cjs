@@ -12,7 +12,13 @@ assert.match(html, /Corrección definitiva del menú lateral/);
 assert.match(html, /grid-template-columns:258px minmax\(0,1fr\)!important/);
 assert.match(html, /#mainSidebar \.nav\{display:flex!important;flex-direction:column!important/);
 assert.match(html, /#mainSidebar\.side\.open[\s\S]*transform:translateX\(0\)!important/);
-assert.match(sw, /plegar-pro-v151-38/);
+assert.match(sw, /plegar-pro-v151-39/);
+
+assert.match(html, /PP3D MENU v3 · movimiento metálico ligero y accesible/);
+assert.match(html, /@keyframes pp3dMetalReveal/);
+assert.match(html, /@keyframes pp3dActivePulse/);
+assert.match(html, /prefers-reduced-motion:reduce\)[\s\S]*?#mainSidebar \.nav button\.active\{animation:none!important/);
+
 
 
 // Fold-order edits must notify the shared runtime immediately, rather than relying
