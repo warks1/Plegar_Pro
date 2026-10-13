@@ -1617,9 +1617,9 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    const frame='#18516a',frameLight='#287b98',frameDark='#103446',steel='#b8c8cf',steelShade='#6f8791',bed='#405e6b',accent='#43c7ee';
    const selectedMachine=String($('machine')?.value||'Bystronic Xpert Pro 3100 × 100 T');
    const isTrumpf=/trumpf|trubend/i.test(selectedMachine),isBystronic=/bystronic|xpert/i.test(selectedMachine);
-   // Scale machine length independently from height using published overall L/H ratios.
-   // TRUMABEND V85 reference: 2680/2885 ~= 0.93; Xpert Pro 100/3100: 4180/2820 ~= 1.48.
-   machineScaleX=isTrumpf ? 0.53 : (isBystronic ? 0.85 : 1);
+   // Scale the bending axis by the reference distance between side frames: 1750 mm vs 2750 mm.
+   // TRUMABEND V85 / Xpert Pro 100/3100 ratio = 0.636; the Xpert is the 1.0 reference.
+   machineScaleX=isTrumpf ? (1750/2750) : (isBystronic ? 1 : 1);
    const paint=isTrumpf?'#398a49':(isBystronic?'#075b91':frame),paintLight=isTrumpf?'#67b875':(isBystronic?'#168ac0':frameLight);
    const machineDisplayName=isTrumpf?'TRUMPF · TruBend V85':(isBystronic?'BYSTRONIC · Xpert Pro 100/3100':'PLEGAR PRO · Máquina personalizada');
    // Base plinth and separate machine feet.
@@ -1696,6 +1696,11 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
  prism(frontBand,backBand,state.settings.sheetColor||'#78bce5','#e6f8ff');
  ctx.lineJoin='round';ctx.lineCap='round';ctx.shadowBlur=10;ctx.shadowColor='rgba(0,0,0,.55)';ctx.strokeStyle='#07161d';ctx.lineWidth=thick+2;ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle='#e6f8ff';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(ptsBack[0].x,ptsBack[0].y);ptsBack.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();
  for(let i=0;i<pts.length;i++){ctx.strokeStyle='#b7e8ff';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(ptsBack[i].x,ptsBack[i].y);ctx.stroke();}
+ // Surface the same parametric interference result in the 3D view. Red highlights are explicitly approximate: the 2D engine's segment IDs are not a 3D solid contact map.
+ let collisionAudit=null;try{collisionAudit=window.PLEGAR_PRO_V57?.auditCollision?.(Math.max(0,Number(step)||0),1)||null}catch(e){}
+ const hasEstimatedCollision=!!(collisionAudit&&(collisionAudit.priorFoldInterference||collisionAudit.punchInterferenceSegments?.length||collisionAudit.dieInterferenceSegments?.length));
+ if(hasEstimatedCollision){const folded=Array.isArray(state.bendOrder)?state.bendOrder.slice(0,Math.max(1,Number(step)||0)):[Math.max(0,(Number(step)||1)-1)];ctx.save();ctx.strokeStyle='#ff344f';ctx.shadowColor='#ff173d';ctx.shadowBlur=14;ctx.lineWidth=5;ctx.lineCap='round';folded.forEach(fi=>{for(const si of [Math.max(0,Math.min(pts.length-2,Number(fi)||0)),Math.max(0,Math.min(pts.length-2,(Number(fi)||0)+1))]){ctx.beginPath();ctx.moveTo(pts[si].x,pts[si].y);ctx.lineTo(pts[si+1].x,pts[si+1].y);ctx.stroke();ctx.beginPath();ctx.moveTo(ptsBack[si].x,ptsBack[si].y);ctx.lineTo(ptsBack[si+1].x,ptsBack[si+1].y);ctx.stroke()}});ctx.restore()}
+ ctx.save();const collisionLabel=hasEstimatedCollision?'INTERFERENCIA ESTIMADA · MODELO 2D':'SIN INTERFERENCIA DETECTADA · MODELO 2D';ctx.font='900 12px system-ui';const labelW=Math.min(w-36,Math.max(230,ctx.measureText(collisionLabel).width+24));ctx.fillStyle=hasEstimatedCollision?'rgba(137,20,31,.94)':'rgba(10,74,95,.92)';ctx.fillRect(18,h-42,labelW,26);ctx.strokeStyle=hasEstimatedCollision?'#ffb4b8':'#72e0f7';ctx.lineWidth=1.5;ctx.strokeRect(18,h-42,labelW,26);ctx.fillStyle='#fff';ctx.fillText(collisionLabel,29,h-24);ctx.restore();
  let fs=Math.round(14*(state.settings.dimensionScale||1.2)),dec=+(state.settings.decimals??2),showDims=state.settings.showDims!=='none'&&(!simulation||!$('s3Dims')||$('s3Dims').checked);if(showDims){ctx.font=`700 ${fs}px system-ui`;pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1],txt=`${(+state.bends[i].leg).toFixed(dec)} mm`,x=(p.x+q.x)/2,y=(p.y+q.y)/2-22,tw=ctx.measureText(txt).width;ctx.fillStyle=document.body.classList.contains('light')?'rgba(255,255,255,.96)':'#06141bdd';ctx.fillRect(x-tw/2-6,y-fs+2,tw+12,fs+7);ctx.strokeStyle=document.body.classList.contains('light')?'#b9cbd7':'#06141d';if(document.body.classList.contains('light'))ctx.strokeRect(x-tw/2-6,y-fs+2,tw+12,fs+7);ctx.fillStyle=document.body.classList.contains('light')?'#172b3b':'#f3fbff';ctx.fillText(txt,x-tw/2,y);if(i<step&&i<state.bends.length-1){ctx.fillStyle='#ffbc4d';ctx.fillText(`${(+state.bends[i].angle).toFixed(dec)}° R${(+state.bends[i].radius).toFixed(dec)}`,q.x+8,q.y-8)}})}
  pts.forEach((p,i)=>{ctx.fillStyle=i===Math.min(step,state.bends.length)?'#d97706':(document.body.classList.contains('light')?'#007da5':'#d9f6ff');ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill()});
  // Collision overlay is synchronized with the collision module's millimetre-based 2D audit.
