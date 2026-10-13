@@ -111,7 +111,7 @@
     const coreStep=(source==='s2'||source==='s3')?Math.max(0,Math.min(bends.length-1,requestedStep)):Math.max(0,Math.min(bends.length-1,maxPos));
     syncingPlayback=true;
     try{
-      if(typeof sim!=='undefined'&&sim){
+      if(typeof sim!=='undefined'&&sim){sim.machineTravel=Number.isFinite(Number(detail.travel))?Math.max(0,Math.min(100,Number(detail.travel))):0;}
         sim.s2Step=coreStep;sim.s3Step=coreStep;sim.p3Active=foldIndex;
         if($('p3Active'))$('p3Active').value=String(foldIndex);
         if(typeof drawAll==='function')drawAll();
@@ -149,6 +149,7 @@
   function installPlaybackSync(){
     window.addEventListener('plegarpro:playback-start',e=>stopCompetingPlayback(String(e.detail?.source||'')));
     window.addEventListener('plegarpro:playback-step',e=>syncPlaybackStep(e.detail));
+    window.addEventListener('plegarpro:machine-travel',e=>{const d=e.detail||{};if(typeof sim!=='undefined'&&sim){sim.machineTravel=Math.max(0,Math.min(100,Number(d.travel)||0));if(typeof drawAll==='function')drawAll();}});
     document.addEventListener('visibilitychange',()=>{
       if(document.hidden){
         if($('s2Play')?.dataset.playing==='true')$('s2Pause')?.click();
