@@ -63,6 +63,12 @@ assert.match(runtime, /const requestedFold=detail\.complete\?\(order\[maxPos\]\?
 assert.match(runtime, /sim\.s2Step=coreStep;sim\.s3Step=coreStep;sim\.p3Active=foldIndex/, 'both programming views and the active 3D fold must receive the same synchronized playback tick');
 assert.match(runtime, /window\.addEventListener\('plegarpro:playback-step',e=>syncPlaybackStep\(e\.detail\)\)/, 'the runtime must be the single playback-step synchronization authority');
 assert.match(twin, /lastEmittedTravel=-1/, 'digital twin must track travel progress separately from fold index');
+assert.match(collision, /plegarpro:machine-travel/, 'collision playback must publish ram travel continuously, not only when the fold step changes');
+assert.match(twin, /plegarpro:machine-travel/, 'digital twin must consume collision ram travel when its own playback is paused');
+assert.match(twin, /externalTravel!==null\?externalTravel\/100/, 'digital twin ram position must follow externally synchronized travel');
+assert.match(html, /pp59-engineering-upgrade\.js\?v=154/);
+assert.match(sw, /pp59-engineering-upgrade\.js\?v=154/);
+assert.match(sw, /plegar-pro-v151-33/);
 assert.match(twin, /travelBucket!==lastEmittedTravel/, 'digital twin must publish meaningful travel changes during each ram cycle');
 assert.match(twin, /source:'pp59',step:pos,foldIndex:executionOrder\(\)\[pos\]\?\?0,travel:travelBucket\*5/, 'digital twin events must carry the ram travel percentage');
 assert.match(runtime, /else if\(source==='pp59'&&Number\.isFinite\(Number\(detail\.travel\)\)\)/, 'runtime must map twin ram travel into the collision review');
