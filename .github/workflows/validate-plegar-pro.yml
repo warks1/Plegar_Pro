@@ -157,7 +157,7 @@ jobs:
             const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, serviceWorkers: 'block' });
             const page = await context.newPage();
             const errors = [];
-            page.on('pageerror', error => errors.push(error.message));
+            page.on('pageerror', error => { errors.push(error.stack || error.message); console.error('[Plegar Pro browser pageerror]', error.stack || error.message); });
             const started = Date.now();
             await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded', timeout: 30000 });
             await page.waitForFunction(() => document.body.classList.contains('boot-complete'), null, { timeout: 15000 });
