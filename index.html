@@ -3363,6 +3363,77 @@ input,select,textarea{background:#061e35!important;border-color:#17608f!importan
   #mainSidebar .nav button{transition:none!important;transform:none!important}
 }
 
+
+/* PP3D MENU v2 · profundidad visible también en pantallas táctiles */
+#mainSidebar.side{
+  isolation:isolate!important;
+  background:
+    linear-gradient(105deg,rgba(255,255,255,.10),transparent 13%,transparent 84%,rgba(0,0,0,.35)),
+    repeating-linear-gradient(180deg,rgba(115,196,230,.035) 0 1px,transparent 1px 5px),
+    linear-gradient(155deg,#1b394d 0%,#0c2232 36%,#07131f 100%)!important;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.16),inset -4px 0 0 rgba(0,0,0,.24),12px 0 30px rgba(0,0,0,.34)!important;
+}
+#mainSidebar .brand{
+  transform:perspective(800px) rotateX(3deg)!important;
+  border-bottom:3px solid #050d14!important;
+  box-shadow:inset 1px 1px 0 #ffffff40,inset -2px -3px 0 #0007,0 4px 0 #040c13,0 8px 18px #0007!important;
+}
+#mainSidebar .nav button{
+  min-height:40px!important;
+  transform:perspective(800px) rotateY(-5deg) rotateX(1deg) translateZ(0)!important;
+  transform-origin:left center!important;
+  border-top-color:#6a8da2!important;
+  border-left:2px solid #41647a!important;
+  border-right:3px solid #07131c!important;
+  border-bottom:4px solid #030a10!important;
+  background:linear-gradient(165deg,#36586d 0%,#1a394e 32%,#0d2232 100%)!important;
+  box-shadow:inset 1px 1px 0 #ffffff32,inset -2px -2px 0 #0006,0 2px 0 #162c3a,0 5px 0 #030a10,0 8px 12px #0006!important;
+}
+#mainSidebar .nav button:before{
+  content:""!important;display:inline-block!important;flex:0 0 10px!important;
+  width:10px!important;height:10px!important;margin-right:5px!important;
+  border:1px solid #b3f0ff!important;border-radius:2px!important;
+  background:linear-gradient(135deg,#b5f5ff 0%,#32c8f6 42%,#07557e 100%)!important;
+  box-shadow:inset 1px 1px 1px #fff,1px 2px 0 #04101a,0 0 8px #27c6ff66!important;
+}
+#mainSidebar .nav button.active{
+  transform:perspective(800px) rotateY(-2deg) translate3d(3px,-1px,4px)!important;
+  border-top-color:#c0f4ff!important;border-left:4px solid #6ce4ff!important;
+  background:linear-gradient(155deg,#2189b8 0%,#125778 48%,#082e47 100%)!important;
+  box-shadow:inset 1px 1px 0 #ffffff5c,inset 0 -2px 0 #0003,0 2px 0 #16415a,0 5px 0 #030a10,0 0 0 1px #46d4ff,0 0 18px #19b9f466!important;
+}
+#mainSidebar .nav button:hover{
+  transform:perspective(800px) rotateY(-1deg) translate3d(5px,-2px,6px)!important;
+  border-top-color:#b5efff!important;
+  box-shadow:inset 1px 1px 0 #ffffff55,0 2px 0 #16415a,0 6px 0 #030a10,0 12px 18px #0008,0 0 16px #1abcf955!important;
+}
+#mainSidebar .nav button:active{
+  transform:perspective(800px) translate3d(2px,3px,0)!important;
+  border-bottom-width:1px!important;
+  box-shadow:inset 2px 3px 7px #0009,0 1px 0 #030a10!important;
+}
+@media(max-width:900px){
+  #mainSidebar.side{
+    perspective:1000px!important;
+    transform-style:preserve-3d!important;
+    background:
+      linear-gradient(110deg,#1c3b50 0%,#0d2232 50%,#07131f 100%)!important;
+    box-shadow:inset -4px 0 0 #030a10,14px 0 34px #0009!important;
+  }
+  #mainSidebar .nav{perspective:900px!important;gap:7px!important}
+  #mainSidebar .nav button{
+    transform:perspective(800px) rotateY(-4deg) rotateX(1deg)!important;
+    flex:1 1 100%!important;
+    min-height:43px!important;
+    margin:2px 5px!important;
+  }
+  #mainSidebar .nav button:hover{transform:perspective(800px) rotateY(-1deg) translateX(4px)!important}
+  #mainSidebar .nav button.active{transform:perspective(800px) rotateY(-1deg) translate3d(3px,-1px,4px)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #mainSidebar .nav button{transition:none!important}
+}
+
 </style>
 
 <script src="./pp62-contrast-playback-fix.js?v=62.3"></script>
