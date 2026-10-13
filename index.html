@@ -3468,6 +3468,35 @@ input,select,textarea{background:#061e35!important;border-color:#17608f!importan
 #mainSidebar .nav button[data-page="production"]:before{content:"⚙"!important}
 #mainSidebar .nav button[data-page="workorders"]:before{content:"☷"!important}
 
+
+/* PP3D MENU v3 · movimiento metálico ligero y accesible */
+#mainSidebar .nav button{
+  background-size:180% 100%!important;
+  animation:pp3dMetalReveal .38s cubic-bezier(.2,.7,.2,1) both;
+}
+#mainSidebar .nav button:nth-child(1){animation-delay:.02s}
+#mainSidebar .nav button:nth-child(2){animation-delay:.045s}
+#mainSidebar .nav button:nth-child(3){animation-delay:.07s}
+#mainSidebar .nav button:nth-child(4){animation-delay:.095s}
+#mainSidebar .nav button:nth-child(5){animation-delay:.12s}
+#mainSidebar .nav button:nth-child(6){animation-delay:.145s}
+#mainSidebar .nav button:nth-child(7){animation-delay:.17s}
+#mainSidebar .nav button:nth-child(8){animation-delay:.195s}
+#mainSidebar .nav button:nth-child(9){animation-delay:.22s}
+#mainSidebar .nav button:nth-child(10){animation-delay:.245s}
+#mainSidebar .nav button.active{animation:pp3dActivePulse 3.8s ease-in-out infinite}
+@keyframes pp3dMetalReveal{
+  from{opacity:.72;filter:brightness(.78)}
+  to{opacity:1;filter:brightness(1)}
+}
+@keyframes pp3dActivePulse{
+  0%,100%{filter:brightness(1)}
+  50%{filter:brightness(1.09)}
+}
+@media(prefers-reduced-motion:reduce){
+  #mainSidebar .nav button,
+  #mainSidebar .nav button.active{animation:none!important;background-size:auto!important}
+}
 </style>
 
 <script src="./pp62-contrast-playback-fix.js?v=62.3"></script>
