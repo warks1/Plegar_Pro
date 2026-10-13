@@ -412,7 +412,7 @@ jobs:
             await page.locator('#pp56ProfileImport').click();
             await page.waitForFunction(() => document.querySelector('#pp56ProfileStatus')?.textContent.includes('Importado:'), null, {timeout:5000});
             const dxfAudit = await page.evaluate(() => { const t=window.tools.find(x=>x.profileSourceFile==='regression.dxf'); const g=window.PLEGAR_PRO_COLLISIONS.getGeometry(); return {points:t?.profilePointsMm?.length,selected:document.querySelector('#pp56DieSelect')?.value===t?.id,source:g.toolProfileSource,profileUsed:g.profilePointCount>0}; });
-            if (dxfAudit.points < 6 || !dxfAudit.selected || !String(dxfAudit.source).includes('imported DXF') || !dxfAudit.profileUsed) throw new Error('DXF profile did not reach physical collision geometry: '+JSON.stringify(dxfAudit));
+            if (dxfAudit.points < 6 || !dxfAudit.selected || !String(dxfAudit.source?.die||dxfAudit.source?.punch||dxfAudit.source).includes('imported DXF') || !dxfAudit.profileUsed) throw new Error('DXF profile did not reach physical collision geometry: '+JSON.stringify(dxfAudit));
             const syncAudit = await page.evaluate(() => window.PLEGAR_PRO_V61.audit());
             if (!syncAudit.stateAvailable || !syncAudit.syncFunction || !syncAudit.playback.collision.hasHandler || !syncAudit.playback.engineeringTwin.hasHandler) throw new Error('Runtime module integration audit failed: ' + JSON.stringify(syncAudit));
 
