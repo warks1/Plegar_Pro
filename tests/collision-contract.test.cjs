@@ -34,6 +34,13 @@ assert.match(sw, /\.\/pp56-collision-review\.js\?v=154/);
 assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=149/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
+
+// Guard against conflicting machine labels: UI dimensions must agree with the
+// declared reference model, and unknown variant-specific values stay explicit.
+assert.match(twin, /throat:'410 mm\*',stroke:'215 mm\*',openHeight:'No verificada',overall:'2680 × 2100 × 2375 mm\*'/);
+assert.match(twin, /throat:'No verificada',stroke:'250 mm\*',openHeight:'No verificada',overall:'3900 × 1900 × 2800 mm\*'/);
+assert.match(twin, /cotas exteriores estimadas y carrera pendiente de cotejo/);
+
 console.log('Collision UI contract verified: prior-flange interference, active contact, OEM-CAD disclosure, tool-profile integration and offline cache wiring.');
 
 const modelSource = fs.readFileSync('pp63-v85-parametric-model.js', 'utf8');
