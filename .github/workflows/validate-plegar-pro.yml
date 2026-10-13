@@ -52,8 +52,8 @@ jobs:
           grep -Fq './pp60-graphics-runtime.js' index.html
           grep -Fq './pp61-runtime-integrity.js' index.html
           grep -Fq './pp62-contrast-playback-fix.js' index.html
-          grep -Fq './pp63-v85-parametric-model.js?v=63.2' index.html
-          grep -Fq './pp63-v85-parametric-model.js?v=63.2' sw.js
+          grep -Fq './pp63-v85-parametric-model.js?v=63.3' index.html
+          grep -Fq './pp63-v85-parametric-model.js?v=63.3' sw.js
           grep -Fq './pp60-graphics-runtime.js' sw.js
           grep -Fq './pp61-runtime-integrity.js' sw.js
           grep -Fq './pp62-contrast-playback-fix.js' sw.js
@@ -66,7 +66,7 @@ jobs:
           grep -Fq './pp55-cad-precision.js' index.html
           grep -Fq 'window.tools=tools;' index.html
           grep -Fq 'id="machine"><option value="Bystronic Xpert Pro 3100 × 100 T"' index.html
-          grep -Fq 'value="TRUMPF TrumaBend V85"' index.html
+          grep -Fq 'value="TRUMPF TruBend V85"' index.html
           if grep -Fq 'Bystronic Xpert 3200 × 150 T' index.html || grep -Fq '<option>Personalizada</option>' index.html; then echo 'Unsupported machine options must not reuse a reference-machine geometry'; exit 1; fi
           grep -Fq 'id="pp64-visual-redesign"' index.html
           grep -Fq 'id="pp67-banner-contrast-runtime"' index.html
