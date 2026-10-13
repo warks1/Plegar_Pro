@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 /*
- * PP63 — TRUMABEND V85, reference model for the 2006 configuration.
+ * PP63 — TRUBEND V85, reference model for the 2006 configuration.
  * Source dimensions are seller-published, not an OEM CAD file:
  * Vanto Machines, 2006: 2050 mm bending length, 1750 mm between uprights,
  * 410 mm throat, 215 mm max stroke, 2680 x 2100 x 2375 mm envelope, 8900 kg.
@@ -9,8 +9,8 @@
  * manufacturing geometry. Component shapes remain estimated from public photos.
  */
 const SPEC = Object.freeze({
- id:'TRUMPF-TRUMABEND-V85-2006-REFERENCE',
- maker:'TRUMPF', model:'TrumaBend V85', year:2006, forceTonnes:85,
+ id:'TRUMPF-TRUBEND-V85-2006-REFERENCE',
+ maker:'TRUMPF', model:'TruBend V85', year:2006, forceTonnes:85,
  bendingLengthMm:2050, betweenUprightsMm:1750, throatMm:410, maxStrokeMm:215,
  envelopeMm:{length:2680,width:2100,height:2375}, massKg:8900,
  sourceUrl:'https://www.vantomachines.com/en/trumpf-trumabend-v85-cnc-bending-machine-2006-id10857',
