@@ -290,6 +290,9 @@ function pp56ToolKind(t){return [t?.type,t?.name,t?.category,t?.toolType,t?.role
  const contactState=clearancePx<0?'SOLAPAMIENTO PROYECTADO':clearancePx<=2?'PROXIMIDAD VISUAL':clearancePx<=8?'SEPARACIÓN VISUAL BAJA':'SIN CONTACTO VISUAL · NO VERIFICADO';
  const contactColor=clearancePx<0?'#b42332':clearancePx<=8?'#9a6200':'#087ea4';
  const geomCheck=collisionGeometry(step,idx,travel,b,toolAudit,v);
+ const interferenceDetected=!!(geomCheck.priorFoldInterference||geomCheck.punchInterferenceSegments.length||geomCheck.dieInterferenceSegments.length);
+ // Visible collision state in the viewport; this is the parametric 2D engine result, not certified 3D-solid interference.
+ x.save();const bannerText=interferenceDetected?'INTERFERENCIA DETECTADA · REVISAR PLIEGUE':'SIN INTERFERENCIA DETECTADA EN EL MODELO 2D';x.font='900 16px system-ui';const bannerW=Math.min(w-36,Math.max(360,x.measureText(bannerText).width+34));x.fillStyle=interferenceDetected?'rgba(137,20,31,.96)':'rgba(10,74,95,.96)';x.fillRect(18,18,bannerW,42);x.strokeStyle=interferenceDetected?'#ffb4b8':'#72e0f7';x.lineWidth=2;x.strokeRect(18,18,bannerW,42);x.fillStyle='#fff';x.fillText(bannerText,31,45);x.font='bold 10px system-ui';x.fillStyle='#ffe4a8';x.fillText('RESULTADO PARAMÉTRICO 2D · NO ES CERTIFICACIÓN CAD 3D',31,74);x.restore();
  x.save();x.lineJoin='round';x.lineCap='round';x.strokeStyle='rgba(18,51,69,.28)';x.lineWidth=Math.max(10,Math.min(15,t*1.8));x.beginPath();x.moveTo(bx+20,endY+2);x.lineTo(leftX,endY+2);x.lineTo(cx,apexY+2);x.lineTo(rightX,endY+2);x.lineTo(bx+bw-20,endY+2);x.stroke();
  x.strokeStyle='#8faab8';x.lineWidth=Math.max(7,Math.min(11,t*1.4));x.beginPath();x.moveTo(bx+20,endY);x.lineTo(leftX,endY);x.lineTo(cx,apexY);x.lineTo(rightX,endY);x.lineTo(bx+bw-20,endY);x.stroke();
  x.strokeStyle='#f7fdff';x.lineWidth=Math.max(3,Math.min(5,t*.65));x.beginPath();x.moveTo(bx+20,endY-1);x.lineTo(leftX,endY-1);x.lineTo(cx,apexY-1);x.lineTo(rightX,endY-1);x.lineTo(bx+bw-20,endY-1);x.stroke();x.restore();
@@ -299,7 +302,7 @@ function pp56ToolKind(t){return [t?.type,t?.name,t?.category,t?.toolType,t?.role
  x.restore();
  const st=$('pp56Status');
  if(st){
-  st.className='pp56-status '+(geomCheck.priorFoldInterference||geomCheck.punchInterferenceSegments.length||geomCheck.dieInterferenceSegments.length?'danger':'warn');
+  st.className='pp56-status '+(interferenceDetected?'danger':'warn');
   const hits=[...new Set([...geomCheck.punchInterferenceSegments,...geomCheck.dieInterferenceSegments])];
   const priorSteps=seq().slice(0,step).length;st.textContent=(hits.length?'INTERFERENCIA ESTIMADA CON ALAS PREVIAMENTE PLEGADAS · segmentos '+hits.map(i=>'P'+(i+1)).join(', '):priorSteps===0?'SIN ALAS PREVIAMENTE PLEGADAS QUE EVALUAR EN ESTE PASO':'SIN INTERFERENCIA DETECTADA EN EL MODELO 2D PARA LAS ALAS ANTERIORES')+' · Holgura visual '+clearancePx.toFixed(1)+' px. Motor geométrico en mm: '+geomCheck.method+'. Contacto geométrico 2D del pliegue activo: punzón '+(geomCheck.activeBendContact.punchContourContact?'intersecta el contorno de la chapa':'sin intersección detectada')+'; matriz '+(geomCheck.activeBendContact.dieContourContact?'intersecta el contorno de la chapa':'sin intersección detectada')+'. Esta comprobación no distingue por sí sola el contacto correcto de una penetración indebida. '+(geomCheck.officialGeometry?'Perfiles marcados verificados.':'Perfiles orientativos; validar cotas reales antes de fabricar.')+' La chapa conserva radios paramétricos salvo que se aporte geometría medida; no es un CAD 3D de sólidos completo ni una certificación de seguridad.';
  }
