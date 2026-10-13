@@ -14,18 +14,17 @@ assert.match(html, /#mainSidebar \.nav\{display:flex!important;flex-direction:co
 assert.match(html, /#mainSidebar\.side\.open[\s\S]*transform:translateX\(0\)!important/);
 assert.match(sw, /plegar-pro-v151-42/);
 // Voice assistant delivery contract: UI script must be loaded and included in offline cache.
-assert.match(html, /pp64-ai-voice\\.js\\?v=1/);
-assert.match(sw, /\\.\\/pp64-ai-voice\\.js\\?v=1/);
-assert.match(sw, /plegar-pro-v151-42/);
+assert.ok(html.includes('pp64-ai-voice.js?v=1'));
+assert.ok(sw.includes('./pp64-ai-voice.js?v=1'));
+assert.ok(sw.includes('plegar-pro-v151-42'));
 const voice = fs.readFileSync('pp64-ai-voice.js', 'utf8');
-assert.match(voice, /SpeechRecognition\\|\\|window\\.webkitSpeechRecognition/);
-assert.match(voice, /recognition\\.continuous=true/);
-assert.match(voice, /SpeechSynthesisUtterance/);
-assert.match(voice, /PLEGAR_PRO_VOICE/);
-assert.match(voice, /no tiene conectado un modelo conversacional remoto/);
-assert.match(voice, /data-page="collisions"/);
-assert.match(voice, /data-page="machineTwin"/);
-
+assert.ok(voice.includes('window.SpeechRecognition||window.webkitSpeechRecognition'));
+assert.ok(voice.includes('recognition.continuous=true'));
+assert.ok(voice.includes('SpeechSynthesisUtterance'));
+assert.ok(voice.includes('PLEGAR_PRO_VOICE'));
+assert.ok(voice.includes('no tiene conectado un modelo conversacional remoto'));
+assert.ok(voice.includes('data-page="collisions"'));
+assert.ok(voice.includes('data-page="machineTwin"'));
 
 assert.match(html, /const beamTravel=simulation\?Math\.max\(0,Math\.min\(100,Number\(sim\.machineTravel\)\|\|0\)\)\/100:0,beamDrop=simulation\?Math\.min\(76,beamTravel\*76\):12;/,
   'digital-twin ram travel must use the synchronized machine stroke');
