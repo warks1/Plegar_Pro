@@ -288,22 +288,35 @@ function pp56ToolKind(t){return [t?.type,t?.name,t?.category,t?.toolType,t?.role
  const tipBottomY=tipY+4;
  const clearancePx=apexY-tipBottomY-sheetHalfPx;
  const contactState=clearancePx<0?'SOLAPAMIENTO PROYECTADO':clearancePx<=2?'PROXIMIDAD VISUAL':clearancePx<=8?'SEPARACIÓN VISUAL BAJA':'SIN CONTACTO VISUAL · NO VERIFICADO';
- const contactColor=clearancePx<0?'#b42332':clearancePx<=8?'#9a6200':'#087ea4';
  const geomCheck=collisionGeometry(step,idx,travel,b,toolAudit,v);
- const priorSteps=seq().slice(0,step).length;
  const hits=[...new Set([...geomCheck.punchInterferenceSegments,...geomCheck.dieInterferenceSegments])];
+ const priorSteps=seq().slice(0,step).length;
  const interferenceDetected=!!(geomCheck.priorFoldInterference||hits.length);
  const activeContact=!!(geomCheck.activeBendContact?.punchContourContact||geomCheck.activeBendContact?.dieContourContact);
- // Three different states: prior-flange interference, expected/ambiguous active contact, and no prior-flange interference found.
- const collisionBannerState=interferenceDetected?'danger':(activeContact?'active':(priorSteps===0?'not-tested':'clear'));
- const bannerText=collisionBannerState==='danger'?'COLISIÓN ESTIMADA · ALAS PREVIAS':collisionBannerState==='active'?'CONTACTO ACTIVO · REVISAR PENETRACIÓN':collisionBannerState==='not-tested'?'SIN ALAS PREVIAS · COLISIÓN NO EVALUABLE':'SIN INTERFERENCIA PREVIA DETECTADA';
- x.save();x.font='900 15px system-ui';const bannerW=Math.min(w-36,Math.max(360,x.measureText(bannerText).width+34));x.fillStyle=collisionBannerState==='danger'?'rgba(137,20,31,.97)':collisionBannerState==='active'?'rgba(139,82,0,.97)':collisionBannerState==='not-tested'?'rgba(74,67,48,.97)':'rgba(10,93,65,.97)';x.fillRect(18,18,bannerW,42);x.strokeStyle=collisionBannerState==='danger'?'#ffb4b8':collisionBannerState==='active'?'#ffd27a':collisionBannerState==='not-tested'?'#e8d7a5':'#8de6bd';x.lineWidth=2;x.strokeRect(18,18,bannerW,42);x.fillStyle='#fff';x.fillText(bannerText,31,45);x.font='bold 10px system-ui';x.fillStyle='#fff1ca';x.fillText('COMPROBACIÓN PARAMÉTRICA 2D · NO ES CAD 3D CERTIFICADO',31,74);x.restore();
+ const collisionBannerState=interferenceDetected?'collision':(activeContact?'contact':(priorSteps===0?'untested':'clear'));
+ const bannerText=collisionBannerState==='collision'?'INTERFERENCIA ESTIMADA · LAS MARCAS INDICAN EL ALA':collisionBannerState==='contact'?'CONTACTO ACTIVO · REVISAR LA FORMA':collisionBannerState==='untested'?'NO HAY ALAS PREVIAS QUE COMPROBAR':'NO SE DETECTA INTERFERENCIA EN ALAS PREVIAS';
+ // Estado monocromo: la colisión se localiza sobre la geometría móvil, no mediante un código de colores.
+ x.save();x.font='900 14px system-ui';const bannerW=Math.min(w-36,Math.max(360,x.measureText(bannerText).width+34));x.fillStyle='#fff';x.fillRect(18,18,bannerW,42);x.strokeStyle='#111';x.lineWidth=2;x.strokeRect(18,18,bannerW,42);x.fillStyle='#111';x.fillText(bannerText,31,44);x.font='bold 10px system-ui';x.fillText('GEOMETRÍA PARAMÉTRICA · NO ES CAD OEM CERTIFICADO',31,74);x.restore();
+ // Marcas en blanco/negro sobre los segmentos de ala que el cálculo geométrico identifica como interferentes.
+ if(hits.length){
+  x.save();x.lineCap='round';x.lineJoin='round';
+  for(let si=0;si<sheet.length-1;si++){
+   const a=model[si],leg=Number.isInteger(a?.legIndex)?a.legIndex:si;
+   if(!hits.includes(leg)&&!hits.includes(si))continue;
+   line(x,w,h,[sheet[si],sheet[si+1]],'#fff',Math.max(12,sheetHalf*2+6));
+   line(x,w,h,[sheet[si],sheet[si+1]],'#111',Math.max(7,sheetHalf*2));
+   line(x,w,h,[sheet[si],sheet[si+1]],'#fff',2);
+   const mid={x:(sheet[si].x+sheet[si+1].x)/2,y:(sheet[si].y+sheet[si+1].y)/2,z:(sheet[si].z+sheet[si+1].z)/2},q=project(mid,w,h);
+   x.fillStyle='#fff';x.strokeStyle='#111';x.lineWidth=2;x.beginPath();x.arc(q.x,q.y,13,0,Math.PI*2);x.fill();x.stroke();x.fillStyle='#111';x.font='900 12px system-ui';x.textAlign='center';x.textBaseline='middle';x.fillText('P'+(leg+1),q.x,q.y);x.textAlign='left';x.textBaseline='alphabetic';
+  }
+  x.restore();
+ }
  x.save();x.lineJoin='round';x.lineCap='round';x.strokeStyle='rgba(18,51,69,.28)';x.lineWidth=Math.max(10,Math.min(15,t*1.8));x.beginPath();x.moveTo(bx+20,endY+2);x.lineTo(leftX,endY+2);x.lineTo(cx,apexY+2);x.lineTo(rightX,endY+2);x.lineTo(bx+bw-20,endY+2);x.stroke();
  x.strokeStyle='#8faab8';x.lineWidth=Math.max(7,Math.min(11,t*1.4));x.beginPath();x.moveTo(bx+20,endY);x.lineTo(leftX,endY);x.lineTo(cx,apexY);x.lineTo(rightX,endY);x.lineTo(bx+bw-20,endY);x.stroke();
  x.strokeStyle='#f7fdff';x.lineWidth=Math.max(3,Math.min(5,t*.65));x.beginPath();x.moveTo(bx+20,endY-1);x.lineTo(leftX,endY-1);x.lineTo(cx,apexY-1);x.lineTo(rightX,endY-1);x.lineTo(bx+bw-20,endY-1);x.stroke();x.restore();
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('ÁNGULO ACTUAL '+included.toFixed(1)+'°',cx-66,by+bh-35);
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('PUNZÓN '+punchAngle+'° · R'+punchRadius.toFixed(1),bx+16,by+67);x.fillText('CHAPA',bx+16,by+119);x.fillText('MATRIZ V'+v,bx+16,by+bh-15);
- x.fillStyle=contactColor;x.font='900 11px system-ui';x.textAlign='right';x.fillText(contactState+' · '+clearancePx.toFixed(1)+' px',bx+bw-14,by+bh-15);x.textAlign='left';
+ x.fillStyle='#111';x.font='900 11px system-ui';x.textAlign='right';x.fillText(contactState+' · '+clearancePx.toFixed(1)+' px',bx+bw-14,by+bh-15);x.textAlign='left';
  x.restore();
  const st=$('pp56Status');
  if(st){
