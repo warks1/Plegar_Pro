@@ -14,16 +14,39 @@ jobs:
           node-version: 22
       - name: Check JavaScript syntax
         run: |
-          for file in pp54-engineering.js pp55-cad-precision.js pp56-collision-review.js pp57-system-integration.js pp59-engineering-upgrade.js pp60-graphics-runtime.js pp61-runtime-integrity.js pp62-contrast-playback-fix.js sw.js; do
+          for file in pp54-engineering.js pp55-cad-precision.js pp56-collision-review.js pp57-system-integration.js pp59-engineering-upgrade.js pp60-graphics-runtime.js pp61-runtime-integrity.js pp62-contrast-playback-fix.js pp63-v85-parametric-model.js sw.js; do
             echo "Checking $file"
             node --check "$file"
           done
+      - name: Test V85 and Bystronic 3D reference meshes and prism collisions
+        run: |
+          node <<'NODE'
+          global.window = {};
+          require('./pp63-v85-parametric-model.js');
+          const m = window.PP63V85Model;
+          if (!m || m.SPEC.bendingLengthMm !== 2050 || m.SPEC.betweenUprightsMm !== 1750) throw new Error('V85 reference dimensions missing');
+          if (m.BYSTRONIC.bendingLengthMm !== 3100 || m.BYSTRONIC.forceKN !== 1000 || m.BYSTRONIC.forceTonnes !== 102) throw new Error('Bystronic 100/3100 reference dimensions missing');
+          for (const id of [m.SPEC.id,m.BYSTRONIC.id]) {
+            const mesh = m.machineMesh(id);
+            if (mesh.length < 5 || mesh.some(x => !x.vertices.length || !x.triangles.length)) throw new Error('Invalid machine mesh: '+id);
+          }
+          const sheet = m.segmentPrism({x:-2,y:0},{x:2,y:0},1,-100,100,'sheet');
+          const hit = m.prismMesh([{x:-1,y:-1},{x:1,y:-1},{x:1,y:1},{x:-1,y:1}],-50,50,'tool');
+          const miss = m.prismMesh([{x:10,y:10},{x:12,y:10},{x:12,y:12},{x:10,y:12}],-50,50,'remote-tool');
+          if (!m.intersectPrisms(sheet,hit).intersects) throw new Error('Expected prism collision was not detected');
+          if (m.intersectPrisms(sheet,miss).intersects) throw new Error('False-positive prism collision');
+          const noZ = m.prismMesh([{x:-1,y:-1},{x:1,y:-1},{x:1,y:1},{x:-1,y:1}],200,250,'separated-z');
+          if (m.intersectPrisms(sheet,noZ).intersects) throw new Error('Z-separated solids must not collide');
+          console.log('V85, Bystronic, and 3D prism checks passed');
+          NODE
       - name: Verify module and cache wiring
         run: |
           grep -Fq './pp59-engineering-upgrade.js' index.html
           grep -Fq './pp60-graphics-runtime.js' index.html
           grep -Fq './pp61-runtime-integrity.js' index.html
           grep -Fq './pp62-contrast-playback-fix.js' index.html
+          grep -Fq './pp63-v85-parametric-model.js?v=63.1' index.html
+          grep -Fq './pp63-v85-parametric-model.js?v=63.1' sw.js
           grep -Fq './pp60-graphics-runtime.js' sw.js
           grep -Fq './pp61-runtime-integrity.js' sw.js
           grep -Fq './pp62-contrast-playback-fix.js' sw.js
