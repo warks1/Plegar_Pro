@@ -222,15 +222,15 @@ jobs:
               const canvas = document.querySelector('#pp59canvas');
               const heading = document.querySelector('#pp59Twin h2')?.textContent || '';
               const pixels = canvas?.getContext('2d')?.getImageData(0, 0, canvas.width, canvas.height).data;
-              let visiblePixels = 0;
-              if (pixels) for (let i = 3; i < pixels.length; i += 4) if (pixels[i] > 0) visiblePixels++;
-              return { heading, canvasPixels: visiblePixels, machineLabel: canvas?.toDataURL() ? (canvas.getContext('2d')?.canvas ? 'rendered' : 'missing') : 'missing' };
+              let brightPixels = 0;
+              if (pixels) for (let i = 0; i < pixels.length; i += 4) if (pixels[i] > 180 && pixels[i + 1] > 180 && pixels[i + 2] > 180 && pixels[i + 3] > 200) brightPixels++;
+              return { heading, brightPixels, canvasDataUrlLength: canvas?.toDataURL()?.length || 0 };
             });
-            if (!machinePreviewAudit.heading.includes('GEMELO DIGITAL 3D') || machinePreviewAudit.canvasPixels < 10000) {
+            if (!machinePreviewAudit.heading.includes('GEMELO DIGITAL 3D') || machinePreviewAudit.brightPixels < 1000) {
               throw new Error('Live machine preview canvas appears empty or its title is missing: ' + JSON.stringify(machinePreviewAudit));
             }
             const twinSource = await page.evaluate(() => document.querySelector('#pp59canvas')?.toDataURL() || '');
-            if (!twinSource || twinSource.length < 10000) throw new Error('Live machine preview did not render a meaningful canvas image');
+            if (!twinSource || twinSource.length < 10000 || machinePreviewAudit.canvasDataUrlLength < 10000) throw new Error('Live machine preview did not render a meaningful canvas image');
             await page.locator('[data-page="tooling"]').click();
             await page.waitForFunction(() => {
               const canvas = document.querySelector('#pp55ToolCanvas');
