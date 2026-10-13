@@ -78,4 +78,19 @@ assert.equal(prismEngine.intersectPrisms(concave, prismEngine.prismMesh(rect(1.5
 assert.equal(prismEngine.intersectPrisms(concave, prismEngine.prismMesh(rect(.2, 2, .8, 3), -1, 1, 'inside-material')).intersects, true,
   'a prism inside the concave material section should intersect');
 
-console.log('Prism geometry tests passed: XY overlap/separation/touching, Z separation/touching, and concave-section cases.');
+
+const sameConcave = prismEngine.prismMesh([
+  { x: 0, y: 0 }, { x: 4, y: 0 }, { x: 4, y: 4 }, { x: 3, y: 4 },
+  { x: 3, y: 1 }, { x: 1, y: 1 }, { x: 1, y: 4 }, { x: 0, y: 4 }
+], -1, 1, 'same-concave');
+const reversedConcave = prismEngine.prismMesh([
+  { x: 0, y: 4 }, { x: 1, y: 4 }, { x: 1, y: 1 }, { x: 3, y: 1 },
+  { x: 3, y: 4 }, { x: 4, y: 4 }, { x: 4, y: 0 }, { x: 0, y: 0 }
+], -1, 1, 'reversed-concave');
+assert.ok(sameConcave && reversedConcave, 'concave sections should triangulate in either winding direction');
+assert.equal(prismEngine.intersectPrisms(concave, sameConcave).intersects, true,
+  'identical concave material volumes must be detected as overlapping');
+assert.equal(prismEngine.intersectPrisms(concave, reversedConcave).intersects, true,
+  'identical concave volumes with opposite polygon winding must be detected');
+
+console.log('Prism geometry tests passed: XY overlap/separation/touching, Z separation/touching, concave sections, and identical/reversed-winding solids.');
