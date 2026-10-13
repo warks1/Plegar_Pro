@@ -19,7 +19,7 @@ const SPEC = Object.freeze({
 });
 const BYSTRONIC = Object.freeze({
  id:'BYSTRONIC-XPERT-PRO-100-3100-REFERENCE',
- maker:'Bystronic', model:'Xpert Pro 100/3100', year:null, forceTonnes:100,
+ maker:'Bystronic', model:'Xpert Pro 100/3100', year:null, forceTonnes:102,
  forceKN:1000, bendingLengthMm:3100, betweenUprightsMm:null, throatMm:null, maxStrokeMm:250,
  envelopeMm:{length:3900,width:1900,height:2800}, massKg:12200,
  sourceUrl:'https://bystronic.com/sites/default/files/2026-03/tp007-BE-Techdaten-Xpert%20Pro_es.pdf',
