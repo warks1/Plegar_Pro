@@ -127,9 +127,13 @@ function selectedToolAudit(b,v){
  const catalog=Array.isArray(window.tools)?window.tools:[];
  const punchName=$('pp56PunchSelect')?String($('pp56PunchSelect').value||'').trim():String(b?.punch||'').trim();
  const same=(a,b)=>String(a||'').trim().toLowerCase()===String(b||'').trim().toLowerCase();
- const punchMatches=catalog.filter(t=>/punz[oó]n|punch/i.test(String(t.type||t.name||''))&&(!b?.punch||String(t.name||'').toLowerCase().includes(String(b.punch).replace(/punz[oó]n\s*/i,'').trim().toLowerCase())||String(b.punch).toLowerCase().includes(String(t.name||'').replace(/punz[oó]n\s*/i,'').trim().toLowerCase())));
- const punch=catalog.find(t=>/punz[oó]n|punch/i.test(String(t.type||t.name||''))&&punchName&&[t.name,t.id,t.ref,t.code].some(q=>same(q,punchName)))||null;
- const dieMatches=catalog.filter(t=>/matriz|die/i.test(String(t.type||t.name||''))&&Number(t.v)===Number(v));
+ // Algunos catálogos etiquetan type como "tool" o "press-brake-tool"; buscar el tipo en todos los campos descriptivos evita perder herramientas válidas.
+ const toolKind=t=>[t?.type,t?.name,t?.category,t?.toolType,t?.role,t?.family].filter(Boolean).join(' ').toLowerCase();
+ const isPunch=t=>/punz[oó]n|punch/i.test(toolKind(t));
+ const isDie=t=>/matriz|die/i.test(toolKind(t));
+ const punchMatches=catalog.filter(t=>isPunch(t)&&(!b?.punch||String(t.name||'').toLowerCase().includes(String(b.punch).replace(/punz[oó]n\s*/i,'').trim().toLowerCase())||String(b.punch).toLowerCase().includes(String(t.name||'').replace(/punz[oó]n\s*/i,'').trim().toLowerCase())));
+ const punch=catalog.find(t=>isPunch(t)&&punchName&&[t.name,t.id,t.ref,t.code].some(q=>same(q,punchName)))||null;
+ const dieMatches=catalog.filter(t=>isDie(t)&&Number(t.v)===Number(v));
  const requestedDie=String($('pp56DieSelect')?.value||b?.die||b?.matrix||b?.matriz||'').trim();
  const die=requestedDie?(dieMatches.find(t=>[t.name,t.id,t.ref,t.code].some(q=>same(q,requestedDie)))||null):(dieMatches.length===1?dieMatches[0]:null);
  const describe=t=>t?[String(t.maker||'Fabricante sin identificar'),String(t.name||t.id||'Referencia sin identificar')].join(' · '):'Sin selección inequívoca';
