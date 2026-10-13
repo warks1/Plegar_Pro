@@ -437,7 +437,7 @@ jobs:
               state.bends = originalBends; state.bendOrder = originalOrder; window.PLEGAR_PRO_COLLISIONS.refresh();
               return result;
             });
-            if (!finalCollisionFold.stopped || finalCollisionFold.finalTravel !== 100 || finalCollisionFold.step !== 0) throw new Error('Collision simulation did not complete its final fold: ' + JSON.stringify(finalCollisionFold));
+            if (!finalCollisionFold.stopped || finalCollisionFold.finalTravel !== 0 || finalCollisionFold.step !== 0) throw new Error('Collision simulation did not complete and retract after its final fold: ' + JSON.stringify(finalCollisionFold));
             const finalOrderedFoldSync = await page.evaluate(async () => {
               const originalBends = state.bends, originalOrder = state.bendOrder;
               state.bends = [
