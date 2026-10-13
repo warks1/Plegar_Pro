@@ -55,13 +55,22 @@ assert.match(collision, /activeBendArcSegments:Number\.isFinite\(g\?\.activeBend
 assert.match(collision, /code===42&&vertices\.length/ , 'DXF LWPOLYLINE bulge arcs must be preserved');
 assert.match(collision, /parseDxfProfileForTest\(text,unitFactor=1,type='Matriz'\)/, 'DXF parser must expose a testable profile audit');
 assert.match(collision, /\$\('pp56Step'\)\.onchange=\(\)=>setStep\(Number\(\$\('pp56Step'\)\.value\)\|\|0,true\)/);
-assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=150/);
+assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=151/);
 assert.match(html, /pp61-runtime-integrity\.js\?v=62/);
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62/);
 assert.match(runtime, /detail\.complete\?\(order\[maxPos\]\?\?maxPos\)/, 'completed collision playback must activate the final fold in the selected order');
 assert.match(runtime, /const requestedFold=detail\.complete\?\(order\[maxPos\]\?\?maxPos\):\(Number\.isInteger\(detail\.foldIndex\)\?detail\.foldIndex:\(order\[maxPos\]\?\?maxPos\)\)/, '2D/3D playback positions without an explicit fold index must resolve through the shared execution order');
 assert.match(runtime, /sim\.s2Step=coreStep;sim\.s3Step=coreStep;sim\.p3Active=foldIndex/, 'both programming views and the active 3D fold must receive the same synchronized playback tick');
 assert.match(runtime, /window\.addEventListener\('plegarpro:playback-step',e=>syncPlaybackStep\(e\.detail\)\)/, 'the runtime must be the single playback-step synchronization authority');
+assert.match(twin, /lastEmittedTravel=-1/, 'digital twin must track travel progress separately from fold index');
+assert.match(twin, /travelBucket!==lastEmittedTravel/, 'digital twin must publish meaningful travel changes during each ram cycle');
+assert.match(twin, /source:'pp59',step:pos,foldIndex:executionOrder\(\)\[pos\]\?\?0,travel:travelBucket\*5/, 'digital twin events must carry the ram travel percentage');
+assert.match(runtime, /else if\(source==='pp59'&&Number\.isFinite\(Number\(detail\.travel\)\)\)/, 'runtime must map twin ram travel into the collision review');
+assert.match(runtime, /travel\.dispatchEvent\(new Event\('input',\{bubbles:true\}\)\)/, 'collision view must redraw when synchronized travel changes');
+assert.match(html, /pp59-engineering-upgrade\.js\?v=151/);
+assert.match(html, /pp61-runtime-integrity\.js\?v=62\.2/);
+assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.2/);
+assert.match(sw, /plegar-pro-v151-27/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 
