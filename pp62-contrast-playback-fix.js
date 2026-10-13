@@ -58,6 +58,35 @@
  html body #collisions .pp56-readout {background:#fff!important;border-color:#c5d9e4!important}
  html body #collisions .pp56-readout small {color:#526f82!important}
  html body #collisions .pp56-readout b {color:#183448!important}
+ /* PP72: contraste de los subpaneles creados por los módulos internos. */
+ html body .page .pp-module-form,
+ html body .page [class*="pp-form-section"],
+ html body .page [class*="pp-form-tabs"],
+ html body .page [class*="pp-module-panel"],
+ html body .page [class*="pp-settings-card"],
+ html body .page [class*="pp-control-card"],
+ html body .page [class*="pp-field-card"] {
+   background:#f2f7fa!important;
+   background-image:linear-gradient(145deg,#fff,#edf5f9)!important;
+   color:#183448!important;
+   border-color:#c5d9e4!important;
+   text-shadow:none!important;
+ }
+ html body .page .pp-module-form :not(button):not(input):not(select):not(textarea),
+ html body .page [class*="pp-form-section"] :not(button):not(input):not(select):not(textarea),
+ html body .page [class*="pp-module-panel"] :not(button):not(input):not(select):not(textarea),
+ html body .page [class*="pp-settings-card"] :not(button):not(input):not(select):not(textarea),
+ html body .page [class*="pp-control-card"] :not(button):not(input):not(select):not(textarea),
+ html body .page [class*="pp-field-card"] :not(button):not(input):not(select):not(textarea) {
+   color:#183448!important;
+   text-shadow:none!important;
+ }
+ html body .page .pp-module-form button,
+ html body .page [class*="pp-form-section"] button,
+ html body .page [class*="pp-module-panel"] button {
+   color:#fff!important;
+   background:linear-gradient(135deg,#075a78,#087fa4)!important;
+ }
  `;
  const style=document.createElement('style');style.id='pp62-contrast-playback-fix';style.textContent=css;document.head.appendChild(style);
  let syncing=false,lastStep=-1,ignoreCollisionEvent=false;
@@ -93,7 +122,12 @@
    }catch(e){console.warn('[Plegar Pro PP62] No se pudo sincronizar el paso:',e)}
    finally{syncing=false}
  }
- window.addEventListener('plegarpro:playback-step',e=>{if(e.detail?.source==='collisions'&&ignoreCollisionEvent){ignoreCollisionEvent=false;return}requestAnimationFrame(()=>syncStep(e.detail))});
+ window.addEventListener('plegarpro:playback-step',e=>{
+   /* PP61 is the playback authority; PP62 must not write stale steps over it. */
+   if(window.PLEGAR_PRO_V61?.installed)return;
+   if(e.detail?.source==='collisions'&&ignoreCollisionEvent){ignoreCollisionEvent=false;return}
+   requestAnimationFrame(()=>syncStep(e.detail))
+ });
  window.addEventListener('plegarpro:state-changed',()=>{lastStep=-1});
  window.PLEGAR_PRO_PP62={installed:true,version:'62.1',contrastStyle:true,playbackGuard:true,audit:()=>({installed:true,step:lastStep,maxStep:maxStep(),bends:getState()?.bends?.length||0,collisionApi:!!window.PLEGAR_PRO_COLLISIONS?.setStep,sim2d:!!$('s2Play'),sim3d:!!$('s3Play')})};
  console.info('[Plegar Pro PP62] Contraste y sincronización de reproducción instalados.');
