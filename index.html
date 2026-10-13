@@ -1675,7 +1675,7 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    box(-420,172,-90,840,34,180,'#d4dfe3','#f5fbfd');
    box(-405,158,-72,810,12,144,steelShade);
    // Ram body moves as the sequence advances; holder and punch remain aligned.
-   const beamDrop=simulation?Math.min(76,(Math.max(0,step)/Math.max(1,state.bends.length-1))*76):12;
+   const beamTravel=simulation?Math.max(0,Math.min(100,Number(sim.machineTravel)||0))/100:0,beamDrop=simulation?Math.min(76,beamTravel*76):12;
    box(-430,145-beamDrop,-104,860,58,208,'#748e98','#d5e0e4');
    box(-420,119-beamDrop,-82,840,28,164,steel,'#f1f7f9');
    box(-405,96-beamDrop,-62,810,18,124,'#647e89','#b9c9cf');
