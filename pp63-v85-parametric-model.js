@@ -48,6 +48,10 @@ function prismMesh(section,zMin,zMax,name){
  for(let i=0;i<n;i++){const j=(i+1)%n;triangles.push([i,j,n+j],[i,n+j,n+i]);}
  return {name,vertices,triangles,section:clean,zMin,zMax,source:'extruded measured/parametric section'};
 }
+function segmentPrism(a,b,thickness,zMin,zMax,name){
+ const dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy)||1,nx=-dy/L*(Math.max(0,thickness)/2),ny=dx/L*(Math.max(0,thickness)/2);
+ return prismMesh([{x:a.x+nx,y:a.y+ny},{x:b.x+nx,y:b.y+ny},{x:b.x-nx,y:b.y-ny},{x:a.x-nx,y:a.y-ny}],zMin,zMax,name||'sheet-segment');
+}
 function bounds(mesh){
  if(!mesh||!mesh.vertices?.length)return null;
  const out={min:{x:Infinity,y:Infinity,z:Infinity},max:{x:-Infinity,y:-Infinity,z:-Infinity}};
@@ -74,5 +78,5 @@ function intersectPrisms(a,b){
  const sectionOverlap=crossSectionOverlap(a,b);
  return {intersects:zOverlap>1e-8&&sectionOverlap,zOverlapMm:Math.max(0,zOverlap),sectionOverlap,method:'3D-prism intersection (Z interval + cross-section polygon intersection)',geometryStatus:'PARAMETRIC_ESTIMATE_NOT_OEM_CAD'};
 }
-window.PP63V85Model={SPEC,machineMesh,boxMesh,prismMesh,bounds,intersectPrisms};
+window.PP63V85Model={SPEC,machineMesh,boxMesh,prismMesh,segmentPrism,bounds,intersectPrisms};
 })();
