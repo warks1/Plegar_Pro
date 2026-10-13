@@ -77,7 +77,7 @@ assert.match(collision, /Sin matrices disponibles para V/, 'empty die catalogs m
 assert.match(collision, /\.pp56-controls select option\{background:#fff!important;color:#173246!important\}/, 'collision selectors must keep readable option text');
 
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.2/);
-assert.match(sw, /plegar-pro-v151-27/);
+assert.match(sw, /plegar-pro-v151-28/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 
