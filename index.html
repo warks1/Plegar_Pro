@@ -1615,8 +1615,9 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    ctx.save();ctx.globalAlpha=+(state.settings.machineOpacity||.92);
    const frame='#18516a',frameLight='#287b98',frameDark='#103446',steel='#b8c8cf',steelShade='#6f8791',bed='#405e6b',accent='#43c7ee';
    const selectedMachine=String($('machine')?.value||'Bystronic Xpert Pro 3100 × 100 T');
-   const isTrumpf=/trumpf|trubend/i.test(selectedMachine);
-   const paint=isTrumpf?'#3a9b57':frame,paintLight=isTrumpf?'#56b86c':frameLight;
+   const isTrumpf=/trumpf|trubend/i.test(selectedMachine),isBystronic=/bystronic|xpert/i.test(selectedMachine);
+   const paint=isTrumpf?'#398a49':(isBystronic?'#075b91':frame),paintLight=isTrumpf?'#67b875':(isBystronic?'#168ac0':frameLight);
+   const machineDisplayName=isTrumpf?'TRUMPF · TruBend V85':(isBystronic?'BYSTRONIC · Xpert Pro 100/3100':'PLEGAR PRO · Máquina personalizada');
    // Base plinth and separate machine feet.
    box(-520,-315,-165,1040,48,330,'#142d38','#45616d');
    box(-445,-270,-135,130,28,270,'#263f4b');box(315,-270,-135,130,28,270,'#263f4b');
@@ -1659,6 +1660,9 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    box(-255,-57,126,510,12,22,'#526d78');box(-220,-47,133,18,56,18,'#91a6ae');box(202,-47,133,18,56,18,'#91a6ae');
    box(390,8,145,110,220,65,paint,'#9ac6d2');box(403,73,212,84,112,8,'#0b1d26','#b4d8e4');
    box(414,88,221,62,74,5,accent,'#b8f0ff');
+   // Brand-specific fascia and machine identity plate, visible from the isometric camera.
+   box(-250,238,136,500,26,7,isTrumpf?'#1d5b2b':'#073c63',isTrumpf?'#a4e6a8':'#79d7ff');
+   ctx.save();ctx.font='900 15px system-ui';ctx.textAlign='center';ctx.fillStyle='#f4fbff';const namePoint=project({x:0,y:251,z:145});ctx.fillText(isTrumpf?'TRUMPF':'BYSTRONIC',namePoint.x,namePoint.y);ctx.restore();
    box(-145,248,134,290,18,5,'#0a2530','#5b8999');
    ctx.restore();
  }
@@ -1668,7 +1672,18 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
  ctx.lineJoin='round';ctx.lineCap='round';ctx.shadowBlur=20;ctx.shadowColor='#000';ctx.strokeStyle='#07161d';ctx.lineWidth=thick+10;ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle=state.settings.sheetColor||'#4fb3ff';ctx.lineWidth=thick;ctx.stroke();ctx.strokeStyle='#e6f8ff';ctx.lineWidth=2;ctx.stroke();
  let fs=Math.round(14*(state.settings.dimensionScale||1.2)),dec=+(state.settings.decimals??2),showDims=state.settings.showDims!=='none'&&(!simulation||!$('s3Dims')||$('s3Dims').checked);if(showDims){ctx.font=`700 ${fs}px system-ui`;pts.slice(0,-1).forEach((p,i)=>{let q=pts[i+1],txt=`${(+state.bends[i].leg).toFixed(dec)} mm`,x=(p.x+q.x)/2,y=(p.y+q.y)/2-22,tw=ctx.measureText(txt).width;ctx.fillStyle=document.body.classList.contains('light')?'rgba(255,255,255,.96)':'#06141bdd';ctx.fillRect(x-tw/2-6,y-fs+2,tw+12,fs+7);ctx.strokeStyle=document.body.classList.contains('light')?'#b9cbd7':'#06141d';if(document.body.classList.contains('light'))ctx.strokeRect(x-tw/2-6,y-fs+2,tw+12,fs+7);ctx.fillStyle=document.body.classList.contains('light')?'#172b3b':'#f3fbff';ctx.fillText(txt,x-tw/2,y);if(i<step&&i<state.bends.length-1){ctx.fillStyle='#ffbc4d';ctx.fillText(`${(+state.bends[i].angle).toFixed(dec)}° R${(+state.bends[i].radius).toFixed(dec)}`,q.x+8,q.y-8)}})}
  pts.forEach((p,i)=>{ctx.fillStyle=i===Math.min(step,state.bends.length)?'#d97706':(document.body.classList.contains('light')?'#007da5':'#d9f6ff');ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill()});
+ // Collision overlay is synchronized with the collision module's millimetre-based 2D audit.
+ // Red segments mean a prior folded flange intersects the selected punch/die contours in that model; this is not full 3D solid CAD.
+ if(simulation&&window.PLEGAR_PRO_V57?.auditCollision&&state.bends.length){
+  const audit=window.PLEGAR_PRO_V57.auditCollision(Math.max(0,Math.min(state.bends.length-1,Number(step)||0)),1);
+  const hitIds=[...new Set([...(audit?.punchInterferenceSegments||[]),...(audit?.dieInterferenceSegments||[])])].filter(i=>Number.isInteger(i)&&i>=0&&i<pts.length-1);
+  if(hitIds.length){ctx.save();ctx.lineCap='round';ctx.lineJoin='round';ctx.shadowColor='#ff2438';ctx.shadowBlur=18;ctx.strokeStyle='#ff2438';ctx.lineWidth=Math.max(12,thick+10);hitIds.forEach(i=>{ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[i+1].x,pts[i+1].y);ctx.stroke();const mx=(pts[i].x+pts[i+1].x)/2,my=(pts[i].y+pts[i+1].y)/2;ctx.fillStyle='#ff2438';ctx.beginPath();ctx.arc(mx,my,9,0,Math.PI*2);ctx.fill()});ctx.shadowBlur=0;const label='INTERFERENCIA ESTIMADA · '+hitIds.map(i=>'ALA '+(i+1)).join(', ');ctx.font='900 14px system-ui';const tw=ctx.measureText(label).width;ctx.fillStyle='rgba(110,7,20,.94)';ctx.fillRect(18,18,tw+24,34);ctx.fillStyle='#fff';ctx.fillText(label,30,40);ctx.restore();}
+  else{ctx.save();ctx.font='800 12px system-ui';ctx.fillStyle='rgba(9,39,54,.88)';ctx.fillRect(18,18,Math.min(w-36,330),30);ctx.fillStyle='#c9f6ff';ctx.fillText('ALAS PREVIAS: SIN INTERFERENCIA DETECTADA*',28,37);ctx.restore();}
+  // Identity plate states the actual selected machine and the level of geometry currently available.
+  ctx.save();ctx.font='800 11px system-ui';const identity=machineDisplayLabel();ctx.fillStyle='rgba(6,20,29,.88)';ctx.fillRect(18,h-34,Math.min(w-36,Math.max(260,ctx.measureText(identity).width+20)),22);ctx.fillStyle='#c8e6f2';ctx.fillText(identity,28,h-19);ctx.restore();
+ }
 }
+function machineDisplayLabel(){const m=String($('machine')?.value||'');return /trumpf|trubend/i.test(m)?'TRUMPF TruBend V85 · referencia visual; CAD original no cargado':(/bystronic|xpert/i.test(m)?'BYSTRONIC Xpert Pro 100/3100 · proporciones de ficha técnica; CAD original no cargado':'Máquina personalizada · geometría visual');}
 function drawCurve(){
  let c=$('canvasCurve'),ctx=c.getContext('2d'),w=c.width,h=c.height,cv=state.curve,calc=calculateCurve(),z=sim.zoomCurve||1,rot=sim.rotCurve||0,panX=sim.panCurveX||0,panY=sim.panCurveY||0;
  ctx.clearRect(0,0,w,h);let g=ctx.createLinearGradient(0,0,0,h),light=document.body.classList.contains('light');g.addColorStop(0,light?'#ffffff':'#071822');g.addColorStop(1,light?'#edf3f7':'#02070b');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
