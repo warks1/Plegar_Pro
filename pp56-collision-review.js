@@ -141,9 +141,23 @@ function runSequenceRegressionTests(){
  const originalBends=st.bends,originalOrder=st.bendOrder,previousStep=step,previousTravel=$('pp56Travel')?.value||'0';
  const samples={U:[{leg:50,angle:90,direction:1},{leg:80,angle:90,direction:-1},{leg:80,angle:90,direction:-1},{leg:50,angle:90,direction:1}],Z:[{leg:50,angle:90,direction:1},{leg:80,angle:90,direction:-1},{leg:80,angle:90,direction:1},{leg:50,angle:90,direction:-1}],Caja:[{leg:50,angle:90,direction:1},{leg:80,angle:90,direction:-1},{leg:120,angle:90,direction:-1},{leg:80,angle:90,direction:1},{leg:50,angle:90,direction:1}]};
  const results=[];
- try{for(const [name,bends] of Object.entries(samples)){st.bends=bends;st.bendOrder=bends.slice(0,-1).map((_,i)=>i);refreshSteps();const order=seq();setStep(Math.max(0,order.length-1));$('pp56Travel').value='100';const g=window.PLEGAR_PRO_COLLISIONS.getGeometry(),v=Math.max(6,Number(bends[order[order.length-1]]?.v||16)),model=profileModelPhysical(Infinity,1,selectedToolAudit(bends[order[order.length-1]]||{},v),v);results.push({name,legs:bends.length,expectedFolds:bends.length-1,actualFolds:order.length,lastStepSelected:step===order.length-1,profilePoints:model.length,geometryFinite:model.length>0&&model.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)),priorFoldCheckPresent:typeof g.priorFoldInterference==='boolean'&&g.scope.includes('prior folded flanges only'),priorFoldInterference:g.priorFoldInterference,priorFoldSegments:g.priorFoldSegmentCount,activeBendContactExplicitlyUnchecked:g.activeBendIntersectionChecked===false})}}catch(e){results.push({name:'error',error:String(e?.message||e)})}
- st.bends=originalBends;st.bendOrder=originalOrder;refreshSteps();setStep(previousStep);$('pp56Travel').value=previousTravel;drawCollision();
- const ok=results.length===3&&results.every(r=>r.expectedFolds===r.actualFolds&&r.lastStepSelected&&r.geometryFinite&&r.priorFoldCheckPresent&&r.activeBendContactExplicitlyUnchecked);
+ try{
+  for(const [name,bends] of Object.entries(samples)){
+   st.bends=bends;st.bendOrder=bends.slice(0,-1).map((_,i)=>i);refreshSteps();
+   const order=seq();setStep(Math.max(0,order.length-1));if($('pp56Travel'))$('pp56Travel').value='100';
+   const g=window.PLEGAR_PRO_COLLISIONS?.getGeometry?.();
+   const lastBend=bends[order[order.length-1]]||{},v=Math.max(6,Number(lastBend.v||16));
+   const model=profileModelPhysical(Infinity,1,selectedToolAudit(lastBend,v),v);
+   const scope=typeof g?.scope==='string'?g.scope:'';
+   results.push({name,legs:bends.length,expectedFolds:bends.length-1,actualFolds:order.length,lastStepSelected:step===order.length-1,profilePoints:model.length,geometryFinite:model.length>0&&model.every(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)),geometryAvailable:!!g,priorFoldCheckPresent:typeof g?.priorFoldInterference==='boolean'&&scope.includes('prior folded flanges only'),priorFoldInterference:typeof g?.priorFoldInterference==='boolean'?g.priorFoldInterference:null,priorFoldSegments:Number.isFinite(g?.priorFoldSegmentCount)?g.priorFoldSegmentCount:null,activeBendContactExplicitlyUnchecked:g?.activeBendIntersectionChecked===false});
+  }
+ }catch(e){results.push({name:'error',error:String(e?.message||e)});}
+ finally{
+  st.bends=originalBends;st.bendOrder=originalOrder;
+  try{refreshSteps();setStep(previousStep);if($('pp56Travel'))$('pp56Travel').value=previousTravel;drawCollision();}
+  catch(restoreError){results.push({name:'restore',error:'No se pudo restaurar completamente la vista: '+String(restoreError?.message||restoreError)});}
+ }
+ const ok=results.length===3&&results.every(r=>r.expectedFolds===r.actualFolds&&r.lastStepSelected&&r.geometryFinite&&r.geometryAvailable&&r.priorFoldCheckPresent&&r.activeBendContactExplicitlyUnchecked);
  return {ok,results,disclosure:'Modelo paramétrico orientativo; no certifica contacto del pliegue activo ni seguridad CNC.'};
 }
 function bindSequenceTests(){const btn=$('pp56TestSequences');if(!btn||btn.dataset.bound)return;btn.dataset.bound='1';btn.onclick=()=>{const r=runSequenceRegressionTests();$('pp56ProfileStatus').textContent=(r.ok?'PRUEBAS SUPERADAS':'REVISAR RESULTADOS')+' · '+r.results.map(x=>x.name+': '+(x.actualFolds??'—')+'/'+(x.expectedFolds??'—')+' pliegues, último '+(x.lastStepSelected?'OK':'FALLO')+', alas previas '+(x.priorFoldCheckPresent?'evaluadas':'no verificadas')).join(' · ')+' · '+r.disclosure;};}
