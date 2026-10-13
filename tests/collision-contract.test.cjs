@@ -5,6 +5,7 @@ const vm = require('node:vm');
 const html = fs.readFileSync('index.html', 'utf8');
 const collision = fs.readFileSync('pp56-collision-review.js', 'utf8');
 const twin = fs.readFileSync('pp59-engineering-upgrade.js', 'utf8');
+const runtime = fs.readFileSync('pp61-runtime-integrity.js', 'utf8');
 const sw = fs.readFileSync('sw.js', 'utf8');
 
 // Keep the collision UI honest: estimated parametric checks must never be
@@ -36,6 +37,9 @@ assert.match(collision, /function setStep\(n,forceSync=false\)/);
 assert.match(collision, /previousStep!==step\|\|forceSync/);
 assert.match(collision, /\$\('pp56Step'\)\.onchange=\(\)=>setStep\(Number\(\$\('pp56Step'\)\.value\)\|\|0,true\)/);
 assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=150/);
+assert.match(html, /pp61-runtime-integrity\.js\?v=62/);
+assert.match(sw, /pp61-runtime-integrity\.js\?v=62/);
+assert.match(runtime, /detail\.complete\?\(order\[maxPos\]\?\?maxPos\)/, 'completed collision playback must activate the final fold in the selected order');
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 
