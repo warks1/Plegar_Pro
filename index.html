@@ -3057,7 +3057,7 @@ html body .page [class*="banner"] *,html body .page [class*="Banner"] *,html bod
   watchdog=window.setTimeout(function(){release('Programa abierto con recuperación automática');},5200);
   window.addEventListener('load',function(){scheduleRelease('Programa abierto',5200);},{once:true});
   window.addEventListener('pageshow',function(){if(document.body.classList.contains('boot-complete')){unlockScroll();release('Programa abierto')}});
-  window.addEventListener('error',function(){scheduleRelease('Programa abierto con recuperación automática',900)});
+  window.addEventListener('error',function(e){if(!e.error)return;scheduleRelease('Programa abierto con recuperación automática',900)});
   window.addEventListener('unhandledrejection',function(){scheduleRelease('Programa abierto con recuperación automática',900)});
   if(document.readyState!=='loading'&&document.body.classList.contains('boot-complete')){unlockScroll();release('Programa abierto')}
 })();
