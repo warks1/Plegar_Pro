@@ -60,7 +60,7 @@
  html body #collisions .pp56-readout b {color:#183448!important}
  `;
  const style=document.createElement('style');style.id='pp62-contrast-playback-fix';style.textContent=css;document.head.appendChild(style);
- let syncing=false,lastStep=-1;
+ let syncing=false,lastStep=-1,ignoreCollisionEvent=false;
  const $=id=>document.getElementById(id);
  function getState(){try{return typeof state!=='undefined'?state:window.state||null}catch(e){return window.state||null}}
  function maxStep(source){const api=window.PLEGAR_PRO_COLLISIONS;const order=api?.getOrder?.();const st=getState();if(source==='collisions'&&Array.isArray(order)&&order.length)return order.length-1;return Math.max(0,(st?.bends?.length||0)-1)}
@@ -79,6 +79,7 @@
      }
      const collision=$('pp56Step');
      if(detail.source!=='collisions'&&collision&&Number(collision.value)!==step&&window.PLEGAR_PRO_COLLISIONS?.setStep){
+       ignoreCollisionEvent=true;
        window.PLEGAR_PRO_COLLISIONS.setStep(step);
      }
      const twin=$('pp59step');
@@ -92,7 +93,7 @@
    }catch(e){console.warn('[Plegar Pro PP62] No se pudo sincronizar el paso:',e)}
    finally{syncing=false}
  }
- window.addEventListener('plegarpro:playback-step',e=>{requestAnimationFrame(()=>syncStep(e.detail))});
+ window.addEventListener('plegarpro:playback-step',e=>{if(e.detail?.source==='collisions'&&ignoreCollisionEvent){ignoreCollisionEvent=false;return}requestAnimationFrame(()=>syncStep(e.detail))});
  window.addEventListener('plegarpro:state-changed',()=>{lastStep=-1});
  window.PLEGAR_PRO_PP62={installed:true,version:'62.1',contrastStyle:true,playbackGuard:true,audit:()=>({installed:true,step:lastStep,maxStep:maxStep(),bends:getState()?.bends?.length||0,collisionApi:!!window.PLEGAR_PRO_COLLISIONS?.setStep,sim2d:!!$('s2Play'),sim3d:!!$('s3Play')})};
  console.info('[Plegar Pro PP62] Contraste y sincronización de reproducción instalados.');
