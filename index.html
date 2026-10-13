@@ -1604,6 +1604,7 @@ function drawTechnical2D(canvas,step=state.bends.length,editable=false){
 }
 function draw3D(canvas,step=state.bends.length,simulation=false){
  let ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height,target=canvas.id==='canvasP3'?'P3':'S3',zoom=sim['zoom'+target]||1,panX=sim['pan'+target+'X']||0,panY=sim['pan'+target+'Y']||0,rx=sim['rotX'+target]??-.35,ry=sim['rotY'+target]??.5;
+ const toolProfiles=window.PLEGAR_PRO_V57?.getSelectedToolProfiles?.(Math.max(0,Number(step)||0))||null;
  ctx.clearRect(0,0,w,h);let light=document.body.classList.contains('light'),bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,light?'#ffffff':'#06131a');bg.addColorStop(1,light?'#edf3f7':'#12303c');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
  const ca=Math.cos(ry),sa=Math.sin(ry),cb=Math.cos(rx),sb=Math.sin(rx),sceneScale=Math.min(w/1200,h/760)*zoom;
  function project(p){let x=p.x,y=p.y,z=p.z;let x1=x*ca-z*sa,z1=x*sa+z*ca,y1=y*cb-z1*sb,z2=y*sb+z1*cb;return{x:w/2+x1*sceneScale+panX,y:h*.53-y1*sceneScale+panY,z:z2}}
@@ -1643,19 +1644,31 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    box(-360,145-beamDrop,-104,720,58,208,'#748e98','#d5e0e4');
    box(-330,119-beamDrop,-82,660,28,164,steel,'#f1f7f9');
    box(-315,96-beamDrop,-62,630,18,124,'#647e89','#b9c9cf');
-   // Segmented clamping strip and metallic punch with a tapered working tip.
-   for(let x=-300;x<300;x+=100){box(x,86-beamDrop,-64,94,9,128,'#e4ecef','#8fa5ae');box(x+42,83-beamDrop,-67,8,4,134,'#7b919a')}
-   prism([{x:-300,y:80-beamDrop,z:-48},{x:300,y:80-beamDrop,z:-48},{x:260,y:32-beamDrop,z:-30},{x:-260,y:32-beamDrop,z:-30}],
-         [{x:-300,y:80-beamDrop,z:48},{x:300,y:80-beamDrop,z:48},{x:260,y:32-beamDrop,z:30},{x:-260,y:32-beamDrop,z:30}],'#c5d2d8','#f5fbff');
-   prism([{x:-260,y:32-beamDrop,z:-30},{x:260,y:32-beamDrop,z:-30},{x:235,y:4-beamDrop,z:-22},{x:-235,y:4-beamDrop,z:-22}],
-         [{x:-260,y:32-beamDrop,z:30},{x:260,y:32-beamDrop,z:30},{x:235,y:4-beamDrop,z:22},{x:-235,y:4-beamDrop,z:22}],'#879da6','#e2edf1');
+   // Render the selected punch profile when profile points are available; otherwise retain the clearly schematic default.
+   const punchProfile=toolProfiles?.punch?.profilePointsMm;
+   if(Array.isArray(punchProfile)&&punchProfile.length>=3){
+     const maxPX=Math.max(1,...punchProfile.map(p=>Math.abs(Number(p.x)||0))),profileScale=Math.min(1.25,48/maxPX),front=punchProfile.map(p=>({x:-300,y:4-beamDrop+(Number(p.y)||0)*profileScale,z:(Number(p.x)||0)*profileScale})),back=punchProfile.map(p=>({...p,x:300,y:4-beamDrop+(Number(p.y)||0)*profileScale,z:(Number(p.x)||0)*profileScale}));
+     prism(front,back,'#d8e2e7','#fff5d9');
+   }else{
+     for(let x=-300;x<300;x+=100){box(x,86-beamDrop,-64,94,9,128,'#e4ecef','#8fa5ae');box(x+42,83-beamDrop,-67,8,4,134,'#7b919a')}
+     prism([{x:-300,y:80-beamDrop,z:-48},{x:300,y:80-beamDrop,z:-48},{x:260,y:32-beamDrop,z:-30},{x:-260,y:32-beamDrop,z:-30}],
+           [{x:-300,y:80-beamDrop,z:48},{x:300,y:80-beamDrop,z:48},{x:260,y:32-beamDrop,z:30},{x:-260,y:32-beamDrop,z:30}],'#c5d2d8','#f5fbff');
+     prism([{x:-260,y:32-beamDrop,z:-30},{x:260,y:32-beamDrop,z:-30},{x:235,y:4-beamDrop,z:-22},{x:-235,y:4-beamDrop,z:-22}],
+           [{x:-260,y:32-beamDrop,z:30},{x:260,y:32-beamDrop,z:30},{x:235,y:4-beamDrop,z:22},{x:-235,y:4-beamDrop,z:22}],'#879da6','#e2edf1');
+   }
    // Table, die holder, and V-die with a visible central throat.
    box(-365,-154,-115,730,35,230,bed,'#91aab4');
    box(-335,-128,-88,670,15,176,'#263f4b','#8ca4ae');
-   prism([{x:-300,y:-113,z:-55},{x:300,y:-113,z:-55},{x:270,y:-75,z:-38},{x:-270,y:-75,z:-38}],
-         [{x:-300,y:-113,z:55},{x:300,y:-113,z:55},{x:270,y:-75,z:38},{x:-270,y:-75,z:38}],'#697f88','#d1dfe4');
-   prism([{x:-270,y:-75,z:-38},{x:270,y:-75,z:-38},{x:245,y:-104,z:-25},{x:-245,y:-104,z:-25}],
-         [{x:-270,y:-75,z:38},{x:270,y:-75,z:38},{x:245,y:-104,z:25},{x:-245,y:-104,z:25}],'#d7e1e5','#f7fbfd');
+   const dieProfile=toolProfiles?.die?.profilePointsMm;
+   if(Array.isArray(dieProfile)&&dieProfile.length>=3){
+     const maxDX=Math.max(1,...dieProfile.map(p=>Math.abs(Number(p.x)||0))),dieScale=Math.min(1.25,52/maxDX),front=dieProfile.map(p=>({x:-300,y:-75+(Number(p.y)||0)*dieScale,z:(Number(p.x)||0)*dieScale})),back=dieProfile.map(p=>({...p,x:300,y:-75+(Number(p.y)||0)*dieScale,z:(Number(p.x)||0)*dieScale}));
+     prism(front,back,'#23779a','#bdeeff');
+   }else{
+     prism([{x:-300,y:-113,z:-55},{x:300,y:-113,z:-55},{x:270,y:-75,z:-38},{x:-270,y:-75,z:-38}],
+           [{x:-300,y:-113,z:55},{x:300,y:-113,z:55},{x:270,y:-75,z:38},{x:-270,y:-75,z:38}],'#697f88','#d1dfe4');
+     prism([{x:-270,y:-75,z:-38},{x:270,y:-75,z:-38},{x:245,y:-104,z:-25},{x:-245,y:-104,z:-25}],
+           [{x:-270,y:-75,z:38},{x:270,y:-75,z:38},{x:245,y:-104,z:25},{x:-245,y:-104,z:25}],'#d7e1e5','#f7fbfd');
+   }
    // Rear gauge fingers and guarded side control panel.
    box(-255,-57,126,510,12,22,'#526d78');box(-220,-47,133,18,56,18,'#91a6ae');box(202,-47,133,18,56,18,'#91a6ae');
    box(390,8,145,110,220,65,paint,'#9ac6d2');box(403,73,212,84,112,8,'#0b1d26','#b4d8e4');
