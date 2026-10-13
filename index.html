@@ -3434,6 +3434,40 @@ input,select,textarea{background:#061e35!important;border-color:#17608f!importan
   #mainSidebar .nav button{transition:none!important}
 }
 
+
+/* PP3D icon fix: retain the existing module symbols while adding a larger bevel */
+#mainSidebar .nav button:before{
+  content:inherit;
+  flex-basis:24px!important;width:24px!important;height:24px!important;
+  margin-right:8px!important;border-radius:6px!important;
+  display:inline-grid!important;place-items:center!important;
+  font-size:15px!important;line-height:1!important;
+}
+#mainSidebar .nav button[data-page="dashboard"]:before{content:"⌂"!important}
+#mainSidebar .nav button[data-page="import"]:before{content:"↥"!important}
+#mainSidebar .nav button[data-page="technical"]:before{content:"⚙"!important}
+#mainSidebar .nav button[data-page="program"]:before{content:"▤"!important}
+#mainSidebar .nav button[data-page="program2d"]:before{content:"⌗"!important}
+#mainSidebar .nav button[data-page="program3d"]:before{content:"◇"!important}
+#mainSidebar .nav button[data-page="sim2d"]:before{content:"◫"!important}
+#mainSidebar .nav button[data-page="sim3d"]:before{content:"◈"!important}
+#mainSidebar .nav button[data-page="collisions"]:before{content:"⚠"!important}
+#mainSidebar .nav button[data-page="development"]:before{content:"⌁"!important}
+#mainSidebar .nav button[data-page="devcalculator"]:before{content:"∑"!important}
+#mainSidebar .nav button[data-page="curve"]:before{content:"∿"!important}
+#mainSidebar .nav button[data-page="vcompare"]:before{content:"▽"!important}
+#mainSidebar .nav button[data-page="engineering"]:before{content:"⚒"!important}
+#mainSidebar .nav button[data-page="machineTwin"]:before{content:"▣"!important}
+#mainSidebar .nav button[data-page="tooling"]:before{content:"⚒"!important}
+#mainSidebar .nav button[data-page="ai"]:before{content:"✧"!important}
+#mainSidebar .nav button[data-page="office"]:before{content:"▦"!important}
+#mainSidebar .nav button[data-page="plans"]:before{content:"▧"!important}
+#mainSidebar .nav button[data-page="clients"]:before{content:"♙"!important}
+#mainSidebar .nav button[data-page="quotes"]:before{content:"€"!important}
+#mainSidebar .nav button[data-page="materials"]:before{content:"▤"!important}
+#mainSidebar .nav button[data-page="production"]:before{content:"⚙"!important}
+#mainSidebar .nav button[data-page="workorders"]:before{content:"☷"!important}
+
 </style>
 
 <script src="./pp62-contrast-playback-fix.js?v=62.3"></script>
