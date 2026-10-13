@@ -3285,6 +3285,84 @@ input,select,textarea{background:#061e35!important;border-color:#17608f!importan
 @media(max-width:900px){.app{display:block!important;grid-template-columns:minmax(0,1fr)!important}#mainSidebar.side{position:fixed!important;inset:0 auto 0 0!important;width:min(300px,88vw)!important;min-width:0!important;max-width:300px!important;height:100dvh!important;max-height:100dvh!important;overflow-x:hidden!important;overflow-y:auto!important;align-self:auto!important;transform:translateX(-105%)!important;transition:transform .22s ease!important;z-index:9999!important;padding:18px 11px calc(24px + env(safe-area-inset-bottom))!important}#mainSidebar.side.open,#mainSidebar.side.show,body.menu-open #mainSidebar.side,#menuToggle:checked~#mainSidebar.side{transform:translateX(0)!important}#menuToggle:checked~.menuBackdrop,body.menu-open .menuBackdrop{display:block!important;position:fixed!important;inset:0!important;z-index:9998!important;background:rgba(1,8,14,.62)!important}.mobileMenuBtn{display:inline-flex!important;align-items:center!important;gap:7px!important;position:relative!important;z-index:80!important;min-height:42px!important}}
 @media(prefers-reduced-motion:reduce){#mainSidebar .nav button{transition:none!important}}
 
+
+/* PP3D MENU · relieve metálico realista, conservando navegación y módulos existentes */
+#mainSidebar.side{
+  perspective:1100px!important;
+  transform-style:preserve-3d!important;
+  background:
+    linear-gradient(115deg,rgba(255,255,255,.07),transparent 18%,transparent 78%,rgba(0,0,0,.22)),
+    linear-gradient(180deg,#162d3d 0%,#0b1d2b 45%,#07131e 100%)!important;
+  border-right:1px solid #4a7188!important;
+  box-shadow:9px 0 26px rgba(0,0,0,.32),inset -1px 0 rgba(113,194,228,.18)!important;
+}
+#mainSidebar .brand{
+  position:relative!important;
+  padding:12px 10px!important;
+  margin:0 0 8px!important;
+  border:1px solid #365b70!important;
+  border-radius:10px!important;
+  background:linear-gradient(145deg,#203e51 0%,#102738 48%,#091a27 100%)!important;
+  box-shadow:inset 1px 1px rgba(255,255,255,.17),inset -2px -2px rgba(0,0,0,.45),0 5px 0 #050e16,0 8px 14px rgba(0,0,0,.28)!important;
+  text-shadow:0 1px 1px #000!important;
+}
+#mainSidebar .nav h4{
+  text-shadow:0 1px 0 #000!important;
+}
+#mainSidebar .nav button{
+  position:relative!important;
+  isolation:isolate!important;
+  transform:perspective(650px) rotateY(-3deg) translateZ(0)!important;
+  transform-origin:left center!important;
+  border:1px solid #34566b!important;
+  border-right-color:#172e3d!important;
+  border-bottom:2px solid #07131d!important;
+  border-radius:7px!important;
+  background:linear-gradient(150deg,#28495e 0%,#173347 42%,#0c2030 100%)!important;
+  box-shadow:inset 1px 1px rgba(255,255,255,.13),inset -1px -1px rgba(0,0,0,.42),0 3px 0 #040c13,0 5px 8px rgba(0,0,0,.24)!important;
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease!important;
+}
+#mainSidebar .nav button:after{
+  content:""!important;
+  position:absolute!important;
+  inset:1px!important;
+  z-index:-1!important;
+  border-radius:5px!important;
+  pointer-events:none!important;
+  background:linear-gradient(115deg,rgba(255,255,255,.055),transparent 42%,rgba(0,0,0,.08))!important;
+}
+#mainSidebar .nav button:hover{
+  transform:perspective(650px) rotateY(-1deg) translate3d(4px,-1px,5px)!important;
+  border-color:#38bce9!important;
+  background:linear-gradient(145deg,#315c75 0%,#164564 55%,#0a2a40 100%)!important;
+  box-shadow:inset 1px 1px rgba(255,255,255,.2),0 3px 0 #04111a,0 7px 14px rgba(0,0,0,.34),0 0 12px rgba(40,188,245,.12)!important;
+}
+#mainSidebar .nav button:active{
+  transform:perspective(650px) translate3d(2px,2px,0)!important;
+  box-shadow:inset 2px 2px 5px rgba(0,0,0,.38),0 1px 0 #040c13!important;
+}
+#mainSidebar .nav button.active{
+  transform:perspective(650px) rotateY(-1deg) translate3d(2px,0,3px)!important;
+  border-color:#35c5f6!important;
+  border-left:3px solid #45d2ff!important;
+  background:linear-gradient(135deg,#17648b 0%,#104b6c 48%,#092d45 100%)!important;
+  box-shadow:inset 1px 1px rgba(255,255,255,.2),inset 0 -2px rgba(0,0,0,.18),0 3px 0 #04111a,0 0 15px rgba(28,174,234,.18)!important;
+}
+#mainSidebar .nav button:before{
+  flex:0 0 9px!important;width:9px!important;height:9px!important;
+  border:1px solid #7ce3ff!important;
+  background:linear-gradient(145deg,#66e0ff,#087ca9)!important;
+  box-shadow:inset 1px 1px rgba(255,255,255,.65),0 1px 3px #0008,0 0 7px #20baff35!important;
+}
+@media(max-width:900px){
+  #mainSidebar.side{box-shadow:12px 0 35px rgba(0,0,0,.48),inset -1px 0 rgba(113,194,228,.18)!important}
+  #mainSidebar .nav button{transform:none!important}
+  #mainSidebar .nav button:hover{transform:translateX(3px)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #mainSidebar .nav button{transition:none!important;transform:none!important}
+}
+
 </style>
 
 <script src="./pp62-contrast-playback-fix.js?v=62.3"></script>
