@@ -59,6 +59,9 @@ assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=150/);
 assert.match(html, /pp61-runtime-integrity\.js\?v=62/);
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62/);
 assert.match(runtime, /detail\.complete\?\(order\[maxPos\]\?\?maxPos\)/, 'completed collision playback must activate the final fold in the selected order');
+assert.match(runtime, /const requestedFold=detail\.complete\?\(order\[maxPos\]\?\?maxPos\):\(Number\.isInteger\(detail\.foldIndex\)\?detail\.foldIndex:\(order\[maxPos\]\?\?maxPos\)\)/, '2D/3D playback positions without an explicit fold index must resolve through the shared execution order');
+assert.match(runtime, /sim\.s2Step=coreStep;sim\.s3Step=coreStep;sim\.p3Active=foldIndex/, 'both programming views and the active 3D fold must receive the same synchronized playback tick');
+assert.match(runtime, /window\.addEventListener\('plegarpro:playback-step',e=>syncPlaybackStep\(e\.detail\)\)/, 'the runtime must be the single playback-step synchronization authority');
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 
