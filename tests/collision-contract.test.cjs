@@ -154,3 +154,20 @@ assert.equal(prismEngine.intersectPrisms(concave, reversedConcave).intersects, t
 console.log('Prism geometry tests passed: XY overlap/separation/touching, Z separation/touching, concave sections, and identical/reversed-winding solids.');
 
 assert.doesNotMatch(html, /TrumaBend|TRUMABEND/, 'the machine selector and digital twin must consistently use the correct TruBend model spelling');
+
+
+// Playback synchronization must use one event contract across 2D, 3D, collision
+// review and both digital-twin controllers. Guard this wiring against regressions.
+assert.match(html, /function simButtons\(prefix,key\)/);
+assert.match(html, /source:key,step:Number\(sim\[key\+'Step'\]\)\|\|0/);
+assert.match(html, /plegarpro:playback-start/);
+assert.match(html, /plegarpro:playback-stop/);
+assert.match(runtime, /function installPlaybackSync\(\)/);
+assert.match(runtime, /addEventListener\('plegarpro:playback-start'/);
+assert.match(runtime, /addEventListener\('plegarpro:playback-step'/);
+assert.match(runtime, /function stopCompetingPlayback\(source\)/);
+assert.match(runtime, /sim\.s2Step=coreStep;sim\.s3Step=coreStep;sim\.p3Active=foldIndex/);
+assert.match(runtime, /window\.PLEGAR_PRO_V61=\{/);
+assert.match(runtime, /playback:auditPlayback/);
+assert.match(collision, /plegarpro:playback-step/);
+assert.match(twin, /plegarpro:playback-step/);
