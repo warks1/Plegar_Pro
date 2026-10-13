@@ -127,13 +127,28 @@ function init(){if(!$('settings')||!$('tooling'))return;style();addMachine();win
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,650),{once:true});else setTimeout(init,650);
 window.addEventListener('pageshow',()=>setTimeout(()=>{if(!$('pp58Twin')){addMachine();window.setTimeout(addMachine,500);window.setTimeout(addMachine,1400)}else{const card=$('pp58TwinCard');if(card){card.style.display='';card.hidden=false;card.removeAttribute('aria-hidden')}const stage=$('pp55MachineCanvas')?.closest('.pp55-stage');if(stage)stage.style.display='none';hookSync();syncLinked();drawTool();drawTwin(performance.now())}},450));
 // Recuperación de arranque: PP55 puede montar la tarjeta base después del primer init.
-let machineBootAttempts=0;
+let machineBootAttempts=0,machineObserver=null,machineRetryTimer=0;
 function ensureMachine(){
   addMachine();
   const card=$('pp58TwinCard'),canvas=$('pp58Twin');
-  if(card&&canvas){card.style.display='';card.hidden=false;card.removeAttribute('aria-hidden');if(!paused&&!raf)runTwin();return;}
-  if(machineBootAttempts++<24)window.setTimeout(ensureMachine,400);
+  if(card&&canvas){
+    card.style.display='';card.hidden=false;card.removeAttribute('aria-hidden');
+    if(!paused&&!raf)runTwin();
+    if(machineObserver){machineObserver.disconnect();machineObserver=null;}
+    if(machineRetryTimer){clearTimeout(machineRetryTimer);machineRetryTimer=0;}
+    return;
+  }
+  if(machineBootAttempts++<24)machineRetryTimer=window.setTimeout(ensureMachine,400);
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>window.setTimeout(ensureMachine,900),{once:true});else window.setTimeout(ensureMachine,900);
-window.addEventListener('pp:boot-complete',()=>window.setTimeout(ensureMachine,250));
+function watchMachineMount(){
+  ensureMachine();
+  if(!$('pp58TwinCard')&&'MutationObserver'in window&&!machineObserver){
+    machineObserver=new MutationObserver(()=>{
+      if($('pp55MachineCanvas'))ensureMachine();
+    });
+    machineObserver.observe(document.body,{childList:true,subtree:true});
+  }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>window.setTimeout(watchMachineMount,900),{once:true});else window.setTimeout(watchMachineMount,900);
+window.addEventListener('pp:boot-complete',()=>window.setTimeout(watchMachineMount,250));
 })();
