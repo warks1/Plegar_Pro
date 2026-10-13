@@ -802,7 +802,7 @@ body:not(.boot-complete) > .app{visibility:hidden}
 <div><label>Material</label><select id="material"><option>S235</option><option>S275</option><option>S355</option><option>Inoxidable 304</option><option>Aluminio</option><option>Zincor</option><option>Galvanizado</option></select></div>
 <div><label>Espesor (mm)</label><input id="thickness" type="text" inputmode="decimal" min=".1" step=".1"></div>
 <div><label>Factor K</label><input id="kfactor" type="text" inputmode="decimal" min=".1" max=".6" step=".01"></div>
-<div><label>Máquina</label><select id="machine"><option value="Bystronic Xpert Pro 3100 × 100 T">Bystronic Xpert Pro 100/3100 · 100 t nominal (1000 kN)</option><option value="TRUMPF TrumaBend V85">TRUMPF TrumaBend V85 · 85 t (referencia 2006; modelo paramétrico)</option></select></div>
+<div><label>Máquina</label><select id="machine"><option value="Bystronic Xpert Pro 3100 × 100 T">Bystronic Xpert Pro 100/3100 · 100 t nominal (1000 kN)</option><option value="TRUMPF TruBend V85">TRUMPF TruBend V85 · 85 t (referencia 2006; modelo paramétrico)</option></select></div>
 </div></div>
 </div></section>
 
@@ -1650,10 +1650,10 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    const selectedMachine=String($('machine')?.value||'Bystronic Xpert Pro 3100 × 100 T');
    const isTrumpf=/trumpf|trubend/i.test(selectedMachine),isBystronic=/bystronic|xpert/i.test(selectedMachine);
    // Scale the bending axis by the reference distance between side frames: 1750 mm vs 2750 mm.
-   // TRUMABEND V85 / Xpert Pro 100/3100 ratio = 0.636; the Xpert is the 1.0 reference.
+   // TRUBEND V85 / Xpert Pro 100/3100 ratio = 0.636; the Xpert is the 1.0 reference.
    machineScaleX=isTrumpf ? (1750/2750) : (isBystronic ? 1 : 1);
    const paint=isTrumpf?'#398a49':(isBystronic?'#075b91':frame),paintLight=isTrumpf?'#67b875':(isBystronic?'#168ac0':frameLight);
-   const machineDisplayName=isTrumpf?'TRUMPF · TrumaBend V85 (ref. 2006)':(isBystronic?'BYSTRONIC · Xpert Pro 100/3100':'PLEGAR PRO · Máquina personalizada');
+   const machineDisplayName=isTrumpf?'TRUMPF · TruBend V85 (ref. 2006)':(isBystronic?'BYSTRONIC · Xpert Pro 100/3100':'PLEGAR PRO · Máquina personalizada');
    // Base plinth and separate machine feet.
    box(-520,-315,-165,1040,48,330,'#142d38','#45616d');
    box(-445,-270,-135,130,28,270,'#263f4b');box(315,-270,-135,130,28,270,'#263f4b');
@@ -1714,7 +1714,7 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    box(-250,248,134,500,18,5,'#0a2530','#5b8999');
    ctx.restore();machineScaleX=1;
    // Machine identity/specification panel: distinguish verified configuration data from missing OEM CAD.
-   ctx.save();const isBystronicInfo=/bystronic|xpert/i.test(selectedMachine),panelX=Math.max(18,w-330),panelY=18,panelW=Math.min(312,w-36),panelH=isBystronicInfo?108:108;ctx.fillStyle='rgba(5,20,30,.91)';ctx.strokeStyle=isBystronicInfo?'#35b9ef':'#77cf8a';ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(panelX,panelY,panelW,panelH,10);ctx.fill();ctx.stroke();ctx.textAlign='left';ctx.fillStyle='#f5fbff';ctx.font='900 13px system-ui';ctx.fillText(isBystronicInfo?'BYSTRONIC XPERT PRO 100/3100':'TRUMPF TrumaBend V85 · referencia 2006',panelX+12,panelY+22);ctx.font='700 11px system-ui';ctx.fillStyle='#cde5f0';if(isBystronicInfo){ctx.fillText('100 t · longitud de plegado 3100 mm',panelX+12,panelY+43);ctx.fillText('Carrera estándar 250 mm · apertura 640 mm',panelX+12,panelY+61);ctx.fillText('Entre montantes 2750 mm · garganta 400 mm',panelX+12,panelY+79);}else{ctx.fillText('85 t · longitud de plegado de referencia 2050 mm',panelX+12,panelY+43);ctx.fillText('Carrera máx. publicada 215 mm · garganta 410 mm',panelX+12,panelY+61);ctx.fillStyle='#ffcf79';ctx.fillText('Apertura no confirmada · CAD OEM no cargado',panelX+12,panelY+79);}ctx.fillStyle='#ffcf79';ctx.font='800 10px system-ui';ctx.fillText('GEOMETRÍA EXTERIOR: RECONSTRUCCIÓN VISUAL, NO CAD OEM',panelX+12,panelY+panelH-10);ctx.restore();
+   ctx.save();const isBystronicInfo=/bystronic|xpert/i.test(selectedMachine),panelX=Math.max(18,w-330),panelY=18,panelW=Math.min(312,w-36),panelH=isBystronicInfo?108:108;ctx.fillStyle='rgba(5,20,30,.91)';ctx.strokeStyle=isBystronicInfo?'#35b9ef':'#77cf8a';ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(panelX,panelY,panelW,panelH,10);ctx.fill();ctx.stroke();ctx.textAlign='left';ctx.fillStyle='#f5fbff';ctx.font='900 13px system-ui';ctx.fillText(isBystronicInfo?'BYSTRONIC XPERT PRO 100/3100':'TRUMPF TruBend V85 · referencia 2006',panelX+12,panelY+22);ctx.font='700 11px system-ui';ctx.fillStyle='#cde5f0';if(isBystronicInfo){ctx.fillText('100 t · longitud de plegado 3100 mm',panelX+12,panelY+43);ctx.fillText('Carrera estándar 250 mm · apertura 640 mm',panelX+12,panelY+61);ctx.fillText('Entre montantes 2750 mm · garganta 400 mm',panelX+12,panelY+79);}else{ctx.fillText('85 t · longitud de plegado de referencia 2050 mm',panelX+12,panelY+43);ctx.fillText('Carrera máx. publicada 215 mm · garganta 410 mm',panelX+12,panelY+61);ctx.fillStyle='#ffcf79';ctx.fillText('Apertura no confirmada · CAD OEM no cargado',panelX+12,panelY+79);}ctx.fillStyle='#ffcf79';ctx.font='800 10px system-ui';ctx.fillText('GEOMETRÍA EXTERIOR: RECONSTRUCCIÓN VISUAL, NO CAD OEM',panelX+12,panelY+panelH-10);ctx.restore();
  }
  if(state.settings.showAxes!=='no'){let o=project({x:-430,y:-230,z:-130}),ax=[['X',{x:-340,y:-230,z:-130},'#ffb55c'],['Y',{x:-430,y:-140,z:-130},'#7ee4b1'],['Z',{x:-430,y:-230,z:-40},'#72c7ff']];ctx.font='12px system-ui';ax.forEach(([t,p,c])=>{let q=project(p);ctx.strokeStyle=c;ctx.beginPath();ctx.moveTo(o.x,o.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.fillStyle=c;ctx.fillText(t,q.x+4,q.y)})}
  let raw=[{x:0,y:0,z:0}],heading=0;state.bends.forEach((b,i)=>{let p=raw.at(-1),len=Math.max(1,+b.leg||0);raw.push({x:p.x+len*Math.cos(heading),y:p.y+len*Math.sin(heading),z:0});if(i<state.bends.length-1&&(!simulation||(ppExecutionRank(i)<step)))heading+=(b.direction||1)*(180-(+b.angle||90))*Math.PI/180});
@@ -2756,8 +2756,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 <script src="./pp54-engineering.js?v=55"></script>
 <script src="./pp55-cad-precision.js"></script>
-<script src="./pp63-v85-parametric-model.js?v=63.2"></script>
-<script src="./pp56-collision-review.js?v=160"></script>
+<script src="./pp63-v85-parametric-model.js?v=63.3"></script>
+<script src="./pp56-collision-review.js?v=161"></script>
 
 <style id="pp57-visual-polish">
 /* Plegar Pro v57.3 · carga de alto contraste y edición 2D despejada */
@@ -2875,7 +2875,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </script>
 
 <script src="./pp57-system-integration.js?v=143"></script>
-<script src="./pp59-engineering-upgrade.js?v=152"></script>
+<script src="./pp59-engineering-upgrade.js?v=153"></script>
 <script src="./pp60-graphics-runtime.js"></script>
 <script src="./pp61-runtime-integrity.js?v=62.2"></script>
 
