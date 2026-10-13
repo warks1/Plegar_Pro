@@ -31,14 +31,16 @@ assert.match(html, /Build a thin sheet-metal wall/);
 assert.match(html, /getSelectedToolProfiles/);
 
 // Keep the deployed offline shell wired to the same collision/twin modules.
-assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=157"><\/script>/, 'page and service worker must load the same collision module version');
-assert.match(sw, /\.\/pp56-collision-review\.js\?v=157/);
+assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=158"><\/script>/, 'page and service worker must load the same collision module version');
+assert.match(sw, /\.\/pp56-collision-review\.js\?v=158/);
 assert.match(collision, /function setStep\(n,forceSync=false\)/);
 assert.match(collision, /previousStep!==step\|\|forceSync/);
 // A straight tangent adjacent to a bend must not be misclassified as the active arc;
 // otherwise the collision scan skips a real sheet segment and can miss flange hits.
 assert.match(collision, /activeArc=a\.bendIndex===foldIndex&&z\.bendIndex===foldIndex/);
 assert.match(collision, /pts\[pts\.length-1\]\.bendIndex=i;const sign=Math\.sign\(theta\)/);
+assert.match(collision, /activeBendArcSegments>0/, 'U/Z/box sequence regression must contain actual sampled segments for the active bend arc');
+assert.match(collision, /activeBendArcSegments:Number\.isFinite\(g\?\.activeBendContact\?\.arcSegments\)/);
 assert.match(collision, /code===42&&vertices\.length/ , 'DXF LWPOLYLINE bulge arcs must be preserved');
 assert.match(collision, /parseDxfProfileForTest\(text,unitFactor=1,type='Matriz'\)/, 'DXF parser must expose a testable profile audit');
 assert.match(collision, /\$\('pp56Step'\)\.onchange=\(\)=>setStep\(Number\(\$\('pp56Step'\)\.value\)\|\|0,true\)/);
