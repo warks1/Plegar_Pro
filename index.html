@@ -3268,6 +3268,112 @@ input,select,textarea{background:#061e35!important;border-color:#17608f!importan
  .topbar{gap:8px!important}
 }
 
+
+/* PLEGAR PRO PREMIUM UI — acabamento industrial, hierarquia e legibilidade */
+:root{
+ --pp-premium-ink:#061322;--pp-premium-navy:#071d31;--pp-premium-panel:#0a2943;
+ --pp-premium-panel-hi:#103b5c;--pp-premium-edge:#1c5e85;--pp-premium-cyan:#27c5ff;
+ --pp-premium-blue:#087fda;--pp-premium-white:#f3faff;--pp-premium-muted:#a6c7dc;
+ --pp-premium-glow:0 0 0 1px #25baff20,0 12px 30px #000b17a6;
+}
+html{color-scheme:dark;scroll-behavior:smooth}
+body{
+ color:var(--pp-premium-white)!important;
+ background:
+ radial-gradient(ellipse at 75% -10%,#0c5680 0,transparent 42%),
+ radial-gradient(ellipse at 5% 55%,#073052 0,transparent 44%),
+ linear-gradient(135deg,#030b14 0%,#071c30 48%,#04111e 100%)!important;
+}
+.app{isolation:isolate}
+.side{
+ position:relative;
+ background:linear-gradient(180deg,#061625 0%,#08253d 48%,#041321 100%)!important;
+ border-right:1px solid #1673a2!important;
+ box-shadow:10px 0 35px #0004,inset -1px 0 #42caff12!important;
+}
+.side:after{
+ content:"";position:absolute;inset:0;pointer-events:none;opacity:.2;
+ background:repeating-linear-gradient(135deg,transparent 0 20px,#55cfff0a 21px 22px);
+}
+.brand{font-weight:850!important;letter-spacing:.07em!important;text-shadow:0 0 20px #1ebaff24}
+.brand span{color:#2cc8ff!important;text-shadow:0 0 16px #00aaff55}
+.nav h4{font-size:10px!important;font-weight:800!important;text-transform:uppercase}
+.nav button{
+ position:relative;overflow:hidden;min-height:38px;
+ transition:background .2s ease,border-color .2s ease,transform .2s ease,box-shadow .2s ease!important;
+}
+.nav button:before{
+ content:"";position:absolute;left:0;top:18%;bottom:18%;width:2px;
+ background:var(--pp-premium-cyan);opacity:0;transform:scaleY(.5);
+ transition:opacity .2s,transform .2s;
+}
+.nav button:hover{transform:translateX(2px)!important}
+.nav button.active:before{opacity:1;transform:scaleY(1)}
+.main{min-width:0}
+.topbar{
+ backdrop-filter:blur(14px);
+ box-shadow:0 6px 22px #0003,inset 0 1px #ffffff0b!important;
+}
+.heading h1{font-weight:800!important;text-shadow:0 2px 18px #20aaff12}
+.card{
+ position:relative;min-width:0;overflow:hidden;
+ box-shadow:var(--pp-premium-glow)!important;
+ transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+.card:before{
+ content:"";position:absolute;inset:0 0 auto;height:1px;pointer-events:none;
+ background:linear-gradient(90deg,transparent,#55d5ff70,#1684d533,transparent);
+}
+.card h2{font-weight:800!important}
+.btn{
+ min-height:36px;font-weight:750!important;letter-spacing:.012em;
+ transition:filter .16s ease,transform .16s ease,box-shadow .16s ease!important;
+}
+.btn:hover{filter:brightness(1.12)!important;transform:translateY(-1px)!important;box-shadow:0 6px 18px #008be044!important}
+.btn:active{transform:translateY(0)!important}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+ outline:2px solid #55d8ff!important;outline-offset:2px!important;
+}
+input,select,textarea{border-radius:7px!important;min-height:35px}
+.stage{
+ position:relative;overflow:hidden;
+ box-shadow:inset 0 0 65px #0009,0 10px 28px #0005!important;
+}
+.stage:after{
+ content:"";position:absolute;inset:0;pointer-events:none;opacity:.18;
+ background:linear-gradient(115deg,transparent 0%,#8de5ff0a 42%,transparent 70%);
+}
+.stage canvas{display:block;max-width:100%}
+.quick button,.kpi,.listItem{
+ transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease!important;
+}
+.quick button:hover,.listItem:hover{border-color:#2bbcff!important;box-shadow:0 7px 18px #0003!important}
+.kpi{border-radius:10px!important}
+.overlay{backdrop-filter:blur(12px)}
+.legalFooter{font-size:11px!important;line-height:1.55}
+#sim3d .stage,#sim2d .stage{isolation:isolate}
+#sim3d .toolbar .btn,#sim2d .toolbar .btn{white-space:normal}
+@media(min-width:1200px){
+ .main{padding:16px!important}
+ .card{border-radius:13px!important}
+}
+@media(max-width:900px){
+ .side{box-shadow:0 12px 30px #0006!important}
+ .main{width:100%;overflow-x:clip}
+ .card{max-width:100%}
+}
+@media(max-width:560px){
+ .heading h1{font-size:clamp(18px,5vw,25px)!important}
+ .card{border-radius:10px!important}
+ .btn{min-height:40px}
+ input,select,textarea{font-size:16px!important}
+ .legalFooter{padding-inline:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
 </style>
 
 <script src="./pp62-contrast-playback-fix.js?v=62.3"></script>
