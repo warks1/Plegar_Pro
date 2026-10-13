@@ -13,10 +13,14 @@ assert.match(collision, /activeBendContact/);
 assert.match(collision, /INTERFERENCIA ESTIMADA CON ALAS PREVIAMENTE PLEGADAS/);
 assert.match(collision, /no es un CAD 3D de sólidos completo ni una certificación de seguridad/i);
 assert.match(collision, /getSelectedToolProfiles\s*\(/);
+assert.match(collision, /toolProfileSource:\{punch:measuredPunch\?/);
+assert.match(collision, /die:measuredDie\?/);
+assert.match(collision, /parametric prism intersection: 2D cross-section polygons plus Z-span overlap/i);
+assert.match(collision, /modelo prismático\/2D/i);
 
 // The 3D canvas must visually separate prior-flange interference from active
 // punch/die contact and identify the machine body as a visual reconstruction.
-assert.match(html, /INTERFERENCIA ESTIMADA · MODELO 2D/);
+assert.match(html, /INTERFERENCIA ESTIMADA · PRISMA/2D/);
 assert.match(html, /CONTACTO ACTIVO · REVISAR PENETRACIÓN/);
 assert.match(html, /GEOMETRÍA EXTERIOR: RECONSTRUCCIÓN VISUAL, NO CAD OEM/);
 assert.match(html, /Build a thin sheet-metal wall/);
