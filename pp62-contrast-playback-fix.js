@@ -63,13 +63,13 @@
  let syncing=false,lastStep=-1;
  const $=id=>document.getElementById(id);
  function getState(){try{return typeof state!=='undefined'?state:window.state||null}catch(e){return window.state||null}}
- function maxStep(){const api=window.PLEGAR_PRO_COLLISIONS;const order=api?.getOrder?.();if(Array.isArray(order)&&order.length)return order.length-1;const s=getState();return Math.max(0,(s?.bends?.length||0)-2)}
+ function maxStep(source){const api=window.PLEGAR_PRO_COLLISIONS;const order=api?.getOrder?.();const st=getState();if(source==='collisions'&&Array.isArray(order)&&order.length)return order.length-1;return Math.max(0,(st?.bends?.length||0)-1)}
  function syncStep(detail){
    if(syncing||!detail)return;
    const s=getState();if(!s||!Array.isArray(s.bends)||!s.bends.length)return;
    syncing=true;
    try{
-     const max=maxStep(),step=Math.max(0,Math.min(max,Number(detail.step)||0));
+     const max=maxStep(detail.source),step=Math.max(0,Math.min(max,Number(detail.step)||0));
      const order=window.PLEGAR_PRO_COLLISIONS?.getOrder?.()||s.bendOrder||[];
      const fold=Number.isInteger(detail.foldIndex)?detail.foldIndex:(order[step]??step);
      if(typeof sim!=='undefined'&&sim){
