@@ -38,13 +38,17 @@ function collisionGeometry(stepIndex,foldIndex,travel,b,toolAudit,v){
   // Solo evaluar alas que ya se han plegado antes del paso activo. No excluir toda el ala adyacente al pliegue activo: eso ocultaba interferencias de alas anteriores.
   const priorFoldedLeg=legTags.some(k=>k!==foldIndex&&order.indexOf(k)>=0&&order.indexOf(k)<stepIndex);
   if(!priorFoldedLeg)continue;
-  if(segmentHitsPoly(a,z,punch,t))sheetHitPunch.push(Number.isInteger(a.legIndex)?a.legIndex:i);
-  if(segmentHitsPoly(a,z,die,t))sheetHitDie.push(Number.isInteger(a.legIndex)?a.legIndex:i)
+  const segment3D=solid3D?.segmentPrism?solid3D.segmentPrism(a,z,t,-toolHalfWidth,toolHalfWidth,'prior-fold-sheet'):null;
+  const punch3D=!!(segment3D&&punchSolid&&solid3D.intersectPrisms(segment3D,punchSolid).intersects);
+  const die3D=!!(segment3D&&dieSolid&&solid3D.intersectPrisms(segment3D,dieSolid).intersects);
+  if(punch3D||(!solid3D&&segmentHitsPoly(a,z,punch,t)))sheetHitPunch.push(Number.isInteger(a.legIndex)?a.legIndex:i);
+  if(die3D||(!solid3D&&segmentHitsPoly(a,z,die,t)))sheetHitDie.push(Number.isInteger(a.legIndex)?a.legIndex:i);
+  if(punch3D||die3D)solid3DHits.push({segment:Number.isInteger(a.legIndex)?a.legIndex:i,punch:punch3D,die:die3D,method:'extruded-prism intersection'});
  }
  // Evaluate the active bend arc against the selected punch/die contours separately:
  // expected forming contact is reported as contact, not automatically as an interference.
- const activePunchContact=activeBendSegments.some(q=>segmentHitsPoly(q.a,q.z,punch,t));
- const activeDieContact=activeBendSegments.some(q=>segmentHitsPoly(q.a,q.z,die,t));
+ const activePunchContact=activeBendSegments.some(q=>{const seg=solid3D?.segmentPrism?solid3D.segmentPrism(q.a,q.z,t,-toolHalfWidth,toolHalfWidth,'active-bend'):null;return seg&&punchSolid?solid3D.intersectPrisms(seg,punchSolid).intersects:segmentHitsPoly(q.a,q.z,punch,t)});
+ const activeDieContact=activeBendSegments.some(q=>{const seg=solid3D?.segmentPrism?solid3D.segmentPrism(q.a,q.z,t,-toolHalfWidth,toolHalfWidth,'active-bend'):null;return seg&&dieSolid?solid3D.intersectPrisms(seg,dieSolid).intersects:segmentHitsPoly(q.a,q.z,die,t)});
  const flangeClearances=model.slice(0,-1).map((a,i)=>({i,d:Math.min(...punch.map(p=>distPointSegment(p,a,model[i+1])),...die.map(p=>distPointSegment(p,a,model[i+1])))})).filter(q=>q.i!==stepIndex);
  return {unit:'mm',solid3DCheck:{available:!!(solid3D?.prismMesh&&solid3D?.intersectPrisms),method:'3D prism mesh: sheet thickness extrusion + tool cross-section extrusion + Z overlap',machineReference:machineSpec?.id||'generic',machineBendingLengthMm:machineSpec?.bendingLengthMm||null,hitCount:solid3DHits.length,hits:solid3DHits,geometryStatus:solid3D?.SPEC?.geometryStatus||'PARAMETRIC_ESTIMATE'},profilePointCount:modelSource.length,priorFoldSegmentCount:new Set([...sheetHitPunch,...sheetHitDie]).size,punchInterferenceSegments:[...new Set(sheetHitPunch)],dieInterferenceSegments:[...new Set(sheetHitDie)],priorFoldInterference:sheetHitPunch.length>0||sheetHitDie.length>0,activeBendContact:{checked:true,punchContourContact:activePunchContact,dieContourContact:activeDieContact,arcSegments:activeBendSegments.length,interpretation:'contacto geométrico 2D orientativo; no distingue por sí solo contacto correcto de penetración indebida'},toolProfileSource:measuredPunch||measuredDie?'imported DXF profile points in physical mm':'parametric estimate from catalog angle/radius/height/V',officialGeometry:!!(toolAudit.punch?.officialVerified&&toolAudit.die?.officialVerified),travel:travel,tipClearanceMm:gap,dieOpeningMm:v,thicknessMm:t,method:'2D polygon/segment intersection in model millimetres; thickness-aware sheet and radius-parametric bends; simplified tool contours; not a verified 3D solid CAD or safety-certified',scope:'chronologically prior folded flanges only; active bend contour contact checked separately in 2D',activeBendIntersectionChecked:true};
 }
