@@ -1,4 +1,4 @@
-/* Plegar Pro v61 — integridad de módulos, sincronización compartida y diagnóstico de reproducción. */
+/* Plegar Pro v61.1 — integridad de módulos, sincronización compartida y corrección de índice final. */
 (function(){
   'use strict';
   if(window.PLEGAR_PRO_V61?.installed)return;
@@ -108,7 +108,7 @@
     const maxPos=Math.max(0,Math.min(Math.max(0,order.length-1),pos));
     const requestedFold=Number.isInteger(detail.foldIndex)?detail.foldIndex:(order[maxPos]??maxPos);
     const foldIndex=Math.max(0,Math.min(Math.max(0,foldCount-1),requestedFold));
-    const coreStep=detail.complete?Math.max(0,Math.min(Math.max(0,bends.length-1),maxPos+1)):((source==='s2'||source==='s3')?Math.max(0,Math.min(bends.length-1,requestedStep)):maxPos);
+    const coreStep=(source==='s2'||source==='s3')?Math.max(0,Math.min(bends.length-1,requestedStep)):Math.max(0,Math.min(bends.length-1,maxPos));
     syncingPlayback=true;
     try{
       if(typeof sim!=='undefined'&&sim){
