@@ -36,7 +36,8 @@ function collisionGeometry(stepIndex,foldIndex,travel,b,toolAudit,v){
   const a=model[i],z=model[i+1],legTags=[a.legIndex,z.legIndex].filter(Number.isInteger),activeArc=a.bendIndex===foldIndex||z.bendIndex===foldIndex;
   if(activeArc){activeBendSegments.push({a,z});continue}
   // Solo evaluar alas que ya se han plegado antes del paso activo. No excluir toda el ala adyacente al pliegue activo: eso ocultaba interferencias de alas anteriores.
-  const priorFoldedLeg=legTags.some(k=>k!==foldIndex&&order.indexOf(k)>=0&&order.indexOf(k)<stepIndex);
+  const bendTags=[a.bendIndex,z.bendIndex].filter(Number.isInteger);
+  const priorFoldedLeg=legTags.some(k=>k!==foldIndex&&order.indexOf(k)>=0&&order.indexOf(k)<stepIndex)||bendTags.some(k=>k!==foldIndex&&order.indexOf(k)>=0&&order.indexOf(k)<stepIndex);
   if(!priorFoldedLeg)continue;
   const segment3D=solid3D?.segmentPrism?solid3D.segmentPrism(a,z,t,-toolHalfWidth,toolHalfWidth,'prior-fold-sheet'):null;
   const punch3D=!!(segment3D&&punchSolid&&solid3D.intersectPrisms(segment3D,punchSolid).intersects);
