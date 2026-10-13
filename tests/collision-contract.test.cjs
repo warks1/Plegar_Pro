@@ -29,7 +29,7 @@ assert.match(html, /Build a thin sheet-metal wall/);
 assert.match(html, /getSelectedToolProfiles/);
 
 // Keep the deployed offline shell wired to the same collision/twin modules.
-assert.match(sw, /\.\/pp56-collision-review\.js\?v=153/);
+assert.match(sw, /\.\/pp56-collision-review\.js\?v=154/);
 assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=149/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
