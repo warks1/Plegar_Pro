@@ -2119,7 +2119,7 @@ function startApplication(){
  // Salida de emergencia: aunque falle una función o Safari pause un temporizador, abre la aplicación.
  setTimeout(()=>forceFinishBoot('Programa listo'),4000);
 }
-window.addEventListener('error',e=>{console.error('Error controlado de ejecución',e.error||e.message);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
+window.addEventListener('error',e=>{console.error('Error controlado de ejecución',e.error||e.message);if(!e.error)return;setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
 window.addEventListener('unhandledrejection',e=>{console.error('Promesa rechazada',e.reason);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startApplication,{once:true});else startApplication();
 </script>
