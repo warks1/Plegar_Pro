@@ -128,6 +128,10 @@
         const travel=$('pp56Travel');
         if(travel)travel.value=(Number(detail.step)||0)>=order.length?'100':'0';
         try{window.PLEGAR_PRO_COLLISIONS?.refresh?.()}catch(e){}
+      }else if(source==='pp59'&&Number.isFinite(Number(detail.travel))){
+        const travel=$('pp56Travel');
+        if(travel){const next=String(Math.max(0,Math.min(100,Number(detail.travel))));if(travel.value!==next){travel.value=next;travel.dispatchEvent(new Event('input',{bubbles:true}))}}
+        try{window.PLEGAR_PRO_COLLISIONS?.refresh?.()}catch(e){}
       }
       const twinStep=$('pp59step');
       if(twinStep&&source!=='pp59'&&Number(twinStep.value)!==maxPos){
