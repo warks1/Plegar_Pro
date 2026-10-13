@@ -71,6 +71,8 @@ assert.match(html, /pp59-engineering-upgrade\.js\?v=151/);
 assert.match(html, /pp61-runtime-integrity\.js\?v=62\.2/);
 assert.match(html, /const meta=titles\[page\]\|\|\[/, 'navigation must tolerate dynamic pages without title metadata');
 assert.match(html, /Error al actualizar el módulo/, 'navigation failures must be surfaced instead of silently swallowed');
+assert.match(html, /window\.__PP_CLICK_TRACKER__=\{has:function\(el\)\{return ppClickBound\.has\(el\)\}\}/, 'button audit must account for addEventListener click handlers');
+assert.match(html, /window\.__PP_CLICK_TRACKER__\?\.has\(b\)/, 'button audit must not misreport listener-bound controls as inert');
 assert.match(html, /id="pp649-stability-core"/, 'dashboard contrast and live-machine visibility fixes must be loaded');
 assert.match(html, /\.page#dashboard \.quick button small\{display:block;color:#496372!important/, 'dashboard quick-action descriptions must meet readable contrast');
 assert.match(collision, /Sin matrices disponibles para V/, 'empty die catalogs must show a clear explanatory option');
