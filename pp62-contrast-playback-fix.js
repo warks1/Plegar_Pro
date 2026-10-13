@@ -3,7 +3,7 @@
 (function(){
  'use strict';
  if(window.PLEGAR_PRO_PP62?.installed)return;
- const css=`
+ let css=`
  /* Los formularios añadidos dinámicamente ya no usan paneles azul marino con texto de bajo contraste. */
  html body .page .pp-module-form,
  html body .page [class*="pp56-rail"],
@@ -135,6 +135,37 @@
    background:linear-gradient(135deg,#075a78,#087fa4)!important;
  }
  `;
+ /* PP62.2: neutralizar tarjetas oscuras anidadas que dejan texto ilegible en los módulos técnicos. */
+ css += `
+ html body .page .card:not(.pp56-hmi-top):not(.pp56-hmi-live),
+ html body .page .panel:not(.pp56-hmi-top):not(.pp56-hmi-live),
+ html body .page .note,
+ html body .page [class*="readout"]:not(.pp56-hmi-live),
+ html body .page [class*="metric"]:not(.pp56-hmi-live),
+ html body .page [class*="kpi"]:not(.pp56-hmi-live),
+ html body .page [class*="data-box"],
+ html body .page [class*="info-box"] {
+   background-color:#f2f7fa!important;
+   background-image:linear-gradient(145deg,#fff,#edf5f9)!important;
+   color:#183448!important;
+   border-color:#c5d9e4!important;
+   text-shadow:none!important;
+ }
+ html body .page .card:not(.pp56-hmi-top):not(.pp56-hmi-live) :not(button):not(input):not(select):not(textarea),
+ html body .page .panel:not(.pp56-hmi-top):not(.pp56-hmi-live) :not(button):not(input):not(select):not(textarea),
+ html body .page .note :not(button):not(input):not(select):not(textarea),
+ html body .page [class*="readout"]:not(.pp56-hmi-live) :not(button):not(input):not(select):not(textarea),
+ html body .page [class*="metric"]:not(.pp56-hmi-live) :not(button):not(input):not(select):not(textarea),
+ html body .page [class*="kpi"]:not(.pp56-hmi-live) :not(button):not(input):not(select):not(textarea),
+ html body .page [class*="data-box"] :not(button):not(input):not(select):not(textarea),
+ html body .page [class*="info-box"] :not(button):not(input):not(select):not(textarea) {
+   color:#183448!important;
+   text-shadow:none!important;
+ }
+ html body .page .card button,
+ html body .page .panel button,
+ html body .page .note button {text-shadow:none!important}
+ `;
  const style=document.createElement('style');style.id='pp62-contrast-playback-fix';style.textContent=css;document.head.appendChild(style);
  let syncing=false,lastStep=-1,ignoreCollisionEvent=false;
  const $=id=>document.getElementById(id);
@@ -176,6 +207,6 @@
    requestAnimationFrame(()=>syncStep(e.detail))
  });
  window.addEventListener('plegarpro:state-changed',()=>{lastStep=-1});
- window.PLEGAR_PRO_PP62={installed:true,version:'62.1',contrastStyle:true,playbackGuard:true,audit:()=>({installed:true,step:lastStep,maxStep:maxStep(),bends:getState()?.bends?.length||0,collisionApi:!!window.PLEGAR_PRO_COLLISIONS?.setStep,sim2d:!!$('s2Play'),sim3d:!!$('s3Play')})};
+ window.PLEGAR_PRO_PP62={installed:true,version:'62.3',contrastStyle:true,playbackGuard:true,audit:()=>({installed:true,step:lastStep,maxStep:maxStep(),bends:getState()?.bends?.length||0,collisionApi:!!window.PLEGAR_PRO_COLLISIONS?.setStep,sim2d:!!$('s2Play'),sim3d:!!$('s3Play')})};
  console.info('[Plegar Pro PP62] Contraste y sincronización de reproducción instalados.');
 })();

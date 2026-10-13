@@ -2072,6 +2072,9 @@ let ppBootReady=false;
 let ppSplashFinished=false;
 function ppSplashClose(message='Programa listo'){
  if(ppSplashFinished)return;
+ // Ningún watchdog o error secundario puede saltarse los 5 s mínimos de la pantalla de inicio.
+ const remaining=PP_SPLASH_DURATION-(performance.now()-ppSplashStart);
+ if(remaining>0){setTimeout(()=>ppSplashClose(message),remaining);return;}
  ppSplashFinished=true;
  const ld=safeElement('loader'),st=safeElement('loadState'),fill=safeElement('loadFill');
  if(st)st.textContent=message;if(fill)fill.style.width='100%';
@@ -2119,7 +2122,7 @@ function startApplication(){
  // Salida de emergencia: aunque falle una función o Safari pause un temporizador, abre la aplicación.
  setTimeout(()=>forceFinishBoot('Programa listo'),4000);
 }
-window.addEventListener('error',e=>{console.error('Error controlado de ejecución',e.error||e.message);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
+window.addEventListener('error',e=>{console.error('Error controlado de ejecución',e.error||e.message);if(!e.error)return;setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
 window.addEventListener('unhandledrejection',e=>{console.error('Promesa rechazada',e.reason);setTimeout(()=>forceFinishBoot('Programa iniciado con recuperación automática'),250)});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startApplication,{once:true});else startApplication();
 </script>
@@ -2786,7 +2789,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </script>
 
 <script src="./pp57-system-integration.js?v=143"></script>
-<script src="./pp59-engineering-upgrade.js?v=145"></script>
+<script src="./pp59-engineering-upgrade.js?v=146"></script>
 <script src="./pp60-graphics-runtime.js"></script>
 <script src="./pp61-runtime-integrity.js"></script>
 
@@ -3029,7 +3032,7 @@ html body .page [class*="banner"] *,html body .page [class*="Banner"] *,html bod
 <script id="pp68-loader-emergency-release">
 (function(){
   'use strict';
-  var finished=false, watchdog=0;
+  var finished=false, watchdog=0, started=Date.now();
   function unlockScroll(){document.documentElement.classList.remove('pp69-loading');document.body.classList.remove('pp69-loading');}
   function release(reason){
     var loader=document.getElementById('loader');
@@ -3050,11 +3053,11 @@ html body .page [class*="banner"] *,html body .page [class*="Banner"] *,html bod
     return true;
   }
   // Independiente del cargador principal; la app nunca debe quedar bloqueada por una animación.
-  function scheduleRelease(reason,delay){window.setTimeout(function(){release(reason)},delay||0)}
+  function scheduleRelease(reason,delay){var remaining=Math.max(0,5200-(Date.now()-started));window.setTimeout(function(){release(reason)},Math.max(Number(delay)||0,remaining))}
   watchdog=window.setTimeout(function(){release('Programa abierto con recuperación automática');},5200);
   window.addEventListener('load',function(){scheduleRelease('Programa abierto',5200);},{once:true});
   window.addEventListener('pageshow',function(){if(document.body.classList.contains('boot-complete')){unlockScroll();release('Programa abierto')}});
-  window.addEventListener('error',function(){scheduleRelease('Programa abierto con recuperación automática',900)});
+  window.addEventListener('error',function(e){if(!e.error)return;scheduleRelease('Programa abierto con recuperación automática',900)});
   window.addEventListener('unhandledrejection',function(){scheduleRelease('Programa abierto con recuperación automática',900)});
   if(document.readyState!=='loading'&&document.body.classList.contains('boot-complete')){unlockScroll();release('Programa abierto')}
 })();
