@@ -33,7 +33,7 @@ function collisionGeometry(stepIndex,foldIndex,travel,b,toolAudit,v){
  const segmentSolid=(a,z)=>solid3D?.segmentPrism?solid3D.segmentPrism(a,z,t,-toolHalfWidth,toolHalfWidth,'sheet-segment'):null;
  const hitsSolid=(a,z,tool)=>{const seg=segmentSolid(a,z);return !!(seg&&tool&&solid3D?.intersectPrisms?.(seg,tool)?.intersects)};
  for(let i=0;i<model.length-1;i++){
-  const a=model[i],z=model[i+1],legTags=[a.legIndex,z.legIndex].filter(Number.isInteger),activeArc=a.bendIndex===foldIndex||z.bendIndex===foldIndex;
+  const a=model[i],z=model[i+1],legTags=[a.legIndex,z.legIndex].filter(Number.isInteger),activeArc=a.bendIndex===foldIndex&&z.bendIndex===foldIndex;
   if(activeArc){activeBendSegments.push({a,z});continue}
   // Solo evaluar alas que ya se han plegado antes del paso activo. No excluir toda el ala adyacente al pliegue activo: eso ocultaba interferencias de alas anteriores.
   const bendTags=[a.bendIndex,z.bendIndex].filter(Number.isInteger);
@@ -83,7 +83,7 @@ function profileModelPhysical(progressStep=Infinity,progressTravel=1,toolAudit={
   if(i<folds){
    const {theta,radius}=bends[i];
    if(Math.abs(theta)>1e-5){
-    const sign=Math.sign(theta),center={x:p.x-sign*radius*Math.sin(heading),y:p.y+sign*radius*Math.cos(heading)},start=Math.atan2(p.y-center.y,p.x-center.x),segments=Math.max(4,Math.min(16,Math.ceil(Math.abs(theta)/(Math.PI/18))));
+    pts[pts.length-1].bendIndex=i;const sign=Math.sign(theta),center={x:p.x-sign*radius*Math.sin(heading),y:p.y+sign*radius*Math.cos(heading)},start=Math.atan2(p.y-center.y,p.x-center.x),segments=Math.max(4,Math.min(16,Math.ceil(Math.abs(theta)/(Math.PI/18))));
     for(let j=1;j<=segments;j++){const phi=start+theta*j/segments;push({x:center.x+radius*Math.cos(phi),y:center.y+radius*Math.sin(phi)},{bendIndex:i})}
     p=pts[pts.length-1];heading+=theta;
    }
