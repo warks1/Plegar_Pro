@@ -100,14 +100,22 @@ function bounds(mesh){
 function orient(a,b,c){return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);}
 function onSegment(a,b,p,eps=1e-8){return Math.abs(orient(a,b,p))<=eps&&p[0]>=Math.min(a[0],b[0])-eps&&p[0]<=Math.max(a[0],b[0])+eps&&p[1]>=Math.min(a[1],b[1])-eps&&p[1]<=Math.max(a[1],b[1])+eps;}
 function properEdgesCross(a,b,c,d){const o1=orient(a,b,c),o2=orient(a,b,d),o3=orient(c,d,a),o4=orient(c,d,b);return ((o1>1e-8&&o2< -1e-8)||(o1< -1e-8&&o2>1e-8))&&((o3>1e-8&&o4< -1e-8)||(o3< -1e-8&&o4>1e-8));}
-function inPolygonStrict(p,poly){let inside=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if(onSegment(a,b,p))return false;const crosses=((a[1]>p[1])!==(b[1]>p[1]))&&(p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0]);if(crosses)inside=!inside;}return inside;}
+function pointInTriangleStrict(p,a,b,c){const x=orient(a,b,p),y=orient(b,c,p),z=orient(c,a,p);return (x>1e-8&&y>1e-8&&z>1e-8)||(x< -1e-8&&y< -1e-8&&z< -1e-8);}
+function triangleCentroid(t){return [(t[0][0]+t[1][0]+t[2][0])/3,(t[0][1]+t[1][1]+t[2][1])/3];}
+function trianglesOverlapArea(A,B){
+ for(const p of A)if(pointInTriangleStrict(p,B[0],B[1],B[2]))return true;
+ for(const p of B)if(pointInTriangleStrict(p,A[0],A[1],A[2]))return true;
+ if(pointInTriangleStrict(triangleCentroid(A),B[0],B[1],B[2])||pointInTriangleStrict(triangleCentroid(B),A[0],A[1],A[2]))return true;
+ for(let i=0;i<3;i++)for(let j=0;j<3;j++)if(properEdgesCross(A[i],A[(i+1)%3],B[j],B[(j+1)%3]))return true;
+ return false;
+}
 function crossSectionOverlap(a,b){
  const A=a?.section,B=b?.section;if(!A||!B||A.length<3||B.length<3)return false;
- for(let i=0;i<A.length;i++)for(let j=0;j<B.length;j++)if(properEdgesCross(A[i],A[(i+1)%A.length],B[j],B[(j+1)%B.length]))return true;
- if(A.some(p=>inPolygonStrict(p,B))||B.some(p=>inPolygonStrict(p,A)))return true;
- const centroid=poly=>poly.reduce((v,p)=>({x:v.x+p[0]/poly.length,y:v.y+p[1]/poly.length}),{x:0,y:0});
- const ca=centroid(A),cb=centroid(B);
- return inPolygonStrict([ca.x,ca.y],B)||inPolygonStrict([cb.x,cb.y],A);
+ const ta=triangulateSection(A),tb=triangulateSection(B);
+ if(ta.length!==A.length-2||tb.length!==B.length-2)return false;
+ const trisA=ta.map(t=>t.map(i=>A[i])),trisB=tb.map(t=>t.map(i=>B[i]));
+ for(const x of trisA)for(const y of trisB)if(trianglesOverlapArea(x,y))return true;
+ return false;
 }
 /*
  * For prismatic solids whose cross-sections are constant along Z, this is an
