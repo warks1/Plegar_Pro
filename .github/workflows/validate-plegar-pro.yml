@@ -425,6 +425,36 @@ jobs:
               return result;
             });
             if (!finalCollisionFold.stopped || finalCollisionFold.finalTravel !== 100 || finalCollisionFold.step !== 0) throw new Error('Collision simulation did not complete its final fold: ' + JSON.stringify(finalCollisionFold));
+            const finalOrderedFoldSync = await page.evaluate(async () => {
+              const originalBends = state.bends, originalOrder = state.bendOrder;
+              state.bends = [
+                {leg:50,angle:90,direction:1},
+                {leg:80,angle:45,direction:-1},
+                {leg:120,angle:135,direction:1},
+                {leg:80,angle:90,direction:1}
+              ];
+              state.bendOrder = [2,0,1];
+              window.PLEGAR_PRO_COLLISIONS.refresh();
+              window.dispatchEvent(new CustomEvent('plegarpro:playback-step', {
+                detail:{source:'collisions',step:3,foldIndex:2,complete:true}
+              }));
+              await new Promise(r => setTimeout(r,80));
+              const result = {
+                order:state.bendOrder.slice(),
+                collisionStep:Number(document.querySelector('#pp56Step')?.value),
+                twinStep:Number(document.querySelector('#pp59step')?.value),
+                activeFold:sim.p3Active,
+                expectedFold:state.bendOrder[2]
+              };
+              state.bends = originalBends; state.bendOrder = originalOrder;
+              window.PLEGAR_PRO_COLLISIONS.refresh();
+              return result;
+            });
+            if (finalOrderedFoldSync.collisionStep !== 2 ||
+                finalOrderedFoldSync.twinStep !== 2 ||
+                finalOrderedFoldSync.activeFold !== finalOrderedFoldSync.expectedFold) {
+              throw new Error('Final playback completion did not preserve the actual last fold in the assigned order: ' + JSON.stringify(finalOrderedFoldSync));
+            }
             const sequenceAudit = await page.evaluate(() => window.PLEGAR_PRO_COLLISIONS.auditSequences());
             if (!sequenceAudit.ok) throw new Error('U/Z/box final-fold audit failed: ' + JSON.stringify(sequenceAudit));
             await page.locator('#pp56ProfileV').fill(String(await page.evaluate(() => state.bends[0]?.v || 16)));
