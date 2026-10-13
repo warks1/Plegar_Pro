@@ -783,7 +783,7 @@ body:not(.boot-complete) > .app{visibility:hidden}
 <div><label>Material</label><select id="material"><option>S235</option><option>S275</option><option>S355</option><option>Inoxidable 304</option><option>Aluminio</option><option>Zincor</option><option>Galvanizado</option></select></div>
 <div><label>Espesor (mm)</label><input id="thickness" type="text" inputmode="decimal" min=".1" step=".1"></div>
 <div><label>Factor K</label><input id="kfactor" type="text" inputmode="decimal" min=".1" max=".6" step=".01"></div>
-<div><label>Máquina</label><select id="machine"><option>Bystronic Xpert 3100 × 100 T</option><option>Bystronic Xpert 3200 × 150 T</option><option>Personalizada</option></select></div>
+<div><label>Máquina</label><select id="machine"><option>Bystronic Xpert Pro 3100 × 100 T</option><option>TRUMPF TruBend V85</option><option>Bystronic Xpert 3200 × 150 T</option><option>Personalizada</option></select></div>
 </div></div>
 </div></section>
 
@@ -1611,21 +1611,55 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
  function box(x,y,z,dx,dy,dz,fill,edge='#72909b'){let v=[{x,y,z},{x:x+dx,y,z},{x:x+dx,y:y+dy,z},{x,y:y+dy,z},{x,y,z:z+dz},{x:x+dx,y,z:z+dz},{x:x+dx,y:y+dy,z:z+dz},{x,y:y+dy,z:z+dz}],faces=[[0,1,2,3],[4,7,6,5],[0,4,5,1],[1,5,6,2],[2,6,7,3],[3,7,4,0]];let fs=faces.map(f=>({f,d:f.reduce((a,i)=>a+project(v[i]).z,0)/4})).sort((a,b)=>a.d-b.d);fs.forEach(o=>poly(o.f.map(i=>v[i]),fill,edge,1.2))}
  function prism(pointsA,pointsB,fill,edge='#7897a4'){poly(pointsA,fill,edge);poly(pointsB,fill,edge);for(let i=0;i<pointsA.length;i++)poly([pointsA[i],pointsA[(i+1)%pointsA.length],pointsB[(i+1)%pointsB.length],pointsB[i]],fill,edge)}
  let showMachine=state.settings.machineVisible!=='no'&&(simulation?(!$('s3Machine')||$('s3Machine').checked):true);
- if(showMachine){ctx.save();ctx.globalAlpha=+(state.settings.machineOpacity||.92);
-   let blue='#1f5368',blue2='#2b6d84',dark='#0b2530',steel='#a8bac1',steel2='#718993',base='#294d5b';
-   box(-500,-310,-150,1000,55,300,base);
-   box(-475,-255,-125,105,570,250,blue2);box(370,-255,-125,105,570,250,blue2);
-   box(-475,260,-125,950,80,250,blue);
-   box(-355,-205,-95,710,62,190,dark);
-   let beamDrop=simulation?Math.min(62,(step/Math.max(1,state.bends.length))*62):20;
-   box(-360,135-beamDrop,-100,720,68,200,steel2);
-   box(-325,92-beamDrop,-58,650,40,116,steel);
-   prism([{x:-300,y:92-beamDrop,z:-45},{x:300,y:92-beamDrop,z:-45},{x:250,y:20-beamDrop,z:-25},{x:-250,y:20-beamDrop,z:-25}],[{x:-300,y:92-beamDrop,z:45},{x:300,y:92-beamDrop,z:45},{x:250,y:20-beamDrop,z:25},{x:-250,y:20-beamDrop,z:25}],'#d6e0e4','#ecf4f7');
-   box(-330,-150,-70,660,42,140,steel2);
-   prism([{x:-300,y:-108,z:-55},{x:300,y:-108,z:-55},{x:255,y:-52,z:-35},{x:-255,y:-52,z:-35}],[{x:-300,y:-108,z:55},{x:300,y:-108,z:55},{x:255,y:-52,z:35},{x:-255,y:-52,z:35}],'#58727d','#a9bdc5');
-   box(-360,-198,-95,720,48,190,base);
-   box(395,5,145,105,210,60,blue);box(408,75,207,78,108,8,'#0f1f25');box(418,88,216,58,76,5,'#54c9f1','#aeefff');
-   box(-250,-85,120,500,20,25,'#526e79');box(-220,-50,126,22,62,22,'#8ca3ac');box(198,-50,126,22,62,22,'#8ca3ac');
+ if(showMachine){
+   ctx.save();ctx.globalAlpha=+(state.settings.machineOpacity||.92);
+   const frame='#18516a',frameLight='#287b98',frameDark='#103446',steel='#b8c8cf',steelShade='#6f8791',bed='#405e6b',accent='#43c7ee';
+   const selectedMachine=String($('machine')?.value||'Bystronic Xpert Pro 3100 × 100 T');
+   const isTrumpf=/trumpf|trubend/i.test(selectedMachine);
+   const paint=isTrumpf?'#3a9b57':frame,paintLight=isTrumpf?'#56b86c':frameLight;
+   // Base plinth and separate machine feet.
+   box(-520,-315,-165,1040,48,330,'#142d38','#45616d');
+   box(-445,-270,-135,130,28,270,'#263f4b');box(315,-270,-135,130,28,270,'#263f4b');
+   // C-shaped side cheeks, extruded as solid profiles rather than rectangular posts.
+   const cheek=(x,sign)=>{const a=[
+     {x:x,y:-265,z:-130},{x:x,y:270,z:-130},{x:x+sign*112,y:270,z:-130},
+     {x:x+sign*112,y:-66,z:-130},{x:x+sign*42,y:-66,z:-130},
+     {x:x+sign*42,y:-185,z:-130},{x:x+sign*112,y:-185,z:-130},
+     {x:x+sign*112,y:-265,z:-130}];
+     const b=a.map(p=>({...p,z:130}));prism(a,b,paint,'#6eb4c9');
+     // inset machining panels and fasteners
+     box(x+sign*18,-240,-137,sign*16,70,8,frameDark);
+     for(let yy of [-215,-175,205,242]){const px=x+sign*58;box(px-5,yy-5,133,10,10,5,'#d5e1e5','#f2f7f9')}
+   };
+   cheek(-475,1);cheek(475,-1);
+   // Crown, hydraulic ram guides and crosshead.
+   box(-390,225,-125,780,54,250,paintLight,'#72b7ca');
+   box(-350,205,-105,700,28,210,'#123746');
+   box(-335,172,-90,670,34,180,'#d4dfe3','#f5fbfd');
+   box(-300,158,-72,600,12,144,steelShade);
+   // Ram body moves as the sequence advances; holder and punch remain aligned.
+   const beamDrop=simulation?Math.min(76,(Math.max(0,step)/Math.max(1,state.bends.length-1))*76):12;
+   box(-360,145-beamDrop,-104,720,58,208,'#748e98','#d5e0e4');
+   box(-330,119-beamDrop,-82,660,28,164,steel,'#f1f7f9');
+   box(-315,96-beamDrop,-62,630,18,124,'#647e89','#b9c9cf');
+   // Segmented clamping strip and metallic punch with a tapered working tip.
+   for(let x=-300;x<300;x+=100){box(x,86-beamDrop,-64,94,9,128,'#e4ecef','#8fa5ae');box(x+42,83-beamDrop,-67,8,4,134,'#7b919a')}
+   prism([{x:-300,y:80-beamDrop,z:-48},{x:300,y:80-beamDrop,z:-48},{x:260,y:32-beamDrop,z:-30},{x:-260,y:32-beamDrop,z:-30}],
+         [{x:-300,y:80-beamDrop,z:48},{x:300,y:80-beamDrop,z:48},{x:260,y:32-beamDrop,z:30},{x:-260,y:32-beamDrop,z:30}],'#c5d2d8','#f5fbff');
+   prism([{x:-260,y:32-beamDrop,z:-30},{x:260,y:32-beamDrop,z:-30},{x:235,y:4-beamDrop,z:-22},{x:-235,y:4-beamDrop,z:-22}],
+         [{x:-260,y:32-beamDrop,z:30},{x:260,y:32-beamDrop,z:30},{x:235,y:4-beamDrop,z:22},{x:-235,y:4-beamDrop,z:22}],'#879da6','#e2edf1');
+   // Table, die holder, and V-die with a visible central throat.
+   box(-365,-154,-115,730,35,230,bed,'#91aab4');
+   box(-335,-128,-88,670,15,176,'#263f4b','#8ca4ae');
+   prism([{x:-300,y:-113,z:-55},{x:300,y:-113,z:-55},{x:270,y:-75,z:-38},{x:-270,y:-75,z:-38}],
+         [{x:-300,y:-113,z:55},{x:300,y:-113,z:55},{x:270,y:-75,z:38},{x:-270,y:-75,z:38}],'#697f88','#d1dfe4');
+   prism([{x:-270,y:-75,z:-38},{x:270,y:-75,z:-38},{x:245,y:-104,z:-25},{x:-245,y:-104,z:-25}],
+         [{x:-270,y:-75,z:38},{x:270,y:-75,z:38},{x:245,y:-104,z:25},{x:-245,y:-104,z:25}],'#d7e1e5','#f7fbfd');
+   // Rear gauge fingers and guarded side control panel.
+   box(-255,-57,126,510,12,22,'#526d78');box(-220,-47,133,18,56,18,'#91a6ae');box(202,-47,133,18,56,18,'#91a6ae');
+   box(390,8,145,110,220,65,paint,'#9ac6d2');box(403,73,212,84,112,8,'#0b1d26','#b4d8e4');
+   box(414,88,221,62,74,5,accent,'#b8f0ff');
+   box(-145,248,134,290,18,5,'#0a2530','#5b8999');
    ctx.restore();
  }
  if(state.settings.showAxes!=='no'){let o=project({x:-430,y:-230,z:-130}),ax=[['X',{x:-340,y:-230,z:-130},'#ffb55c'],['Y',{x:-430,y:-140,z:-130},'#7ee4b1'],['Z',{x:-430,y:-230,z:-40},'#72c7ff']];ctx.font='12px system-ui';ax.forEach(([t,p,c])=>{let q=project(p);ctx.strokeStyle=c;ctx.beginPath();ctx.moveTo(o.x,o.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.fillStyle=c;ctx.fillText(t,q.x+4,q.y)})}
@@ -2610,7 +2644,7 @@ const machines=[
  {maker:'Bystronic',model:'Xpert Pro 100/3100',tonnageT:100,workingLength:3100,betweenFrames:2750,stroke:250,openHeight:640,throat:400,tableWidth:74,axes:'Y1,Y2,X,R,Z1,Z2',crowning:'CNC; datos de ficha técnica oficial',sourceUrl:'https://www.bystronic.com/sites/default/files/2026-03/tp007-BE-Techdaten-Xpert%20Pro_en_GB_0.pdf'},
  {maker:'Bystronic',model:'Xpert Pro 250',tonnageT:250,workingLength:4100,betweenFrames:3550,stroke:300,openHeight:600,throat:500,tableHeight:980,axes:'Y1,Y2,X,R,Z1,Z2',crowning:'Dynamic crowning'},
  {maker:'Trumpf',model:'TruBend 7036',tonnageT:36,workingLength:1020,betweenFrames:932,stroke:120,openHeight:295,throat:150,tableHeight:1150,axes:'Y1,Y2,X,R,Z1,Z2',crowning:'CNC'},
- {maker:'Trumpf',model:'V85 · configurar datos de máquina',tonnageT:85,workingLength:0,betweenFrames:0,stroke:0,openHeight:0,throat:0,tableHeight:0,axes:'Configurar según placa',crowning:'Datos dimensionales pendientes de confirmar; no usar para colisiones'},
+ {maker:'Trumpf',model:'TruBend V85 · dimensiones por confirmar',tonnageT:85,workingLength:2550,betweenFrames:2050,stroke:215,openHeight:470,throat:350,tableHeight:900,axes:'Y1,Y2,X,R,Z1,Z2 · configuración a confirmar',crowning:'Geometría visual orientativa; verificar variante y ficha de la máquina antes de validar colisiones'},
  {maker:'Trumpf',model:'TruBend 5230',tonnageT:230,workingLength:3230,betweenFrames:2690,stroke:445,openHeight:615,throat:420,tableHeight:1050,axes:'Y1,Y2,X,R,Z1,Z2',crowning:'CNC'},
  {maker:'Amada',model:'HG 1003',tonnageT:100,workingLength:3110,betweenFrames:2700,stroke:250,openHeight:520,throat:450,tableHeight:960,axes:'Y1,Y2,X,R,Z1,Z2',crowning:'CNC'},
  {maker:'LVD',model:'ToolCell 135/30',tonnageT:135,workingLength:3050,betweenFrames:2600,stroke:300,openHeight:570,throat:400,tableHeight:980,axes:'Y1,Y2,X,R,Z1,Z2',crowning:'CNC'},
@@ -2634,7 +2668,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
 <script src="./pp54-engineering.js"></script>
 <script src="./pp55-cad-precision.js"></script>
-<script src="./pp56-collision-review.js?v=143"></script>
+<script src="./pp56-collision-review.js?v=144"></script>
 
 <style id="pp57-visual-polish">
 /* Plegar Pro v57.3 · carga de alto contraste y edición 2D despejada */
