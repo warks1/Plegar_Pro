@@ -84,8 +84,8 @@ assert.match(html, /Build a thin sheet-metal wall/);
 assert.match(html, /getSelectedToolProfiles/);
 
 // Keep the deployed offline shell wired to the same collision/twin modules.
-assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=161"><\/script>/, 'page and service worker must load the same collision module version');
-assert.match(sw, /\.\/pp56-collision-review\.js\?v=161/);
+assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=162"><\/script>/, 'page and service worker must load the same collision module version');
+assert.match(sw, /\.\/pp56-collision-review\.js\?v=162/);
 assert.match(collision, /function setStep\(n,forceSync=false\)/);
 assert.match(collision, /signature=o\.join\(','\),sequenceChanged=sel\.dataset\.sequence!==signature/ , 'a changed fold order must force a playback-sync event even when the selected step index stays the same');
 assert.match(collision, /setStep\(step,sequenceChanged\)/, 'sequence changes must propagate to 2D/3D and machine-twin playback');
