@@ -58,6 +58,53 @@
  html body #collisions .pp56-readout {background:#fff!important;border-color:#c5d9e4!important}
  html body #collisions .pp56-readout small {color:#526f82!important}
  html body #collisions .pp56-readout b {color:#183448!important}
+ /* PP73: corregir también los paneles anidados; no basta con aclarar el contenedor padre. */
+ html body .page .pp-module-form [class*="card"],
+ html body .page .pp-module-form [class*="panel"],
+ html body .page .pp-module-form [class*="field"],
+ html body .page .pp-module-form [class*="metric"],
+ html body .page .pp-module-form [class*="kpi"],
+ html body .page .pp-module-form [class*="readout"],
+ html body .page [class*="pp-form-section"] [class*="card"],
+ html body .page [class*="pp-form-section"] [class*="panel"],
+ html body .page [class*="pp-form-section"] [class*="field"],
+ html body .page [class*="pp-form-section"] [class*="metric"],
+ html body .page [class*="pp-form-section"] [class*="kpi"],
+ html body .page [class*="pp-module-panel"] [class*="card"],
+ html body .page [class*="pp-module-panel"] [class*="panel"],
+ html body .page [class*="pp-module-panel"] [class*="field"],
+ html body .page [class*="pp-module-panel"] [class*="metric"],
+ html body .page [class*="pp-module-panel"] [class*="kpi"],
+ html body .page [class*="pp523-kpi"],
+ html body .page [class*="pp523-detail"] > div,
+ html body .page [class*="pp-library-summary"] > div {
+   background:#f2f7fa!important;
+   background-image:linear-gradient(145deg,#fff,#edf5f9)!important;
+   color:#183448!important;
+   border-color:#c5d9e4!important;
+   text-shadow:none!important;
+ }
+ html body .page .pp-module-form [class*="card"] *,
+ html body .page .pp-module-form [class*="panel"] *,
+ html body .page .pp-module-form [class*="field"] *,
+ html body .page .pp-module-form [class*="metric"] *,
+ html body .page .pp-module-form [class*="kpi"] *,
+ html body .page [class*="pp-form-section"] [class*="card"] *,
+ html body .page [class*="pp-form-section"] [class*="panel"] *,
+ html body .page [class*="pp-form-section"] [class*="field"] *,
+ html body .page [class*="pp-form-section"] [class*="metric"] *,
+ html body .page [class*="pp-form-section"] [class*="kpi"] *,
+ html body .page [class*="pp-module-panel"] [class*="card"] *,
+ html body .page [class*="pp-module-panel"] [class*="panel"] *,
+ html body .page [class*="pp-module-panel"] [class*="field"] *,
+ html body .page [class*="pp-module-panel"] [class*="metric"] *,
+ html body .page [class*="pp-module-panel"] [class*="kpi"] *,
+ html body .page [class*="pp523-kpi"] *,
+ html body .page [class*="pp523-detail"] > div * ,
+ html body .page [class*="pp-library-summary"] > div * {
+   color:#183448!important;
+   text-shadow:none!important;
+ }
  /* PP72: contraste de los subpaneles creados por los módulos internos. */
  html body .page .pp-module-form,
  html body .page [class*="pp-form-section"],
