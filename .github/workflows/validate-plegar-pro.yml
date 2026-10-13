@@ -368,7 +368,9 @@ jobs:
               await new Promise(r => setTimeout(r, 250));
               const held = canvas.toDataURL();
               btn.click();
-              await new Promise(r => setTimeout(r, 450));
+              // The articulated cycle includes a stationary ram plateau of up to ~830 ms.
+              // Wait longer than that plateau so the resume assertion is deterministic.
+              await new Promise(r => setTimeout(r, 1100));
               const resumed = canvas.toDataURL();
               btn.click();
               return { pauseOk: still === held, resumeOk: resumed !== held };
