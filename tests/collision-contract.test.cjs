@@ -55,7 +55,7 @@ assert.match(collision, /activeBendArcSegments:Number\.isFinite\(g\?\.activeBend
 assert.match(collision, /code===42&&vertices\.length/ , 'DXF LWPOLYLINE bulge arcs must be preserved');
 assert.match(collision, /parseDxfProfileForTest\(text,unitFactor=1,type='Matriz'\)/, 'DXF parser must expose a testable profile audit');
 assert.match(collision, /\$\('pp56Step'\)\.onchange=\(\)=>setStep\(Number\(\$\('pp56Step'\)\.value\)\|\|0,true\)/);
-assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=151/);
+assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=152/);
 assert.match(html, /pp61-runtime-integrity\.js\?v=62/);
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62/);
 assert.match(runtime, /detail\.complete\?\(order\[maxPos\]\?\?maxPos\)/, 'completed collision playback must activate the final fold in the selected order');
@@ -67,7 +67,7 @@ assert.match(twin, /travelBucket!==lastEmittedTravel/, 'digital twin must publis
 assert.match(twin, /source:'pp59',step:pos,foldIndex:executionOrder\(\)\[pos\]\?\?0,travel:travelBucket\*5/, 'digital twin events must carry the ram travel percentage');
 assert.match(runtime, /else if\(source==='pp59'&&Number\.isFinite\(Number\(detail\.travel\)\)\)/, 'runtime must map twin ram travel into the collision review');
 assert.match(runtime, /travel\.dispatchEvent\(new Event\('input',\{bubbles:true\}\)\)/, 'collision view must redraw when synchronized travel changes');
-assert.match(html, /pp59-engineering-upgrade\.js\?v=151/);
+assert.match(html, /pp59-engineering-upgrade\.js\?v=152/);
 assert.match(html, /pp61-runtime-integrity\.js\?v=62\.2/);
 assert.match(html, /const meta=titles\[page\]\|\|\[/, 'navigation must tolerate dynamic pages without title metadata');
 assert.match(html, /Error al actualizar el módulo/, 'navigation failures must be surfaced instead of silently swallowed');
@@ -80,7 +80,7 @@ assert.match(collision, /Sin matrices disponibles para V/, 'empty die catalogs m
 assert.match(collision, /\.pp56-controls select option\{background:#fff!important;color:#173246!important\}/, 'collision selectors must keep readable option text');
 
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.2/);
-assert.match(sw, /plegar-pro-v151-30/);
+assert.match(sw, /plegar-pro-v151-31/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 
