@@ -108,8 +108,9 @@ function parseDxfProfile(text,unitFactor){
  for(const e of entities){
   const get=code=>e.items.filter(p=>p[0]===code).map(p=>Number(p[1]));
   if(e.type==='LWPOLYLINE'){
-   const xs=get(10),ys=get(20),path=[];for(let i=0;i<Math.min(xs.length,ys.length);i++)if(Number.isFinite(xs[i])&&Number.isFinite(ys[i]))path.push({x:xs[i]*unitFactor,y:ys[i]*unitFactor});
-   if(path.length>=2)paths.push(path);
+   const xs=get(10),ys=get(20),path=[],flags=get(70);for(let i=0;i<Math.min(xs.length,ys.length);i++)if(Number.isFinite(xs[i])&&Number.isFinite(ys[i]))path.push({x:xs[i]*unitFactor,y:ys[i]*unitFactor});
+   // DXF LWPOLYLINE group 70, bit 1 marks a closed contour.
+   if(path.length>=2){if((Number(flags[0]||0)&1)&&Math.hypot(path[0].x-path[path.length-1].x,path[0].y-path[path.length-1].y)>.02)path.push({...path[0]});paths.push(path)}
   }else if(e.type==='LINE'){
    const x=get(10)[0],y=get(20)[0],x2=get(11)[0],y2=get(21)[0];
    if([x,y,x2,y2].every(Number.isFinite))paths.push([{x:x*unitFactor,y:y*unitFactor},{x:x2*unitFactor,y:y2*unitFactor}]);
@@ -130,6 +131,7 @@ function parseDxfProfile(text,unitFactor){
   let next=chains.splice(best.ci,1)[0];if(best.mode==='appendReverse'||best.mode==='prependReverse')next.reverse();
   if(best.mode==='append'||best.mode==='appendReverse')chain.push(...next.slice(1));else chain.unshift(...next.slice(0,-1));
  }
+ if(!near(chain[0],chain[chain.length-1]))throw new Error('El contorno DXF está abierto: los extremos están separados '+Math.hypot(chain[0].x-chain[chain.length-1].x,chain[0].y-chain[chain.length-1].y).toFixed(2)+' mm. Cierra el perfil antes de importarlo para evitar colisiones falsas.');
  const unique=[];chain.forEach(p=>{if(Number.isFinite(p.x)&&Number.isFinite(p.y)&&(!unique.length||Math.hypot(unique[unique.length-1].x-p.x,unique[unique.length-1].y-p.y)>.02))unique.push(p)});
  if(unique.length>2&&near(unique[0],unique[unique.length-1]))unique.pop();
  if(unique.length<3)throw new Error('No hay suficientes puntos conectados para definir la sección del útil.');
