@@ -435,6 +435,7 @@ jobs:
               ];
               state.bendOrder = [2,0,1];
               window.PLEGAR_PRO_COLLISIONS.refresh();
+              window.PLEGAR_PRO_COLLISIONS.setStep(2);
               window.dispatchEvent(new CustomEvent('plegarpro:playback-step', {
                 detail:{source:'collisions',step:3,foldIndex:2,complete:true}
               }));
