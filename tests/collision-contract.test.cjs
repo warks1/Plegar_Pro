@@ -12,7 +12,7 @@ assert.match(html, /Corrección definitiva del menú lateral/);
 assert.match(html, /grid-template-columns:258px minmax\(0,1fr\)!important/);
 assert.match(html, /#mainSidebar \.nav\{display:flex!important;flex-direction:column!important/);
 assert.match(html, /#mainSidebar\.side\.open[\s\S]*transform:translateX\(0\)!important/);
-assert.match(sw, /plegar-pro-v151-37/);
+assert.match(sw, /plegar-pro-v151-38/);
 
 
 // Fold-order edits must notify the shared runtime immediately, rather than relying
@@ -74,7 +74,7 @@ assert.match(twin, /plegarpro:machine-travel/, 'digital twin must consume collis
 assert.match(twin, /externalTravel!==null\?externalTravel\/100/, 'digital twin ram position must follow externally synchronized travel');
 assert.match(html, /pp59-engineering-upgrade\.js\?v=154/);
 assert.match(sw, /pp59-engineering-upgrade\.js\?v=154/);
-assert.match(sw, /plegar-pro-v151-37/);
+assert.match(sw, /plegar-pro-v151-38/);
 assert.match(twin, /travelBucket!==lastEmittedTravel/, 'digital twin must publish meaningful travel changes during each ram cycle');
 assert.match(twin, /source:'pp59',step:pos,foldIndex:executionOrder\(\)\[pos\]\?\?0,travel:travelBucket\*5/, 'digital twin events must carry the ram travel percentage');
 assert.match(runtime, /else if\(source==='pp59'&&Number\.isFinite\(Number\(detail\.travel\)\)\)/, 'runtime must map twin ram travel into the collision review');
@@ -92,7 +92,7 @@ assert.match(collision, /Sin matrices disponibles para V/, 'empty die catalogs m
 assert.match(collision, /\.pp56-controls select option\{background:#fff!important;color:#173246!important\}/, 'collision selectors must keep readable option text');
 
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.3/);
-assert.match(sw, /plegar-pro-v151-37/);
+assert.match(sw, /plegar-pro-v151-38/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 
@@ -105,6 +105,8 @@ assert.match(twin, /throat:'No verificada',stroke:'250 mm\*',openHeight:'No veri
 assert.match(twin, /cotas exteriores estimadas y carrera pendiente de cotejo/);
 
 
+assert.match(html, /PP3D icon fix: retain the existing module symbols/);
+assert.match(html, /data-page="dashboard"\]:before\{content:"⌂"!important\}/, '3D menu must preserve its dashboard icon');
 assert.match(html, /PP3D MENU v2 · profundidad visible también en pantallas táctiles/);
 assert.match(html, /rotateY\(-4deg\) rotateX\(1deg\)/, 'the mobile/touch menu must keep a visible 3D angle instead of flattening it');
 assert.match(html, /border-bottom:4px solid #030a10/, 'navigation buttons must have a visible extruded lower bevel');
