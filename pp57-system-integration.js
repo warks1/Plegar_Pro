@@ -34,7 +34,17 @@ function drawTwin(now){
  x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#fcfeff');bg.addColorStop(1,'#dcebf3');x.fillStyle=bg;x.fillRect(0,0,w,h);x.strokeStyle='#d1e1ea';for(let i=0;i<w;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}for(let i=0;i<h;i+=40){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke()}
  const cam=$('pp58Camera').value,model=$('pp58Model').value,sc=(cam==='top'?.7:.82)*(Number($('pp58Zoom').value)||1),rot=cam==='front'?0:cam==='side'?Math.PI/2:cam==='top'?0:rotation-.42,ox=w*.5,oy=h*.65;
  function P(p){let a=rot,xx=p.x*Math.cos(a)-p.z*Math.sin(a),zz=p.x*Math.sin(a)+p.z*Math.cos(a);return{x:ox+xx*sc,y:oy-(p.y-zz*.34)*sc}}
- function poly(ps,fill,edge){let q=ps.map(P);x.beginPath();q.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.closePath();x.fillStyle=fill;x.fill();x.strokeStyle=edge||'#4b687a';x.lineWidth=2;x.stroke()}
+ function poly(ps,fill,edge){
+  const q=ps.map(P);if(q.length<3)return;
+  const minX=Math.min(...q.map(p=>p.x)),maxX=Math.max(...q.map(p=>p.x)),minY=Math.min(...q.map(p=>p.y)),maxY=Math.max(...q.map(p=>p.y));
+  x.save();x.beginPath();q.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.closePath();
+  x.shadowColor='rgba(9,30,43,.22)';x.shadowBlur=7;x.shadowOffsetX=2;x.shadowOffsetY=4;
+  const grad=x.createLinearGradient(minX,minY,maxX,Math.max(minY+1,maxY));
+  grad.addColorStop(0,'#f1f6f8');grad.addColorStop(.16,fill);grad.addColorStop(.58,fill);grad.addColorStop(1,'#243b49');
+  x.fillStyle=grad;x.fill();x.shadowColor='transparent';x.shadowBlur=0;x.shadowOffsetX=0;x.shadowOffsetY=0;
+  x.strokeStyle=edge||'#4b687a';x.lineWidth=1.6;x.stroke();
+  x.globalAlpha=.32;x.strokeStyle='#ffffff';x.lineWidth=1;x.stroke();x.restore();
+ }
  function box(a,b,z,dx,dy,dz,col){poly([{x:a,y:b,z},{x:a+dx,y:b,z},{x:a+dx,y:b+dy,z},{x:a,y:b+dy,z}],col);poly([{x:a,y:b,z:z+dz},{x:a+dx,y:b,z:z+dz},{x:a+dx,y:b+dy,z:z+dz},{x:a,y:b+dy,z:z+dz}],col);poly([{x:a,y:b,z},{x:a,y:b,z:z+dz},{x:a,y:b+dy,z:z+dz},{x:a,y:b+dy,z}],col)}
  function beam(y,th,col){box(-450,y,-75,900,th,150,col)}
  box(-540,-205,-180,1080,45,360,'#788f9c','#3e5c6c');box(-500,-160,-165,105,390,330,'#9fb4bf','#486777');box(395,-160,-165,105,390,330,'#9fb4bf','#486777');
