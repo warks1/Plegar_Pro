@@ -20,7 +20,7 @@ assert.match(collision, /modelo prismático\/2D/i);
 
 // The 3D canvas must visually separate prior-flange interference from active
 // punch/die contact and identify the machine body as a visual reconstruction.
-assert.match(html, /INTERFERENCIA ESTIMADA · PRISMA\\/2D/);
+assert.ok(html.includes('INTERFERENCIA ESTIMADA · PRISMA/2D'));
 assert.match(html, /CONTACTO ACTIVO · REVISAR PENETRACIÓN/);
 assert.match(html, /GEOMETRÍA EXTERIOR: RECONSTRUCCIÓN VISUAL, NO CAD OEM/);
 assert.match(html, /Build a thin sheet-metal wall/);
