@@ -241,4 +241,5 @@ assert.match(collision, /id="pp56Timeline" type="range"/, 'collision playback mu
 assert.match(collision, /id="pp56Speed" aria-label="Velocidad de reproducción"/, 'collision playback must provide selectable speed');
 assert.match(collision, /p<\.42\?'PLEGANDO':p<\.52\?'PUNTO DE PLEGADO':'RETORNO'/, 'ram playback must animate downstroke, forming dwell, and return');
 assert.match(collision, /▶ Continuar/, 'playback must resume instead of restarting the stroke');
+assert.match(collision, /phase=1;stop\(\);return/, 'completed playback must retain a completion marker so Play restarts from the first fold');
 assert.match(collision, /pp56TouchPulse/, 'HMI live status must animate');
