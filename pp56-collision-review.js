@@ -213,11 +213,17 @@ function refreshPunchOptions(){const sel=$('pp56PunchSelect');if(!sel)return;con
  x.fillStyle='#607d8e';x.font='11px system-ui';x.fillText('Perfil de referencia · ángulo '+ang+'° · espesor '+t.toFixed(2)+' mm',bx+15,by+43);
  const cx=bx+bw/2, top=by+78, floor=by+183, mmPx=Math.min(2.35,150/Math.max(50,v*2+20)),halfV=Math.max(8,v*mmPx/2),dieAngle=Math.max(30,Math.min(150,Number(toolAudit.die?.angle)||90)),dieDepth=Math.min(floor-(top+34),halfV/Math.tan(dieAngle*Math.PI/360)),tipY=top+4+travel*55;
  // Die block with machined V throat.
- x.fillStyle='#15516f';x.strokeStyle='#082f43';x.lineWidth=3;x.beginPath();x.moveTo(cx-halfV-45,floor);x.lineTo(cx-halfV-45,top+34);x.lineTo(cx-halfV*.32,top+34);x.lineTo(cx,floor-dieDepth);x.lineTo(cx+halfV*.32,top+34);x.lineTo(cx+halfV+45,top+34);x.lineTo(cx+halfV+45,floor);x.closePath();x.fill();x.stroke();
+ x.save();x.beginPath();x.moveTo(cx-halfV-45,floor);x.lineTo(cx-halfV-45,top+34);x.lineTo(cx-halfV*.32,top+34);x.lineTo(cx,floor-dieDepth);x.lineTo(cx+halfV*.32,top+34);x.lineTo(cx+halfV+45,top+34);x.lineTo(cx+halfV+45,floor);x.closePath();
+ const dieMetal=x.createLinearGradient(cx-halfV-45,top+34,cx+halfV+45,floor);dieMetal.addColorStop(0,'#0b3449');dieMetal.addColorStop(.2,'#2d7a9d');dieMetal.addColorStop(.48,'#65b4d1');dieMetal.addColorStop(.72,'#236987');dieMetal.addColorStop(1,'#082d40');
+ x.fillStyle=dieMetal;x.strokeStyle='#082f43';x.lineWidth=3;x.shadowColor='rgba(4,34,50,.24)';x.shadowBlur=8;x.shadowOffsetY=4;x.fill();x.shadowColor='transparent';x.shadowBlur=0;x.shadowOffsetY=0;x.stroke();
+ x.strokeStyle='#c8f0ff';x.lineWidth=1.5;x.beginPath();x.moveTo(cx-halfV-38,top+39);x.lineTo(cx-halfV*.32,top+39);x.moveTo(cx+halfV*.32,top+39);x.lineTo(cx+halfV+38,top+39);x.stroke();x.restore();
  x.strokeStyle='#bceeff';x.lineWidth=3;x.beginPath();x.moveTo(cx-halfV*.32,top+34);x.lineTo(cx,floor-24);x.lineTo(cx+halfV*.32,top+34);x.stroke();
  // Punch tip is drawn as a separate amber steel part; travel visibly changes its clearance.
  const tipHalf=Math.max(8,Math.min(45,Math.tan(punchAngle*Math.PI/360)*38)),tipRadius=Math.max(0,Math.min(7,punchRadius*1.5));
- x.fillStyle='#d58a37';x.strokeStyle='#a96624';x.beginPath();x.moveTo(cx-70,top-4);x.lineTo(cx+70,top-4);x.lineTo(cx+Math.max(tipHalf,tipHalf+tipRadius),tipY-8);x.quadraticCurveTo(cx+tipHalf*.48,tipY+2,cx+tipRadius,tipY+4);x.quadraticCurveTo(cx,tipY+4+tipRadius,cx-tipRadius,tipY+4);x.quadraticCurveTo(cx-tipHalf*.48,tipY+2,cx-tipHalf,tipY-8);x.closePath();x.fill();x.stroke();
+ x.save();x.beginPath();x.moveTo(cx-70,top-4);x.lineTo(cx+70,top-4);x.lineTo(cx+Math.max(tipHalf,tipHalf+tipRadius),tipY-8);x.quadraticCurveTo(cx+tipHalf*.48,tipY+2,cx+tipRadius,tipY+4);x.quadraticCurveTo(cx,tipY+4+tipRadius,cx-tipRadius,tipY+4);x.quadraticCurveTo(cx-tipHalf*.48,tipY+2,cx-tipHalf,tipY-8);x.closePath();
+ const punchMetal=x.createLinearGradient(cx-70,top,cx+70,tipY);punchMetal.addColorStop(0,'#ffe0a1');punchMetal.addColorStop(.24,'#e9a34c');punchMetal.addColorStop(.58,'#b76b27');punchMetal.addColorStop(.82,'#f5bd6b');punchMetal.addColorStop(1,'#8e4c1b');
+ x.fillStyle=punchMetal;x.strokeStyle='#8e4c1b';x.lineWidth=1.6;x.shadowColor='rgba(81,46,13,.22)';x.shadowBlur=7;x.shadowOffsetY=3;x.fill();x.shadowColor='transparent';x.shadowBlur=0;x.shadowOffsetY=0;x.stroke();
+ x.strokeStyle='#fff1d0';x.lineWidth=1.3;x.beginPath();x.moveTo(cx-63,top+2);x.lineTo(cx+63,top+2);x.stroke();x.restore();
  // Sheet is a bright metal profile, with a clear fold apex and two flanges.
  const included=180-(180-ang)*travel,arm=78,half=included*Math.PI/360,apexY=top+42+travel*25,leftX=cx-arm*Math.sin(half),rightX=cx+arm*Math.sin(half),endY=apexY+arm*Math.cos(half);
  // Conservative 2D screen-space proximity check: compares the rendered punch tip with the sheet apex.
@@ -228,8 +234,9 @@ function refreshPunchOptions(){const sel=$('pp56PunchSelect');if(!sel)return;con
  const contactState=clearancePx<0?'SOLAPAMIENTO PROYECTADO':clearancePx<=2?'PROXIMIDAD VISUAL':clearancePx<=8?'SEPARACIÓN VISUAL BAJA':'SIN CONTACTO VISUAL · NO VERIFICADO';
  const contactColor=clearancePx<0?'#b42332':clearancePx<=8?'#9a6200':'#087ea4';
  const geomCheck=collisionGeometry(step,idx,travel,b,toolAudit,v);
- x.strokeStyle='#5b7687';x.lineWidth=Math.max(6,Math.min(10,t*1.4));x.lineJoin='round';x.lineCap='round';x.beginPath();x.moveTo(bx+20,endY);x.lineTo(leftX,endY);x.lineTo(cx,apexY);x.lineTo(rightX,endY);x.lineTo(bx+bw-20,endY);x.stroke();
- x.strokeStyle='#f8fdff';x.lineWidth=Math.max(3,Math.min(5,t*.65));x.beginPath();x.moveTo(bx+20,endY-1);x.lineTo(leftX,endY-1);x.lineTo(cx,apexY-1);x.lineTo(rightX,endY-1);x.lineTo(bx+bw-20,endY-1);x.stroke();
+ x.save();x.lineJoin='round';x.lineCap='round';x.strokeStyle='rgba(18,51,69,.28)';x.lineWidth=Math.max(10,Math.min(15,t*1.8));x.beginPath();x.moveTo(bx+20,endY+2);x.lineTo(leftX,endY+2);x.lineTo(cx,apexY+2);x.lineTo(rightX,endY+2);x.lineTo(bx+bw-20,endY+2);x.stroke();
+ x.strokeStyle='#8faab8';x.lineWidth=Math.max(7,Math.min(11,t*1.4));x.beginPath();x.moveTo(bx+20,endY);x.lineTo(leftX,endY);x.lineTo(cx,apexY);x.lineTo(rightX,endY);x.lineTo(bx+bw-20,endY);x.stroke();
+ x.strokeStyle='#f7fdff';x.lineWidth=Math.max(3,Math.min(5,t*.65));x.beginPath();x.moveTo(bx+20,endY-1);x.lineTo(leftX,endY-1);x.lineTo(cx,apexY-1);x.lineTo(rightX,endY-1);x.lineTo(bx+bw-20,endY-1);x.stroke();x.restore();
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('ÁNGULO ACTUAL '+included.toFixed(1)+'°',cx-66,by+bh-35);
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('PUNZÓN '+punchAngle+'° · R'+punchRadius.toFixed(1),bx+16,by+67);x.fillText('CHAPA',bx+16,by+119);x.fillText('MATRIZ V'+v,bx+16,by+bh-15);
  x.fillStyle=contactColor;x.font='900 11px system-ui';x.textAlign='right';x.fillText(contactState+' · '+clearancePx.toFixed(1)+' px',bx+bw-14,by+bh-15);x.textAlign='left';
