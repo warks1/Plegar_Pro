@@ -14,7 +14,7 @@ jobs:
           node-version: 22
       - name: Check JavaScript syntax
         run: |
-          for file in pp54-engineering.js pp55-cad-precision.js pp56-collision-review.js pp57-system-integration.js pp59-engineering-upgrade.js pp60-graphics-runtime.js pp61-runtime-integrity.js pp62-contrast-playback-fix.js sw.js; do
+          for file in pp54-engineering.js pp55-cad-precision.js pp56-collision-review.js pp57-system-integration.js pp59-engineering-upgrade.js pp60-graphics-runtime.js pp61-runtime-integrity.js pp62-contrast-playback-fix.js pp63-v85-parametric-model.js sw.js; do
             echo "Checking $file"
             node --check "$file"
           done
@@ -24,6 +24,8 @@ jobs:
           grep -Fq './pp60-graphics-runtime.js' index.html
           grep -Fq './pp61-runtime-integrity.js' index.html
           grep -Fq './pp62-contrast-playback-fix.js' index.html
+          grep -Fq './pp63-v85-parametric-model.js?v=63.1' index.html
+          grep -Fq './pp63-v85-parametric-model.js?v=63.1' sw.js
           grep -Fq './pp60-graphics-runtime.js' sw.js
           grep -Fq './pp61-runtime-integrity.js' sw.js
           grep -Fq './pp62-contrast-playback-fix.js' sw.js
