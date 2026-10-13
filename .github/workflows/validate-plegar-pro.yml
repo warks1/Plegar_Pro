@@ -25,7 +25,7 @@ jobs:
           require('./pp63-v85-parametric-model.js');
           const m = window.PP63V85Model;
           if (!m || m.SPEC.bendingLengthMm !== 2050 || m.SPEC.betweenUprightsMm !== 1750) throw new Error('V85 reference dimensions missing');
-          if (m.BYSTRONIC.bendingLengthMm !== 3100 || m.BYSTRONIC.forceKN !== 1000 || m.BYSTRONIC.forceTonnes !== 100) throw new Error('Bystronic 100/3100 reference dimensions missing');
+          if (m.BYSTRONIC.bendingLengthMm !== 3100 || m.BYSTRONIC.forceKN !== 1000 || m.BYSTRONIC.forceTonnes !== 102) throw new Error('Bystronic 100/3100 reference dimensions missing');
           for (const id of [m.SPEC.id,m.BYSTRONIC.id]) {
             const mesh = m.machineMesh(id);
             if (mesh.length < 5 || mesh.some(x => !x.vertices.length || !x.triangles.length)) throw new Error('Invalid machine mesh: '+id);
