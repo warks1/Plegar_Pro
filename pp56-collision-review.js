@@ -28,9 +28,11 @@ function collisionGeometry(stepIndex,foldIndex,travel,b,toolAudit,v){
  const measuredDie=Array.isArray(toolAudit.die?.profilePointsMm)&&toolAudit.die.profilePointsMm.length>=6?toolAudit.die.profilePointsMm:null;const die=measuredDie?measuredDie.map(p=>({x:Number(p.x),y:Number(p.y)})):[{x:-Math.max(v,open)-10,y:0},{x:-open,y:0},{x:0,y:-Math.max(1,Math.min(v*.6,depth*.45))},{x:open,y:0},{x:Math.max(v,open)+10,y:0},{x:Math.max(v,open)+10,y:-depth},{x:-Math.max(v,open)-10,y:-depth}];
  const sheetHitPunch=[],sheetHitDie=[],activeBendSegments=[];
  for(let i=0;i<model.length-1;i++){
-  const a=model[i],z=model[i+1],legTags=[a.legIndex,z.legIndex].filter(Number.isInteger),activeLeg=legTags.some(k=>k===foldIndex||k===foldIndex+1),activeArc=a.bendIndex===foldIndex||z.bendIndex===foldIndex;
+  const a=model[i],z=model[i+1],legTags=[a.legIndex,z.legIndex].filter(Number.isInteger),activeArc=a.bendIndex===foldIndex||z.bendIndex===foldIndex;
   if(activeArc){activeBendSegments.push({a,z});continue}
-  if(activeLeg)continue;
+  // Solo evaluar alas que ya se han plegado antes del paso activo. No excluir toda el ala adyacente al pliegue activo: eso ocultaba interferencias de alas anteriores.
+  const priorFoldedLeg=legTags.some(k=>k!==foldIndex&&order.indexOf(k)>=0&&order.indexOf(k)<stepIndex);
+  if(!priorFoldedLeg)continue;
   if(segmentHitsPoly(a,z,punch,t))sheetHitPunch.push(Number.isInteger(a.legIndex)?a.legIndex:i);
   if(segmentHitsPoly(a,z,die,t))sheetHitDie.push(Number.isInteger(a.legIndex)?a.legIndex:i)
  }
@@ -39,7 +41,7 @@ function collisionGeometry(stepIndex,foldIndex,travel,b,toolAudit,v){
  const activePunchContact=activeBendSegments.some(q=>segmentHitsPoly(q.a,q.z,punch,t));
  const activeDieContact=activeBendSegments.some(q=>segmentHitsPoly(q.a,q.z,die,t));
  const flangeClearances=model.slice(0,-1).map((a,i)=>({i,d:Math.min(...punch.map(p=>distPointSegment(p,a,model[i+1])),...die.map(p=>distPointSegment(p,a,model[i+1])))})).filter(q=>q.i!==stepIndex);
- return {unit:'mm',profilePointCount:modelSource.length,priorFoldSegmentCount:new Set([...sheetHitPunch,...sheetHitDie]).size,punchInterferenceSegments:[...new Set(sheetHitPunch)],dieInterferenceSegments:[...new Set(sheetHitDie)],priorFoldInterference:sheetHitPunch.length>0||sheetHitDie.length>0,activeBendContact:{checked:true,punchContourContact:activePunchContact,dieContourContact:activeDieContact,arcSegments:activeBendSegments.length,interpretation:'contacto geométrico 2D orientativo; no distingue por sí solo contacto correcto de penetración indebida'},toolProfileSource:measuredPunch||measuredDie?'imported DXF profile points in physical mm':'parametric estimate from catalog angle/radius/height/V',officialGeometry:!!(toolAudit.punch?.officialVerified&&toolAudit.die?.officialVerified),travel:travel,tipClearanceMm:gap,dieOpeningMm:v,thicknessMm:t,method:'2D polygon/segment intersection in model millimetres; thickness-aware sheet and radius-parametric bends; simplified tool contours; not a verified 3D solid CAD or safety-certified',scope:'prior folded flanges; active bend contour contact checked separately in 2D',activeBendIntersectionChecked:true};
+ return {unit:'mm',profilePointCount:modelSource.length,priorFoldSegmentCount:new Set([...sheetHitPunch,...sheetHitDie]).size,punchInterferenceSegments:[...new Set(sheetHitPunch)],dieInterferenceSegments:[...new Set(sheetHitDie)],priorFoldInterference:sheetHitPunch.length>0||sheetHitDie.length>0,activeBendContact:{checked:true,punchContourContact:activePunchContact,dieContourContact:activeDieContact,arcSegments:activeBendSegments.length,interpretation:'contacto geométrico 2D orientativo; no distingue por sí solo contacto correcto de penetración indebida'},toolProfileSource:measuredPunch||measuredDie?'imported DXF profile points in physical mm':'parametric estimate from catalog angle/radius/height/V',officialGeometry:!!(toolAudit.punch?.officialVerified&&toolAudit.die?.officialVerified),travel:travel,tipClearanceMm:gap,dieOpeningMm:v,thicknessMm:t,method:'2D polygon/segment intersection in model millimetres; thickness-aware sheet and radius-parametric bends; simplified tool contours; not a verified 3D solid CAD or safety-certified',scope:'chronologically prior folded flanges only; active bend contour contact checked separately in 2D',activeBendIntersectionChecked:true};
 }
 function profileModel(progressStep=Infinity,progressTravel=1){
  const a=bs(),order=seq(),pts=[{x:0,y:0}],n=a.length,folds=Math.max(0,n-1);let heading=0;
