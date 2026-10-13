@@ -37,6 +37,13 @@ jobs:
           if (m.intersectPrisms(sheet,miss).intersects) throw new Error('False-positive prism collision');
           const noZ = m.prismMesh([{x:-1,y:-1},{x:1,y:-1},{x:1,y:1},{x:-1,y:1}],200,250,'separated-z');
           if (m.intersectPrisms(sheet,noZ).intersects) throw new Error('Z-separated solids must not collide');
+          const concave = m.prismMesh([{x:0,y:0},{x:3,y:0},{x:3,y:1},{x:1,y:1},{x:1,y:3},{x:0,y:3}],0,10,'concave-L');
+          if (!concave || !concave.triangles.length) throw new Error('Concave tooling profile failed triangulation');
+          const capArea = concave.triangles.filter(t => t.every(i => i < 6)).reduce((sum,t) => {
+            const [a,b,c] = t.map(i => concave.vertices[i]);
+            return sum + Math.abs((b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]))/2;
+          },0);
+          if (Math.abs(capArea-5)>1e-8) throw new Error('Concave profile cap triangulation area mismatch: '+capArea);
           console.log('V85, Bystronic, and 3D prism checks passed');
           NODE
       - name: Verify module and cache wiring
