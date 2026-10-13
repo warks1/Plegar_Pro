@@ -108,7 +108,9 @@
     const maxPos=Math.max(0,Math.min(Math.max(0,order.length-1),pos));
     const requestedFold=detail.complete?(order[maxPos]??maxPos):(Number.isInteger(detail.foldIndex)?detail.foldIndex:(order[maxPos]??maxPos));
     const foldIndex=Math.max(0,Math.min(Math.max(0,foldCount-1),requestedFold));
-    const coreStep=(source==='s2'||source==='s3')?Math.max(0,Math.min(bends.length-1,requestedStep)):Math.max(0,Math.min(bends.length-1,maxPos));
+    // Convert the physical bend index back to its canonical position in the programmed order.
+    const locatedPosition=order.indexOf(foldIndex),syncPos=locatedPosition>=0?locatedPosition:maxPos;
+    const coreStep=(source==='s2'||source==='s3')?Math.max(0,Math.min(bends.length-1,requestedStep)):Math.max(0,Math.min(bends.length-1,syncPos));
     syncingPlayback=true;
     try{
       if(typeof sim!=='undefined'&&sim){sim.machineTravel=Number.isFinite(Number(detail.travel))?Math.max(0,Math.min(100,Number(detail.travel))):0;
@@ -117,8 +119,8 @@
         if(typeof drawAll==='function')drawAll();
       }
       const collisionStep=$('pp56Step');
-      if(collisionStep&&source!=='collisions'&&Number(collisionStep.value)!==maxPos){
-        collisionStep.value=String(maxPos);
+      if(collisionStep&&source!=='collisions'&&Number(collisionStep.value)!==syncPos){
+        collisionStep.value=String(syncPos);
         collisionStep.dispatchEvent(new Event('change',{bubbles:true}));
       }
       // The collision module's change handler also updates sim steps; reapply the originating step last
@@ -137,12 +139,16 @@
       // Otherwise its next animation frame can overwrite the selected step before the sync settles.
       if(source==='collisions'&&$('pp59play')?.textContent?.includes('Pausar'))$('pp59play').click();
       const twinStep=$('pp59step');
-      if(twinStep&&source!=='pp59'&&Number(twinStep.value)!==maxPos){
-        twinStep.value=String(Math.min(Math.max(0,twinStep.options.length-1),maxPos));
+      if(twinStep&&source!=='pp59'&&Number(twinStep.value)!==syncPos){
+        twinStep.value=String(Math.min(Math.max(0,twinStep.options.length-1),syncPos));
         twinStep.dispatchEvent(new Event('change',{bubbles:true}));
       }
+      // Restore canonical selectors after module change handlers have run; they may redraw asynchronously.
+      if(collisionStep)collisionStep.value=String(Math.min(Math.max(0,collisionStep.options.length-1),syncPos));
+      if(twinStep)twinStep.value=String(Math.min(Math.max(0,twinStep.options.length-1),syncPos));
+      if(typeof sim!=='undefined'&&sim){sim.s2Step=coreStep;sim.s3Step=coreStep;sim.p3Active=foldIndex;if($('p3Active'))$('p3Active').value=String(foldIndex);if(typeof drawAll==='function')drawAll()}
       lastFingerprint=fingerprint();
-      window.dispatchEvent(new CustomEvent('plegarpro:modules-synchronized',{detail:{reason:'playback-step',source,step:maxPos,foldIndex}}));
+      window.dispatchEvent(new CustomEvent('plegarpro:modules-synchronized',{detail:{reason:'playback-step',source,step:syncPos,foldIndex}}));
     }catch(error){console.error('[Plegar Pro Runtime] Error al sincronizar el paso de reproducción',error)}
     finally{syncingPlayback=false}
   }
