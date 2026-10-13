@@ -40,7 +40,7 @@ assert.match(runtime, /step:syncPos,foldIndex/, 'synchronization broadcasts must
 
 assert.match(html, /if\(ppExecutionRank\(i\)<step&&i<state\.bends\.length-1\)/,
   '3D fold-angle highlights must follow programmed execution rank, not physical bend index');
-assert.match(html, /i===Math\.min\(simulation\?\(activeFoldIndex\?\?step\):step,state\.bends\.length\)/,
+assert.match(html, /i===Math\.min\(active2DFold,state\.bends\.length\)/, '2D active marker must use the local programmed bend position');
   '3D active marker must follow the selected bend in execution order');
 
 
