@@ -98,12 +98,17 @@
     const source=String(detail.source||'');
     const s=getState(),bends=s?.bends||[];
     if(!bends.length)return;
-    const order=Array.isArray(s?.bendOrder)&&s.bendOrder.length?s.bendOrder:[...bends.keys()].slice(0,Math.max(0,bends.length-1));
-    let pos=Math.max(0,Number(detail.step)||0);
+    const foldCount=Math.max(0,bends.length-1);
+    const rawOrder=Array.isArray(s?.bendOrder)?s.bendOrder:[];
+    const order=rawOrder.filter((v,i)=>Number.isInteger(v)&&v>=0&&v<foldCount&&rawOrder.indexOf(v)===i);
+    for(let i=0;i<foldCount;i++)if(!order.includes(i))order.push(i);
+    const requestedStep=Math.max(0,Math.floor(Number(detail.step)||0));
+    let pos=requestedStep;
     if(detail.complete)pos=Math.max(0,order.length-1);
     const maxPos=Math.max(0,Math.min(Math.max(0,order.length-1),pos));
-    const foldIndex=Number.isInteger(detail.foldIndex)?detail.foldIndex:(order[maxPos]??maxPos);
-    const coreStep=detail.complete?Math.max(0,Math.min(Math.max(0,bends.length-1),maxPos+1)):((source==='s2'||source==='s3')?Math.max(0,Number(detail.step)||0):maxPos);
+    const requestedFold=Number.isInteger(detail.foldIndex)?detail.foldIndex:(order[maxPos]??maxPos);
+    const foldIndex=Math.max(0,Math.min(Math.max(0,foldCount-1),requestedFold));
+    const coreStep=detail.complete?Math.max(0,Math.min(Math.max(0,bends.length-1),maxPos+1)):((source==='s2'||source==='s3')?Math.max(0,Math.min(bends.length-1,requestedStep)):maxPos);
     syncingPlayback=true;
     try{
       if(typeof sim!=='undefined'&&sim){
