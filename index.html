@@ -1054,6 +1054,15 @@ body:not(.boot-complete) > .app{visibility:hidden}
 
 <script>
 (function(){
+  // Track actual click listeners: onclick alone misses addEventListener bindings.
+  if(!window.__PP_CLICK_TRACKER__){
+    var ppClickBound=new WeakSet(),ppNativeAdd=EventTarget.prototype.addEventListener;
+    EventTarget.prototype.addEventListener=function(type,listener,options){
+      if(type==='click'&&this&&this.tagName==='BUTTON')ppClickBound.add(this);
+      return ppNativeAdd.call(this,type,listener,options);
+    };
+    window.__PP_CLICK_TRACKER__={has:function(el){return ppClickBound.has(el)}};
+  }
   function el(id){return document.getElementById(id)}
   function setMenu(open){
     var toggle=el('menuToggle'),side=el('mainSidebar'),btn=el('mobileMenuBtn');
@@ -2129,8 +2138,8 @@ function runtimeFunctionalAudit(){
  const required=['mobileMenuBtn','menuToggle','mainSidebar','backBtn','undoBtn','redoBtn','addBend','progThickness','progSheetLength','progBendLength','progSpecialGeometry','progCurveCreate','sequenceAnalyze','sequenceOptimize','sequenceExport','sendSim','p2Add','p2Thickness','p2SheetLength','p2BendLength','p3Apply','p3Thickness','p3SheetLength','p3BendLength','s2Play','s3Play','curveCalculate','curveAutoOptimize','curveExportCsv','compareVBtn','vCompareAll','aiCalculate','crmSave','crmMail','saveSettings','saveProject'];
  required.forEach(id=>{if(!safeElement(id))report.missingElements.push(id)});
  document.querySelectorAll('section.page').forEach(p=>report.modules.push(p.id));
- document.querySelectorAll('button[id]').forEach(b=>report.buttons.push({id:b.id,bound:typeof b.onclick==='function'||b.dataset.fallbackBound==='1'}));
- report.unbound=report.buttons.filter(x=>!x.bound).map(x=>x.id).filter(id=>!['analyzePhoto','visionRotateLeft','visionRotateRight','visionReprocess','visionUseResult','crmNew','crmSave','crmDelete','crmWhatsApp','crmMail','crmAssign','crmExport'].includes(id));
+ document.querySelectorAll('button[id]').forEach(b=>report.buttons.push({id:b.id,bound:typeof b.onclick==='function'||b.dataset.fallbackBound==='1'||!!window.__PP_CLICK_TRACKER__?.has(b)||!!(b.dataset.page||b.dataset.go||b.dataset.action)}));
+ report.unbound=report.buttons.filter(x=>!x.bound).map(x=>x.id);
  window.__PLEGAR_AUDIT__=report;
  return report;
 }
