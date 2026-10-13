@@ -18,15 +18,18 @@ jobs:
             echo "Checking $file"
             node --check "$file"
           done
-      - name: Test PP63 machine mesh and 3D prism intersection
+      - name: Test V85 and Bystronic 3D reference meshes and prism collisions
         run: |
           node <<'NODE'
           global.window = {};
           require('./pp63-v85-parametric-model.js');
           const m = window.PP63V85Model;
           if (!m || m.SPEC.bendingLengthMm !== 2050 || m.SPEC.betweenUprightsMm !== 1750) throw new Error('V85 reference dimensions missing');
-          const mesh = m.machineMesh();
-          if (mesh.length < 5 || mesh.some(x => !x.vertices.length || !x.triangles.length)) throw new Error('V85 mesh components invalid');
+          if (m.BYSTRONIC.bendingLengthMm !== 3100 || m.BYSTRONIC.forceKN !== 1000 || m.BYSTRONIC.forceTonnes !== 100) throw new Error('Bystronic 100/3100 reference dimensions missing');
+          for (const id of [m.SPEC.id,m.BYSTRONIC.id]) {
+            const mesh = m.machineMesh(id);
+            if (mesh.length < 5 || mesh.some(x => !x.vertices.length || !x.triangles.length)) throw new Error('Invalid machine mesh: '+id);
+          }
           const sheet = m.segmentPrism({x:-2,y:0},{x:2,y:0},1,-100,100,'sheet');
           const hit = m.prismMesh([{x:-1,y:-1},{x:1,y:-1},{x:1,y:1},{x:-1,y:1}],-50,50,'tool');
           const miss = m.prismMesh([{x:10,y:10},{x:12,y:10},{x:12,y:12},{x:10,y:12}],-50,50,'remote-tool');
@@ -34,7 +37,7 @@ jobs:
           if (m.intersectPrisms(sheet,miss).intersects) throw new Error('False-positive prism collision');
           const noZ = m.prismMesh([{x:-1,y:-1},{x:1,y:-1},{x:1,y:1},{x:-1,y:1}],200,250,'separated-z');
           if (m.intersectPrisms(sheet,noZ).intersects) throw new Error('Z-separated solids must not collide');
-          console.log('PP63 mesh and 3D prism intersection checks passed');
+          console.log('V85, Bystronic, and 3D prism checks passed');
           NODE
       - name: Verify module and cache wiring
         run: |
