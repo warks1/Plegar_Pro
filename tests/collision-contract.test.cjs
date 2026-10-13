@@ -40,8 +40,8 @@ assert.match(html, /Build a thin sheet-metal wall/);
 assert.match(html, /getSelectedToolProfiles/);
 
 // Keep the deployed offline shell wired to the same collision/twin modules.
-assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=159"><\/script>/, 'page and service worker must load the same collision module version');
-assert.match(sw, /\.\/pp56-collision-review\.js\?v=159/);
+assert.match(html, /<script src="\.\/pp56-collision-review\\.js\\?v=160"><\/script>/, 'page and service worker must load the same collision module version');
+assert.match(sw, /\.\/pp56-collision-review\\.js\\?v=160/);
 assert.match(collision, /function setStep\(n,forceSync=false\)/);
 assert.match(collision, /signature=o\.join\(','\),sequenceChanged=sel\.dataset\.sequence!==signature/ , 'a changed fold order must force a playback-sync event even when the selected step index stays the same');
 assert.match(collision, /setStep\(step,sequenceChanged\)/, 'sequence changes must propagate to 2D/3D and machine-twin playback');
@@ -69,6 +69,13 @@ assert.match(runtime, /else if\(source==='pp59'&&Number\.isFinite\(Number\(detai
 assert.match(runtime, /travel\.dispatchEvent\(new Event\('input',\{bubbles:true\}\)\)/, 'collision view must redraw when synchronized travel changes');
 assert.match(html, /pp59-engineering-upgrade\.js\?v=151/);
 assert.match(html, /pp61-runtime-integrity\.js\?v=62\.2/);
+assert.match(html, /const meta=titles\[page\]\|\|\[/, 'navigation must tolerate dynamic pages without title metadata');
+assert.match(html, /Error al actualizar el módulo/, 'navigation failures must be surfaced instead of silently swallowed');
+assert.match(html, /id="pp649-stability-core"/, 'dashboard contrast and live-machine visibility fixes must be loaded');
+assert.match(html, /\.page#dashboard \.quick button small\{display:block;color:#496372!important/, 'dashboard quick-action descriptions must meet readable contrast');
+assert.match(collision, /Sin matrices disponibles para V/, 'empty die catalogs must show a clear explanatory option');
+assert.match(collision, /\.pp56-controls select option\{background:#fff!important;color:#173246!important\}/, 'collision selectors must keep readable option text');
+
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.2/);
 assert.match(sw, /plegar-pro-v151-27/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
