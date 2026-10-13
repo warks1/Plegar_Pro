@@ -17,6 +17,19 @@ const SPEC = Object.freeze({
  sourceType:'public used-machine listing; not OEM CAD',
  geometryStatus:'PARAMETRIC_ESTIMATE_NOT_OEM_CAD'
 });
+const BYSTRONIC = Object.freeze({
+ id:'BYSTRONIC-XPERT-PRO-100-3100-REFERENCE',
+ maker:'Bystronic', model:'Xpert Pro 100/3100', year:null, forceTonnes:100,
+ forceKN:1000, bendingLengthMm:3100, betweenUprightsMm:null, throatMm:null, maxStrokeMm:250,
+ envelopeMm:{length:3900,width:1900,height:2800}, massKg:12200,
+ sourceUrl:'https://bystronic.com/sites/default/files/2026-03/tp007-BE-Techdaten-Xpert%20Pro_es.pdf',
+ sourceType:'official Xpert Pro datasheet for 100/3100 capacity and weight; envelope values are estimated, not OEM dimensions',
+ geometryStatus:'PARAMETRIC_ESTIMATE_NOT_OEM_CAD'
+});
+function resolveSpec(id){
+ const q=String(id||'').toLowerCase();
+ return q.includes('bystronic')||q.includes('xpert')?BYSTRONIC:SPEC;
+}
 function boxMesh(min,max,name){
  const v=[
  [min.x,min.y,min.z],[max.x,min.y,min.z],[max.x,max.y,min.z],[min.x,max.y,min.z],
@@ -25,9 +38,9 @@ function boxMesh(min,max,name){
  const f=[[0,2,1],[0,3,2],[4,5,6],[4,6,7],[0,1,5],[0,5,4],[1,2,6],[1,6,5],[2,3,7],[2,7,6],[3,0,4],[3,4,7]];
  return {name,vertices:v,triangles:f,source:'estimated envelope-derived box'};
 }
-function machineMesh(){
- const e=SPEC.envelopeMm, halfL=SPEC.bendingLengthMm/2, halfW=e.width/2;
- const col=SPEC.betweenUprightsMm/2, baseY=120, topY=e.height-180, depth=260;
+function machineMesh(machineId){
+ const spec=resolveSpec(machineId),e=spec.envelopeMm,halfL=spec.bendingLengthMm/2,halfW=e.width/2;
+ const col=(spec.betweenUprightsMm||Math.round(spec.bendingLengthMm*.82))/2,baseY=120,topY=e.height-180,depth=260;
  return [
   boxMesh({x:-halfL-315,y:0,z:-halfW},{x:-halfL-120,y:topY,z:halfW},'left-side-frame'),
   boxMesh({x:halfL+120,y:0,z:-halfW},{x:halfL+315,y:topY,z:halfW},'right-side-frame'),
@@ -78,5 +91,5 @@ function intersectPrisms(a,b){
  const sectionOverlap=crossSectionOverlap(a,b);
  return {intersects:zOverlap>1e-8&&sectionOverlap,zOverlapMm:Math.max(0,zOverlap),sectionOverlap,method:'3D-prism intersection (Z interval + cross-section polygon intersection)',geometryStatus:'PARAMETRIC_ESTIMATE_NOT_OEM_CAD'};
 }
-window.PP63V85Model={SPEC,machineMesh,boxMesh,prismMesh,segmentPrism,bounds,intersectPrisms};
+window.PP63V85Model={SPEC,BYSTRONIC,resolveSpec,machineMesh,boxMesh,prismMesh,segmentPrism,bounds,intersectPrisms};
 })();
