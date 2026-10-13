@@ -51,8 +51,10 @@ const overlap = prismEngine.prismMesh(rect(5, 5, 15, 15), -5, 5, 'overlap');
 const outside = prismEngine.prismMesh(rect(11, 0, 20, 10), -5, 5, 'outside');
 const zSeparated = prismEngine.prismMesh(rect(2, 2, 8, 8), 5.1, 10, 'z-separated');
 const zTouching = prismEngine.prismMesh(rect(2, 2, 8, 8), 5, 10, 'z-touching');
+const xyTouching = prismEngine.prismMesh(rect(10, 0, 20, 10), -5, 5, 'xy-touching');
+const xyCornerTouching = prismEngine.prismMesh(rect(10, 10, 20, 20), -5, 5, 'xy-corner-touching');
 
-assert.ok(base && overlap && outside && zSeparated && zTouching, 'valid rectangular prisms should build');
+assert.ok(base && overlap && outside && zSeparated && zTouching && xyTouching && xyCornerTouching, 'valid rectangular prisms should build');
 assert.equal(prismEngine.intersectPrisms(base, overlap).intersects, true,
   'overlapping cross-sections and overlapping Z spans should intersect');
 assert.equal(prismEngine.intersectPrisms(base, outside).intersects, false,
@@ -61,6 +63,10 @@ assert.equal(prismEngine.intersectPrisms(base, zSeparated).intersects, false,
   'separated Z spans must not intersect');
 assert.equal(prismEngine.intersectPrisms(base, zTouching).intersects, false,
   'face-only Z contact must not be reported as volumetric overlap');
+assert.equal(prismEngine.intersectPrisms(base, xyTouching).intersects, false,
+  'face-only XY contact must not be reported as volumetric overlap');
+assert.equal(prismEngine.intersectPrisms(base, xyCornerTouching).intersects, false,
+  'point-only XY contact must not be reported as volumetric overlap');
 
 const concave = prismEngine.prismMesh([
   { x: 0, y: 0 }, { x: 4, y: 0 }, { x: 4, y: 4 }, { x: 3, y: 4 },
@@ -72,4 +78,4 @@ assert.equal(prismEngine.intersectPrisms(concave, prismEngine.prismMesh(rect(1.5
 assert.equal(prismEngine.intersectPrisms(concave, prismEngine.prismMesh(rect(.2, 2, .8, 3), -1, 1, 'inside-material')).intersects, true,
   'a prism inside the concave material section should intersect');
 
-console.log('Prism geometry tests passed: XY overlap, XY separation, Z separation/touching, and concave-section cases.');
+console.log('Prism geometry tests passed: XY overlap/separation/touching, Z separation/touching, and concave-section cases.');
