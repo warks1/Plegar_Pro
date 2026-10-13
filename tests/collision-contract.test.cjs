@@ -3,10 +3,19 @@ const assert = require('node:assert/strict');
 const vm = require('node:vm');
 
 const html = fs.readFileSync('index.html', 'utf8');
+const engineeringOrder = fs.readFileSync('pp54-engineering.js', 'utf8');
 const collision = fs.readFileSync('pp56-collision-review.js', 'utf8');
 const twin = fs.readFileSync('pp59-engineering-upgrade.js', 'utf8');
 const runtime = fs.readFileSync('pp61-runtime-integrity.js', 'utf8');
 const sw = fs.readFileSync('sw.js', 'utf8');
+
+// Fold-order edits must notify the shared runtime immediately, rather than relying
+// on the periodic fingerprint poll to eventually refresh the collision and twin views.
+assert.match(engineeringOrder, /function signalOrderChange\(\)\{window\.dispatchEvent\(new CustomEvent\('plegarpro:state-changed'/);
+assert.ok((engineeringOrder.match(/signalOrderChange\(\);/g) || []).length >= 4,
+  'moving, resetting, completing, and removing a fold number must trigger immediate module synchronization');
+assert.match(html, /<script src="\.\/pp54-engineering\.js\?v=55"><\/script>/);
+assert.match(sw, /\.\/pp54-engineering\.js\?v=55/);
 
 // Keep the collision UI honest: estimated parametric checks must never be
 // presented as certified full-solid CAD collision results.
