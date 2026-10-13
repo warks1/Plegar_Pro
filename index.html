@@ -1638,48 +1638,48 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    };
    cheek(-475,1);cheek(475,-1);
    // Crown, hydraulic ram guides and crosshead.
-   box(-390,225,-125,780,54,250,paintLight,'#72b7ca');
-   box(-350,205,-105,700,28,210,'#123746');
-   box(-335,172,-90,670,34,180,'#d4dfe3','#f5fbfd');
-   box(-300,158,-72,600,12,144,steelShade);
+   box(-440,225,-125,880,54,250,paintLight,'#72b7ca');
+   box(-430,205,-105,860,28,210,'#123746');
+   box(-420,172,-90,840,34,180,'#d4dfe3','#f5fbfd');
+   box(-405,158,-72,810,12,144,steelShade);
    // Ram body moves as the sequence advances; holder and punch remain aligned.
    const beamDrop=simulation?Math.min(76,(Math.max(0,step)/Math.max(1,state.bends.length-1))*76):12;
-   box(-360,145-beamDrop,-104,720,58,208,'#748e98','#d5e0e4');
-   box(-330,119-beamDrop,-82,660,28,164,steel,'#f1f7f9');
-   box(-315,96-beamDrop,-62,630,18,124,'#647e89','#b9c9cf');
+   box(-430,145-beamDrop,-104,860,58,208,'#748e98','#d5e0e4');
+   box(-420,119-beamDrop,-82,840,28,164,steel,'#f1f7f9');
+   box(-405,96-beamDrop,-62,810,18,124,'#647e89','#b9c9cf');
    // Render the selected punch profile when profile points are available; otherwise retain the clearly schematic default.
    const punchProfile=toolProfiles?.punch?.profilePointsMm;
    if(Array.isArray(punchProfile)&&punchProfile.length>=3){
      const maxPX=Math.max(1,...punchProfile.map(p=>Math.abs(Number(p.x)||0))),profileScale=Math.min(1.25,48/maxPX),front=punchProfile.map(p=>({x:-300,y:4-beamDrop+(Number(p.y)||0)*profileScale,z:(Number(p.x)||0)*profileScale})),back=punchProfile.map(p=>({...p,x:300,y:4-beamDrop+(Number(p.y)||0)*profileScale,z:(Number(p.x)||0)*profileScale}));
      prism(front,back,'#d8e2e7','#fff5d9');
    }else{
-     for(let x=-300;x<300;x+=100){box(x,86-beamDrop,-64,94,9,128,'#e4ecef','#8fa5ae');box(x+42,83-beamDrop,-67,8,4,134,'#7b919a')}
-     prism([{x:-300,y:80-beamDrop,z:-48},{x:300,y:80-beamDrop,z:-48},{x:260,y:32-beamDrop,z:-30},{x:-260,y:32-beamDrop,z:-30}],
-           [{x:-300,y:80-beamDrop,z:48},{x:300,y:80-beamDrop,z:48},{x:260,y:32-beamDrop,z:30},{x:-260,y:32-beamDrop,z:30}],'#c5d2d8','#f5fbff');
-     prism([{x:-260,y:32-beamDrop,z:-30},{x:260,y:32-beamDrop,z:-30},{x:235,y:4-beamDrop,z:-22},{x:-235,y:4-beamDrop,z:-22}],
+     for(let x=-390;x<390;x+=100){box(x,86-beamDrop,-64,94,9,128,'#e4ecef','#8fa5ae');box(x+42,83-beamDrop,-67,8,4,134,'#7b919a')}
+     prism([{x:-390,y:80-beamDrop,z:-48},{x:390,y:80-beamDrop,z:-48},{x:340,y:32-beamDrop,z:-30},{x:-340,y:32-beamDrop,z:-30}],
+           [{x:-390,y:80-beamDrop,z:48},{x:390,y:80-beamDrop,z:48},{x:340,y:32-beamDrop,z:30},{x:-340,y:32-beamDrop,z:30}],'#c5d2d8','#f5fbff');
+     prism([{x:-260,y:32-beamDrop,z:-30},{x:260,y:32-beamDrop,z:-30},{x:305,y:4-beamDrop,z:-22},{x:-305,y:4-beamDrop,z:-22}],
            [{x:-260,y:32-beamDrop,z:30},{x:260,y:32-beamDrop,z:30},{x:235,y:4-beamDrop,z:22},{x:-235,y:4-beamDrop,z:22}],'#879da6','#e2edf1');
    }
    // Table, die holder, and V-die with a visible central throat.
-   box(-365,-154,-115,730,35,230,bed,'#91aab4');
-   box(-335,-128,-88,670,15,176,'#263f4b','#8ca4ae');
+   box(-430,-154,-115,860,35,230,bed,'#91aab4');
+   box(-410,-128,-88,820,15,176,'#263f4b','#8ca4ae');
    const dieProfile=toolProfiles?.die?.profilePointsMm;
    if(Array.isArray(dieProfile)&&dieProfile.length>=3){
      const maxDX=Math.max(1,...dieProfile.map(p=>Math.abs(Number(p.x)||0))),dieScale=Math.min(1.25,52/maxDX),front=dieProfile.map(p=>({x:-300,y:-75+(Number(p.y)||0)*dieScale,z:(Number(p.x)||0)*dieScale})),back=dieProfile.map(p=>({...p,x:300,y:-75+(Number(p.y)||0)*dieScale,z:(Number(p.x)||0)*dieScale}));
      prism(front,back,'#23779a','#bdeeff');
    }else{
-     prism([{x:-300,y:-113,z:-55},{x:300,y:-113,z:-55},{x:270,y:-75,z:-38},{x:-270,y:-75,z:-38}],
-           [{x:-300,y:-113,z:55},{x:300,y:-113,z:55},{x:270,y:-75,z:38},{x:-270,y:-75,z:38}],'#697f88','#d1dfe4');
-     prism([{x:-270,y:-75,z:-38},{x:270,y:-75,z:-38},{x:245,y:-104,z:-25},{x:-245,y:-104,z:-25}],
-           [{x:-270,y:-75,z:38},{x:270,y:-75,z:38},{x:245,y:-104,z:25},{x:-245,y:-104,z:25}],'#d7e1e5','#f7fbfd');
+     prism([{x:-390,y:-113,z:-55},{x:390,y:-113,z:-55},{x:350,y:-75,z:-38},{x:-350,y:-75,z:-38}],
+           [{x:-300,y:-113,z:55},{x:300,y:-113,z:55},{x:350,y:-75,z:38},{x:-350,y:-75,z:38}],'#697f88','#d1dfe4');
+     prism([{x:-350,y:-75,z:-38},{x:350,y:-75,z:-38},{x:320,y:-104,z:-25},{x:-320,y:-104,z:-25}],
+           [{x:-270,y:-75,z:38},{x:270,y:-75,z:38},{x:320,y:-104,z:25},{x:-320,y:-104,z:25}],'#d7e1e5','#f7fbfd');
    }
    // Rear gauge fingers and guarded side control panel.
-   box(-255,-57,126,510,12,22,'#526d78');box(-220,-47,133,18,56,18,'#91a6ae');box(202,-47,133,18,56,18,'#91a6ae');
+   box(-300,-57,126,600,12,22,'#526d78');box(-270,-47,133,18,56,18,'#91a6ae');box(252,-47,133,18,56,18,'#91a6ae');
    box(390,8,145,110,220,65,paint,'#9ac6d2');box(403,73,212,84,112,8,'#0b1d26','#b4d8e4');
    box(414,88,221,62,74,5,accent,'#b8f0ff');
    // Brand-specific fascia and machine identity plate, visible from the isometric camera.
-   box(-250,238,136,500,26,7,isTrumpf?'#1d5b2b':'#073c63',isTrumpf?'#a4e6a8':'#79d7ff');
+   box(-380,238,136,760,26,7,isTrumpf?'#1d5b2b':'#073c63',isTrumpf?'#a4e6a8':'#79d7ff');
    ctx.save();ctx.font='900 15px system-ui';ctx.textAlign='center';ctx.fillStyle='#f4fbff';const namePoint=project({x:0,y:251,z:145});ctx.fillText(isTrumpf?'TRUMPF':'BYSTRONIC',namePoint.x,namePoint.y);ctx.restore();
-   box(-145,248,134,290,18,5,'#0a2530','#5b8999');
+   box(-250,248,134,500,18,5,'#0a2530','#5b8999');
    ctx.restore();machineScaleX=1;
    // Machine identity/specification panel: distinguish verified configuration data from missing OEM CAD.
    ctx.save();const isBystronicInfo=/bystronic|xpert/i.test(selectedMachine),panelX=Math.max(18,w-330),panelY=18,panelW=Math.min(312,w-36),panelH=isBystronicInfo?108:108;ctx.fillStyle='rgba(5,20,30,.91)';ctx.strokeStyle=isBystronicInfo?'#35b9ef':'#77cf8a';ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(panelX,panelY,panelW,panelH,10);ctx.fill();ctx.stroke();ctx.textAlign='left';ctx.fillStyle='#f5fbff';ctx.font='900 13px system-ui';ctx.fillText(isBystronicInfo?'BYSTRONIC XPERT PRO 100/3100':'TRUMPF TruBend V85',panelX+12,panelY+22);ctx.font='700 11px system-ui';ctx.fillStyle='#cde5f0';if(isBystronicInfo){ctx.fillText('100 t · longitud de plegado 3100 mm',panelX+12,panelY+43);ctx.fillText('Carrera estándar 250 mm · apertura 640 mm',panelX+12,panelY+61);ctx.fillText('Entre montantes 2750 mm · garganta 400 mm',panelX+12,panelY+79);}else{ctx.fillText('85 t · longitud de plegado de referencia 2050 mm',panelX+12,panelY+43);ctx.fillText('Carrera 365 mm · apertura 535 mm · garganta 410 mm',panelX+12,panelY+61);ctx.fillStyle='#ffcf79';ctx.fillText('Confirmar variante exacta; CAD OEM no cargado',panelX+12,panelY+79);}ctx.fillStyle='#ffcf79';ctx.font='800 10px system-ui';ctx.fillText('GEOMETRÍA EXTERIOR: RECONSTRUCCIÓN VISUAL, NO CAD OEM',panelX+12,panelY+panelH-10);ctx.restore();
