@@ -1,5 +1,11 @@
 # Registro de cambios consolidado — Plegar Pro
 
+## v64.10 — restauración de interfaz anterior
+
+- Se retiró únicamente la última capa CSS experimental «Plegar Pro Premium» a petición del usuario; se mantiene la interfaz previa.
+- No se eliminaron módulos, lógica de simulación ni datos del proyecto.
+- Validación de sintaxis, contratos de colisión, prueba de navegador y publicación de GitHub Pages completadas correctamente para esta reversión.
+
 ## v64.9 — estabilización de interfaz y navegación
 
 - Se protege la navegación cuando una sección dinámica no tiene metadatos en la tabla de títulos.
