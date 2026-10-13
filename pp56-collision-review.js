@@ -103,14 +103,37 @@ function parseDxfProfile(text,unitFactor){
  for(let i=0;i+1<lines.length;i+=2){const code=Number(lines[i]);if(Number.isFinite(code))pairs.push([code,lines[i+1]])}
  let inEntities=false,entity=null,entities=[];
  for(const [code,val] of pairs){if(code===0&&val==='SECTION'){entity=null;continue}if(code===2&&val==='ENTITIES'){inEntities=true;continue}if(code===0&&val==='ENDSEC'){if(entity)entities.push(entity);entity=null;inEntities=false;continue}if(!inEntities)continue;if(code===0){if(entity)entities.push(entity);entity={type:val,items:[]}}else if(entity)entity.items.push([code,val])}
- if(entity)entities.push(entity);const pts=[];
- for(const e of entities){const get=c=>e.items.filter(p=>p[0]===c).map(p=>Number(p[1]));
-  if(e.type==='LWPOLYLINE'){const xs=get(10),ys=get(20);for(let i=0;i<Math.min(xs.length,ys.length);i++)pts.push({x:xs[i]*unitFactor,y:ys[i]*unitFactor})}
-  else if(e.type==='LINE'){const x=get(10)[0],y=get(20)[0],x2=get(11)[0],y2=get(21)[0];if([x,y,x2,y2].every(Number.isFinite))pts.push({x:x*unitFactor,y:y*unitFactor},{x:x2*unitFactor,y:y2*unitFactor})}
-  else if(e.type==='ARC'){const cx=get(10)[0],cy=get(20)[0],r=get(40)[0],start=get(50)[0]*Math.PI/180,end=get(51)[0]*Math.PI/180;if([cx,cy,r,start,end].every(Number.isFinite)){while(end<start)end+=Math.PI*2;const n=Math.max(8,Math.ceil((end-start)*Math.max(r,1)/2));for(let i=0;i<=n;i++){const q=start+(end-start)*i/n;pts.push({x:(cx+r*Math.cos(q))*unitFactor,y:(cy+r*Math.sin(q))*unitFactor})}}}
+ if(entity)entities.push(entity);
+ const paths=[];
+ for(const e of entities){
+  const get=code=>e.items.filter(p=>p[0]===code).map(p=>Number(p[1]));
+  if(e.type==='LWPOLYLINE'){
+   const xs=get(10),ys=get(20),path=[];for(let i=0;i<Math.min(xs.length,ys.length);i++)if(Number.isFinite(xs[i])&&Number.isFinite(ys[i]))path.push({x:xs[i]*unitFactor,y:ys[i]*unitFactor});
+   if(path.length>=2)paths.push(path);
+  }else if(e.type==='LINE'){
+   const x=get(10)[0],y=get(20)[0],x2=get(11)[0],y2=get(21)[0];
+   if([x,y,x2,y2].every(Number.isFinite))paths.push([{x:x*unitFactor,y:y*unitFactor},{x:x2*unitFactor,y:y2*unitFactor}]);
+  }else if(e.type==='ARC'){
+   const cx=get(10)[0],cy=get(20)[0],r=get(40)[0],start=get(50)[0]*Math.PI/180,end=get(51)[0]*Math.PI/180;
+   if([cx,cy,r,start,end].every(Number.isFinite)&&r>0){while(end<start)end+=Math.PI*2;const n=Math.max(8,Math.min(720,Math.ceil((end-start)*Math.max(r*unitFactor,1)/2))),path=[];for(let i=0;i<=n;i++){const q=start+(end-start)*i/n;path.push({x:(cx+r*Math.cos(q))*unitFactor,y:(cy+r*Math.sin(q))*unitFactor})}paths.push(path)}
+  }
  }
- const unique=[];pts.forEach(p=>{if(Number.isFinite(p.x)&&Number.isFinite(p.y)&&!unique.some(q=>Math.hypot(q.x-p.x,q.y-p.y)<.02))unique.push(p)});
- if(unique.length<3)throw new Error('No hay suficientes puntos DXF: usa LWPOLYLINE o líneas/arcos que definan la sección.');return unique;
+ const tol=.08,near=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y)<=tol;
+ // Join independent entities by matching endpoints; do not invent edges across gaps.
+ const chains=paths.map(p=>p.slice()).filter(p=>p.length>=2);
+ if(!chains.length)throw new Error('El DXF no contiene LWPOLYLINE, LINE o ARC con coordenadas válidas.');
+ let chain=chains.shift();
+ while(chains.length){
+  const end=chain[chain.length-1],start=chain[0];let best={d:Infinity,ci:-1,mode:''};
+  chains.forEach((p,ci)=>{const opts=[{d:Math.hypot(end.x-p[0].x,end.y-p[0].y),mode:'append'},{d:Math.hypot(end.x-p[p.length-1].x,end.y-p[p.length-1].y),mode:'appendReverse'},{d:Math.hypot(start.x-p[p.length-1].x,start.y-p[p.length-1].y),mode:'prepend'},{d:Math.hypot(start.x-p[0].x,start.y-p[0].y),mode:'prependReverse'}];opts.forEach(o=>{if(o.d<best.d)best={...o,ci}})});
+  if(best.d>tol)throw new Error('El DXF contiene tramos desconectados (separación '+best.d.toFixed(2)+' mm). Importa únicamente el contorno del útil, con entidades conectadas.');
+  let next=chains.splice(best.ci,1)[0];if(best.mode==='appendReverse'||best.mode==='prependReverse')next.reverse();
+  if(best.mode==='append'||best.mode==='appendReverse')chain.push(...next.slice(1));else if(best.mode==='prepend')chain.unshift(...next.slice(0,-1));else chain.unshift(...next.slice(1));
+ }
+ const unique=[];chain.forEach(p=>{if(Number.isFinite(p.x)&&Number.isFinite(p.y)&&(!unique.length||Math.hypot(unique[unique.length-1].x-p.x,unique[unique.length-1].y-p.y)>.02))unique.push(p)});
+ if(unique.length>2&&near(unique[0],unique[unique.length-1]))unique.pop();
+ if(unique.length<3)throw new Error('No hay suficientes puntos conectados para definir la sección del útil.');
+ return unique;
 }
 function normalizeDxfProfile(points,type){const minX=Math.min(...points.map(p=>p.x)),maxX=Math.max(...points.map(p=>p.x)),minY=Math.min(...points.map(p=>p.y)),maxY=Math.max(...points.map(p=>p.y)),mid=(minX+maxX)/2;return points.map(p=>({x:Number((p.x-mid).toFixed(4)),y:Number((p.y-(type==='Matriz'?maxY:minY)).toFixed(4))}))}
 function runSequenceRegressionTests(){
