@@ -157,6 +157,8 @@ jobs:
             const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, serviceWorkers: 'block' });
             const page = await context.newPage();
             const errors = [];
+            await page.addInitScript(() => { window.addEventListener('error', e => console.log('[Plegar Pro JS ERROR LOCATION]', JSON.stringify({message:e.message,filename:e.filename,lineno:e.lineno,colno:e.colno,stack:e.error?.stack}))); });
+            page.on('console', msg => { if (msg.type() === 'error') console.error('[Plegar Pro console error]', JSON.stringify(msg.location()), msg.text()); });
             page.on('pageerror', error => { errors.push(error.stack || error.message); console.error('[Plegar Pro browser pageerror]', error.stack || error.message); });
             const started = Date.now();
             await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded', timeout: 30000 });
