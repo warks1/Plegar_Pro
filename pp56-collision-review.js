@@ -174,7 +174,7 @@ function parseDxfProfile(text,unitFactor){
 function normalizeDxfProfile(points,type){const minX=Math.min(...points.map(p=>p.x)),maxX=Math.max(...points.map(p=>p.x)),minY=Math.min(...points.map(p=>p.y)),maxY=Math.max(...points.map(p=>p.y)),mid=(minX+maxX)/2;return points.map(p=>({x:Number((p.x-mid).toFixed(4)),y:Number((p.y-(type==='Matriz'?maxY:minY)).toFixed(4))}))}
 function runSequenceRegressionTests(){
  const st=S();if(!st||!Array.isArray(st.bends))return {ok:false,error:'No hay programa activo'};
- const originalBends=st.bends,originalOrder=st.bendOrder,previousStep=step,previousTravel=$('pp56Travel')?.value||'0';
+ const originalBends=st.bends,originalOrder=st.bendOrder,previousStep=step,previousTravel=$('pp56Travel')?.value||'0',previousSync={s2Step:typeof sim!=='undefined'&&sim?sim.s2Step:undefined,s3Step:typeof sim!=='undefined'&&sim?sim.s3Step:undefined,p3Active:typeof sim!=='undefined'&&sim?sim.p3Active:undefined,machineTravel:typeof sim!=='undefined'&&sim?sim.machineTravel:undefined,p3Input:$('p3Active')?.value,twinStep:$('pp59step')?.value,collisionStep:$('pp56Step')?.value,punchSelection:$('pp56PunchSelect')?.value,dieSelection:$('pp56DieSelect')?.value};
  const samples={U:[{leg:50,angle:90,direction:1},{leg:80,angle:90,direction:-1},{leg:80,angle:90,direction:-1},{leg:50,angle:90,direction:1}],Z:[{leg:50,angle:90,direction:1},{leg:80,angle:90,direction:-1},{leg:80,angle:90,direction:1},{leg:50,angle:90,direction:-1}],Caja:[{leg:50,angle:90,direction:1},{leg:80,angle:90,direction:-1},{leg:120,angle:90,direction:-1},{leg:80,angle:90,direction:1},{leg:50,angle:90,direction:1}]};
  const results=[];
  try{
@@ -190,7 +190,18 @@ function runSequenceRegressionTests(){
  }catch(e){results.push({name:'error',error:String(e?.message||e)});}
  finally{
   st.bends=originalBends;st.bendOrder=originalOrder;
-  try{refreshSteps();setStep(previousStep);if($('pp56Travel'))$('pp56Travel').value=previousTravel;drawCollision();}
+  try{
+   refreshSteps();
+   step=Math.max(0,Math.min(Math.max(0,seq().length-1),Number(previousStep)||0));
+   if($('pp56Step'))$('pp56Step').value=previousSync.collisionStep??String(step);
+   if($('pp56Travel'))$('pp56Travel').value=previousTravel;
+   if($('pp56PunchSelect')&&previousSync.punchSelection!==undefined&&[...$('pp56PunchSelect').options].some(o=>o.value===previousSync.punchSelection))$('pp56PunchSelect').value=previousSync.punchSelection;
+   if($('pp56DieSelect')&&previousSync.dieSelection!==undefined&&[...$('pp56DieSelect').options].some(o=>o.value===previousSync.dieSelection))$('pp56DieSelect').value=previousSync.dieSelection;
+   if($('pp59step')&&previousSync.twinStep!==undefined)$('pp59step').value=previousSync.twinStep;
+   if(typeof sim!=='undefined'&&sim){for(const k of ['s2Step','s3Step','p3Active','machineTravel'])if(previousSync[k]!==undefined)sim[k]=previousSync[k];}
+   if($('p3Active')&&previousSync.p3Input!==undefined)$('p3Active').value=previousSync.p3Input;
+   renderSequenceBar();if(typeof drawAll==='function')drawAll();drawCollision();
+  }
   catch(restoreError){results.push({name:'restore',error:'No se pudo restaurar completamente la vista: '+String(restoreError?.message||restoreError)});}
  }
  const ok=results.length===3&&results.every(r=>r.expectedFolds===r.actualFolds&&r.lastStepSelected&&r.geometryFinite&&r.geometryAvailable&&r.priorFoldCheckPresent&&r.priorFoldBendSegments>0&&r.activeBendContactChecked&&r.activeBendArcSegments>0);
