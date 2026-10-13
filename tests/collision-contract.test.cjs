@@ -10,6 +10,8 @@ const sw = fs.readFileSync('sw.js', 'utf8');
 // presented as certified full-solid CAD collision results.
 assert.match(collision, /collisionCertification\s*:\s*false/);
 assert.match(collision, /activeBendContact/);
+assert.match(collision, /machineBodyCollisionCheck:\{available:false,reason:/);
+assert.match(collision, /bastidor NO se comprueban como colisión/i);
 assert.match(collision, /INTERFERENCIA ESTIMADA CON ALAS PREVIAMENTE PLEGADAS/);
 assert.match(collision, /no es un CAD 3D de sólidos completo ni una certificación de seguridad/i);
 assert.match(collision, /getSelectedToolProfiles\s*\(/);
