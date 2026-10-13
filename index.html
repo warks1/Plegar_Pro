@@ -2140,6 +2140,8 @@ function runtimeFunctionalAudit(){
  document.querySelectorAll('section.page').forEach(p=>report.modules.push(p.id));
  document.querySelectorAll('button[id]').forEach(b=>report.buttons.push({id:b.id,bound:typeof b.onclick==='function'||b.dataset.fallbackBound==='1'||!!window.__PP_CLICK_TRACKER__?.has(b)||!!(b.dataset.page||b.dataset.go||b.dataset.action)}));
  report.unbound=report.buttons.filter(x=>!x.bound).map(x=>x.id);
+ report.notDirectlyBound=report.unbound.slice();
+ report.bindingAuditNote='unbound significa sin listener directo detectable; no demuestra por sí solo que el botón carezca de acción, porque puede usar delegación en un contenedor o un formulario.';
  window.__PLEGAR_AUDIT__=report;
  return report;
 }
