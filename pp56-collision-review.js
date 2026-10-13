@@ -323,6 +323,17 @@ function pp56ToolKind(t){return [t?.type,t?.name,t?.category,t?.toolType,t?.role
  x.fillStyle='#173246';x.font='bold 11px system-ui';x.fillText('PUNZÓN '+punchAngle+'° · R'+punchRadius.toFixed(1),bx+16,by+67);x.fillText('CHAPA',bx+16,by+119);x.fillText('MATRIZ V'+v,bx+16,by+bh-15);
  x.fillStyle='#111';x.font='900 11px system-ui';x.textAlign='right';x.fillText(contactState+' · '+clearancePx.toFixed(1)+' px',bx+bw-14,by+bh-15);x.textAlign='left';
  x.restore();
+ // Inset wireframe of the dimensioned V85 reference mesh; monochrome, clearly labelled as parametric.
+ const v85Model=window.PP63V85Model;
+ if(v85Model?.machineMesh){
+  const meshes=v85Model.machineMesh(),ix=18,iy=h-154,iw=244,ih=132;
+  x.save();x.fillStyle='rgba(255,255,255,.96)';x.strokeStyle='#111';x.lineWidth=1.5;x.fillRect(ix,iy,iw,ih);x.strokeRect(ix,iy,iw,ih);
+  const mini=p=>({x:ix+iw*.5+(p[0]-p[2])*.034,y:iy+ih*.78-p[1]*.034+(p[0]+p[2])*.009});
+  meshes.filter(m=>m.name!=='ram-estimate').forEach((m,mi)=>m.triangles.forEach(tri=>{
+   const pts=tri.map(k=>mini(m.vertices[k]));x.beginPath();x.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(q=>x.lineTo(q.x,q.y));x.closePath();x.fillStyle=mi%2?'#f4f4f4':'#dedede';x.fill();x.strokeStyle='#111';x.lineWidth=.8;x.stroke();
+  }));
+  x.fillStyle='#111';x.font='900 10px system-ui';x.fillText('TRUMABEND V85 · 2006',ix+8,iy+14);x.font='9px system-ui';x.fillText('MODELO PARAMÉTRICO · NO OEM CAD',ix+8,iy+ih-22);x.fillText('2050 L · 1750 entre montantes · cuello 410 mm',ix+8,iy+ih-9);x.restore();
+ }
  const st=$('pp56Status');
  if(st){
   st.className='pp56-status '+(interferenceDetected?'danger':(activeContact||priorSteps===0?'warn':'ok'));
