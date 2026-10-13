@@ -1650,27 +1650,27 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    // Render the selected punch profile when profile points are available; otherwise retain the clearly schematic default.
    const punchProfile=toolProfiles?.punch?.profilePointsMm;
    if(Array.isArray(punchProfile)&&punchProfile.length>=3){
-     const maxPX=Math.max(1,...punchProfile.map(p=>Math.abs(Number(p.x)||0))),profileScale=Math.min(1.25,48/maxPX),front=punchProfile.map(p=>({x:-300,y:4-beamDrop+(Number(p.y)||0)*profileScale,z:(Number(p.x)||0)*profileScale})),back=punchProfile.map(p=>({...p,x:300,y:4-beamDrop+(Number(p.y)||0)*profileScale,z:(Number(p.x)||0)*profileScale}));
+     const maxPX=Math.max(1,...punchProfile.map(p=>Math.abs(Number(p.x)||0))),profileScale=Math.min(1.25,48/maxPX),front=punchProfile.map(p=>({x:-390,y:4-beamDrop+(Number(p.y)||0)*profileScale,z:(Number(p.x)||0)*profileScale})),back=punchProfile.map(p=>({...p,x:390,y:4-beamDrop+(Number(p.y)||0)*profileScale,z:(Number(p.x)||0)*profileScale}));
      prism(front,back,'#d8e2e7','#fff5d9');
    }else{
      for(let x=-390;x<390;x+=100){box(x,86-beamDrop,-64,94,9,128,'#e4ecef','#8fa5ae');box(x+42,83-beamDrop,-67,8,4,134,'#7b919a')}
      prism([{x:-390,y:80-beamDrop,z:-48},{x:390,y:80-beamDrop,z:-48},{x:340,y:32-beamDrop,z:-30},{x:-340,y:32-beamDrop,z:-30}],
            [{x:-390,y:80-beamDrop,z:48},{x:390,y:80-beamDrop,z:48},{x:340,y:32-beamDrop,z:30},{x:-340,y:32-beamDrop,z:30}],'#c5d2d8','#f5fbff');
-     prism([{x:-260,y:32-beamDrop,z:-30},{x:260,y:32-beamDrop,z:-30},{x:305,y:4-beamDrop,z:-22},{x:-305,y:4-beamDrop,z:-22}],
-           [{x:-260,y:32-beamDrop,z:30},{x:260,y:32-beamDrop,z:30},{x:235,y:4-beamDrop,z:22},{x:-235,y:4-beamDrop,z:22}],'#879da6','#e2edf1');
+     prism([{x:-340,y:32-beamDrop,z:-30},{x:340,y:32-beamDrop,z:-30},{x:305,y:4-beamDrop,z:-22},{x:-305,y:4-beamDrop,z:-22}],
+           [{x:-340,y:32-beamDrop,z:30},{x:340,y:32-beamDrop,z:30},{x:305,y:4-beamDrop,z:22},{x:-305,y:4-beamDrop,z:22}],'#879da6','#e2edf1');
    }
    // Table, die holder, and V-die with a visible central throat.
    box(-430,-154,-115,860,35,230,bed,'#91aab4');
    box(-410,-128,-88,820,15,176,'#263f4b','#8ca4ae');
    const dieProfile=toolProfiles?.die?.profilePointsMm;
    if(Array.isArray(dieProfile)&&dieProfile.length>=3){
-     const maxDX=Math.max(1,...dieProfile.map(p=>Math.abs(Number(p.x)||0))),dieScale=Math.min(1.25,52/maxDX),front=dieProfile.map(p=>({x:-300,y:-75+(Number(p.y)||0)*dieScale,z:(Number(p.x)||0)*dieScale})),back=dieProfile.map(p=>({...p,x:300,y:-75+(Number(p.y)||0)*dieScale,z:(Number(p.x)||0)*dieScale}));
+     const maxDX=Math.max(1,...dieProfile.map(p=>Math.abs(Number(p.x)||0))),dieScale=Math.min(1.25,52/maxDX),front=dieProfile.map(p=>({x:-390,y:-75+(Number(p.y)||0)*dieScale,z:(Number(p.x)||0)*dieScale})),back=dieProfile.map(p=>({...p,x:390,y:-75+(Number(p.y)||0)*dieScale,z:(Number(p.x)||0)*dieScale}));
      prism(front,back,'#23779a','#bdeeff');
    }else{
      prism([{x:-390,y:-113,z:-55},{x:390,y:-113,z:-55},{x:350,y:-75,z:-38},{x:-350,y:-75,z:-38}],
-           [{x:-300,y:-113,z:55},{x:300,y:-113,z:55},{x:350,y:-75,z:38},{x:-350,y:-75,z:38}],'#697f88','#d1dfe4');
+           [{x:-390,y:-113,z:55},{x:390,y:-113,z:55},{x:350,y:-75,z:38},{x:-350,y:-75,z:38}],'#697f88','#d1dfe4');
      prism([{x:-350,y:-75,z:-38},{x:350,y:-75,z:-38},{x:320,y:-104,z:-25},{x:-320,y:-104,z:-25}],
-           [{x:-270,y:-75,z:38},{x:270,y:-75,z:38},{x:320,y:-104,z:25},{x:-320,y:-104,z:25}],'#d7e1e5','#f7fbfd');
+           [{x:-350,y:-75,z:38},{x:350,y:-75,z:38},{x:320,y:-104,z:25},{x:-320,y:-104,z:25}],'#d7e1e5','#f7fbfd');
    }
    // Rear gauge fingers and guarded side control panel.
    box(-300,-57,126,600,12,22,'#526d78');box(-270,-47,133,18,56,18,'#91a6ae');box(252,-47,133,18,56,18,'#91a6ae');
