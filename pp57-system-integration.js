@@ -19,7 +19,7 @@ function style(){if($('pp58style'))return;const s=document.createElement('style'
 function addMachine(){
  const old=$('pp55MachineCanvas')?.closest('.pp55-card');if(!old)return;const existing=$('pp58TwinCard');if(existing){existing.style.display='';existing.hidden=false;existing.removeAttribute('aria-hidden');existing.setAttribute('aria-label','LIVE MACHINE PREVIEW · Gemelo digital de prensa plegadora');const stage=$('pp55MachineCanvas')?.closest('.pp55-stage');if(stage)stage.style.display='none';if(!paused&&!raf)runTwin();return;}
  const c=document.createElement('section');c.id='pp58TwinCard';c.className='card pp58card';
- c.innerHTML='<div class="pp58head"><div><span class="pp58kicker">LIVE MACHINE PREVIEW · 3D</span><h2>Gemelo digital · prensa plegadora animada</h2><p>Bastidor industrial, montantes, travesaño, trancha móvil, portapunzón, punzón, chapa, matriz, mesa y mando.</p></div><b>ANIMACIÓN CAD/CAM</b></div><div class="pp58controls"><div><label>Modelo visual</label><select id="pp58Model"><option value="generic">Plegadora industrial genérica</option><option value="trumpf">Estilo Trumpf TruBend V85</option><option value="bystronic">Estilo Bystronic 100 t</option></select></div><div><label>Cámara</label><select id="pp58Camera"><option value="iso">Isométrica</option><option value="front">Frontal</option><option value="side">Lateral</option><option value="top">Superior</option></select></div><div><label>Velocidad</label><input id="pp58Speed" type="range" min=".35" max="2" step=".05" value="1"></div><div><label>Zoom</label><input id="pp58Zoom" type="range" min=".65" max="1.45" step=".05" value="1"></div></div><canvas id="pp58Twin" class="pp58canvas" width="1440" height="760" aria-label="Gemelo digital animado de una prensa plegadora"></canvas><div class="pp58metrics"><div class="pp58metric"><small>FASE DE CICLO</small><b id="pp58Phase">Preparado</b></div><div class="pp58metric"><small>TRANCHA · EJE Y</small><b id="pp58Ram">Posición superior</b></div><div class="pp58metric"><small>PIEZA ACTIVA</small><b id="pp58Piece">—</b></div><div class="pp58metric"><small>MODELO</small><b id="pp58ModelLabel">Genérico</b></div></div><div class="actions"><button class="btn" id="pp58Pause">Ⅱ Pausar animación</button><button class="btn secondary" id="pp58Home">Restablecer cámara</button><button class="btn secondary" id="pp58Cycle">Reiniciar ciclo</button></div><div class="pp58status">Gemelo visual, no réplica CAD oficial. Para fidelidad dimensional de una máquina concreta se necesitan planos del fabricante y modelo exacto.</div>';
+ c.innerHTML='<div class="pp58head"><div><span class="pp58kicker">LIVE MACHINE PREVIEW · 3D</span><h2>Gemelo digital · prensa plegadora animada</h2><p>Bastidor industrial, montantes, travesaño, trancha móvil, portapunzón, punzón, chapa, matriz, mesa y mando.</p></div><b>ANIMACIÓN CAD/CAM</b></div><div class="pp58controls"><div><label>Modelo visual</label><select id="pp58Model"><option value="generic">Plegadora industrial genérica</option><option value="trumpf">Estilo Trumpf TruBend V85</option><option value="bystronic">Estilo Bystronic 100 t</option></select></div><div><label>Cámara</label><select id="pp58Camera"><option value="iso">Isométrica</option><option value="front">Frontal</option><option value="side">Lateral</option><option value="top">Superior</option></select></div><div><label>Velocidad</label><input id="pp58Speed" type="range" min=".35" max="2" step=".05" value="1"></div><div><label>Zoom</label><input id="pp58Zoom" type="range" min=".65" max="1.45" step=".05" value="1"></div></div><canvas id="pp58Twin" class="pp58canvas" width="1440" height="760" aria-label="Gemelo digital animado de una prensa plegadora"></canvas><div class="pp58metrics"><div class="pp58metric"><small>FASE DE CICLO</small><b id="pp58Phase">Preparado</b></div><div class="pp58metric"><small>TRANCHA · EJE Y</small><b id="pp58Ram">Posición superior</b></div><div class="pp58metric"><small>PIEZA ACTIVA</small><b id="pp58Piece">—</b></div><div class="pp58metric"><small>MODELO</small><b id="pp58ModelLabel">Genérico</b></div></div><div class="actions"><button class="btn" id="pp58Pause">Ⅱ Pausar animación</button><button class="btn secondary" id="pp58Home">Restablecer cámara</button><button class="btn secondary" id="pp58Cycle">Reiniciar ciclo</button></div><div class="pp58status" id="pp58TwinStatus">Gemelo visual, no réplica CAD oficial. Para fidelidad dimensional de una máquina concreta se necesitan planos del fabricante y modelo exacto.</div>';
  old.insertAdjacentElement('afterend',c);$('pp55MachineCanvas').closest('.pp55-stage').style.display='none';c.style.display='';paused=false;
  ['pp58Model','pp58Camera','pp58Speed','pp58Zoom'].forEach(id=>$(id).addEventListener('input',()=>drawTwin(performance.now())));
  $('pp58Pause').onclick=()=>{paused=!paused;$('pp58Pause').textContent=paused?'▶ Reanudar animación':'Ⅱ Pausar animación';if(!paused){start=performance.now();runTwin()}};
@@ -51,7 +51,30 @@ function drawTwin(now){
  x.fillStyle='#eaf6fb';x.fillRect(24,22,280,42);x.fillStyle='#16445b';x.font='bold 15px system-ui';x.fillText(model==='trumpf'?'ESTILO TRUBEND V85':model==='bystronic'?'ESTILO BYSTRONIC 100 T':'PLEGADORA INDUSTRIAL',36,49);
  $('pp58Phase').textContent=phase<.2?'Aproximación':phase<.47?'Plegado en carrera':phase<.68?'Retención':'Retorno de trancha';$('pp58Ram').textContent=down>.12?'Eje Y · carrera descendente':'Eje Y · posición superior';$('pp58Piece').textContent=S()?.project?.ref||'Sin referencia';$('pp58ModelLabel').textContent=model==='trumpf'?'Estilo TruBend V85':model==='bystronic'?'Estilo Bystronic 100 t':'Bastidor industrial';
 }
-function runTwin(){if(raf||paused||!$('pp58Twin'))return;if(!start)start=performance.now();const loop=t=>{drawTwin(t);if(!paused)raf=requestAnimationFrame(loop);else raf=0};raf=requestAnimationFrame(loop)}
+function runTwin(){
+ if(raf||paused||!$('pp58Twin'))return;
+ if(!start)start=performance.now();
+ const loop=t=>{
+  raf=0;
+  if(paused||!$('pp58Twin'))return;
+  try{
+   drawTwin(t);
+   const status=$('pp58TwinStatus');
+   if(status&&status.dataset.renderError==='1'){
+    status.textContent='Gemelo visual, no réplica CAD oficial. Para fidelidad dimensional de una máquina concreta se necesitan planos del fabricante y modelo exacto.';
+    delete status.dataset.renderError;
+   }
+  }catch(error){
+   console.error('[Plegar Pro] Error al dibujar la vista de máquina:',error);
+   const status=$('pp58TwinStatus');
+   if(status){status.dataset.renderError='1';status.textContent='Error de renderizado: '+String(error?.message||error).slice(0,180)+'. Revisa controles y vuelve a iniciar la reproducción.';}
+   raf=0;
+   return;
+  }
+  if(!paused)raf=requestAnimationFrame(loop);
+ };
+ raf=requestAnimationFrame(loop);
+}
 function addToolDetail(){
  const host=$('tooling')?.querySelector('.grid');if(!host||$('pp58ToolCard'))return;
  const c=document.createElement('section');c.className='card pp58card';c.id='pp58ToolCard';
