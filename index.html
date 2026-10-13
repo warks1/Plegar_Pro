@@ -1619,7 +1619,7 @@ function draw3D(canvas,step=state.bends.length,simulation=false){
    const isTrumpf=/trumpf|trubend/i.test(selectedMachine),isBystronic=/bystronic|xpert/i.test(selectedMachine);
    // Scale machine length independently from height using published overall L/H ratios.
    // TRUMABEND V85 reference: 2680/2885 ~= 0.93; Xpert Pro 100/3100: 4180/2820 ~= 1.48.
-   machineScaleX=isTrumpf?.53:(isBystronic?.85:1);
+   machineScaleX=isTrumpf ? 0.53 : (isBystronic ? 0.85 : 1);
    const paint=isTrumpf?'#398a49':(isBystronic?'#075b91':frame),paintLight=isTrumpf?'#67b875':(isBystronic?'#168ac0':frameLight);
    const machineDisplayName=isTrumpf?'TRUMPF · TruBend V85':(isBystronic?'BYSTRONIC · Xpert Pro 100/3100':'PLEGAR PRO · Máquina personalizada');
    // Base plinth and separate machine feet.
