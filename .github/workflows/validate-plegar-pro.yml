@@ -207,6 +207,24 @@ jobs:
             await page.waitForFunction(() => document.body.classList.contains('boot-complete'), null, { timeout: 15000 });
             const splashMs = Date.now() - started;
             if (splashMs < 4800) throw new Error('Loading screen closed too early: ' + splashMs + 'ms');
+            const menuContrastAudit = await page.evaluate(() => {
+              const sidebar = document.querySelector('#mainSidebar');
+              const buttons = [...document.querySelectorAll('#mainSidebar .nav button')];
+              const lum = value => {
+                const rgb = String(value).match(/[0-9.]+/g)?.slice(0,3).map(Number) || [0,0,0];
+                const linear = rgb.map(v => { v /= 255; return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; });
+                return .2126 * linear[0] + .7152 * linear[1] + .0722 * linear[2];
+              };
+              const items = buttons.map(el => {
+                const s = getComputedStyle(el);
+                const fg = lum(s.color), bg = lum(s.backgroundColor);
+                return { text:(el.innerText || '').trim().replace(/\\s+/g,' ').slice(0,48), foreground:s.color, background:s.backgroundColor, ratio:(Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05), backgroundLuminance:bg };
+              });
+              return { sidebarVisible:!!sidebar && getComputedStyle(sidebar).display !== 'none', count:buttons.length, items };
+            });
+            if (!menuContrastAudit.sidebarVisible || menuContrastAudit.count < 8 || menuContrastAudit.items.some(x => x.ratio < 4.5 || x.backgroundLuminance < .72)) {
+              throw new Error('Sidebar menu has unreadable text or a dark button surface: ' + JSON.stringify(menuContrastAudit));
+            }
             await page.waitForSelector('#pp59canvas', { state: 'attached', timeout: 10000 });
             await page.locator('[data-page="program3d"]').click();
             await page.waitForTimeout(350);
