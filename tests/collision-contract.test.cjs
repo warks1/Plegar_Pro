@@ -37,7 +37,7 @@ assert.match(runtime, /sim\.machineTravel=Number\.isFinite\(Number\(detail\.trav
 
 assert.match(html, /const active2DFold=canvas\.id==='canvasS2'/, '2D rendering must not read undefined simulation state');
 assert.match(html, /i===Math\.min\(active2DFold,state\.bends\.length\)/);
-assert.match(runtime, /locatedPosition=order\.indexOf\(foldIndex\),syncPos=locatedPosition>=0\?locatedPosition:maxPos/, 'all modules must map the same physical bend to the same programmed sequence position');
+assert.match(runtime, /const locatedPosition=order\.indexOf\(foldIndex\),syncPos=positionIsCanonical\?maxPos:\(locatedPosition>=0\?locatedPosition:maxPos\)/, 'canonical collision and twin positions must not be remapped through a stale physical index');
 assert.match(runtime, /step:syncPos,foldIndex/, 'synchronization broadcasts must expose the canonical program position');
 
 
