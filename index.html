@@ -3161,7 +3161,8 @@ html body .page [class*="banner"] *,html body .page [class*="Banner"] *,html bod
 
 <style id="pp70-light-readable-panels">
 
-/* PP70 · Plegar Pro Ultimate — Boceto B: superficie metálica clara, legible y rápida.
+/* PLEGAR PRO · Corrección definitiva del menú lateral.
+   PP70 · Plegar Pro Ultimate — Boceto B: superficie metálica clara, legible y rápida.
    Se consolida aquí la capa visual final para neutralizar reglas oscuras heredadas. */
 :root{
  --bg:#edf3f7;--panel:#fff;--panel2:#f5f9fc;--line:#d3dfe8;--text:#183247;--muted:#61798b;
@@ -3277,6 +3278,7 @@ html body #dashboard .card:first-child h2,html body #dashboard .card:first-child
 #mainSidebar .nav{display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;align-items:stretch!important;gap:3px!important;padding:4px 0 16px!important}
 #mainSidebar .nav h4{width:auto!important;margin:15px 8px 6px!important;padding:0 0 5px!important;border-bottom:1px solid #d7e2e9!important;color:#526d80!important;font-size:10px!important;font-weight:800!important;letter-spacing:.14em!important;text-shadow:none!important;background:transparent!important}
 #mainSidebar .nav button{
+ background-color:#fff!important;background-image:linear-gradient(145deg,#fff,#f6f9fb)!important;
  display:flex!important;align-items:center!important;gap:9px!important;width:100%!important;min-width:0!important;min-height:40px!important;margin:1px 0!important;padding:7px 9px!important;
  border:1px solid #dce5eb!important;border-left:3px solid transparent!important;border-radius:8px!important;
  background:linear-gradient(145deg,#fff,#f6f9fb)!important;color:#294457!important;text-align:left!important;font-size:12px!important;font-weight:620!important;line-height:1.3!important;
@@ -3289,9 +3291,9 @@ html body #dashboard .card:first-child h2,html body #dashboard .card:first-child
  box-shadow:inset 0 1px #fff!important;font-size:14px!important;font-weight:800!important;line-height:1!important;text-shadow:none!important;transform:translateZ(2px)!important
 }
 #mainSidebar .nav button:after{content:none!important;display:none!important;animation:none!important}
-#mainSidebar .nav button:hover{background:linear-gradient(145deg,#f4fafc,#e7f2f7)!important;color:#173246!important;border-color:#c4d9e4!important;border-left-color:#8bb8cc!important;box-shadow:0 3px 8px rgba(24,50,71,.055)!important;transform:perspective(800px) rotateY(-1deg) translate3d(3px,-1px,0)!important;filter:none!important}
+#mainSidebar .nav button:hover{background-color:#edf5f9!important;background-image:linear-gradient(145deg,#f4fafc,#e7f2f7)!important;color:#173246!important;border-color:#c4d9e4!important;border-left-color:#8bb8cc!important;box-shadow:0 3px 8px rgba(24,50,71,.055)!important;transform:perspective(800px) rotateY(-1deg) translate3d(3px,-1px,0)!important;filter:none!important}
 #mainSidebar .nav button.active,#mainSidebar .nav button[aria-current="page"]{
- background:linear-gradient(100deg,#e8f5fa,#dceef5)!important;color:#123e56!important;border-color:#b6d3e0!important;border-left:4px solid #087da5!important;
+ background-color:#dff1f8!important;background-image:linear-gradient(100deg,#e8f5fa,#dceef5)!important;color:#123e56!important;border-color:#b6d3e0!important;border-left:4px solid #087da5!important;
  box-shadow:inset 0 1px #fff,0 2px 6px rgba(24,50,71,.04)!important;font-weight:800!important;filter:none!important;animation:none!important;transform:perspective(800px) rotateY(-1deg) translate3d(2px,0,0)!important
 }
 #mainSidebar .nav button.active:before,#mainSidebar .nav button[aria-current="page"]:before{background:linear-gradient(145deg,#dff1f8,#cfe7f0)!important;border-color:#91c4d7!important;color:#066988!important;box-shadow:inset 0 1px #fff!important}
@@ -3324,6 +3326,7 @@ html body #dashboard .card:first-child h2,html body #dashboard .card:first-child
 /* PP3D MENU v2 · profundidad visible también en pantallas táctiles */
 /* PP3D MENU v3 · movimiento metálico ligero y accesible: microanimación breve, sin pulsos lentos. */
 @keyframes pp3dMetalReveal{from{opacity:.86;filter:brightness(.97)}to{opacity:1;filter:brightness(1)}}
+@keyframes pp3dActivePulse{0%,100%{filter:none}50%{filter:brightness(1.015)}}
 @keyframes pp70-menu-glint{0%,100%{opacity:0}50%{opacity:.12}}
 @media(min-width:901px){.app{display:grid!important;grid-template-columns:258px minmax(0,1fr)!important;gap:0!important}.menuBackdrop{display:none!important}.mobileMenuBtn{display:none!important}}
 @media(max-width:900px){
@@ -3345,6 +3348,7 @@ html body #dashboard .card:first-child h2,html body #dashboard .card:first-child
 @media(max-width:390px){.quick{grid-template-columns:minmax(0,1fr)!important}.actions{grid-template-columns:minmax(0,1fr)!important}}
 @media(prefers-reduced-motion:reduce){
  #mainSidebar.side,#mainSidebar .nav button,html body .page button{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+ #mainSidebar .nav button.active{animation:none!important}
 }
 /* La geometría 3D sigue en su lienzo; todos sus paneles y controles circundantes son claros. */
 html body #collisions .pp56-hmi-top{background:linear-gradient(120deg,#f8fcfe,#e6f2f7)!important;color:#183b50!important;border:1px solid #c6dbe5!important;box-shadow:0 4px 12px rgba(24,50,71,.05)!important}
