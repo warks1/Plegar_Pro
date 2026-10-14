@@ -16,11 +16,11 @@ assert.match(html, /Corrección definitiva del menú lateral/);
 assert.match(html, /grid-template-columns:258px minmax\(0,1fr\)!important/);
 assert.match(html, /#mainSidebar \.nav\{display:flex!important;flex-direction:column!important/);
 assert.match(html, /#mainSidebar\.side\.open[\s\S]*transform:translateX\(0\)!important/);
-assert.match(sw, /plegar-pro-v152-52/);
+assert.match(sw, /plegar-pro-v152-53/);
 // Voice assistant delivery contract: UI script must be loaded and included in offline cache.
 assert.ok(html.includes('pp64-ai-voice.js?v=1'));
 assert.ok(sw.includes('./pp64-ai-voice.js?v=1'));
-assert.ok(sw.includes('plegar-pro-v152-52'));
+assert.ok(sw.includes('plegar-pro-v152-53'));
 const voice = fs.readFileSync('pp64-ai-voice.js', 'utf8');
 assert.ok(voice.includes('window.SpeechRecognition||window.webkitSpeechRecognition'));
 assert.ok(voice.includes('recognition.continuous=true'));
@@ -110,7 +110,8 @@ assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=154/);
 assert.match(html, /pp61-runtime-integrity\.js\?v=62/);
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62/);
 assert.match(runtime, /detail\.complete\?\(order\[maxPos\]\?\?maxPos\)/, 'completed collision playback must activate the final fold in the selected order');
-assert.match(runtime, /const requestedFold=detail\.complete\?\(order\[maxPos\]\?\?maxPos\):\(Number\.isInteger\(detail\.foldIndex\)\?detail\.foldIndex:\(order\[maxPos\]\?\?maxPos\)\)/, '2D/3D playback positions without an explicit fold index must resolve through the shared execution order');
+assert.match(runtime, /const positionIsCanonical=source==='collisions'\|\|source==='pp59'\|\|source==='machineTwin'/, 'collision and twin selectors must preserve their canonical programmed position');
+assert.match(runtime, /const requestedFold=detail\.complete\?\(order\[maxPos\]\?\?maxPos\):\(positionIsCanonical\?\(order\[maxPos\]\?\?maxPos\):\(Number\.isInteger\(detail\.foldIndex\)\?detail\.foldIndex:\(order\[maxPos\]\?\?maxPos\)\)\)/, 'all playback sources must resolve the active physical fold from the canonical programmed position');
 assert.match(runtime, /sim\.s2Step=coreStep;sim\.s3Step=coreStep;sim\.p3Active=foldIndex/, 'both programming views and the active 3D fold must receive the same synchronized playback tick');
 assert.match(runtime, /window\.addEventListener\('plegarpro:playback-step',e=>syncPlaybackStep\(e\.detail\)\)/, 'the runtime must be the single playback-step synchronization authority');
 assert.match(twin, /lastEmittedTravel=-1/, 'digital twin must track travel progress separately from fold index');
@@ -119,13 +120,13 @@ assert.match(twin, /plegarpro:machine-travel/, 'digital twin must consume collis
 assert.match(twin, /externalTravel!==null\?externalTravel\/100/, 'digital twin ram position must follow externally synchronized travel');
 assert.match(html, /pp59-engineering-upgrade\.js\?v=154/);
 assert.match(sw, /pp59-engineering-upgrade\.js\?v=154/);
-assert.match(sw, /plegar-pro-v152-52/);
+assert.match(sw, /plegar-pro-v152-53/);
 assert.match(twin, /travelBucket!==lastEmittedTravel/, 'digital twin must publish meaningful travel changes during each ram cycle');
 assert.match(twin, /source:'pp59',step:pos,foldIndex:executionOrder\(\)\[pos\]\?\?0,travel:travelBucket\*5/, 'digital twin events must carry the ram travel percentage');
 assert.match(runtime, /else if\(source==='pp59'&&Number\.isFinite\(Number\(detail\.travel\)\)\)/, 'runtime must map twin ram travel into the collision review');
 assert.match(runtime, /travel\.dispatchEvent\(new Event\('input',\{bubbles:true\}\)\)/, 'collision view must redraw when synchronized travel changes');
 assert.match(html, /pp59-engineering-upgrade\.js\?v=154/);
-assert.match(html, /pp61-runtime-integrity\.js\?v=62\.4/);
+assert.match(html, /pp61-runtime-integrity\.js\?v=62\.5/);
 assert.match(html, /const meta=titles\[page\]\|\|\[/, 'navigation must tolerate dynamic pages without title metadata');
 assert.match(html, /Error al actualizar el módulo/, 'navigation failures must be surfaced instead of silently swallowed');
 assert.match(html, /window\.__PP_CLICK_TRACKER__=\{has:function\(el\)\{return ppClickBound\.has\(el\)\}\}/, 'button audit must account for addEventListener click handlers');
@@ -136,8 +137,8 @@ assert.match(html, /\.page#dashboard \.quick button small\{display:block;color:#
 assert.match(collision, /Sin matrices disponibles para V/, 'empty die catalogs must show a clear explanatory option');
 assert.match(collision, /\.pp56-controls select option\{background:#fff!important;color:#173246!important\}/, 'collision selectors must keep readable option text');
 
-assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.4/);
-assert.match(sw, /plegar-pro-v152-52/);
+assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.5/);
+assert.match(sw, /plegar-pro-v152-53/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 
