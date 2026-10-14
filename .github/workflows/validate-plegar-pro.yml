@@ -249,7 +249,7 @@ jobs:
             }
             const twinSource = await page.evaluate(() => document.querySelector('#pp59canvas')?.toDataURL() || '');
             if (!twinSource || twinSource.length < 10000 || machinePreviewAudit.canvasDataUrlLength < 10000) throw new Error('Live machine preview did not render a meaningful canvas image');
-            await page.locator('[data-page="tooling"]').click();
+            await page.locator('#mainSidebar .nav button[data-page="tooling"]').click();
             await page.waitForFunction(() => {
               const canvas = document.querySelector('#pp55ToolCanvas');
               return canvas && canvas.getBoundingClientRect().width > 0 && !!canvas.getContext('2d');
@@ -257,7 +257,7 @@ jobs:
             const catalogAudit = await page.evaluate(() => ({ count: Array.isArray(window.tools) ? window.tools.length : 0, punches: Array.isArray(window.tools) ? window.tools.filter(t => /punz[oó]n|punch/i.test(String(t.type || t.name || ''))).length : 0, dies: Array.isArray(window.tools) ? window.tools.filter(t => /matriz|die/i.test(String(t.type || t.name || ''))).length : 0 }));
             if (catalogAudit.count < 1 || catalogAudit.punches < 1 || catalogAudit.dies < 1) throw new Error('Shared tooling catalog not available to CAD/collision modules: ' + JSON.stringify(catalogAudit));
             await page.locator('#pp55ToolView').selectOption('iso');
-            await page.locator('[data-page="program3d"]').click();
+            await page.locator('#mainSidebar .nav button[data-page="program3d"]').click();
             await page.locator('#pp59cam').selectOption('front');
             const savedCamera = await page.evaluate(() => JSON.parse(localStorage.getItem('plegarPro.v59.prefs') || '{}').camera);
             if (savedCamera !== 'front') throw new Error('Camera preference was not saved');
@@ -388,7 +388,7 @@ jobs:
               return { moved, held, paused, resumed, movedOk: moved > 0, pauseOk: paused === held, resumeOk: resumed !== paused };
             });
             if (playback.error || !playback.movedOk || !playback.pauseOk || !playback.resumeOk) throw new Error('Collision playback failed to advance/pause/resume: ' + JSON.stringify(playback));
-            await page.locator('[data-page="program3d"]').click();
+            await page.locator('#mainSidebar .nav button[data-page="program3d"]').click();
             await page.waitForSelector('#pp59play', { state: 'visible', timeout: 10000 });
             const machinePlayback = await page.evaluate(async () => {
               const btn = document.querySelector('#pp59play'), canvas = document.querySelector('#pp59canvas');
@@ -407,7 +407,7 @@ jobs:
               return { pauseOk: still === held, resumeOk: resumed !== held };
             });
             if (machinePlayback.error || !machinePlayback.pauseOk || !machinePlayback.resumeOk) throw new Error('3D machine playback failed pause/resume: ' + JSON.stringify(machinePlayback));
-            await page.locator('[data-page="sim2d"]').click();
+            await page.locator('#mainSidebar .nav button[data-page="sim2d"]').click();
             await page.waitForSelector('#s2Play', { state: 'visible', timeout: 10000 });
             const corePlayback = await page.evaluate(async () => {
               state.settings.simulationSpeed = 120;
@@ -438,7 +438,7 @@ jobs:
               return result;
             });
             if (!finalCoreFold.stopped || finalCoreFold.finalStep !== finalCoreFold.maxStep || !finalCoreFold.synchronized) throw new Error('Core simulation did not execute the final programmed fold: ' + JSON.stringify(finalCoreFold));
-            await page.locator('[data-page="collisions"]').click();
+            await page.locator('#mainSidebar .nav button[data-page="collisions"]').click();
             await page.waitForFunction(() => document.querySelector('#collisions')?.classList.contains('active'), null, { timeout: 10000 });
 
             const finalCollisionFold = await page.evaluate(async () => {
