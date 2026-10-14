@@ -167,7 +167,7 @@
       for(let i=0;i<foldCount;i++)if(!order.includes(i))order.push(i);
       const pos=Math.max(0,Math.min(order.length-1,Number(target.value)||0));
       syncPlaybackStep({source:'collisions',step:pos,foldIndex:order[pos]??pos});
-    },true);
+    },false);
     window.addEventListener('plegarpro:machine-travel',e=>{const d=e.detail||{};if(typeof sim!=='undefined'&&sim){sim.machineTravel=Math.max(0,Math.min(100,Number(d.travel)||0));if(typeof drawAll==='function')drawAll();}});
     document.addEventListener('visibilitychange',()=>{
       if(document.hidden){
