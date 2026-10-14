@@ -1,9 +1,0 @@
-PLEGAR PRO v57.3 — MEJORAS VISUALES
-====================================
-
-- Pantalla de carga: logotipo PLEGAR PRO con mayor tamaño, contraste y resplandor azul/cian, animación suave y barra de progreso más legible.
-- Programación 2D y vistas con canvas: paneles informativos superpuestos ahora se pueden arrastrar con ratón o pantalla táctil para apartarlos de la pieza.
-- Posición de cada panel arrastrable guardada localmente en el navegador; se limita al área de la vista y se reajusta al cambiar el tamaño de pantalla.
-- Pulido visual de las áreas de dibujo, bordes, profundidad, botones y lectura de paneles.
-- Conservados los módulos y datos existentes; no se cambian fórmulas ni datos geométricos de fabricación.
-- Actualizada la versión de caché del service worker para evitar que el navegador mantenga la versión anterior.
