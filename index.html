@@ -2885,7 +2885,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </script>
 
 <script src="./pp57-system-integration.js?v=143"></script>
-<script src="./pp59-engineering-upgrade.js?v=154"></script>
+<script src="./pp59-engineering-upgrade.js?v=155"></script>
 <script src="./pp60-graphics-runtime.js?v=64.9.1"></script>
 <script src="./pp61-runtime-integrity.js?v=62.5"></script>
 
@@ -3160,299 +3160,142 @@ html body .page [class*="banner"] *,html body .page [class*="Banner"] *,html bod
 </script>
 
 <style id="pp70-light-readable-panels">
-/* PP70: elimina tarjetas y bloques azul marino que ocultaban texto en módulos internos. */
+
+/* PP70 · Plegar Pro Ultimate — Boceto B: superficie metálica clara, legible y rápida.
+   Se consolida aquí la capa visual final para neutralizar reglas oscuras heredadas. */
+:root{
+ --bg:#edf3f7;--panel:#fff;--panel2:#f5f9fc;--line:#d3dfe8;--text:#183247;--muted:#61798b;
+ --accent:#087fa8;--accent2:#148b73;--ok:#16845e;--danger:#bd3c4b;--warning:#9b6500;
+ --radius:13px;--shadow:0 8px 24px rgba(26,48,70,.08);
+ --pp-ui-bg:#edf3f7;--pp-ui-panel:#fff;--pp-ui-panel2:#f5f9fc;--pp-ui-line:#d3dfe8;--pp-ui-cyan:#087fa8;--pp-ui-blue:#087fa8;--pp-ui-text:#183247;--pp-ui-muted:#61798b
+}
+html,body{background:#edf3f7!important;background-image:linear-gradient(145deg,#f8fafc 0%,#e8f0f5 58%,#f6f9fb 100%)!important;color:#183247!important;letter-spacing:.005em}
+body{min-width:0;overflow-x:hidden}
+.app{display:grid!important;grid-template-columns:258px minmax(0,1fr)!important;gap:0!important;background:transparent!important}
+.main{min-width:0!important;padding:clamp(12px,1.8vw,25px)!important}
+.topbar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;position:relative!important;top:auto!important;margin:0 0 18px!important;padding:13px clamp(12px,1.6vw,22px)!important;min-height:64px;background:rgba(255,255,255,.98)!important;border:1px solid #d6e2ea!important;border-radius:13px!important;box-shadow:0 5px 18px rgba(24,50,71,.06)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.topLeft{display:flex;align-items:center;gap:7px!important;flex-wrap:wrap}
+.topLeft button,.topbar button,.mobileMenuBtn{min-height:38px;border:1px solid #cddbe4!important;border-radius:9px!important;background:linear-gradient(180deg,#fff,#f0f5f8)!important;color:#284557!important;box-shadow:0 1px 2px rgba(24,50,71,.05)!important;font-size:12px;font-weight:700;transition:background-color .12s ease,border-color .12s ease,transform .12s ease!important}
+.topLeft button:hover,.topbar button:hover,.mobileMenuBtn:hover{background:#eaf4f8!important;border-color:#a9cbd9!important;transform:translateY(-1px)}
+.heading h1{color:#18384c!important;font-size:clamp(20px,2vw,29px)!important;font-weight:820!important;letter-spacing:-.035em!important}
+.heading p,.muted,.hint,.help,.subtitle{color:#62798a!important}
+.syncBadge{background:#e7f7ef!important;color:#176c4f!important;border:1px solid #b8e5d0!important;box-shadow:none!important}
+.page{animation:none!important}
+.page.active .card{animation:none!important}
+.card{min-width:0;background:linear-gradient(155deg,#fff,#f8fbfd)!important;border:1px solid #d6e2ea!important;border-radius:13px!important;box-shadow:0 7px 21px rgba(24,50,71,.065)!important;color:#183247!important;transition:border-color .12s ease,box-shadow .12s ease!important}
+.card:hover{border-color:#c0d6e2!important;box-shadow:0 9px 24px rgba(24,50,71,.085)!important}
+.card h2{color:#24495e!important;border-color:#e1eaf0!important;font-weight:820!important;letter-spacing:.025em}
+.card h3,.card h4{color:#31576b!important}
 html body .page .card:not(.pp56-canvas),
 html body .page .panel:not(canvas),
 html body .page .box:not(canvas),
 html body .page fieldset,
-html body .page [class*="pp56-data"] > div,
-html body .page [class*="pp56-controls"] > div,
-html body .page [class*="pp56-table"],
-html body .page [class*="pp56-rail"],
-html body .page [class*="pp56-status"],
-html body .page [class*="pp56-metric"],
-html body .page [class*="pp56-kpi"],
-html body .page [class*="pp-module-form"],
+html body .page .note,
 html body .page [class*="tool-card"],
-html body .page [class*="metric-card"] {
-  background-color:#f2f7fa!important;
-  background-image:linear-gradient(145deg,#ffffff 0%,#edf5f9 100%)!important;
-  color:#183448!important;
-  border-color:#c5d9e4!important;
-  box-shadow:0 5px 16px rgba(18,51,73,.07)!important;
-  text-shadow:none!important;
+html body .page [class*="metric-card"],
+html body .page [class*="data-box"],
+html body .page [class*="info-box"],
+html body .page [class*="readout"],
+html body .page [class*="metric"],
+html body .page [class*="kpi"],
+html body .page [class*="status"],
+html body .page [class*="Status"],
+html body .page [class*="rail"],
+html body .page [class*="tile"],
+html body .page [class*="rect"],
+html body .page [class*="pp-form-section"],
+html body .page [class*="pp-module-panel"],
+html body .page [class*="pp-module-form"]{
+ background-color:#f2f7fa!important;background-image:linear-gradient(145deg,#fff 0%,#eef5f9 100%)!important;
+ color:#183448!important;border-color:#d0dfe8!important;box-shadow:0 4px 13px rgba(18,51,73,.055)!important;text-shadow:none!important;filter:none!important
 }
 html body .page .card:not(.pp56-canvas) :not(canvas):not(svg):not(path):not(button):not(input):not(select):not(textarea),
+html body .page .panel :not(canvas):not(svg):not(path):not(button):not(input):not(select):not(textarea),
 html body .page fieldset label,
-html body .page [class*="pp56-data"] > div *,
-html body .page [class*="pp56-controls"] > div *,
-html body .page [class*="pp56-table"] *,
-html body .page [class*="pp56-rail"] *,
-html body .page [class*="pp56-status"] *,
-html body .page [class*="pp56-metric"] *,
-html body .page [class*="pp56-kpi"] *,
-html body .page [class*="pp-module-form"] *,
 html body .page [class*="tool-card"] *,
-html body .page [class*="metric-card"] * {
-  color:#183448!important;
-  text-shadow:none!important;
+html body .page [class*="metric-card"] *,
+html body .page [class*="data-box"] *,
+html body .page [class*="info-box"] *,
+html body .page [class*="readout"] *,
+html body .page [class*="metric"] *,
+html body .page [class*="kpi"] *,
+html body .page [class*="status"] *,
+html body .page [class*="Status"] *,
+html body .page [class*="rail"] *,
+html body .page [class*="tile"] *,
+html body .page [class*="rect"] *,
+html body .page [class*="pp-form-section"] *,
+html body .page [class*="pp-module-panel"] *,
+html body .page [class*="pp-module-form"] *{
+ color:#183448!important;text-shadow:none!important
 }
-html body .page .card button,
-html body .page [class*="pp56-rail"] button,
-html body .page [class*="pp-module-form"] button {
-  color:#fff!important;
-  background:linear-gradient(135deg,#075a78,#087fa4)!important;
-  border-color:#087fa4!important;
+html body .page input:not([type=checkbox]):not([type=radio]):not([type=range]),
+html body .page select,html body .page textarea,
+html body .page .card input,html body .page .card select,html body .page .card textarea{
+ min-height:38px;background:#fff!important;color:#183448!important;border:1px solid #c4d5e0!important;border-radius:8px!important;box-shadow:inset 0 1px 2px rgba(24,50,71,.035)!important
 }
-html body .page .card input,
-html body .page .card select,
-html body .page .card textarea,
-html body .page [class*="pp-module-form"] input,
-html body .page [class*="pp-module-form"] select,
-html body .page [class*="pp-module-form"] textarea {
-  color:#173246!important;
-  background:#fff!important;
-  border-color:#9fb9c9!important;
+html body .page input::placeholder,html body .page textarea::placeholder{color:#718697!important;opacity:1!important}
+html body .page select option{background:#fff!important;color:#183448!important}
+html body .page input:focus,html body .page select:focus,html body .page textarea:focus{outline:2px solid rgba(8,127,168,.18)!important;border-color:#1689ae!important}
+html body .page .btn,html body .page button.btn,html body .page .card button:not(.secondary):not(.danger):not(.warn),html body .page [class*="pp-module-form"] button:not(.secondary):not(.danger){
+ background:linear-gradient(145deg,#138db3,#08779d)!important;color:#fff!important;border:1px solid #087da5!important;border-radius:8px!important;box-shadow:0 2px 7px rgba(8,127,168,.14)!important;text-shadow:none!important;transition:filter .12s ease,transform .12s ease!important
 }
-html body .page .pp56-hmi-top,
-html body .page .pp56-hmi-top *,
-html body .page .pp56-hmi-live,
-html body .page .pp56-hmi-live * {
-  color:#f4fbff!important;
+html body .page .btn:hover,html body .page button.btn:hover,html body .page .card button:hover{filter:brightness(1.04)!important}
+html body .page .btn.secondary,html body .page button.secondary{background:linear-gradient(145deg,#fff,#edf4f8)!important;color:#28495d!important;border:1px solid #cddce5!important;box-shadow:none!important}
+html body .page .btn.danger,html body .page button.danger{background:#bd3c4b!important;color:#fff!important;border-color:#ae3342!important}
+html body .page .btn.warn,html body .page button.warn{background:#f4d28c!important;color:#563b05!important;border-color:#e7bf66!important}
+html body .page .note,html body .page .alert,html body .page .notice,html body .page [class*="banner"],html body .page [class*="Banner"],html body .page [class*="hero"],html body .page [class*="Hero"],html body .page .pp-status-strip,html body .page .pp-ai-panel{
+ background:#f0f8fc!important;background-image:linear-gradient(120deg,#fbfdff,#e8f4f9)!important;color:#183b50!important;border-color:#c8dce7!important;text-shadow:none!important;box-shadow:none!important
 }
-html body .page .pp56-hmi-live {background:#14533e!important}
+html body .page .stage,html body .page .canvasWrap,html body .page .pp56-canvas,html body .page .pp55-stage{
+ background:linear-gradient(145deg,#fbfdff,#e8f1f6)!important;border:1px solid #cbdce6!important;border-radius:12px!important;box-shadow:inset 0 1px 0 #fff,0 5px 16px rgba(24,50,71,.06)!important
+}
+html body .page .stage .overlay,html body .page .overlay{
+ background:linear-gradient(145deg,#fff,#edf5f9)!important;color:#183448!important;border:1px solid #c5dbe6!important;border-radius:9px!important;box-shadow:0 4px 13px rgba(24,50,71,.09)!important;text-shadow:none!important
+}
+html body .page table th,html body .page .table th{background:#eaf2f7!important;color:#24485b!important;border-color:#d6e2ea!important}
+html body .page table td,html body .page .table td{background:#fff!important;color:#29495d!important;border-color:#e1e9ef!important}
+html body .page .legalFooter{color:#718596!important;border-color:#d6e2ea!important}
+html body #dashboard .card:first-child{background:linear-gradient(145deg,#fff,#eef5f9)!important;border-color:#d2e0e8!important;color:#183448!important}
+html body #dashboard .card:first-child h2,html body #dashboard .card:first-child p,html body #dashboard .card:first-child small{color:#28495d!important}
 
-/* PP Ultimate visual reference: interfaz CAD/CAM azul industrial basada en la referencia del usuario */
-:root{
- --pp-ui-bg:#071a2d;--pp-ui-panel:#0a2b49;--pp-ui-panel2:#0d365a;
- --pp-ui-line:#17659b;--pp-ui-cyan:#22baff;--pp-ui-blue:#087be0;
- --pp-ui-text:#eff9ff;--pp-ui-muted:#91c2e5;
-}
-html,body{background:linear-gradient(135deg,#041323 0%,#082a49 55%,#04172a 100%)!important}
-.app{grid-template-columns:206px minmax(0,1fr)!important;gap:0}
-.side{background:linear-gradient(180deg,#06182a,#082b49 60%,#06182a)!important;border-right:1px solid #17639a!important;padding:12px 9px!important}
-.brand{font-size:21px!important;letter-spacing:.04em;color:#f2fbff}
-.brand span{color:#20baff!important}
-.version{color:#79b8e3!important}
-.nav h4{color:#55b8f4!important;letter-spacing:.13em}
-.nav button{border:1px solid transparent!important;border-radius:8px!important;padding:9px 8px!important;transition:background .18s,border-color .18s,transform .18s}
-.nav button:hover,.nav button.active{background:linear-gradient(100deg,#075da8,#0b3b66)!important;border-color:#1799ed!important;color:#fff!important;box-shadow:inset 3px 0 #36c7ff,0 4px 14px #00101f80}
-.main{padding:12px!important;min-width:0}
-.topbar{background:#061a2bd9!important;border:1px solid #14517b!important;border-radius:11px!important;padding:9px 12px!important;margin-bottom:10px!important}
-.heading h1{color:#f2faff!important;letter-spacing:.04em}
-.heading p,.muted{color:#9bc9e9!important}
-.syncBadge{border-color:#20baff!important;color:#83e6ff!important;background:#063657!important}
-.card{background:linear-gradient(155deg,#0b3152f5,#071f37f8)!important;border:1px solid #17649a!important;border-radius:11px!important;box-shadow:0 8px 24px #00101e75,inset 0 1px #ffffff0b!important}
-.card h2{color:#dff5ff!important;border-bottom:1px solid #185a88;padding-bottom:8px;letter-spacing:.045em}
-input,select,textarea{background:#061e35!important;border-color:#17608f!important;color:#f3fbff!important}
-.btn{background:linear-gradient(135deg,#00a9ff,#0874d5)!important;color:white!important;border:1px solid #37c4ff!important;box-shadow:0 3px 12px #0079d944}
-.btn.secondary{background:#0b3557!important;color:#dff4ff!important;border-color:#1d6da0!important;box-shadow:none}
-.stage{border:1px solid #187ab3!important;border-radius:10px!important;background:radial-gradient(ellipse at 50% 40%,#123c5d,#031323 80%)!important}
-.stage canvas{max-width:100%}
-.overlay{background:#041b2be8!important;border-color:#1689c4!important;color:#eafaff!important}
-.quick button,.kpi,.listItem{background:linear-gradient(145deg,#0e3b60,#082746)!important;border-color:#17649a!important;color:#f2fbff!important}
-.quick button:hover{border-color:#23baff!important;transform:translateY(-2px)}
-.kpi span,.quick small,label{color:#a4d0ed!important}
-.note{background:#0a3858!important;border-left-color:#21baff!important;color:#e9f8ff!important}
-.legalFooter{border-color:#15547f!important;color:#83b5d7!important}
-/* Simulación principal: gran visor y controles de máquina compactos */
-#sim3d>.card{padding:12px!important}
-#sim3d h2{font-size:15px!important;text-transform:uppercase;letter-spacing:.09em}
-#sim3d .toolbar{gap:6px!important;align-items:center}
-#sim3d .toolbar .btn{padding:7px 10px!important;min-height:34px}
-#sim3d .toolbar .status{background:#082b49!important;border-color:#17649a!important;color:#c8eaff!important}
-#sim3d .stage{min-height:420px;box-shadow:inset 0 0 55px #00101d99,0 8px 24px #00101d70!important}
-#sim3d .stage canvas{height:min(58vh,620px)!important;min-height:400px}
-#sim3d #s3DimensionStatus{margin:0 0 8px!important;padding:8px 10px!important;font-size:12px}
-#sim2d>.card{padding:12px!important}
-#sim2d .stage canvas{height:min(55vh,600px)!important;min-height:360px}
-@media(max-width:900px){
- .app{display:block!important}
- .side{width:min(310px,88vw)!important}
- .main{padding:8px!important}
- #sim3d .stage canvas{height:48vh!important;min-height:300px}
-}
-@media(max-width:560px){
- #sim3d .stage canvas{height:38vh!important;min-height:260px}
- #sim3d .toolbar .btn{flex:1 1 92px!important}
- .topbar{gap:8px!important}
-}
-
-
-
-/* PLEGAR PRO · Corrección definitiva del menú lateral */
-#mainSidebar.side{width:258px!important;min-width:258px!important;max-width:258px!important;height:100vh!important;max-height:100vh!important;overflow-x:hidden!important;overflow-y:auto!important;position:sticky!important;top:0!important;align-self:start!important;padding:18px 11px 22px!important;background:linear-gradient(180deg,#091a29 0%,#0a2032 48%,#071522 100%)!important;border-right:1px solid #24465d!important;box-shadow:8px 0 28px rgba(0,0,0,.18)!important;scrollbar-width:thin;scrollbar-color:#315d77 transparent}
-#mainSidebar .brand{font-size:23px!important;line-height:1.2!important;letter-spacing:.045em!important;color:#f2f9ff!important}#mainSidebar .brand span{color:#36c9ff!important}
-#mainSidebar .version{display:block!important;margin:5px 4px 17px!important;color:#8eafc4!important;font-size:10px!important;letter-spacing:.1em!important;white-space:normal!important}
-#mainSidebar .nav{display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;align-items:stretch!important;gap:2px!important;padding:4px 0 18px!important}
-#mainSidebar .nav h4{width:auto!important;margin:17px 8px 6px!important;padding:0 0 5px!important;border-bottom:1px solid #1d3b50!important;color:#67bfe8!important;font-size:10px!important;font-weight:800!important;letter-spacing:.16em!important}
-#mainSidebar .nav button{display:flex!important;align-items:center!important;gap:10px!important;width:100%!important;min-width:0!important;min-height:40px!important;margin:1px 0!important;padding:8px 10px!important;border:1px solid transparent!important;border-radius:8px!important;background:transparent!important;color:#c1d3df!important;text-align:left!important;font-size:12px!important;font-weight:560!important;line-height:1.3!important;white-space:normal!important;overflow-wrap:anywhere!important;box-shadow:none!important;transform:none!important;animation:none!important}
-#mainSidebar .nav button:before{content:""!important;display:block!important;flex:0 0 7px!important;width:7px!important;height:7px!important;border:1.5px solid #36c9ff!important;border-radius:2px!important;background:#123e58!important;transform:rotate(45deg)!important;box-shadow:0 0 7px #21baff20!important}
-#mainSidebar .nav button:hover{background:#102d42!important;border-color:#254a62!important;color:#f4fbff!important;transform:translateX(2px)!important}
-#mainSidebar .nav button.active{background:linear-gradient(90deg,#124361,#102b40)!important;border-color:#28769b!important;color:#f4fbff!important;box-shadow:inset 3px 0 #36c9ff!important}
-#mainSidebar .nav button.active:before{background:#36c9ff!important;border-color:#a8edff!important;box-shadow:0 0 10px #36c9ff70!important}
-@media(min-width:901px){.app{display:grid!important;grid-template-columns:258px minmax(0,1fr)!important;gap:0!important}.menuBackdrop{display:none!important}.mobileMenuBtn{display:none!important}}
-@media(max-width:900px){.app{display:block!important;grid-template-columns:minmax(0,1fr)!important}#mainSidebar.side{position:fixed!important;inset:0 auto 0 0!important;width:min(300px,88vw)!important;min-width:0!important;max-width:300px!important;height:100dvh!important;max-height:100dvh!important;overflow-x:hidden!important;overflow-y:auto!important;align-self:auto!important;transform:translateX(-105%)!important;transition:transform .22s ease!important;z-index:9999!important;padding:18px 11px calc(24px + env(safe-area-inset-bottom))!important}#mainSidebar.side.open,#mainSidebar.side.show,body.menu-open #mainSidebar.side,#menuToggle:checked~#mainSidebar.side{transform:translateX(0)!important}#menuToggle:checked~.menuBackdrop,body.menu-open .menuBackdrop{display:block!important;position:fixed!important;inset:0!important;z-index:9998!important;background:rgba(1,8,14,.62)!important}.mobileMenuBtn{display:inline-flex!important;align-items:center!important;gap:7px!important;position:relative!important;z-index:80!important;min-height:42px!important}}
-@media(prefers-reduced-motion:reduce){#mainSidebar .nav button{transition:none!important}}
-
-
-/* PP3D MENU · relieve metálico realista, conservando navegación y módulos existentes */
+/* Menú lateral metálico claro: sin tarjetas azul marino, texto oscuro de alto contraste. */
 #mainSidebar.side{
-  perspective:1100px!important;
-  transform-style:preserve-3d!important;
-  background:
-    linear-gradient(115deg,rgba(255,255,255,.07),transparent 18%,transparent 78%,rgba(0,0,0,.22)),
-    linear-gradient(180deg,#162d3d 0%,#0b1d2b 45%,#07131e 100%)!important;
-  border-right:1px solid #4a7188!important;
-  box-shadow:9px 0 26px rgba(0,0,0,.32),inset -1px 0 rgba(113,194,228,.18)!important;
+ width:258px!important;min-width:258px!important;max-width:258px!important;height:100vh!important;max-height:100vh!important;
+ position:sticky!important;top:0!important;align-self:start!important;overflow-x:hidden!important;overflow-y:auto!important;
+ padding:16px 11px 20px!important;background:linear-gradient(180deg,#fff 0%,#f5f8fb 55%,#edf3f7 100%)!important;
+ color:#193247!important;border-right:1px solid #cbd9e3!important;box-shadow:4px 0 15px rgba(26,48,70,.07)!important;
+ scrollbar-width:thin;scrollbar-color:#bdcbd6 transparent;perspective:900px!important;transform-style:preserve-3d!important
 }
 #mainSidebar .brand{
-  position:relative!important;
-  padding:12px 10px!important;
-  margin:0 0 8px!important;
-  border:1px solid #365b70!important;
-  border-radius:10px!important;
-  background:linear-gradient(145deg,#203e51 0%,#102738 48%,#091a27 100%)!important;
-  box-shadow:inset 1px 1px rgba(255,255,255,.17),inset -2px -2px rgba(0,0,0,.45),0 5px 0 #050e16,0 8px 14px rgba(0,0,0,.28)!important;
-  text-shadow:0 1px 1px #000!important;
+ display:flex!important;align-items:center!important;gap:8px!important;position:relative!important;margin:0 0 7px!important;padding:12px 10px!important;
+ border:1px solid #cbd9e2!important;border-radius:10px!important;background:linear-gradient(145deg,#fff 0%,#eef3f7 60%,#e5edf2 100%)!important;
+ box-shadow:inset 0 1px #fff,0 2px 6px rgba(26,48,70,.045)!important;color:#173246!important;font-size:23px!important;line-height:1.2!important;letter-spacing:.035em!important;text-shadow:none!important
 }
-#mainSidebar .nav h4{
-  text-shadow:0 1px 0 #000!important;
-}
+#mainSidebar .brand span{color:#087da5!important}
+#mainSidebar .version{display:block!important;margin:5px 4px 15px!important;padding:4px 6px!important;color:#63798a!important;font-size:10px!important;letter-spacing:.1em!important;white-space:normal!important;background:transparent!important;border:0!important;text-shadow:none!important}
+#mainSidebar .nav{display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;align-items:stretch!important;gap:3px!important;padding:4px 0 16px!important}
+#mainSidebar .nav h4{width:auto!important;margin:15px 8px 6px!important;padding:0 0 5px!important;border-bottom:1px solid #d7e2e9!important;color:#526d80!important;font-size:10px!important;font-weight:800!important;letter-spacing:.14em!important;text-shadow:none!important;background:transparent!important}
 #mainSidebar .nav button{
-  position:relative!important;
-  isolation:isolate!important;
-  transform:perspective(650px) rotateY(-3deg) translateZ(0)!important;
-  transform-origin:left center!important;
-  border:1px solid #34566b!important;
-  border-right-color:#172e3d!important;
-  border-bottom:2px solid #07131d!important;
-  border-radius:7px!important;
-  background:linear-gradient(150deg,#28495e 0%,#173347 42%,#0c2030 100%)!important;
-  box-shadow:inset 1px 1px rgba(255,255,255,.13),inset -1px -1px rgba(0,0,0,.42),0 3px 0 #040c13,0 5px 8px rgba(0,0,0,.24)!important;
-  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease!important;
-}
-#mainSidebar .nav button:after{
-  content:""!important;
-  position:absolute!important;
-  inset:1px!important;
-  z-index:-1!important;
-  border-radius:5px!important;
-  pointer-events:none!important;
-  background:linear-gradient(115deg,rgba(255,255,255,.055),transparent 42%,rgba(0,0,0,.08))!important;
-}
-#mainSidebar .nav button:hover{
-  transform:perspective(650px) rotateY(-1deg) translate3d(4px,-1px,5px)!important;
-  border-color:#38bce9!important;
-  background:linear-gradient(145deg,#315c75 0%,#164564 55%,#0a2a40 100%)!important;
-  box-shadow:inset 1px 1px rgba(255,255,255,.2),0 3px 0 #04111a,0 7px 14px rgba(0,0,0,.34),0 0 12px rgba(40,188,245,.12)!important;
-}
-#mainSidebar .nav button:active{
-  transform:perspective(650px) translate3d(2px,2px,0)!important;
-  box-shadow:inset 2px 2px 5px rgba(0,0,0,.38),0 1px 0 #040c13!important;
-}
-#mainSidebar .nav button.active{
-  transform:perspective(650px) rotateY(-1deg) translate3d(2px,0,3px)!important;
-  border-color:#35c5f6!important;
-  border-left:3px solid #45d2ff!important;
-  background:linear-gradient(135deg,#17648b 0%,#104b6c 48%,#092d45 100%)!important;
-  box-shadow:inset 1px 1px rgba(255,255,255,.2),inset 0 -2px rgba(0,0,0,.18),0 3px 0 #04111a,0 0 15px rgba(28,174,234,.18)!important;
+ display:flex!important;align-items:center!important;gap:9px!important;width:100%!important;min-width:0!important;min-height:40px!important;margin:1px 0!important;padding:7px 9px!important;
+ border:1px solid #dce5eb!important;border-left:3px solid transparent!important;border-radius:8px!important;
+ background:linear-gradient(145deg,#fff,#f6f9fb)!important;color:#294457!important;text-align:left!important;font-size:12px!important;font-weight:620!important;line-height:1.3!important;
+ white-space:normal!important;overflow-wrap:anywhere!important;box-shadow:0 1px 2px rgba(24,50,71,.025)!important;text-shadow:none!important;filter:none!important;
+ transform:perspective(800px) rotateY(-4deg) rotateX(1deg)!important;animation:pp3dMetalReveal .14s ease-out both!important;transition:background-color .12s ease,border-color .12s ease,color .12s ease,transform .12s ease!important;will-change:auto!important
 }
 #mainSidebar .nav button:before{
-  flex:0 0 9px!important;width:9px!important;height:9px!important;
-  border:1px solid #7ce3ff!important;
-  background:linear-gradient(145deg,#66e0ff,#087ca9)!important;
-  box-shadow:inset 1px 1px rgba(255,255,255,.65),0 1px 3px #0008,0 0 7px #20baff35!important;
+ content:attr(data-icon)!important;display:inline-grid!important;place-items:center!important;flex:0 0 26px!important;width:26px!important;height:26px!important;
+ border:1px solid #d1e0e8!important;border-radius:7px!important;background:linear-gradient(145deg,#fff,#eaf2f7)!important;color:#087da5!important;
+ box-shadow:inset 0 1px #fff!important;font-size:14px!important;font-weight:800!important;line-height:1!important;text-shadow:none!important;transform:translateZ(2px)!important
 }
-@media(max-width:900px){
-  #mainSidebar.side{box-shadow:12px 0 35px rgba(0,0,0,.48),inset -1px 0 rgba(113,194,228,.18)!important}
-  #mainSidebar .nav button{transform:none!important}
-  #mainSidebar .nav button:hover{transform:translateX(3px)!important}
+#mainSidebar .nav button:after{content:none!important;display:none!important;animation:none!important}
+#mainSidebar .nav button:hover{background:linear-gradient(145deg,#f4fafc,#e7f2f7)!important;color:#173246!important;border-color:#c4d9e4!important;border-left-color:#8bb8cc!important;box-shadow:0 3px 8px rgba(24,50,71,.055)!important;transform:perspective(800px) rotateY(-1deg) translate3d(3px,-1px,0)!important;filter:none!important}
+#mainSidebar .nav button.active,#mainSidebar .nav button[aria-current="page"]{
+ background:linear-gradient(100deg,#e8f5fa,#dceef5)!important;color:#123e56!important;border-color:#b6d3e0!important;border-left:4px solid #087da5!important;
+ box-shadow:inset 0 1px #fff,0 2px 6px rgba(24,50,71,.04)!important;font-weight:800!important;filter:none!important;animation:none!important;transform:perspective(800px) rotateY(-1deg) translate3d(2px,0,0)!important
 }
-@media(prefers-reduced-motion:reduce){
-  #mainSidebar .nav button{transition:none!important;transform:none!important}
-}
-
-
-/* PP3D MENU v2 · profundidad visible también en pantallas táctiles */
-#mainSidebar.side{
-  isolation:isolate!important;
-  background:
-    linear-gradient(105deg,rgba(255,255,255,.10),transparent 13%,transparent 84%,rgba(0,0,0,.35)),
-    repeating-linear-gradient(180deg,rgba(115,196,230,.035) 0 1px,transparent 1px 5px),
-    linear-gradient(155deg,#1b394d 0%,#0c2232 36%,#07131f 100%)!important;
-  box-shadow:inset 1px 1px 0 rgba(255,255,255,.16),inset -4px 0 0 rgba(0,0,0,.24),12px 0 30px rgba(0,0,0,.34)!important;
-}
-#mainSidebar .brand{
-  transform:perspective(800px) rotateX(3deg)!important;
-  border-bottom:3px solid #050d14!important;
-  box-shadow:inset 1px 1px 0 #ffffff40,inset -2px -3px 0 #0007,0 4px 0 #040c13,0 8px 18px #0007!important;
-}
-#mainSidebar .nav button{
-  min-height:40px!important;
-  transform:perspective(800px) rotateY(-5deg) rotateX(1deg) translateZ(0)!important;
-  transform-origin:left center!important;
-  border-top-color:#6a8da2!important;
-  border-left:2px solid #41647a!important;
-  border-right:3px solid #07131c!important;
-  border-bottom:4px solid #030a10!important;
-  background:linear-gradient(165deg,#36586d 0%,#1a394e 32%,#0d2232 100%)!important;
-  box-shadow:inset 1px 1px 0 #ffffff32,inset -2px -2px 0 #0006,0 2px 0 #162c3a,0 5px 0 #030a10,0 8px 12px #0006!important;
-}
-#mainSidebar .nav button:before{
-  content:""!important;display:inline-block!important;flex:0 0 10px!important;
-  width:10px!important;height:10px!important;margin-right:5px!important;
-  border:1px solid #b3f0ff!important;border-radius:2px!important;
-  background:linear-gradient(135deg,#b5f5ff 0%,#32c8f6 42%,#07557e 100%)!important;
-  box-shadow:inset 1px 1px 1px #fff,1px 2px 0 #04101a,0 0 8px #27c6ff66!important;
-}
-#mainSidebar .nav button.active{
-  transform:perspective(800px) rotateY(-2deg) translate3d(3px,-1px,4px)!important;
-  border-top-color:#c0f4ff!important;border-left:4px solid #6ce4ff!important;
-  background:linear-gradient(155deg,#2189b8 0%,#125778 48%,#082e47 100%)!important;
-  box-shadow:inset 1px 1px 0 #ffffff5c,inset 0 -2px 0 #0003,0 2px 0 #16415a,0 5px 0 #030a10,0 0 0 1px #46d4ff,0 0 18px #19b9f466!important;
-}
-#mainSidebar .nav button:hover{
-  transform:perspective(800px) rotateY(-1deg) translate3d(5px,-2px,6px)!important;
-  border-top-color:#b5efff!important;
-  box-shadow:inset 1px 1px 0 #ffffff55,0 2px 0 #16415a,0 6px 0 #030a10,0 12px 18px #0008,0 0 16px #1abcf955!important;
-}
-#mainSidebar .nav button:active{
-  transform:perspective(800px) translate3d(2px,3px,0)!important;
-  border-bottom-width:1px!important;
-  box-shadow:inset 2px 3px 7px #0009,0 1px 0 #030a10!important;
-}
-@media(max-width:900px){
-  #mainSidebar.side{
-    perspective:1000px!important;
-    transform-style:preserve-3d!important;
-    background:
-      linear-gradient(110deg,#1c3b50 0%,#0d2232 50%,#07131f 100%)!important;
-    box-shadow:inset -4px 0 0 #030a10,14px 0 34px #0009!important;
-  }
-  #mainSidebar .nav{perspective:900px!important;gap:7px!important}
-  #mainSidebar .nav button{
-    transform:perspective(800px) rotateY(-4deg) rotateX(1deg)!important;
-    flex:1 1 100%!important;
-    min-height:43px!important;
-    margin:2px 5px!important;
-  }
-  #mainSidebar .nav button:hover{transform:perspective(800px) rotateY(-1deg) translateX(4px)!important}
-  #mainSidebar .nav button.active{transform:perspective(800px) rotateY(-1deg) translate3d(3px,-1px,4px)!important}
-}
-@media(prefers-reduced-motion:reduce){
-  #mainSidebar .nav button{transition:none!important}
-}
-
-
-/* PP3D icon fix: retain the existing module symbols while adding a larger bevel */
-#mainSidebar .nav button:before{
-  content:inherit;
-  flex-basis:24px!important;width:24px!important;height:24px!important;
-  margin-right:8px!important;border-radius:6px!important;
-  display:inline-grid!important;place-items:center!important;
-  font-size:15px!important;line-height:1!important;
-}
+#mainSidebar .nav button.active:before,#mainSidebar .nav button[aria-current="page"]:before{background:linear-gradient(145deg,#dff1f8,#cfe7f0)!important;border-color:#91c4d7!important;color:#066988!important;box-shadow:inset 0 1px #fff!important}
+#mainSidebar .nav button:active{transform:perspective(800px) translate3d(1px,1px,0)!important;box-shadow:none!important}
 #mainSidebar .nav button[data-page="dashboard"]:before{content:"⌂"!important}
 #mainSidebar .nav button[data-page="import"]:before{content:"↥"!important}
 #mainSidebar .nav button[data-page="technical"]:before{content:"⚙"!important}
@@ -3478,180 +3321,56 @@ input,select,textarea{background:#061e35!important;border-color:#17608f!importan
 #mainSidebar .nav button[data-page="production"]:before{content:"⚙"!important}
 #mainSidebar .nav button[data-page="workorders"]:before{content:"☷"!important}
 
-
-/* PP3D MENU v3 · movimiento metálico ligero y accesible */
-#mainSidebar .nav button{
-  background-size:180% 100%!important;
-  animation:pp3dMetalReveal .38s cubic-bezier(.2,.7,.2,1) both;
-}
-#mainSidebar .nav button:nth-child(1){animation-delay:.02s}
-#mainSidebar .nav button:nth-child(2){animation-delay:.045s}
-#mainSidebar .nav button:nth-child(3){animation-delay:.07s}
-#mainSidebar .nav button:nth-child(4){animation-delay:.095s}
-#mainSidebar .nav button:nth-child(5){animation-delay:.12s}
-#mainSidebar .nav button:nth-child(6){animation-delay:.145s}
-#mainSidebar .nav button:nth-child(7){animation-delay:.17s}
-#mainSidebar .nav button:nth-child(8){animation-delay:.195s}
-#mainSidebar .nav button:nth-child(9){animation-delay:.22s}
-#mainSidebar .nav button:nth-child(10){animation-delay:.245s}
-#mainSidebar .nav button.active{animation:pp3dActivePulse 3.8s ease-in-out infinite}
-@keyframes pp3dMetalReveal{
-  from{opacity:.72;filter:brightness(.78)}
-  to{opacity:1;filter:brightness(1)}
-}
-@keyframes pp3dActivePulse{
-  0%,100%{filter:brightness(1)}
-  50%{filter:brightness(1.09)}
-}
-@media(prefers-reduced-motion:reduce){
-  #mainSidebar .nav button,
-  #mainSidebar .nav button.active{animation:none!important;background-size:auto!important}
-}
-
-/* PP · Corrección menú claro y fluido · octubre 2026 */
-#mainSidebar.side{
-  background:linear-gradient(180deg,#ffffff 0%,#f5f8fb 100%)!important;
-  color:#193247!important;border-right:1px solid #cbd8e2!important;
-  box-shadow:4px 0 14px rgba(26,48,70,.08)!important;
-  perspective:none!important;transform-style:flat!important;
-  scrollbar-color:#bdcbd6 transparent!important;
-}
-#mainSidebar .brand{
-  color:#173246!important;text-shadow:none!important;
-  background:linear-gradient(145deg,#ffffff,#edf3f7)!important;
-  border:1px solid #cbd8e2!important;border-bottom:1px solid #cbd8e2!important;
-  box-shadow:0 2px 6px rgba(26,48,70,.07)!important;
-  transform:none!important;
-}
-#mainSidebar .brand span{color:#087da5!important}
-#mainSidebar .version{color:#63798a!important}
-#mainSidebar .nav h4{color:#526d80!important;text-shadow:none!important;border-bottom-color:#dce5eb!important}
-#mainSidebar .nav button{
-  color:#294457!important;background:#fff!important;
-  border:1px solid #e0e7ed!important;border-bottom:1px solid #e0e7ed!important;
-  border-left:3px solid transparent!important;border-radius:8px!important;
-  box-shadow:none!important;text-shadow:none!important;
-  transform:none!important;filter:none!important;animation:none!important;
-  transition:background-color .12s ease,border-color .12s ease,color .12s ease!important;
-  will-change:auto!important;
-}
-#mainSidebar .nav button:after{display:none!important;content:none!important}
-#mainSidebar .nav button:before{
-  border:1px solid #c6d8e3!important;border-radius:6px!important;
-  background:#edf4f8!important;box-shadow:none!important;
-  filter:none!important;text-shadow:none!important;
-}
-#mainSidebar .nav button:hover{
-  color:#173246!important;background:#f0f6fa!important;
-  border-color:#c8dce8!important;border-left-color:#7faec4!important;
-  box-shadow:none!important;transform:none!important;filter:none!important;
-}
-#mainSidebar .nav button.active{
-  color:#123e56!important;background:#e5f3fa!important;
-  border-color:#b7d5e4!important;border-left:3px solid #087da5!important;
-  box-shadow:none!important;transform:none!important;filter:none!important;
-  animation:none!important;font-weight:750!important;
-}
-#mainSidebar .nav button.active:before{
-  background:#d1eaf5!important;border-color:#87bdd3!important;box-shadow:none!important;
-}
-#mainSidebar .nav button:active{transform:none!important;box-shadow:none!important}
+/* PP3D MENU v2 · profundidad visible también en pantallas táctiles */
+/* PP3D MENU v3 · movimiento metálico ligero y accesible: microanimación breve, sin pulsos lentos. */
+@keyframes pp3dMetalReveal{from{opacity:.86;filter:brightness(.97)}to{opacity:1;filter:brightness(1)}}
+@keyframes pp70-menu-glint{0%,100%{opacity:0}50%{opacity:.12}}
+@media(min-width:901px){.app{display:grid!important;grid-template-columns:258px minmax(0,1fr)!important;gap:0!important}.menuBackdrop{display:none!important}.mobileMenuBtn{display:none!important}}
 @media(max-width:900px){
-  #mainSidebar.side{
-    background:#fff!important;box-shadow:8px 0 24px rgba(20,43,60,.16)!important;
-    transition:transform .16s ease!important;
-  }
-  #mainSidebar .nav{gap:3px!important}
-  #mainSidebar .nav button{min-height:39px!important;margin:1px 0!important}
+ .app{display:block!important;grid-template-columns:minmax(0,1fr)!important}
+ #mainSidebar.side{position:fixed!important;inset:0 auto 0 0!important;width:min(300px,88vw)!important;min-width:0!important;max-width:300px!important;height:100dvh!important;max-height:100dvh!important;overflow-x:hidden!important;overflow-y:auto!important;align-self:auto!important;transform:translateX(-105%)!important;transition:transform .16s ease!important;z-index:9999!important;padding:16px 11px calc(24px + env(safe-area-inset-bottom))!important;background:linear-gradient(180deg,#fff,#f1f6f9)!important;box-shadow:8px 0 24px rgba(20,43,60,.14)!important}
+ #mainSidebar.side.open,#mainSidebar.side.show,body.menu-open #mainSidebar.side,#menuToggle:checked~#mainSidebar.side{transform:translateX(0)!important}
+ #menuToggle:checked~.menuBackdrop,body.menu-open .menuBackdrop{display:block!important;position:fixed!important;inset:0!important;z-index:9998!important;background:rgba(25,44,58,.24)!important}
+ .mobileMenuBtn{display:inline-flex!important;align-items:center!important;gap:7px!important;position:relative!important;z-index:80!important;min-height:42px!important}
+ .main{padding:10px!important}.topbar{margin:0 0 12px!important;padding:10px!important;flex-wrap:wrap!important}.heading{order:3;width:100%}
+ #mainSidebar .nav{gap:3px!important}#mainSidebar .nav button{min-height:42px!important}
+ .pp56-hmi-layout{grid-template-columns:minmax(0,1fr)!important}.pp56-hmi-layout .pp56-canvas{grid-column:1!important;grid-row:1!important}.pp56-hmi-rail{grid-column:1!important;grid-row:2!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ .pp56-rail-head,.pp56-rail-separator,.pp56-hmi-note{grid-column:1/-1!important}
 }
+@media(max-width:560px){
+ .main{padding:7px!important}.topbar{gap:8px!important;margin-bottom:10px!important}.card{padding:11px!important;border-radius:11px!important}
+ .quick{grid-template-columns:repeat(2,minmax(0,1fr))!important}.quick button{min-height:94px!important;padding:10px!important}
+ .topLeft button{font-size:11px!important;padding:8px!important}.pp56-controls{grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:390px){.quick{grid-template-columns:minmax(0,1fr)!important}.actions{grid-template-columns:minmax(0,1fr)!important}}
 @media(prefers-reduced-motion:reduce){
-  #mainSidebar.side,#mainSidebar .nav button{transition:none!important;animation:none!important}
+ #mainSidebar.side,#mainSidebar .nav button,html body .page button{transition:none!important;animation:none!important;scroll-behavior:auto!important}
 }
-/* PP · menú: regresión de contraste cubierta por validación automática */
-/* PP · validación de contraste actualizada */
-/* Quitar filtros y animaciones de entrada que penalizan tablets Android. */
-.topbar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-.page{animation:none!important}
-
-
-/* PP70 · contraste definitivo de todos los elementos del menú.
-   Neutraliza las capas oscuras antiguas y evita texto oscuro sobre fondos oscuros. */
-html body #mainSidebar.side,
-html body #mainSidebar.side.open,
-html body #mainSidebar.side.show,
-html body #mainSidebar.side.active{
-  background:#f7fafc!important;
-  background-image:linear-gradient(180deg,#ffffff 0%,#f3f7fa 100%)!important;
-  color:#193247!important;
-}
-html body #mainSidebar.side .brand,
-html body #mainSidebar.side .version,
-html body #mainSidebar.side .nav,
-html body #mainSidebar.side .nav h4{
-  background:transparent!important;
-  background-image:none!important;
-  color:#193247!important;
-  text-shadow:none!important;
-}
-html body #mainSidebar.side .nav button,
-html body #mainSidebar.side .nav a,
-html body #mainSidebar.side .nav button:not(.active),
-html body #mainSidebar.side .nav a:not(.active){
-  background:#ffffff!important;
-  background-image:none!important;
-  color:#294457!important;
-  border:1px solid #d7e2e9!important;
-  border-left:3px solid transparent!important;
-  box-shadow:none!important;
-  filter:none!important;
-  text-shadow:none!important;
-  transform:none!important;
-}
-html body #mainSidebar.side .nav button *,
-html body #mainSidebar.side .nav a *{
-  color:#294457!important;
-  background-color:transparent!important;
-  background-image:none!important;
-  box-shadow:none!important;
-  text-shadow:none!important;
-  filter:none!important;
-}
-html body #mainSidebar.side .nav button:hover,
-html body #mainSidebar.side .nav a:hover{
-  background:#edf5f9!important;
-  color:#173246!important;
-  border-color:#c7dbe6!important;
-}
-html body #mainSidebar.side .nav button.active,
-html body #mainSidebar.side .nav a.active,
-html body #mainSidebar.side .nav button[aria-current="page"],
-html body #mainSidebar.side .nav a[aria-current="page"]{
-  background:#dff1f8!important;
-  background-image:none!important;
-  color:#123e56!important;
-  border:1px solid #a9cfdf!important;
-  border-left:4px solid #087da5!important;
-  box-shadow:none!important;
-  font-weight:800!important;
-}
-html body #mainSidebar.side .nav button.active *,
-html body #mainSidebar.side .nav a.active *,
-html body #mainSidebar.side .nav button[aria-current="page"] *,
-html body #mainSidebar.side .nav a[aria-current="page"] *{
-  color:#123e56!important;
-  background:transparent!important;
-}
-html body #mainSidebar.side .nav button::after,
-html body #mainSidebar.side .nav a::after{
-  display:none!important;
-  animation:none!important;
-  content:none!important;
-}
-@media(prefers-reduced-motion:reduce){
-  html body #mainSidebar.side,
-  html body #mainSidebar.side .nav button,
-  html body #mainSidebar.side .nav a{transition:none!important;animation:none!important}
-}
+/* La geometría 3D sigue en su lienzo; todos sus paneles y controles circundantes son claros. */
+html body #collisions .pp56-hmi-top{background:linear-gradient(120deg,#f8fcfe,#e6f2f7)!important;color:#183b50!important;border:1px solid #c6dbe5!important;box-shadow:0 4px 12px rgba(24,50,71,.05)!important}
+html body #collisions .pp56-hmi-top *{color:#183b50!important;text-shadow:none!important}
+html body #collisions .pp56-hmi-live{background:#e1f5eb!important;color:#176947!important;border-color:#b9e4d0!important}
+html body #collisions .pp56-hmi-live *{color:#176947!important}
+html body #collisions .pp56-hmi-rail{background:linear-gradient(145deg,#fff,#eef5f8)!important;color:#183448!important;border-color:#cbdde7!important;box-shadow:0 4px 12px rgba(24,50,71,.045)!important}
+html body #collisions .pp56-hmi-rail *{color:#183448!important;text-shadow:none!important}
+html body #collisions .pp56-readout{background:#fff!important;border:1px solid #d3e1e8!important;box-shadow:none!important}
+html body #collisions .pp56-readout small{color:#607889!important}
+html body #collisions .pp56-readout b{color:#183448!important}
+html body #collisions .pp56-rail-legend span{color:#29495d!important}
+html body #collisions .pp56-hmi-top button,html body #collisions .pp56-hmi-rail button{background:#087da5!important;color:#fff!important;border-color:#087da5!important}
+html body #sim3d>.card{padding:12px!important}
+html body #sim3d h2{font-size:15px!important;text-transform:uppercase;letter-spacing:.07em}
+html body #sim3d .toolbar{gap:6px!important;align-items:center}
+html body #sim3d .toolbar .btn{padding:7px 10px!important;min-height:34px}
+html body #sim3d .toolbar .status{background:#eef6fa!important;border-color:#cfdee7!important;color:#24495e!important}
+html body #sim3d .stage{min-height:420px;background:linear-gradient(145deg,#f7fbfd,#e6eff4)!important;box-shadow:inset 0 0 26px rgba(80,122,145,.06)!important}
+html body #sim3d .stage canvas{max-width:100%;height:min(58vh,620px);min-height:400px}
+html body #sim3d #s3DimensionStatus{margin:0 0 8px!important;padding:8px 10px!important;font-size:12px}
+html body #sim2d>.card{padding:12px!important}
+html body #sim2d .stage canvas{height:min(55vh,600px)!important;min-height:360px}
+html body .pp56-seq-step{background:linear-gradient(145deg,#fff,#f1f6f9)!important;color:#29495d!important;border:1px solid #d4e1e8!important;box-shadow:0 2px 7px rgba(24,50,71,.045)!important}
+html body .pp56-seq-step .pp56-seq-num,html body .pp56-seq-step .pp56-seq-meta{color:#60798a!important}
+html body .pp56-seq-step[aria-current="true"]{background:linear-gradient(145deg,#e8f5fa,#dceef5)!important;color:#123e56!important;border-color:#a9cfdf!important}
 
 </style>
 
