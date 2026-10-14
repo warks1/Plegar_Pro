@@ -155,6 +155,19 @@
   function installPlaybackSync(){
     window.addEventListener('plegarpro:playback-start',e=>stopCompetingPlayback(String(e.detail?.source||'')));
     window.addEventListener('plegarpro:playback-step',e=>syncPlaybackStep(e.detail));
+    // Una selección manual en el HMI de colisiones debe resolver el paso por orden programado,
+    // no tomar el índice visual como índice físico de pliegue.
+    document.addEventListener('change',e=>{
+      const target=e.target;
+      if(syncingPlayback||target?.id!=='pp56Step')return;
+      const s=getState(),bends=s?.bends||[],foldCount=Math.max(0,bends.length-1);
+      if(!foldCount)return;
+      const raw=Array.isArray(s?.bendOrder)?s.bendOrder:[];
+      const order=raw.filter((v,i)=>Number.isInteger(v)&&v>=0&&v<foldCount&&raw.indexOf(v)===i);
+      for(let i=0;i<foldCount;i++)if(!order.includes(i))order.push(i);
+      const pos=Math.max(0,Math.min(order.length-1,Number(target.value)||0));
+      syncPlaybackStep({source:'collisions',step:pos,foldIndex:order[pos]??pos});
+    },true);
     window.addEventListener('plegarpro:machine-travel',e=>{const d=e.detail||{};if(typeof sim!=='undefined'&&sim){sim.machineTravel=Math.max(0,Math.min(100,Number(d.travel)||0));if(typeof drawAll==='function')drawAll();}});
     document.addEventListener('visibilitychange',()=>{
       if(document.hidden){
