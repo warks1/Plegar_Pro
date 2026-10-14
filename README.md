@@ -1,6 +1,6 @@
 # Plegar Pro
 
-**Versión publicada de estabilización: v64.9.** La numeración `ppNN` identifica módulos internos y no la versión comercial de la aplicación.
+**Versión publicada de estabilización: v64.10.** La numeración `ppNN` identifica módulos internos y no la versión comercial de la aplicación.
 
 Plegar Pro es una aplicación web estática para planificar piezas de chapa, comparar matrices V, preparar secuencias de plegado y revisar geometría antes de fabricar.
 
