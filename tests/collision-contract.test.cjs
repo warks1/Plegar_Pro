@@ -18,11 +18,11 @@ assert.match(html, /Corrección definitiva del menú lateral/);
 assert.match(html, /grid-template-columns:258px minmax\(0,1fr\)!important/);
 assert.match(html, /#mainSidebar \.nav\{display:flex!important;flex-direction:column!important/);
 assert.match(html, /#mainSidebar\.side\.open[\s\S]*transform:translateX\(0\)!important/);
-assert.match(sw, /plegar-pro-v152-56/);
+assert.match(sw, /plegar-pro-v152-57/);
 // Voice assistant delivery contract: UI script must be loaded and included in offline cache.
 assert.ok(html.includes('pp64-ai-voice.js?v=1'));
 assert.ok(sw.includes('./pp64-ai-voice.js?v=1'));
-assert.ok(sw.includes('plegar-pro-v152-56'));
+assert.ok(sw.includes('plegar-pro-v152-57'));
 const voice = fs.readFileSync('pp64-ai-voice.js', 'utf8');
 assert.ok(voice.includes('window.SpeechRecognition||window.webkitSpeechRecognition'));
 assert.ok(voice.includes('recognition.continuous=true'));
@@ -124,7 +124,7 @@ assert.match(twin, /plegarpro:machine-travel/, 'digital twin must consume collis
 assert.match(twin, /externalTravel!==null\?externalTravel\/100/, 'digital twin ram position must follow externally synchronized travel');
 assert.match(html, /pp59-engineering-upgrade\.js\?v=155/);
 assert.match(sw, /pp59-engineering-upgrade\.js\?v=155/);
-assert.match(sw, /plegar-pro-v152-56/);
+assert.match(sw, /plegar-pro-v152-57/);
 assert.match(twin, /travelBucket!==lastEmittedTravel/, 'digital twin must publish meaningful travel changes during each ram cycle');
 assert.match(twin, /source:'pp59',step:pos,foldIndex:executionOrder\(\)\[pos\]\?\?0,travel:travelBucket\*5/, 'digital twin events must carry the ram travel percentage');
 assert.match(runtime, /else if\(source==='pp59'&&Number\.isFinite\(Number\(detail\.travel\)\)\)/, 'runtime must map twin ram travel into the collision review');
@@ -142,7 +142,7 @@ assert.match(collision, /Sin matrices disponibles para V/, 'empty die catalogs m
 assert.match(collision, /\.pp56-controls select option\{background:#fff!important;color:#173246!important\}/, 'collision selectors must keep readable option text');
 
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.5/);
-assert.match(sw, /plegar-pro-v152-56/);
+assert.match(sw, /plegar-pro-v152-57/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 
@@ -267,3 +267,11 @@ assert.deepEqual(staleDocs, [], 'obsolete versioned documentation must stay cons
 assert.ok(fs.existsSync('README.md') && fs.existsSync('CHANGELOG.md') && fs.existsSync('PRUEBAS.md'),
   'the three current consolidated project documents must remain present');
 console.log('Repository hygiene passed: no duplicate IDs, missing/offline script references, or obsolete duplicate root documents.');
+
+// The live machine twin must keep a light, readable surface and mirror collision playback/order edits.
+assert.match(twin, /background:linear-gradient\(145deg,#f8fcff,#e8f5fc\)!important/);
+assert.match(twin, /bg\.addColorStop\(0,'#fbfdff'\)/, 'twin canvas background must be light rather than dark blue');
+assert.match(twin, /addEventListener\('plegarpro:state-changed',\(\)=>\{syncStepOptions\(\);draw\(\)\}\)/, 'twin must refresh when fold order changes');
+assert.match(twin, /addEventListener\('plegarpro:playback-step',e=>\{const d=e\.detail\|\|\{\};if\(d\.source!=='collisions'\)return;/, 'twin must mirror the collision module playback position');
+assert.match(idx, /pp59-engineering-upgrade\.js\?v=156/);
+assert.match(sw, /pp59-engineering-upgrade\.js\?v=156/);
