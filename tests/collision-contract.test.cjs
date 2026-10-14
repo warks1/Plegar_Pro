@@ -273,5 +273,5 @@ assert.match(twin, /background:linear-gradient\(145deg,#f8fcff,#e8f5fc\)!importa
 assert.match(twin, /bg\.addColorStop\(0,'#fbfdff'\)/, 'twin canvas background must be light rather than dark blue');
 assert.match(twin, /addEventListener\('plegarpro:state-changed',\(\)=>\{syncStepOptions\(\);draw\(\)\}\)/, 'twin must refresh when fold order changes');
 assert.match(twin, /addEventListener\('plegarpro:playback-step',e=>\{const d=e\.detail\|\|\{\};if\(d\.source!=='collisions'\)return;/, 'twin must mirror the collision module playback position');
-assert.match(idx, /pp59-engineering-upgrade\.js\?v=156/);
+assert.match(html, /pp59-engineering-upgrade\.js\?v=156/);
 assert.match(sw, /pp59-engineering-upgrade\.js\?v=156/);
