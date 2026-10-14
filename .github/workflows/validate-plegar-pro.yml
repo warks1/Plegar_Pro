@@ -487,6 +487,50 @@ jobs:
                 finalOrderedFoldSync.activeFold !== finalOrderedFoldSync.expectedFold) {
               throw new Error('Final playback completion did not preserve the actual last fold in the assigned order: ' + JSON.stringify(finalOrderedFoldSync));
             }
+            const manualSelectionDuringPlayback = await page.evaluate(async () => {
+              const originalBends = state.bends, originalOrder = state.bendOrder;
+              const originalS2 = sim.s2Step, originalS3 = sim.s3Step, originalP3 = sim.p3Active;
+              state.bends = [
+                {leg:50,angle:90,direction:1},
+                {leg:80,angle:45,direction:-1},
+                {leg:120,angle:135,direction:1},
+                {leg:80,angle:90,direction:1}
+              ];
+              state.bendOrder = [2,0,1];
+              window.PLEGAR_PRO_COLLISIONS.refresh();
+              const play = document.querySelector('#pp56Play');
+              const travel = document.querySelector('#pp56Travel');
+              if (play.textContent.includes('Pausar')) play.click();
+              window.PLEGAR_PRO_COLLISIONS.setStep(0);
+              play.click();
+              await new Promise(r => setTimeout(r,140));
+              const target = document.querySelector('#pp56Sequence [data-pp56-step="2"]');
+              if (!target) throw new Error('Manual sequence card 3 was not rendered');
+              target.click();
+              await new Promise(r => setTimeout(r,80));
+              const result = {
+                stopped: !play.textContent.includes('Pausar'),
+                step: Number(document.querySelector('#pp56Step')?.value),
+                travel: Number(travel.value),
+                s2Step: sim.s2Step,
+                s3Step: sim.s3Step,
+                p3Active: sim.p3Active,
+                expectedFold: state.bendOrder[2]
+              };
+              if (play.textContent.includes('Pausar')) play.click();
+              state.bends = originalBends; state.bendOrder = originalOrder;
+              sim.s2Step = originalS2; sim.s3Step = originalS3; sim.p3Active = originalP3;
+              window.PLEGAR_PRO_COLLISIONS.refresh();
+              return result;
+            });
+            if (!manualSelectionDuringPlayback.stopped ||
+                manualSelectionDuringPlayback.step !== 2 ||
+                manualSelectionDuringPlayback.travel !== 0 ||
+                manualSelectionDuringPlayback.s2Step !== 2 ||
+                manualSelectionDuringPlayback.s3Step !== 2 ||
+                manualSelectionDuringPlayback.p3Active !== manualSelectionDuringPlayback.expectedFold) {
+              throw new Error('Manual collision step selection did not stop playback and synchronize all views: ' + JSON.stringify(manualSelectionDuringPlayback));
+            }
             const sequenceAudit = await page.evaluate(() => window.PLEGAR_PRO_COLLISIONS.auditSequences());
             if (!sequenceAudit.ok) throw new Error('U/Z/box final-fold audit failed: ' + JSON.stringify(sequenceAudit));
             await page.locator('#pp56ProfileV').fill(String(await page.evaluate(() => state.bends[0]?.v || 16)));
