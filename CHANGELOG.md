@@ -1,5 +1,12 @@
 # Registro de cambios consolidado — Plegar Pro
 
+## v64.11 — higiene conservadora del repositorio
+
+- Se revisaron los archivos raíz y las referencias de módulos: no hay archivos JavaScript duplicados ni referencias de script repetidas en el HTML.
+- Se conserva el orden de las capas CSS existentes porque forman parte de la cascada visual; no se eliminan reglas solo por compartir selectores sin comprobar el resultado visual.
+- La documentación y las pruebas automatizadas quedan alineadas con la versión publicada v64.10.
+
+
 ## v64.10 — restauración de interfaz anterior
 
 - Se retiró únicamente la última capa CSS experimental «Plegar Pro Premium» a petición del usuario; se mantiene la interfaz previa.

@@ -260,6 +260,8 @@ assert.equal(new Set(htmlIds).size, htmlIds.length, 'index.html must not contain
 const localScripts = [...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi)]
   .map(match => match[1].split('?')[0])
   .filter(src => src.startsWith('./') && !src.startsWith('//'));
+const scriptSources = [...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi)].map(match => match[1]);
+assert.equal(new Set(scriptSources).size, scriptSources.length, 'index.html must not load the same script URL more than once');
 for (const src of localScripts) {
   assert.ok(fs.existsSync(src.slice(2)), 'index.html references a missing local script: ' + src);
   assert.ok(sw.includes(src), 'offline service worker does not cache a referenced local script: ' + src);

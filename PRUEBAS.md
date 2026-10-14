@@ -4,6 +4,10 @@
 
 El flujo de GitHub Actions ejecuta comprobaciones de sintaxis JavaScript, contratos de sincronización y geometría paramétrica, y una prueba de humo del navegador para arranque, canvas 3D y navegación a colisiones.
 
+## Higiene del repositorio
+
+La prueba automática verifica que los identificadores HTML sean únicos, que cada script local exista y esté incluido en la caché sin conexión, y que no se repitan referencias de scripts. Las capas CSS con selectores coincidentes se mantienen ordenadas por cascada hasta poder validar visualmente cualquier consolidación; no se consideran duplicadas solo por usar el mismo selector.
+
 ## Verificación manual pendiente
 
 - Probar en móvil y escritorio cada selector de fabricante, punzón y matriz.
