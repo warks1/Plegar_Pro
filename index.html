@@ -1828,7 +1828,7 @@ function refreshPage(page){
 }
 function syncAll(){
  state=migrateState(state);ensureDevelopment();
- renderProjectInputs();$('dashRef').textContent=state.project.ref;$('dashMat').textContent=state.project.material;$('dashThk').textContent=state.project.thickness+' mm';$('dashBends').textContent=state.bends.length;
+ renderProjectInputs();$('dashRef').textContent=state.project.ref;$('dashMat').textContent=state.project.material;$('dashThk').textContent=state.project.thickness+' mm';if($('dashBends'))$('dashBends').textContent=state.bends.length;
  renderProgram();render2DEditor();populateP3();renderDevelopment();renderCurve();renderVCompare();renderTools();renderWorkOrder();renderQuality();renderHistory();renderAbout();drawAll();
  $('syncBadge').textContent='● Módulos actualizados';setTimeout(()=>$('syncBadge').textContent='● Proyecto al día',900);
 }
