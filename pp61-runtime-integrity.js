@@ -180,6 +180,7 @@
     });
   }
   function check(){
+    if(document.visibilityState==='hidden')return;
     installSyncHook();
     const next=fingerprint();
     if(!next){lastFingerprint='';return}
@@ -205,6 +206,7 @@
       window.setTimeout(()=>{if(fingerprint()!==lastFingerprint)synchronize('field-change')},0);
     },true);
     window.addEventListener('pageshow',()=>window.setTimeout(()=>{normalizeWorkspace();synchronize('pageshow')},250));
+    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')window.setTimeout(()=>{normalizeWorkspace();synchronize('visibility-return')},150)});
     window.addEventListener('plegarpro:state-changed',()=>synchronize('state-event'));
     window.setInterval(check,650);
     window.PLEGAR_PRO_V61={
