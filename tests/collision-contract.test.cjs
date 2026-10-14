@@ -277,6 +277,9 @@ assert.match(html, /pp59-engineering-upgrade\.js\?v=156/);
 assert.match(sw, /pp59-engineering-upgrade\.js\?v=156/);
 
 // Programación 2D: the information overlay must not cover bend-selection targets.
+assert.match(engineeringOrder, /function installCanvasPicking\(\)/, '2D/3D fold selection must retain its canvas-picking handler');
+assert.match(engineeringOrder, /\['canvasP2',projected2D\],\['canvasP3',projected3D\]/, 'fold picking must be installed on both programming canvases');
+assert.match(engineeringOrder, /c\.addEventListener\('click',e=>\{if\(sim\.drag\)return;const p=canvasXY\(c,e\),pts=project\(c\)/, 'canvas clicks must still map to projected bend targets after the overlay is removed');
 assert.match(html, /id="pp70-program2d-clear-canvas"/);
 assert.match(html, /#program2d #overlayP2\{display:none!important;visibility:hidden!important;pointer-events:none!important\}/);
 assert.match(html, /#program2d #canvasP2\{position:relative;z-index:1;pointer-events:auto;touch-action:pan-y\}/);
