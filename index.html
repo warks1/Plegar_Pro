@@ -629,12 +629,13 @@ body:not(.boot-complete) > .app{visibility:hidden}
 <script id="pp70-startup-rescue">
 (function(){
   'use strict';
-  var started=Date.now(),released=false;
+  var started=Date.now(),released=false,watchdog=0;
   function release(){
     if(released)return;
     var loader=document.getElementById('loader');
     if(!loader)return;
     released=true;
+    if(watchdog)clearInterval(watchdog);
     document.body.classList.add('boot-complete');
     document.documentElement.classList.remove('pp69-loading');
     document.body.classList.remove('pp69-loading');
@@ -645,8 +646,8 @@ body:not(.boot-complete) > .app{visibility:hidden}
     console.info('[Plegar Pro] Pantalla de carga liberada por PP70.');
   }
   /* Este temporizador se instala en el <head>, antes de los módulos que pueden bloquear el arranque. */
-  window.setInterval(function(){
-    if(released)return;
+  watchdog=window.setInterval(function(){
+    if(released){clearInterval(watchdog);return;}
     if(document.getElementById('loader') && Date.now()-started>=5200)release();
     else if(Date.now()-started>=12000 && document.body) {
       document.body.classList.add('boot-complete');
@@ -655,6 +656,7 @@ body:not(.boot-complete) > .app{visibility:hidden}
       var l=document.getElementById('loader');
       if(l){l.classList.add('hidden');l.style.setProperty('display','none','important');}
       released=true;
+      if(watchdog)clearInterval(watchdog);
     }
   },250);
   window.addEventListener('pageshow',function(){if(document.body.classList.contains('boot-complete'))release()});
