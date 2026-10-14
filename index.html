@@ -3571,6 +3571,86 @@ input,select,textarea{background:#061e35!important;border-color:#17608f!importan
 .topbar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 .page{animation:none!important}
 
+
+/* PP70 · contraste definitivo de todos los elementos del menú.
+   Neutraliza las capas oscuras antiguas y evita texto oscuro sobre fondos oscuros. */
+html body #mainSidebar.side,
+html body #mainSidebar.side.open,
+html body #mainSidebar.side.show,
+html body #mainSidebar.side.active{
+  background:#f7fafc!important;
+  background-image:linear-gradient(180deg,#ffffff 0%,#f3f7fa 100%)!important;
+  color:#193247!important;
+}
+html body #mainSidebar.side .brand,
+html body #mainSidebar.side .version,
+html body #mainSidebar.side .nav,
+html body #mainSidebar.side .nav h4{
+  background:transparent!important;
+  background-image:none!important;
+  color:#193247!important;
+  text-shadow:none!important;
+}
+html body #mainSidebar.side .nav button,
+html body #mainSidebar.side .nav a,
+html body #mainSidebar.side .nav button:not(.active),
+html body #mainSidebar.side .nav a:not(.active){
+  background:#ffffff!important;
+  background-image:none!important;
+  color:#294457!important;
+  border:1px solid #d7e2e9!important;
+  border-left:3px solid transparent!important;
+  box-shadow:none!important;
+  filter:none!important;
+  text-shadow:none!important;
+  transform:none!important;
+}
+html body #mainSidebar.side .nav button *,
+html body #mainSidebar.side .nav a *{
+  color:#294457!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  text-shadow:none!important;
+  filter:none!important;
+}
+html body #mainSidebar.side .nav button:hover,
+html body #mainSidebar.side .nav a:hover{
+  background:#edf5f9!important;
+  color:#173246!important;
+  border-color:#c7dbe6!important;
+}
+html body #mainSidebar.side .nav button.active,
+html body #mainSidebar.side .nav a.active,
+html body #mainSidebar.side .nav button[aria-current="page"],
+html body #mainSidebar.side .nav a[aria-current="page"]{
+  background:#dff1f8!important;
+  background-image:none!important;
+  color:#123e56!important;
+  border:1px solid #a9cfdf!important;
+  border-left:4px solid #087da5!important;
+  box-shadow:none!important;
+  font-weight:800!important;
+}
+html body #mainSidebar.side .nav button.active *,
+html body #mainSidebar.side .nav a.active *,
+html body #mainSidebar.side .nav button[aria-current="page"] *,
+html body #mainSidebar.side .nav a[aria-current="page"] *{
+  color:#123e56!important;
+  background:transparent!important;
+}
+html body #mainSidebar.side .nav button::after,
+html body #mainSidebar.side .nav a::after{
+  display:none!important;
+  animation:none!important;
+  content:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html body #mainSidebar.side,
+  html body #mainSidebar.side .nav button,
+  html body #mainSidebar.side .nav a{transition:none!important;animation:none!important}
+}
+
 </style>
 
 <script src="./pp64-ai-voice.js?v=1"></script>
