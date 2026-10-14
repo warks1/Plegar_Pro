@@ -247,9 +247,9 @@ assert.match(collision, /pp56TouchPulse/, 'HMI live status must animate');
 
 // Repository hygiene regression guard: prevent stale versioned documents,
 // duplicate HTML IDs, and references to missing/offline-uncached local scripts.
-const htmlIds = [...html.matchAll(/\\bid=["']([^"']+)["']/g)].map(match => match[1]);
+const htmlIds = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]);
 assert.equal(new Set(htmlIds).size, htmlIds.length, 'index.html must not contain duplicate element IDs');
-const localScripts = [...html.matchAll(/<script\\b[^>]*\\bsrc=["']([^"']+)["'][^>]*>/gi)]
+const localScripts = [...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi)]
   .map(match => match[1].split('?')[0])
   .filter(src => src.startsWith('./') && !src.startsWith('//'));
 for (const src of localScripts) {
@@ -257,7 +257,7 @@ for (const src of localScripts) {
   assert.ok(sw.includes(src), 'offline service worker does not cache a referenced local script: ' + src);
 }
 const rootFiles = fs.readdirSync('.');
-const staleDocs = rootFiles.filter(name => /^(?:CHANGELOG_v.*\\.txt|PRUEBAS_v.*\\.txt|README\\.txt|README_IMPORTANTE\\.txt)$/.test(name));
+const staleDocs = rootFiles.filter(name => /^(?:CHANGELOG_v.*\.txt|PRUEBAS_v.*\.txt|README\.txt|README_IMPORTANTE\.txt)$/.test(name));
 assert.deepEqual(staleDocs, [], 'obsolete versioned documentation must stay consolidated into README.md, CHANGELOG.md and PRUEBAS.md');
 assert.ok(fs.existsSync('README.md') && fs.existsSync('CHANGELOG.md') && fs.existsSync('PRUEBAS.md'),
   'the three current consolidated project documents must remain present');
