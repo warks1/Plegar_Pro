@@ -3169,6 +3169,238 @@ html body .page [class*="banner"] *,html body .page [class*="Banner"] *,html bod
 
 
 
+<style id="pp70-light-readable-panels">
+
+/* PLEGAR PRO · Corrección definitiva del menú lateral.
+   PP70 · Plegar Pro Ultimate — Boceto B: superficie metálica clara, legible y rápida.
+   Se consolida aquí la capa visual final para neutralizar reglas oscuras heredadas. */
+:root{
+ --bg:#edf3f7;--panel:#fff;--panel2:#f5f9fc;--line:#d3dfe8;--text:#183247;--muted:#61798b;
+ --accent:#087fa8;--accent2:#148b73;--ok:#16845e;--danger:#bd3c4b;--warning:#9b6500;
+ --radius:13px;--shadow:0 8px 24px rgba(26,48,70,.08);
+ --pp-ui-bg:#edf3f7;--pp-ui-panel:#fff;--pp-ui-panel2:#f5f9fc;--pp-ui-line:#d3dfe8;--pp-ui-cyan:#087fa8;--pp-ui-blue:#087fa8;--pp-ui-text:#183247;--pp-ui-muted:#61798b
+}
+html,body{background:#edf3f7!important;background-image:linear-gradient(145deg,#f8fafc 0%,#e8f0f5 58%,#f6f9fb 100%)!important;color:#183247!important;letter-spacing:.005em}
+body{min-width:0;overflow-x:hidden}
+.app{display:grid!important;grid-template-columns:258px minmax(0,1fr)!important;gap:0!important;background:transparent!important}
+.main{min-width:0!important;padding:clamp(12px,1.8vw,25px)!important}
+.topbar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;position:relative!important;top:auto!important;margin:0 0 18px!important;padding:13px clamp(12px,1.6vw,22px)!important;min-height:64px;background:rgba(255,255,255,.98)!important;border:1px solid #d6e2ea!important;border-radius:13px!important;box-shadow:0 5px 18px rgba(24,50,71,.06)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.topLeft{display:flex;align-items:center;gap:7px!important;flex-wrap:wrap}
+.topLeft button,.topbar button,.mobileMenuBtn{min-height:38px;border:1px solid #cddbe4!important;border-radius:9px!important;background:linear-gradient(180deg,#fff,#f0f5f8)!important;color:#284557!important;box-shadow:0 1px 2px rgba(24,50,71,.05)!important;font-size:12px;font-weight:700;transition:background-color .12s ease,border-color .12s ease,transform .12s ease!important}
+.topLeft button:hover,.topbar button:hover,.mobileMenuBtn:hover{background:#eaf4f8!important;border-color:#a9cbd9!important;transform:translateY(-1px)}
+.heading h1{color:#18384c!important;font-size:clamp(20px,2vw,29px)!important;font-weight:820!important;letter-spacing:-.035em!important}
+.heading p,.muted,.hint,.help,.subtitle{color:#62798a!important}
+.syncBadge{background:#e7f7ef!important;color:#176c4f!important;border:1px solid #b8e5d0!important;box-shadow:none!important}
+.page{animation:none!important}
+.page.active .card{animation:none!important}
+.card{min-width:0;background:linear-gradient(155deg,#fff,#f8fbfd)!important;border:1px solid #d6e2ea!important;border-radius:13px!important;box-shadow:0 7px 21px rgba(24,50,71,.065)!important;color:#183247!important;transition:border-color .12s ease,box-shadow .12s ease!important}
+.card:hover{border-color:#c0d6e2!important;box-shadow:0 9px 24px rgba(24,50,71,.085)!important}
+.card h2{color:#24495e!important;border-color:#e1eaf0!important;font-weight:820!important;letter-spacing:.025em}
+.card h3,.card h4{color:#31576b!important}
+html body .page .card:not(.pp56-canvas),
+html body .page .panel:not(canvas),
+html body .page .box:not(canvas),
+html body .page fieldset,
+html body .page .note,
+html body .page [class*="tool-card"],
+html body .page [class*="metric-card"],
+html body .page [class*="data-box"],
+html body .page [class*="info-box"],
+html body .page [class*="readout"],
+html body .page [class*="metric"],
+html body .page [class*="kpi"],
+html body .page [class*="status"],
+html body .page [class*="Status"],
+html body .page [class*="rail"],
+html body .page [class*="tile"],
+html body .page [class*="rect"],
+html body .page [class*="pp-form-section"],
+html body .page [class*="pp-module-panel"],
+html body .page [class*="pp-module-form"]{
+ background-color:#f2f7fa!important;background-image:linear-gradient(145deg,#fff 0%,#eef5f9 100%)!important;
+ color:#183448!important;border-color:#d0dfe8!important;box-shadow:0 4px 13px rgba(18,51,73,.055)!important;text-shadow:none!important;filter:none!important
+}
+html body .page .card:not(.pp56-canvas) :not(canvas):not(svg):not(path):not(button):not(input):not(select):not(textarea),
+html body .page .panel :not(canvas):not(svg):not(path):not(button):not(input):not(select):not(textarea),
+html body .page fieldset label,
+html body .page [class*="tool-card"] *,
+html body .page [class*="metric-card"] *,
+html body .page [class*="data-box"] *,
+html body .page [class*="info-box"] *,
+html body .page [class*="readout"] *,
+html body .page [class*="metric"] *,
+html body .page [class*="kpi"] *,
+html body .page [class*="status"] *,
+html body .page [class*="Status"] *,
+html body .page [class*="rail"] *,
+html body .page [class*="tile"] *,
+html body .page [class*="rect"] *,
+html body .page [class*="pp-form-section"] *,
+html body .page [class*="pp-module-panel"] *,
+html body .page [class*="pp-module-form"] *{
+ color:#183448!important;text-shadow:none!important
+}
+html body .page input:not([type=checkbox]):not([type=radio]):not([type=range]),
+html body .page select,html body .page textarea,
+html body .page .card input,html body .page .card select,html body .page .card textarea{
+ min-height:38px;background:#fff!important;color:#183448!important;border:1px solid #c4d5e0!important;border-radius:8px!important;box-shadow:inset 0 1px 2px rgba(24,50,71,.035)!important
+}
+html body .page input::placeholder,html body .page textarea::placeholder{color:#718697!important;opacity:1!important}
+html body .page select option{background:#fff!important;color:#183448!important}
+html body .page input:focus,html body .page select:focus,html body .page textarea:focus{outline:2px solid rgba(8,127,168,.18)!important;border-color:#1689ae!important}
+html body .page .btn,html body .page button.btn,html body .page .card button:not(.secondary):not(.danger):not(.warn),html body .page [class*="pp-module-form"] button:not(.secondary):not(.danger){
+ background:linear-gradient(145deg,#138db3,#08779d)!important;color:#fff!important;border:1px solid #087da5!important;border-radius:8px!important;box-shadow:0 2px 7px rgba(8,127,168,.14)!important;text-shadow:none!important;transition:filter .12s ease,transform .12s ease!important
+}
+html body .page .btn:hover,html body .page button.btn:hover,html body .page .card button:hover{filter:brightness(1.04)!important}
+html body .page .btn.secondary,html body .page button.secondary{background:linear-gradient(145deg,#fff,#edf4f8)!important;color:#28495d!important;border:1px solid #cddce5!important;box-shadow:none!important}
+html body .page .btn.danger,html body .page button.danger{background:#bd3c4b!important;color:#fff!important;border-color:#ae3342!important}
+html body .page .btn.warn,html body .page button.warn{background:#f4d28c!important;color:#563b05!important;border-color:#e7bf66!important}
+html body .page .note,html body .page .alert,html body .page .notice,html body .page [class*="banner"],html body .page [class*="Banner"],html body .page [class*="hero"],html body .page [class*="Hero"],html body .page .pp-status-strip,html body .page .pp-ai-panel{
+ background:#f0f8fc!important;background-image:linear-gradient(120deg,#fbfdff,#e8f4f9)!important;color:#183b50!important;border-color:#c8dce7!important;text-shadow:none!important;box-shadow:none!important
+}
+html body .page .stage,html body .page .canvasWrap,html body .page .pp56-canvas,html body .page .pp55-stage{
+ background:linear-gradient(145deg,#fbfdff,#e8f1f6)!important;border:1px solid #cbdce6!important;border-radius:12px!important;box-shadow:inset 0 1px 0 #fff,0 5px 16px rgba(24,50,71,.06)!important
+}
+html body .page .stage .overlay,html body .page .overlay{
+ background:linear-gradient(145deg,#fff,#edf5f9)!important;color:#183448!important;border:1px solid #c5dbe6!important;border-radius:9px!important;box-shadow:0 4px 13px rgba(24,50,71,.09)!important;text-shadow:none!important
+}
+html body .page table th,html body .page .table th{background:#eaf2f7!important;color:#24485b!important;border-color:#d6e2ea!important}
+html body .page table td,html body .page .table td{background:#fff!important;color:#29495d!important;border-color:#e1e9ef!important}
+html body .page .legalFooter{color:#718596!important;border-color:#d6e2ea!important}
+html body #dashboard .card:first-child{background:linear-gradient(145deg,#fff,#eef5f9)!important;border-color:#d2e0e8!important;color:#183448!important}
+html body #dashboard .card:first-child h2,html body #dashboard .card:first-child p,html body #dashboard .card:first-child small{color:#28495d!important}
+
+/* Menú lateral metálico claro: sin tarjetas azul marino, texto oscuro de alto contraste. */
+#mainSidebar.side{
+ width:258px!important;min-width:258px!important;max-width:258px!important;height:100vh!important;max-height:100vh!important;
+ position:sticky!important;top:0!important;align-self:start!important;overflow-x:hidden!important;overflow-y:auto!important;
+ padding:16px 11px 20px!important;background:linear-gradient(180deg,#fff 0%,#f5f8fb 55%,#edf3f7 100%)!important;
+ color:#193247!important;border-right:1px solid #cbd9e3!important;box-shadow:4px 0 15px rgba(26,48,70,.07)!important;
+ scrollbar-width:thin;scrollbar-color:#bdcbd6 transparent;perspective:900px!important;transform-style:preserve-3d!important
+}
+#mainSidebar .brand{
+ display:flex!important;align-items:center!important;gap:8px!important;position:relative!important;margin:0 0 7px!important;padding:12px 10px!important;
+ border:1px solid #cbd9e2!important;border-radius:10px!important;background:linear-gradient(145deg,#fff 0%,#eef3f7 60%,#e5edf2 100%)!important;
+ box-shadow:inset 0 1px #fff,0 2px 6px rgba(26,48,70,.045)!important;color:#173246!important;font-size:23px!important;line-height:1.2!important;letter-spacing:.035em!important;text-shadow:none!important
+}
+#mainSidebar .brand span{color:#087da5!important}
+#mainSidebar .version{display:block!important;margin:5px 4px 15px!important;padding:4px 6px!important;color:#63798a!important;font-size:10px!important;letter-spacing:.1em!important;white-space:normal!important;background:transparent!important;border:0!important;text-shadow:none!important}
+#mainSidebar .nav{display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;align-items:stretch!important;gap:3px!important;padding:4px 0 16px!important}
+#mainSidebar .nav h4{width:auto!important;margin:15px 8px 6px!important;padding:0 0 5px!important;border-bottom:1px solid #d7e2e9!important;color:#526d80!important;font-size:10px!important;font-weight:800!important;letter-spacing:.14em!important;text-shadow:none!important;background:transparent!important}
+#mainSidebar .nav button{
+ background-color:#fff!important;background-image:linear-gradient(145deg,#fff,#f6f9fb)!important;
+ display:flex!important;align-items:center!important;gap:9px!important;width:100%!important;min-width:0!important;min-height:40px!important;margin:1px 0!important;padding:7px 9px!important;
+ border:1px solid #dce5eb!important;border-left:3px solid transparent!important;border-bottom:2px solid #d0dce4!important;border-radius:8px!important;
+ background:linear-gradient(145deg,#fff,#f6f9fb)!important;color:#294457!important;text-align:left!important;font-size:12px!important;font-weight:620!important;line-height:1.3!important;
+ white-space:normal!important;overflow-wrap:anywhere!important;box-shadow:0 1px 2px rgba(24,50,71,.025)!important;text-shadow:none!important;filter:none!important;
+ transform:perspective(800px) rotateY(-4deg) rotateX(1deg)!important;animation:pp3dMetalReveal .14s ease-out both!important;transition:background-color .12s ease,border-color .12s ease,color .12s ease,transform .12s ease!important;will-change:auto!important
+}
+#mainSidebar .nav button:before{
+ content:attr(data-icon)!important;display:inline-grid!important;place-items:center!important;flex:0 0 26px!important;width:26px!important;height:26px!important;
+ border:1px solid #d1e0e8!important;border-radius:7px!important;background:linear-gradient(145deg,#fff,#eaf2f7)!important;color:#087da5!important;
+ box-shadow:inset 0 1px #fff!important;font-size:14px!important;font-weight:800!important;line-height:1!important;text-shadow:none!important;transform:translateZ(2px)!important
+}
+#mainSidebar .nav button:after{content:none!important;display:none!important;animation:none!important}
+ /* Override inherited #mainSidebar.side button{background:transparent!important} without reverting to the dark theme. */
+ html body #mainSidebar.side .nav button:not(.active):not(:hover){
+   background-color:#fff!important;
+   background-image:linear-gradient(145deg,#fff,#f6f9fb)!important;
+   color:#294457!important;
+ }
+ html body #mainSidebar.side .nav button:not(.active):hover{
+   background-color:#edf5f9!important;
+   background-image:linear-gradient(145deg,#f4fafc,#e7f2f7)!important;
+   color:#173246!important;
+ }
+#mainSidebar .nav button:hover{background-color:#edf5f9!important;background-image:linear-gradient(145deg,#f4fafc,#e7f2f7)!important;color:#173246!important;border-color:#c4d9e4!important;border-left-color:#8bb8cc!important;box-shadow:0 3px 8px rgba(24,50,71,.055)!important;transform:perspective(800px) rotateY(-1deg) translate3d(3px,-1px,0)!important;filter:none!important}
+#mainSidebar .nav button.active,#mainSidebar .nav button[aria-current="page"]{
+ background-color:#dff1f8!important;background-image:linear-gradient(100deg,#e8f5fa,#dceef5)!important;color:#123e56!important;border-color:#b6d3e0!important;border-left:4px solid #087da5!important;
+ box-shadow:inset 0 1px #fff,0 2px 6px rgba(24,50,71,.04)!important;font-weight:800!important;filter:none!important;animation:none!important;transform:perspective(800px) rotateY(-1deg) translate3d(2px,0,0)!important
+}
+#mainSidebar .nav button.active:before,#mainSidebar .nav button[aria-current="page"]:before{background:linear-gradient(145deg,#dff1f8,#cfe7f0)!important;border-color:#91c4d7!important;color:#066988!important;box-shadow:inset 0 1px #fff!important}
+#mainSidebar .nav button:active{transform:perspective(800px) translate3d(1px,1px,0)!important;box-shadow:none!important}
+#mainSidebar .nav button[data-page="dashboard"]:before{content:"⌂"!important}
+#mainSidebar .nav button[data-page="import"]:before{content:"↥"!important}
+#mainSidebar .nav button[data-page="technical"]:before{content:"⚙"!important}
+#mainSidebar .nav button[data-page="program"]:before{content:"▤"!important}
+#mainSidebar .nav button[data-page="program2d"]:before{content:"⌗"!important}
+#mainSidebar .nav button[data-page="program3d"]:before{content:"◇"!important}
+#mainSidebar .nav button[data-page="sim2d"]:before{content:"◫"!important}
+#mainSidebar .nav button[data-page="sim3d"]:before{content:"◈"!important}
+#mainSidebar .nav button[data-page="collisions"]:before{content:"⚠"!important}
+#mainSidebar .nav button[data-page="development"]:before{content:"⌁"!important}
+#mainSidebar .nav button[data-page="devcalculator"]:before{content:"∑"!important}
+#mainSidebar .nav button[data-page="curve"]:before{content:"∿"!important}
+#mainSidebar .nav button[data-page="vcompare"]:before{content:"▽"!important}
+#mainSidebar .nav button[data-page="engineering"]:before{content:"⚒"!important}
+#mainSidebar .nav button[data-page="machineTwin"]:before{content:"▣"!important}
+#mainSidebar .nav button[data-page="tooling"]:before{content:"⚒"!important}
+#mainSidebar .nav button[data-page="ai"]:before{content:"✧"!important}
+#mainSidebar .nav button[data-page="office"]:before{content:"▦"!important}
+#mainSidebar .nav button[data-page="plans"]:before{content:"▧"!important}
+#mainSidebar .nav button[data-page="clients"]:before{content:"♙"!important}
+#mainSidebar .nav button[data-page="quotes"]:before{content:"€"!important}
+#mainSidebar .nav button[data-page="materials"]:before{content:"▤"!important}
+#mainSidebar .nav button[data-page="production"]:before{content:"⚙"!important}
+#mainSidebar .nav button[data-page="workorders"]:before{content:"☷"!important}
+
+/* PP3D icon fix: retain the existing module symbols; the old border-bottom:4px solid #030a10 bevel is replaced by a light-metal edge. */
+/* PP3D MENU v2 · profundidad visible también en pantallas táctiles */
+/* PP3D MENU v3 · movimiento metálico ligero y accesible: microanimación breve, sin pulsos lentos. */
+@keyframes pp3dMetalReveal{from{opacity:.86;filter:brightness(.97)}to{opacity:1;filter:brightness(1)}}
+@keyframes pp3dActivePulse{0%,100%{filter:none}50%{filter:brightness(1.015)}}
+@keyframes pp70-menu-glint{0%,100%{opacity:0}50%{opacity:.12}}
+@media(min-width:901px){.app{display:grid!important;grid-template-columns:258px minmax(0,1fr)!important;gap:0!important}.menuBackdrop{display:none!important}.mobileMenuBtn{display:none!important}}
+@media(max-width:900px){
+ .app{display:block!important;grid-template-columns:minmax(0,1fr)!important}
+ #mainSidebar.side{position:fixed!important;inset:0 auto 0 0!important;width:min(300px,88vw)!important;min-width:0!important;max-width:300px!important;height:100dvh!important;max-height:100dvh!important;overflow-x:hidden!important;overflow-y:auto!important;align-self:auto!important;transform:translateX(-105%)!important;transition:transform .16s ease!important;z-index:9999!important;padding:16px 11px calc(24px + env(safe-area-inset-bottom))!important;background:linear-gradient(180deg,#fff,#f1f6f9)!important;box-shadow:8px 0 24px rgba(20,43,60,.14)!important}
+ #mainSidebar.side.open,#mainSidebar.side.show,body.menu-open #mainSidebar.side,#menuToggle:checked~#mainSidebar.side{transform:translateX(0)!important}
+ #menuToggle:checked~.menuBackdrop,body.menu-open .menuBackdrop{display:block!important;position:fixed!important;inset:0!important;z-index:9998!important;background:rgba(25,44,58,.24)!important}
+ .mobileMenuBtn{display:inline-flex!important;align-items:center!important;gap:7px!important;position:relative!important;z-index:80!important;min-height:42px!important}
+ .main{padding:10px!important}.topbar{margin:0 0 12px!important;padding:10px!important;flex-wrap:wrap!important}.heading{order:3;width:100%}
+ #mainSidebar .nav{gap:3px!important}#mainSidebar .nav button{min-height:42px!important}
+ .pp56-hmi-layout{grid-template-columns:minmax(0,1fr)!important}.pp56-hmi-layout .pp56-canvas{grid-column:1!important;grid-row:1!important}.pp56-hmi-rail{grid-column:1!important;grid-row:2!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ .pp56-rail-head,.pp56-rail-separator,.pp56-hmi-note{grid-column:1/-1!important}
+}
+@media(max-width:560px){
+ .main{padding:7px!important}.topbar{gap:8px!important;margin-bottom:10px!important}.card{padding:11px!important;border-radius:11px!important}
+ .quick{grid-template-columns:repeat(2,minmax(0,1fr))!important}.quick button{min-height:94px!important;padding:10px!important}
+ .topLeft button{font-size:11px!important;padding:8px!important}.pp56-controls{grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:390px){.quick{grid-template-columns:minmax(0,1fr)!important}.actions{grid-template-columns:minmax(0,1fr)!important}}
+@media(prefers-reduced-motion:reduce){
+ #mainSidebar.side,#mainSidebar .nav button,html body .page button{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+ #mainSidebar .nav button.active{animation:none!important}
+}
+/* La geometría 3D sigue en su lienzo; todos sus paneles y controles circundantes son claros. */
+html body #collisions .pp56-hmi-top{background:linear-gradient(120deg,#f8fcfe,#e6f2f7)!important;color:#183b50!important;border:1px solid #c6dbe5!important;box-shadow:0 4px 12px rgba(24,50,71,.05)!important}
+html body #collisions .pp56-hmi-top *{color:#183b50!important;text-shadow:none!important}
+html body #collisions .pp56-hmi-live{background:#e1f5eb!important;color:#176947!important;border-color:#b9e4d0!important}
+html body #collisions .pp56-hmi-live *{color:#176947!important}
+html body #collisions .pp56-hmi-rail{background:linear-gradient(145deg,#fff,#eef5f8)!important;color:#183448!important;border-color:#cbdde7!important;box-shadow:0 4px 12px rgba(24,50,71,.045)!important}
+html body #collisions .pp56-hmi-rail *{color:#183448!important;text-shadow:none!important}
+html body #collisions .pp56-readout{background:#fff!important;border:1px solid #d3e1e8!important;box-shadow:none!important}
+html body #collisions .pp56-readout small{color:#607889!important}
+html body #collisions .pp56-readout b{color:#183448!important}
+html body #collisions .pp56-rail-legend span{color:#29495d!important}
+html body #collisions .pp56-hmi-top button,html body #collisions .pp56-hmi-rail button{background:#087da5!important;color:#fff!important;border-color:#087da5!important}
+html body #sim3d>.card{padding:12px!important}
+html body #sim3d h2{font-size:15px!important;text-transform:uppercase;letter-spacing:.07em}
+html body #sim3d .toolbar{gap:6px!important;align-items:center}
+html body #sim3d .toolbar .btn{padding:7px 10px!important;min-height:34px}
+html body #sim3d .toolbar .status{background:#eef6fa!important;border-color:#cfdee7!important;color:#24495e!important}
+html body #sim3d .stage{min-height:420px;background:linear-gradient(145deg,#f7fbfd,#e6eff4)!important;box-shadow:inset 0 0 26px rgba(80,122,145,.06)!important}
+html body #sim3d .stage canvas{max-width:100%;height:min(58vh,620px);min-height:400px}
+html body #sim3d #s3DimensionStatus{margin:0 0 8px!important;padding:8px 10px!important;font-size:12px}
+html body #sim2d>.card{padding:12px!important}
+html body #sim2d .stage canvas{height:min(55vh,600px)!important;min-height:360px}
+html body .pp56-seq-step{background:linear-gradient(145deg,#fff,#f1f6f9)!important;color:#29495d!important;border:1px solid #d4e1e8!important;box-shadow:0 2px 7px rgba(24,50,71,.045)!important}
+html body .pp56-seq-step .pp56-seq-num,html body .pp56-seq-step .pp56-seq-meta{color:#60798a!important}
+html body .pp56-seq-step[aria-current="true"]{background:linear-gradient(145deg,#e8f5fa,#dceef5)!important;color:#123e56!important;border-color:#a9cfdf!important}
+
+
+</style>
+
 <script src="./pp64-ai-voice.js?v=1"></script>
 <script src="./pp62-contrast-playback-fix.js?v=62.3"></script>
 
