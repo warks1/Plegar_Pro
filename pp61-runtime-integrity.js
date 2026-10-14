@@ -102,6 +102,9 @@
     const rawOrder=Array.isArray(s?.bendOrder)?s.bendOrder:[];
     const order=rawOrder.filter((v,i)=>Number.isInteger(v)&&v>=0&&v<foldCount&&rawOrder.indexOf(v)===i);
     for(let i=0;i<foldCount;i++)if(!order.includes(i))order.push(i);
+    // Stop the autonomous twin cycle before changing a manually selected collision step.
+    // Pausing after assigning sim.p3Active allowed one last animation tick to overwrite the chosen bend.
+    if(source==='collisions'&&$('pp59play')?.textContent?.includes('Pausar'))$('pp59play').click();
     const requestedStep=Math.max(0,Math.floor(Number(detail.step)||0));
     let pos=requestedStep;
     if(detail.complete)pos=Math.max(0,order.length-1);
@@ -136,9 +139,6 @@
         if(travel){const next=String(Math.max(0,Math.min(100,Number(detail.travel))));if(travel.value!==next){travel.value=next;travel.dispatchEvent(new Event('input',{bubbles:true}))}}
         try{window.PLEGAR_PRO_COLLISIONS?.refresh?.()}catch(e){}
       }
-      // A manually selected collision step must take control from the twin's autonomous cycle.
-      // Otherwise its next animation frame can overwrite the selected step before the sync settles.
-      if(source==='collisions'&&$('pp59play')?.textContent?.includes('Pausar'))$('pp59play').click();
       const twinStep=$('pp59step');
       if(twinStep&&source!=='pp59'&&Number(twinStep.value)!==syncPos){
         twinStep.value=String(Math.min(Math.max(0,twinStep.options.length-1),syncPos));
