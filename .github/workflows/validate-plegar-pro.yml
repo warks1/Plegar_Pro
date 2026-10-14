@@ -226,7 +226,7 @@ jobs:
               throw new Error('Sidebar menu has unreadable text or a dark button surface: ' + JSON.stringify(menuContrastAudit));
             }
             await page.waitForSelector('#pp59canvas', { state: 'attached', timeout: 10000 });
-            await page.locator('[data-page="program3d"]').click();
+            await page.locator('#mainSidebar .nav button[data-page="program3d"]').click();
             await page.waitForTimeout(350);
             const program3dDebug = await page.evaluate(() => ({
               activePages: [...document.querySelectorAll('.page.active')].map(e => e.id),
