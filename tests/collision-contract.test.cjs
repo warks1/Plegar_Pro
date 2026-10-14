@@ -18,7 +18,7 @@ assert.match(html, /Corrección definitiva del menú lateral/);
 assert.match(html, /grid-template-columns:258px minmax\(0,1fr\)!important/);
 assert.match(html, /#mainSidebar \.nav\{display:flex!important;flex-direction:column!important/);
 assert.match(html, /#mainSidebar\.side\.open[\s\S]*transform:translateX\(0\)!important/);
-assert.match(sw, /plegar-pro-v152-\\d+/);
+assert.match(sw, /plegar-pro-v152-[0-9]+/);
 // Voice assistant delivery contract: UI script must be loaded and included in offline cache.
 assert.ok(html.includes('pp64-ai-voice.js?v=1'));
 assert.ok(sw.includes('./pp64-ai-voice.js?v=1'));
