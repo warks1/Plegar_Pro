@@ -102,9 +102,9 @@
     const rawOrder=Array.isArray(s?.bendOrder)?s.bendOrder:[];
     const order=rawOrder.filter((v,i)=>Number.isInteger(v)&&v>=0&&v<foldCount&&rawOrder.indexOf(v)===i);
     for(let i=0;i<foldCount;i++)if(!order.includes(i))order.push(i);
-    // Stop the autonomous twin cycle before changing a manually selected collision step.
-    // Pausing after assigning sim.p3Active allowed one last animation tick to overwrite the chosen bend.
-    if(source==='collisions'&&$('pp59play')?.textContent?.includes('Pausar'))$('pp59play').click();
+    // A manual/programmed step must be authoritative: stop every competing animator before applying it.
+    // Otherwise a pending twin tick can overwrite sim.p3Active after the collision selector changes.
+    if(source==='collisions'||source==='pp59'||source==='machineTwin')stopCompetingPlayback(source);
     const requestedStep=Math.max(0,Math.floor(Number(detail.step)||0));
     let pos=requestedStep;
     if(detail.complete)pos=Math.max(0,order.length-1);
