@@ -10,7 +10,7 @@ Plegar Pro es una aplicación web estática para planificar piezas de chapa, com
 - [Repositorio y código fuente](https://github.com/warks1/Plegar_Pro)
 - [Registro de cambios consolidado](CHANGELOG.md)
 - [Pruebas y limitaciones conocidas](PRUEBAS.md)
-- Los ficheros `CHANGELOG_v*.txt` y `PRUEBAS_v*.txt` anteriores se conservan como archivo histórico; no son la versión vigente.
+- El historial antiguo se conserva en el historial de Git; en la raíz solo quedan el registro de cambios y las pruebas consolidadas.
 
 No se necesita un proceso de compilación npm para servir la versión estática. La publicación de GitHub Pages depende de que termine correctamente la acción de despliegue.
 
