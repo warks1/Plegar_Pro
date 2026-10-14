@@ -108,7 +108,7 @@ assert.match(collision, /activeBendArcSegments:Number\.isFinite\(g\?\.activeBend
 assert.match(collision, /code===42&&vertices\.length/ , 'DXF LWPOLYLINE bulge arcs must be preserved');
 assert.match(collision, /parseDxfProfileForTest\(text,unitFactor=1,type='Matriz'\)/, 'DXF parser must expose a testable profile audit');
 assert.match(collision, /\$\('pp56Step'\)\.onchange=\(\)=>setStep\(Number\(\$\('pp56Step'\)\.value\)\|\|0,true\)/);
-assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=154/);
+assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=155/);
 assert.match(html, /pp61-runtime-integrity\.js\?v=62/);
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62/);
 assert.match(runtime, /detail\.complete\?\(order\[maxPos\]\?\?maxPos\)/, 'completed collision playback must activate the final fold in the selected order');
@@ -120,14 +120,14 @@ assert.match(twin, /lastEmittedTravel=-1/, 'digital twin must track travel progr
 assert.match(collision, /plegarpro:machine-travel/, 'collision playback must publish ram travel continuously, not only when the fold step changes');
 assert.match(twin, /plegarpro:machine-travel/, 'digital twin must consume collision ram travel when its own playback is paused');
 assert.match(twin, /externalTravel!==null\?externalTravel\/100/, 'digital twin ram position must follow externally synchronized travel');
-assert.match(html, /pp59-engineering-upgrade\.js\?v=154/);
-assert.match(sw, /pp59-engineering-upgrade\.js\?v=154/);
+assert.match(html, /pp59-engineering-upgrade\.js\?v=155/);
+assert.match(sw, /pp59-engineering-upgrade\.js\?v=155/);
 assert.match(sw, /plegar-pro-v152-55/);
 assert.match(twin, /travelBucket!==lastEmittedTravel/, 'digital twin must publish meaningful travel changes during each ram cycle');
 assert.match(twin, /source:'pp59',step:pos,foldIndex:executionOrder\(\)\[pos\]\?\?0,travel:travelBucket\*5/, 'digital twin events must carry the ram travel percentage');
 assert.match(runtime, /else if\(source==='pp59'&&Number\.isFinite\(Number\(detail\.travel\)\)\)/, 'runtime must map twin ram travel into the collision review');
 assert.match(runtime, /travel\.dispatchEvent\(new Event\('input',\{bubbles:true\}\)\)/, 'collision view must redraw when synchronized travel changes');
-assert.match(html, /pp59-engineering-upgrade\.js\?v=154/);
+assert.match(html, /pp59-engineering-upgrade\.js\?v=155/);
 assert.match(html, /pp61-runtime-integrity\.js\?v=62\.5/);
 assert.match(html, /const meta=titles\[page\]\|\|\[/, 'navigation must tolerate dynamic pages without title metadata');
 assert.match(html, /Error al actualizar el módulo/, 'navigation failures must be surfaced instead of silently swallowed');
