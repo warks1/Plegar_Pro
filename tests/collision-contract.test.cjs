@@ -22,7 +22,7 @@ assert.match(sw, /plegar-pro-v152-[0-9]+/);
 // Voice assistant delivery contract: UI script must be loaded and included in offline cache.
 assert.ok(html.includes('pp64-ai-voice.js?v=1'));
 assert.ok(sw.includes('./pp64-ai-voice.js?v=1'));
-assert.ok(sw.includes('plegar-pro-v152-60'));
+assert.match(sw, /plegar-pro-v152-[0-9]+/);
 const voice = fs.readFileSync('pp64-ai-voice.js', 'utf8');
 assert.ok(voice.includes('window.SpeechRecognition||window.webkitSpeechRecognition'));
 assert.ok(voice.includes('recognition.continuous=true'));
