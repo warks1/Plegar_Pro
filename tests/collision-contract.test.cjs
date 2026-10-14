@@ -5,6 +5,8 @@ const vm = require('node:vm');
 const html = fs.readFileSync('index.html', 'utf8');
 const engineeringOrder = fs.readFileSync('pp54-engineering.js', 'utf8');
 const collision = fs.readFileSync('pp56-collision-review.js', 'utf8');
+assert.doesNotMatch(collision, /\.pp56-seq-step\{flex:0 0 132px;scroll-snap-align:start\}/, 'sequence card sizing must not be split across duplicate selectors');
+assert.match(collision, /\.pp56-seq-step\{position:relative;display:flex;flex:0 0 132px;scroll-snap-align:start;/, 'sequence card sizing and snap behavior must live in one selector');
 assert.ok(collision.includes('pp56Sequence'), 'collision UI must expose a visible fold sequence strip');
 assert.ok(collision.includes('function renderSequenceBar()'), 'fold sequence must render selectable step cards');
 assert.match(collision, /previousSync=\{s2Step:typeof sim/ , 'sequence audit must snapshot the active simulation state before running U/Z/box regression cases');
@@ -16,11 +18,11 @@ assert.match(html, /Corrección definitiva del menú lateral/);
 assert.match(html, /grid-template-columns:258px minmax\(0,1fr\)!important/);
 assert.match(html, /#mainSidebar \.nav\{display:flex!important;flex-direction:column!important/);
 assert.match(html, /#mainSidebar\.side\.open[\s\S]*transform:translateX\(0\)!important/);
-assert.match(sw, /plegar-pro-v152-53/);
+assert.match(sw, /plegar-pro-v152-54/);
 // Voice assistant delivery contract: UI script must be loaded and included in offline cache.
 assert.ok(html.includes('pp64-ai-voice.js?v=1'));
 assert.ok(sw.includes('./pp64-ai-voice.js?v=1'));
-assert.ok(sw.includes('plegar-pro-v152-53'));
+assert.ok(sw.includes('plegar-pro-v152-54'));
 const voice = fs.readFileSync('pp64-ai-voice.js', 'utf8');
 assert.ok(voice.includes('window.SpeechRecognition||window.webkitSpeechRecognition'));
 assert.ok(voice.includes('recognition.continuous=true'));
@@ -86,13 +88,13 @@ assert.match(html, /Build a thin sheet-metal wall/);
 assert.match(html, /getSelectedToolProfiles/);
 
 // Keep the deployed offline shell wired to the same collision/twin modules.
-assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=167"><\/script>/, 'page and service worker must load the same collision module version');
+assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=168"><\/script>/, 'page and service worker must load the same collision module version');
 assert.match(html, /id="s3ZoomRange" type="range" min="0\.25" max="6"/, '3D simulation must expose a continuous extended zoom slider');
 assert.match(html, /id="canvasS3" width="1600" height="900"/, '3D simulation canvas must use the enlarged rendering viewport');
 assert.match(html, /#sim3d \.s3Stage\{min-height:clamp\(420px,72vh,900px\)/, '3D simulation viewport must use a larger responsive stage');
 assert.match(html, /Math\.min\(6,sim\[k\]\*\(d\/lastDistance\)\)/, '3D pinch zoom must allow up to 6x magnification');
 
-assert.match(sw, /\.\/pp56-collision-review\.js\?v=167/);
+assert.match(sw, /\.\/pp56-collision-review\.js\?v=168/);
 assert.match(collision, /function setStep\(n,forceSync=false\)/);
 assert.match(collision, /signature=o\.join\(','\),sequenceChanged=sel\.dataset\.sequence!==signature/ , 'a changed fold order must force a playback-sync event even when the selected step index stays the same');
 assert.match(collision, /setStep\(step,sequenceChanged\)/, 'sequence changes must propagate to 2D/3D and machine-twin playback');
@@ -120,7 +122,7 @@ assert.match(twin, /plegarpro:machine-travel/, 'digital twin must consume collis
 assert.match(twin, /externalTravel!==null\?externalTravel\/100/, 'digital twin ram position must follow externally synchronized travel');
 assert.match(html, /pp59-engineering-upgrade\.js\?v=154/);
 assert.match(sw, /pp59-engineering-upgrade\.js\?v=154/);
-assert.match(sw, /plegar-pro-v152-53/);
+assert.match(sw, /plegar-pro-v152-54/);
 assert.match(twin, /travelBucket!==lastEmittedTravel/, 'digital twin must publish meaningful travel changes during each ram cycle');
 assert.match(twin, /source:'pp59',step:pos,foldIndex:executionOrder\(\)\[pos\]\?\?0,travel:travelBucket\*5/, 'digital twin events must carry the ram travel percentage');
 assert.match(runtime, /else if\(source==='pp59'&&Number\.isFinite\(Number\(detail\.travel\)\)\)/, 'runtime must map twin ram travel into the collision review');
@@ -138,7 +140,7 @@ assert.match(collision, /Sin matrices disponibles para V/, 'empty die catalogs m
 assert.match(collision, /\.pp56-controls select option\{background:#fff!important;color:#173246!important\}/, 'collision selectors must keep readable option text');
 
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.5/);
-assert.match(sw, /plegar-pro-v152-53/);
+assert.match(sw, /plegar-pro-v152-54/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 
