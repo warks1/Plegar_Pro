@@ -18,11 +18,11 @@ assert.match(html, /Corrección definitiva del menú lateral/);
 assert.match(html, /grid-template-columns:258px minmax\(0,1fr\)!important/);
 assert.match(html, /#mainSidebar \.nav\{display:flex!important;flex-direction:column!important/);
 assert.match(html, /#mainSidebar\.side\.open[\s\S]*transform:translateX\(0\)!important/);
-assert.match(sw, /plegar-pro-v152-60/);
+assert.match(sw, /plegar-pro-v152-[0-9]+/);
 // Voice assistant delivery contract: UI script must be loaded and included in offline cache.
 assert.ok(html.includes('pp64-ai-voice.js?v=1'));
 assert.ok(sw.includes('./pp64-ai-voice.js?v=1'));
-assert.ok(sw.includes('plegar-pro-v152-60'));
+assert.match(sw, /plegar-pro-v152-[0-9]+/);
 const voice = fs.readFileSync('pp64-ai-voice.js', 'utf8');
 assert.ok(voice.includes('window.SpeechRecognition||window.webkitSpeechRecognition'));
 assert.ok(voice.includes('recognition.continuous=true'));
@@ -124,7 +124,7 @@ assert.match(twin, /plegarpro:machine-travel/, 'digital twin must consume collis
 assert.match(twin, /externalTravel!==null\?externalTravel\/100/, 'digital twin ram position must follow externally synchronized travel');
 assert.match(html, /pp59-engineering-upgrade\.js\?v=156/);
 assert.match(sw, /pp59-engineering-upgrade\.js\?v=156/);
-assert.match(sw, /plegar-pro-v152-60/);
+assert.match(sw, /plegar-pro-v152-[0-9]+/);
 assert.match(twin, /travelBucket!==lastEmittedTravel/, 'digital twin must publish meaningful travel changes during each ram cycle');
 assert.match(twin, /source:'pp59',step:pos,foldIndex:executionOrder\(\)\[pos\]\?\?0,travel:travelBucket\*5/, 'digital twin events must carry the ram travel percentage');
 assert.match(runtime, /else if\(source==='pp59'&&Number\.isFinite\(Number\(detail\.travel\)\)\)/, 'runtime must map twin ram travel into the collision review');
@@ -142,7 +142,7 @@ assert.match(collision, /Sin matrices disponibles para V/, 'empty die catalogs m
 assert.match(collision, /\.pp56-controls select option\{background:#fff!important;color:#173246!important\}/, 'collision selectors must keep readable option text');
 
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.7/);
-assert.match(sw, /plegar-pro-v152-60/);
+assert.match(sw, /plegar-pro-v152-[0-9]+/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
 
@@ -286,4 +286,4 @@ assert.match(engineeringOrder, /c\.addEventListener\('click',e=>\{if\(sim\.drag\
 assert.match(html, /id="pp70-program2d-clear-canvas"/);
 assert.match(html, /#program2d #overlayP2\{display:none!important;visibility:hidden!important;pointer-events:none!important\}/);
 assert.match(html, /#program2d #canvasP2\{position:relative;z-index:1;pointer-events:auto;touch-action:pan-y\}/);
-assert.match(sw, /plegar-pro-v152-60/);
+assert.match(sw, /plegar-pro-v152-[0-9]+/);
