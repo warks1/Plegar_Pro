@@ -243,3 +243,22 @@ assert.match(collision, /p<\.42\?'PLEGANDO':p<\.52\?'PUNTO DE PLEGADO':'RETORNO'
 assert.match(collision, /▶ Continuar/, 'playback must resume instead of restarting the stroke');
 assert.match(collision, /phase=1;stop\(\);return/, 'completed playback must retain a completion marker so Play restarts from the first fold');
 assert.match(collision, /pp56TouchPulse/, 'HMI live status must animate');
+
+
+// Repository hygiene regression guard: prevent stale versioned documents,
+// duplicate HTML IDs, and references to missing/offline-uncached local scripts.
+const htmlIds = [...html.matchAll(/\\bid=["']([^"']+)["']/g)].map(match => match[1]);
+assert.equal(new Set(htmlIds).size, htmlIds.length, 'index.html must not contain duplicate element IDs');
+const localScripts = [...html.matchAll(/<script\\b[^>]*\\bsrc=["']([^"']+)["'][^>]*>/gi)]
+  .map(match => match[1].split('?')[0])
+  .filter(src => src.startsWith('./') && !src.startsWith('//'));
+for (const src of localScripts) {
+  assert.ok(fs.existsSync(src.slice(2)), 'index.html references a missing local script: ' + src);
+  assert.ok(sw.includes(src), 'offline service worker does not cache a referenced local script: ' + src);
+}
+const rootFiles = fs.readdirSync('.');
+const staleDocs = rootFiles.filter(name => /^(?:CHANGELOG_v.*\\.txt|PRUEBAS_v.*\\.txt|README\\.txt|README_IMPORTANTE\\.txt)$/.test(name));
+assert.deepEqual(staleDocs, [], 'obsolete versioned documentation must stay consolidated into README.md, CHANGELOG.md and PRUEBAS.md');
+assert.ok(fs.existsSync('README.md') && fs.existsSync('CHANGELOG.md') && fs.existsSync('PRUEBAS.md'),
+  'the three current consolidated project documents must remain present');
+console.log('Repository hygiene passed: no duplicate IDs, missing/offline script references, or obsolete duplicate root documents.');
