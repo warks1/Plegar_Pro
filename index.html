@@ -3507,6 +3507,70 @@ input,select,textarea{background:#061e35!important;border-color:#17608f!importan
   #mainSidebar .nav button,
   #mainSidebar .nav button.active{animation:none!important;background-size:auto!important}
 }
+
+/* PP · Corrección menú claro y fluido · octubre 2026 */
+#mainSidebar.side{
+  background:linear-gradient(180deg,#ffffff 0%,#f5f8fb 100%)!important;
+  color:#193247!important;border-right:1px solid #cbd8e2!important;
+  box-shadow:4px 0 14px rgba(26,48,70,.08)!important;
+  perspective:none!important;transform-style:flat!important;
+  scrollbar-color:#bdcbd6 transparent!important;
+}
+#mainSidebar .brand{
+  color:#173246!important;text-shadow:none!important;
+  background:linear-gradient(145deg,#ffffff,#edf3f7)!important;
+  border:1px solid #cbd8e2!important;border-bottom:1px solid #cbd8e2!important;
+  box-shadow:0 2px 6px rgba(26,48,70,.07)!important;
+  transform:none!important;
+}
+#mainSidebar .brand span{color:#087da5!important}
+#mainSidebar .version{color:#63798a!important}
+#mainSidebar .nav h4{color:#526d80!important;text-shadow:none!important;border-bottom-color:#dce5eb!important}
+#mainSidebar .nav button{
+  color:#294457!important;background:#fff!important;
+  border:1px solid #e0e7ed!important;border-bottom:1px solid #e0e7ed!important;
+  border-left:3px solid transparent!important;border-radius:8px!important;
+  box-shadow:none!important;text-shadow:none!important;
+  transform:none!important;filter:none!important;animation:none!important;
+  transition:background-color .12s ease,border-color .12s ease,color .12s ease!important;
+  will-change:auto!important;
+}
+#mainSidebar .nav button:after{display:none!important;content:none!important}
+#mainSidebar .nav button:before{
+  border:1px solid #c6d8e3!important;border-radius:6px!important;
+  background:#edf4f8!important;box-shadow:none!important;
+  filter:none!important;text-shadow:none!important;
+}
+#mainSidebar .nav button:hover{
+  color:#173246!important;background:#f0f6fa!important;
+  border-color:#c8dce8!important;border-left-color:#7faec4!important;
+  box-shadow:none!important;transform:none!important;filter:none!important;
+}
+#mainSidebar .nav button.active{
+  color:#123e56!important;background:#e5f3fa!important;
+  border-color:#b7d5e4!important;border-left:3px solid #087da5!important;
+  box-shadow:none!important;transform:none!important;filter:none!important;
+  animation:none!important;font-weight:750!important;
+}
+#mainSidebar .nav button.active:before{
+  background:#d1eaf5!important;border-color:#87bdd3!important;box-shadow:none!important;
+}
+#mainSidebar .nav button:active{transform:none!important;box-shadow:none!important}
+@media(max-width:900px){
+  #mainSidebar.side{
+    background:#fff!important;box-shadow:8px 0 24px rgba(20,43,60,.16)!important;
+    transition:transform .16s ease!important;
+  }
+  #mainSidebar .nav{gap:3px!important}
+  #mainSidebar .nav button{min-height:39px!important;margin:1px 0!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #mainSidebar.side,#mainSidebar .nav button{transition:none!important;animation:none!important}
+}
+/* Quitar filtros y animaciones de entrada que penalizan tablets Android. */
+.topbar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.page{animation:none!important}
+
 </style>
 
 <script src="./pp64-ai-voice.js?v=1"></script>
