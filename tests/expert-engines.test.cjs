@@ -30,3 +30,10 @@ assert.throws(()=>e.flatLength({straightLengths:[10,20],bends:[],unit:'inch'}),/
 assert.ok(e.flatLength({straightLengths:[100,100],bends:[],unit:'mm'}).valueMm===200);
 
 console.log('PP65 expert calculation, validation, and 3D broad-phase tests passed');
+const die2=e.recommendDieOpening({thickness:2});
+assert.equal(die2.targetV,16);
+assert.equal(die2.recommendedV,16);
+assert.equal(die2.ratio,8);
+assert.equal(e.recommendDieOpening({thickness:3}).recommendedV,24);
+assert.equal(e.recommendDieOpening({thickness:2.5}).recommendedV,20);
+assert.throws(()=>e.recommendDieOpening({thickness:0}),/thickness/);
