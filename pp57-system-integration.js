@@ -223,6 +223,14 @@ function drawPhysicalBend(){
  poly([[-430,20,30],[-300,20,30],[-240,-35,30],[-190,-72,30],[-130,-35,30],[-70,20,30],[430,20,30],[430,-28,30],[-430,-28,30]],'#a9bbc5','#405b6a');
  poly([[-430,20,-30],[-430,20,30],[-430,-28,30],[-430,-28,-30]],'#536e7d');
  line([[-300,20,-31],[-240,-35,-31],[-190,-72,-31],[-130,-35,-31],[-70,20,-31]],'#d7e4eb',4);
+ // Backgauge fingers: behind the tooling, with adjustable-looking reference and contact pads.
+ const gaugeX=-310, gaugeY=144;
+ poly([[gaugeX-28,gaugeY+30,90],[gaugeX+28,gaugeY+30,90],[gaugeX+18,gaugeY-95,90],[gaugeX-18,gaugeY-95,90]],'#536f80','#2f4c5e');
+ poly([[gaugeX-52,gaugeY-95,90],[gaugeX+52,gaugeY-95,90],[gaugeX+52,gaugeY-112,90],[gaugeX-52,gaugeY-112,90]],'#d1dfe6','#526c7b');
+ poly([[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]],'#e5a34b','#91612d');
+ // Secondary finger gives a sense of machine width; visibility stays separately labelled.
+ poly([[gaugeX+410,gaugeY+30,90],[gaugeX+466,gaugeY+30,90],[gaugeX+456,gaugeY-95,90],[gaugeX+420,gaugeY-95,90]],'#536f80','#2f4c5e');
+ poly([[gaugeX+386,gaugeY-95,90],[gaugeX+490,gaugeY-95,90],[gaugeX+490,gaugeY-112,90],[gaugeX+386,gaugeY-112,90]],'#d1dfe6','#526c7b');
  // Chapa dinámica: apoyada sobre los hombros de la matriz, llega al tope trasero y se curva al bajar el punzón.
  // En reposo tiene una ligera ampolla; durante el contacto, el centro entra en la V y las dos alas suben.
  const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bendHalf=90;
@@ -250,14 +258,6 @@ function drawPhysicalBend(){
  const punchY=(-64+punchHeight+8)+(1-contact)*145+release*145,tipHalf=Math.max(8,Math.min(44,Math.tan(punchAngle*Math.PI/360)*35)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
- // Backgauge fingers: behind the tooling, with adjustable-looking reference and contact pads.
- const gaugeX=-310, gaugeY=151;
- poly([[gaugeX-28,gaugeY+30,90],[gaugeX+28,gaugeY+30,90],[gaugeX+18,gaugeY-95,90],[gaugeX-18,gaugeY-95,90]],'#536f80','#2f4c5e');
- poly([[gaugeX-52,gaugeY-95,90],[gaugeX+52,gaugeY-95,90],[gaugeX+52,gaugeY-112,90],[gaugeX-52,gaugeY-112,90]],'#d1dfe6','#526c7b');
- poly([[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]],'#e5a34b','#91612d');
- // Secondary finger gives a sense of machine width; visibility stays separately labelled.
- poly([[gaugeX+410,gaugeY+30,90],[gaugeX+466,gaugeY+30,90],[gaugeX+456,gaugeY-95,90],[gaugeX+420,gaugeY-95,90]],'#536f80','#2f4c5e');
- poly([[gaugeX+386,gaugeY-95,90],[gaugeX+490,gaugeY-95,90],[gaugeX+490,gaugeY-112,90],[gaugeX+386,gaugeY-112,90]],'#d1dfe6','#526c7b');
  // Work-zone glow shows the contact path, not a safety-certified collision envelope.
  const contactP=P(0,29+contact*18,7);x.beginPath();x.arc(contactP.x,contactP.y,14+contact*18,0,Math.PI*2);x.fillStyle='rgba(18,139,196,'+(.05+contact*.12)+')';x.fill();
  label('PUNZÓN '+(punch?.name||punch?.id||'GENÉRICO'),w*.43,75);label('MATRIZ V'+v+' · '+dieAngle+'°',w*.43,h*.82);label('TOPE TRASERO',w*.08,h*.35);label('CHAPA · CONTACTO '+Math.round(contact*100)+'%',w*.63,h*.35);
