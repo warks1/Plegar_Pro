@@ -233,7 +233,9 @@ function drawPhysicalBend(){
  const sheetPts=[];
  for(let j=0;j<=64;j++){
   const u=-1+2*j/64,ax=Math.abs(u),xpos=u*flatHalf;
-  const py=34+bulge*(ax*ax)-centreDrop*(1-ax*ax);
+  // En reposo la chapa apoya en la línea de los topes; al entrar el punzón,
+  // las alas suben y el centro baja dentro de la V de la matriz.
+  const py=20+bulge*(ax*ax)-centreDrop*(1-ax*ax);
   sheetPts.push([xpos,py,5]);
  }
  line(sheetPts,'#087fb5',Math.max(5,thicknessPx));
@@ -242,7 +244,7 @@ function drawPhysicalBend(){
  const contactPts=[[-72,20,6],[-48,20-contact*5,6],[-24,20-contact*11,6],[0,20-contact*14,6],[24,20-contact*11,6],[48,20-contact*5,6],[72,20,6]];
  line(contactPts,'rgba(8,127,181,.28)',2);
  // Backgauge fingers: behind the tooling, with adjustable-looking reference and contact pads.
- const gaugeX=-310, gaugeY=180;
+ const gaugeX=-310, gaugeY=151;
  poly([[gaugeX-28,gaugeY+30,90],[gaugeX+28,gaugeY+30,90],[gaugeX+18,gaugeY-95,90],[gaugeX-18,gaugeY-95,90]],'#536f80','#2f4c5e');
  poly([[gaugeX-52,gaugeY-95,90],[gaugeX+52,gaugeY-95,90],[gaugeX+52,gaugeY-112,90],[gaugeX-52,gaugeY-112,90]],'#d1dfe6','#526c7b');
  poly([[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]],'#e5a34b','#91612d');
