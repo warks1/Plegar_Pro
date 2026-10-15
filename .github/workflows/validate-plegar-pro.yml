@@ -574,7 +574,7 @@ jobs:
               for (const pageId of ['dashboard', 'sim2d', 'program3d', 'tooling', 'collisions']) {
                 const nav = page.locator('#mainSidebar .nav button[data-page="' + pageId + '"]');
                 if (await nav.count()) {
-                  await nav.click({ force: true, timeout: 5000 });
+                  await nav.evaluate(el => el.click());
                   await page.waitForTimeout(100);
                 }
                 const result = await page.evaluate(() => ({
