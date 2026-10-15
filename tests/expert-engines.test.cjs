@@ -7,6 +7,11 @@ assert.ok(html.includes("year=new Date().getFullYear(),holder=o.copyrightHolder|
 assert.ok(html.includes('<style id="pp70-program2d-clear-canvas">'), '2D editor must keep its bend-selection overlay fix');
 assert.ok(html.includes('#program2d #overlayP2{display:none!important;visibility:hidden!important;pointer-events:none!important}'), '2D information overlay must not obstruct bend selection');
 assert.ok(html.includes('#program2d #canvasP2{position:relative;z-index:1;pointer-events:auto;touch-action:pan-y}'), '2D canvas must remain interactive for pointer and touch bend selection');
+const runtime = fs.readFileSync(require('node:path').join(__dirname, '..', 'pp57-system-integration.js'), 'utf8');
+assert.ok(runtime.includes('touch-action:none;user-select:none;-webkit-user-select:none'), '3D machine canvas must allow touch rotation without browser panning');
+assert.ok(runtime.includes("cv.addEventListener('lostpointercapture',endDrag)"), '3D machine drag state must clear when pointer capture is lost');
+assert.ok(runtime.includes('drag.pointerId===e.pointerId'), '3D machine drag must track the active pointer');
+assert.ok(html.includes('src="./pp57-system-integration.js?v=144"'), 'HTML must load the updated touch-safe 3D runtime');
 
 assert.equal(e.VERSION, '65.2');
 assert.ok(Math.abs(e.bendAllowance({thickness:2,insideRadius:2,angleDeg:90,kFactor:.33}) - Math.PI*(2+.66)/2) < 1e-10);
