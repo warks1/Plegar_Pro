@@ -1,5 +1,7 @@
 const assert = require('node:assert/strict');
 const e = require('../pp65-expert-engines.js');
+const fs = require('node:fs');
+const html = fs.readFileSync(require('node:path').join(__dirname, '..', 'index.html'), 'utf8');
 
 assert.equal(e.VERSION, '65.2');
 assert.ok(Math.abs(e.bendAllowance({thickness:2,insideRadius:2,angleDeg:90,kFactor:.33}) - Math.PI*(2+.66)/2) < 1e-10);
@@ -39,3 +41,7 @@ assert.equal(e.recommendDieOpening({thickness:2.5}).recommendedV,20);
 const uiCatalog=[6,8,10,12,14,16,18,20,22,24,25,28,30,32,35,36,40,50];
 assert.equal(e.recommendDieOpening({thickness:2.5,available:uiCatalog}).recommendedV,20);
 assert.throws(()=>e.recommendDieOpening({thickness:0}),/thickness/);
+
+const comparison = html.slice(html.indexOf('function vEvaluation('), html.indexOf('\nfunction renderVSelector()', html.indexOf('function vEvaluation(')));
+assert.ok(comparison.includes("let status=!physicalOk?'Revisar':within?'Compatible':'Compatible · fuera de tolerancia'"), 'V comparison must distinguish physical compatibility from development tolerance');
+assert.ok(comparison.includes('if(v===recommendedV&&within&&physicalOk)status=\'Recomendada\''), 'A recommended die must meet the configured development tolerance');
