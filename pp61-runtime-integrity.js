@@ -63,7 +63,15 @@
     const fn=window.syncAll;
     if(typeof fn!=='function'||fn.__pp61)return;
     const wrapped=function(){
-      const result=fn.apply(this,arguments);
+      let result;
+      try{
+        result=fn.apply(this,arguments);
+      }catch(error){
+        lastSyncError=String(error?.stack||error);
+        updateStatus('Error de sincronización · revisa consola');
+        console.error('[Plegar Pro Runtime] Falló syncAll',error);
+        throw error;
+      }
       lastFingerprint=fingerprint();
       syncCount++;
       updateStatus();
