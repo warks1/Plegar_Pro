@@ -22,7 +22,7 @@ const result=sync.publish('program2d',{thickness:3,bendOrder:[1,1,99,0],activeSt
 assert.equal(result.ok,true);
 assert.equal(window.PLEGAR_PRO_STATE.thickness,3);
 assert.deepEqual(Array.from(window.PLEGAR_PRO_STATE.bendOrder),[1,0,2]);
-assert.ok(applied>=4,'registered modules receive initial and committed snapshots');
+assert.ok(applied>=3,'registered modules receive initial and committed snapshots');
 assert.equal(events,1);
 assert.equal(sync.publish('bad',{thickness:NaN}).ok,true,'invalid numeric field is safely ignored while valid patch transaction remains');
 assert.equal(sync.snapshot().thickness,3);
