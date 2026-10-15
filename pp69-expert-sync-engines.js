@@ -156,6 +156,26 @@
       register(id,{apply:(snap,meta)=>mirrorControls(snap,meta?.source===id?'':null)});
     }
   }
+  function installPlaybackBridge() {
+    if(typeof root.addEventListener!=='function'||root.__pp69PlaybackBridge)return;
+    root.__pp69PlaybackBridge=true;
+    root.addEventListener('plegarpro:playback-step',e=>{
+      const d=e.detail||{};
+      if(d.complete||!Number.isFinite(Number(d.step)))return;
+      const step=Math.max(0,Math.floor(Number(d.step)));
+      const source=String(d.source||'unknown');
+      const twin=document.getElementById('pp59step');
+      if(twin&&source!=='pp59'&&twin.options.length){
+        const next=Math.min(twin.options.length-1,step);
+        if(Number(twin.value)!==next){twin.value=String(next);twin.dispatchEvent(new Event('input',{bubbles:true}));}
+      }
+      if(source!=='collisions'){
+        const button=document.querySelector('#pp56Sequence [data-pp56-step="'+step+'"]');
+        if(button&&button.getAttribute('aria-current')!=='true')button.click();
+      }
+      publish(source,{activeStep:step});
+    });
+  }
   function status() { return Object.freeze({version:VERSION,revision,modules:[...adapters.keys()],listeners:listeners.size,conflicts:conflicts.slice(-25),snapshot:snapshot()}); }
   const api=Object.freeze({version:VERSION,fields:FIELDS,register,subscribe,publish,snapshot,canonicalOrder,status,check});
   root.PP69Sync=api;
@@ -164,7 +184,7 @@
     root.addEventListener('plegarpro:sync-request',e=>{const d=e.detail||{};if(d.source&&d.patch)publish(d.source,d.patch);});
   }
   if(typeof document!=='undefined') {
-    const start=()=>{installDomBridge();check(); if(typeof root.setInterval==='function')root.setInterval(check,350);};
+    const start=()=>{installDomBridge();installPlaybackBridge();check(); if(typeof root.setInterval==='function')root.setInterval(check,350);};
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
   }
 })(typeof window!=='undefined'?window:globalThis);
