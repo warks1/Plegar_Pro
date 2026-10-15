@@ -5,10 +5,13 @@ Auditoría de `index.html` en `main` tras las PR #38–#41. Este documento es un
 ## Estado medido
 
 - 29 bloques `<style>` en el HTML principal.
-- Aproximadamente 1.032 reglas CSS detectadas con un análisis estático sencillo.
-- 19 reglas normalizadas exactas aparecen en más de un bloque.
-- Hay reglas repetidas dentro de bloques que pueden pertenecer a distintos `@media`; no deben eliminarse con una deduplicación basada únicamente en texto.
+- Un segundo análisis estático conservador del 15 de octubre de 2026 contó 1.034 apariciones de reglas.
+- El análisis detectó 23 firmas de selector + declaración idénticas repetidas en el conjunto de estilos.
+- No encontró duplicados exactos dentro del mismo bloque y del mismo contexto de anidación `@media` con el parser utilizado. Por tanto, no hay una eliminación automática adicional demostrablemente segura basada solo en igualdad textual.
+- Varias repeticiones están en bloques distintos o en breakpoints diferentes; no son necesariamente redundantes.
 - Los scripts externos tienen URLs únicas, protegidas por una prueba automatizada.
+
+El recuento depende de un parser estático sencillo: no calcula el estilo computado, no sigue todos los estados de la interfaz y no sustituye la cobertura visual en navegador.
 
 ## Mapa de bloques por función aparente
 
