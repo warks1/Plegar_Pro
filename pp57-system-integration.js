@@ -225,22 +225,29 @@ function drawPhysicalBend(){
  line([[-300,20,-31],[-240,-35,-31],[-190,-72,-31],[-130,-35,-31],[-70,20,-31]],'#d7e4eb',4);
  // Chapa dinámica: apoyada sobre los hombros de la matriz, llega al tope trasero y se curva al bajar el punzón.
  // En reposo tiene una ligera ampolla; durante el contacto, el centro entra en la V y las dos alas suben.
- const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bulge=7+contact*48,centreDrop=contact*47;
+ const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bendHalf=90;
+ const wingSlope=Math.tan(Math.max(0,Math.min(Math.PI/3,(180-angle)*Math.PI/360)))*contact;
  const sheetPts=[];
- for(let j=0;j<=64;j++){
-  const u=-1+2*j/64,ax=Math.abs(u),xpos=u*flatHalf;
-  // En reposo la chapa apoya en la línea de los topes; al entrar el punzón,
-  // las alas suben y el centro baja dentro de la V de la matriz.
-  const py=20+bulge*(ax*ax)-centreDrop*(1-ax*ax);
+ for(let j=0;j<=96;j++){
+  const u=-1+2*j/96,xpos=u*flatHalf,ax=Math.abs(xpos);
+  let py;
+  if(ax<=bendHalf){
+   const q=ax/bendHalf,smooth=(Math.sqrt(q*q+.0025)-.05)/(Math.sqrt(1.0025)-.05);
+   // La chapa sigue la V real de la matriz: plana en reposo y apoyada cerca de los hombros al plegar.
+   py=20-85*contact*(1-smooth);
+  }else{
+   // Alas rectas que giran alrededor de los hombros; el ángulo final depende del pliegue seleccionado.
+   py=20+(ax-bendHalf)*wingSlope;
+  }
   sheetPts.push([xpos,py,5]);
  }
  line(sheetPts,'#087fb5',Math.max(5,thicknessPx));
  line(sheetPts.map(p=>[p[0],p[1]+thicknessPx,p[2]+1]),'#e0f7ff',1.8);
  // Línea de contacto sobre la matriz: cambia con el descenso real del punzón.
- const contactPts=[[-72,20,6],[-48,20-contact*5,6],[-24,20-contact*11,6],[0,20-contact*14,6],[24,20-contact*11,6],[48,20-contact*5,6],[72,20,6]];
+ const contactPts=[[-90,20,6],[-65,-4*contact,6],[-40,-34*contact,6],[-15,-58*contact,6],[0,-65*contact,6],[15,-58*contact,6],[40,-34*contact,6],[65,-4*contact,6],[90,20,6]];
  line(contactPts,'rgba(8,127,181,.28)',2);
  // Punch body and pointed nose; motion is driven by the same cycle progress slider.
- const punchY=259-contact*145+release*145,tipHalf=Math.max(8,Math.min(44,Math.tan(punchAngle*Math.PI/360)*35)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
+ const punchY=(-64+punchHeight+8)+(1-contact)*145+release*145,tipHalf=Math.max(8,Math.min(44,Math.tan(punchAngle*Math.PI/360)*35)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
  // Backgauge fingers: behind the tooling, with adjustable-looking reference and contact pads.
