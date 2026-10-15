@@ -13,6 +13,7 @@ const context={window,globalThis:window,document:{readyState:'complete'},setInte
 vm.runInNewContext(fs.readFileSync('pp69-expert-sync-engines.js','utf8'),context);
 const sync=window.PP69Sync;
 assert.ok(sync,'sync engine exports API');
+assert.equal(sync.version,'69.2','exported runtime version must match the cache-busted script version');
 assert.deepEqual(Array.from(sync.canonicalOrder()),[2,0,1]);
 let applied=0,events=0;
 sync.register('program2d',{apply:s=>{applied++;assert.equal(s.thickness,2)}});
