@@ -245,8 +245,8 @@ assert.match(collision, /plegarpro:playback-step/);
 assert.match(twin, /plegarpro:playback-step/);
 
 assert.match(collision, /BYSTRONIC TOUCH 15 · CONTROL CNC/, 'collision HMI must use the requested Bystronic Touch 15 reference');
-assert.match(collision, /solid3D\.intersectPrisms\(seg,punchSolid\)\.contact\?\?solid3D\.intersectPrisms\(seg,punchSolid\)\.intersects/, 'active punch forming contact must recognize tangential contact separately from penetration');
-assert.match(collision, /solid3D\.intersectPrisms\(seg,dieSolid\)\.contact\?\?solid3D\.intersectPrisms\(seg,dieSolid\)\.intersects/, 'active die forming contact must recognize tangential contact separately from penetration');
+assert.match(collision, /const hit=solid3D\.intersectPrisms\(seg,punchSolid\);return hit\.contact\?\?hit\.intersects/, 'active punch contact must classify tangency with a single geometry query');
+assert.match(collision, /const hit=solid3D\.intersectPrisms\(seg,dieSolid\);return hit\.contact\?\?hit\.intersects/, 'active die contact must classify tangency with a single geometry query');
 assert.match(collision, /id="pp56Timeline" type="range"/, 'collision playback must provide a seekable sequence timeline');
 assert.match(collision, /id="pp56Speed" aria-label="Velocidad de reproducción"/, 'collision playback must provide selectable speed');
 assert.match(collision, /p<\.42\?'PLEGANDO':p<\.52\?'PUNTO DE PLEGADO':'RETORNO'/, 'ram playback must animate downstroke, forming dwell, and return');
