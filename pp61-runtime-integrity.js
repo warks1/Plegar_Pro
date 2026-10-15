@@ -37,7 +37,7 @@
     document.querySelectorAll('[data-pp58-sync-status]').forEach(el=>{
       const s=getState();
       el.textContent=message||('Sincronización verificada · '+(s?.bends?.length||0)+' tramos · '+(s?.project?.material||'—')+' · '+(s?.project?.thickness??'—')+' mm');
-      el.dataset.syncOk='true';
+      el.dataset.syncOk=String(!/^Error\b/i.test(String(message||'')));
     });
   }
   function synchronize(reason,force){
