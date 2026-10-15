@@ -24,6 +24,20 @@ assert.equal(window.PLEGAR_PRO_STATE.thickness,3);
 assert.deepEqual(Array.from(window.PLEGAR_PRO_STATE.bendOrder),[1,0,2]);
 assert.ok(applied>=3,'registered modules receive initial and committed snapshots');
 assert.equal(events,1);
+// Alias-only master states must update the field actually read by snapshot().
+delete window.PLEGAR_PRO_STATE.machine;
+window.PLEGAR_PRO_STATE.selectedMachine='Old machine';
+delete window.PLEGAR_PRO_STATE.material;
+window.PLEGAR_PRO_STATE.materialName='Old material';
+sync.publish('program3d',{machine:'TRUMPF TruBend V85',material:'S235'});
+assert.equal(window.PLEGAR_PRO_STATE.selectedMachine,'TRUMPF TruBend V85');
+assert.equal(window.PLEGAR_PRO_STATE.materialName,'S235');
+assert.equal(sync.snapshot().machine,'TRUMPF TruBend V85');
+assert.equal(sync.snapshot().material,'S235');
+// Playback indices are zero-based and must never exceed the available folds.
+sync.publish('program3d',{activeStep:999});
+assert.equal(sync.snapshot().activeStep,3);
+assert.equal(window.PLEGAR_PRO_STATE.activeStep,3);
 assert.equal(sync.publish('bad',{thickness:NaN}).ok,true,'invalid numeric field is safely ignored while valid patch transaction remains');
 assert.equal(sync.snapshot().thickness,3);
 assert.equal(sync.status().modules.length,2);
