@@ -1,5 +1,14 @@
 # Registro de cambios consolidado — Plegar Pro
 
+## v65.1 — motores expertos de cálculo y visualización
+
+- Añade un kernel aislado con BA/BD, desarrollo por deducción, estimación de fuerza de plegado y validación de dimensiones.
+- Añade un visor wireframe 3D interactivo con giro táctil/ratón, junto a comprobaciones de envolvente AABB para la fase amplia de detección.
+- Integra el panel en Revisión de colisiones y actualiza la caché offline.
+- Añade pruebas automáticas de fórmulas, rangos, bloqueos y geometría de envolvente.
+- Las cifras de fuerza son estimaciones; el visor es una representación esquemática, no holografía física ni CAD certificado. No libera programas CNC.
+
+
 ## v64.11 — higiene conservadora del repositorio
 
 - Se revisaron los archivos raíz y las referencias de módulos: no hay archivos JavaScript duplicados ni referencias de script repetidas en el HTML.
