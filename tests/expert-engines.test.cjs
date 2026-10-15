@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const e = require('../pp65-expert-engines.js');
 
-assert.equal(e.VERSION, '65.1');
+assert.equal(e.VERSION, '65.2');
 assert.ok(Math.abs(e.bendAllowance({thickness:2,insideRadius:2,angleDeg:90,kFactor:.33}) - Math.PI*(2+.66)/2) < 1e-10);
 assert.ok(Number.isFinite(e.bendDeduction({thickness:2,insideRadius:2,angleDeg:90,kFactor:.33})));
 assert.throws(()=>e.bendAllowance({thickness:0,insideRadius:2,angleDeg:90}), /thickness/);
