@@ -192,8 +192,8 @@ function addPhysicalBendSimulation(){
  $('pp58PhysProgress').addEventListener('input',()=>{physProgress=Number($('pp58PhysProgress').value)/100;drawPhysicalBend()});
  $('pp58PhysView').addEventListener('change',drawPhysicalBend);
  $('pp58PhysPlay').onclick=()=>{physPlaying=!physPlaying;$('pp58PhysPlay').textContent=physPlaying?'Ⅱ Pausar ciclo':'▶ Reproducir ciclo';physLast=0;if(physPlaying)runPhysicalBend();else if(physRaf){cancelAnimationFrame(physRaf);physRaf=0}};
- $('pp58PhysPrev').onclick=()=>{const q=physicalSequence(),count=Math.max(1,q.order.length),step=Math.max(0,q.stepNumber-(q.localPhase<.08?1:0));physProgress=step/count;$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend()};
- $('pp58PhysNext').onclick=()=>{const q=physicalSequence(),count=Math.max(1,q.order.length),step=Math.min(count-1,q.stepNumber+(q.localPhase>.92?1:1));physProgress=step/count;$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend()};
+ $('pp58PhysPrev').onclick=()=>{const q=physicalSequence(),count=Math.max(1,q.order.length),step=Math.max(0,q.stepNumber-1);physProgress=step/count;$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend()};
+ $('pp58PhysNext').onclick=()=>{const q=physicalSequence(),count=Math.max(1,q.order.length),step=Math.min(count-1,q.stepNumber+1);physProgress=step/count;$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend()};
  $('pp58PhysReset').onclick=()=>{physPlaying=false;physProgress=0;physLast=0;if(physRaf)cancelAnimationFrame(physRaf);physRaf=0;$('pp58PhysProgress').value='0';$('pp58PhysPlay').textContent='▶ Reproducir ciclo';drawPhysicalBend()};
  const canvas=$('pp58PhysicalCanvas');canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,r:rotation,pointerId:e.pointerId,physical:true};try{canvas.setPointerCapture(e.pointerId)}catch(_){}});
  canvas.addEventListener('pointermove',e=>{if(drag?.physical&&drag.pointerId===e.pointerId){rotation=drag.r+(e.clientX-drag.x)*.008;drawPhysicalBend()}});
