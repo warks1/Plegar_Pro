@@ -1,6 +1,6 @@
 # Plegar Pro — mapa de la cascada CSS
 
-Auditoría de `index.html` en `main` tras la PR #38. Este documento es una guía para una limpieza incremental; no sustituye la validación visual en navegador.
+Auditoría de `index.html` en `main` tras las PR #38–#41. Este documento es una guía para una limpieza incremental; no sustituye la validación visual en navegador.
 
 ## Estado medido
 
@@ -40,6 +40,12 @@ Auditoría de `index.html` en `main` tras la PR #38. Este documento es una guía
 | `pp66-force-banner-contrast` | Correcciones de contraste específicas, incluidas colisiones. |
 | `pp69-readable-panel-contrast` | Últimas correcciones de contraste de paneles. |
 | `pp70-light-readable-panels` | Capa visual final declarada: paneles claros, texto legible, menú ligero, responsive y ajustes de simulación. Es una capa extensa; dividir por componentes requiere regresión visual. |
+
+## Comprobaciones automáticas actuales
+
+La prueba `tests/collision-contract.test.cjs` comprueba que las capas CSS con nombre mantienen identificadores únicos y que siguen presentes las capas críticas `pp70-program2d-clear-canvas`, `pp649-stability-core` y `pp70-light-readable-panels`. Esta comprobación detecta pérdidas o duplicaciones de identidad; no demuestra por sí sola que cada regla CSS sea visualmente necesaria.
+
+La ejecución de validación de `main` del 15 de octubre de 2026 completó correctamente los trabajos `syntax-and-assets`, `collision-contract` y `browser-smoke`. El smoke test cubre, entre otros puntos, el arranque, contraste del menú, renderizado del gemelo 3D, disponibilidad del catálogo de utillajes, sincronización del orden de plegado entre módulos, movimiento de la chapa en la revisión de colisiones, importación DXF y desbordamiento horizontal a 390 px. Esto no equivale a una inspección visual exhaustiva de todas las pantallas ni a una certificación de seguridad industrial.
 
 ## Orden seguro de consolidación
 
