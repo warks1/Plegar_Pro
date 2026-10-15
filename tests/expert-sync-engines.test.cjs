@@ -48,5 +48,5 @@ assert.equal(sync.snapshot().activeStep,3);
 assert.equal(window.PLEGAR_PRO_STATE.activeStep,3);
 assert.equal(sync.publish('bad',{thickness:NaN}).ok,true,'invalid numeric field is safely ignored while valid patch transaction remains');
 assert.equal(sync.snapshot().thickness,3);
-assert.equal(sync.status().modules.length,2);
+assert.equal(sync.status().modules.length,3);
 console.log('PP69 expert synchronization engine tests passed');
