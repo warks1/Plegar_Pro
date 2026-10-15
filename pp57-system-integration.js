@@ -224,7 +224,7 @@ function drawPhysicalBend(){
  poly([[-430,20,-30],[-430,20,30],[-430,-28,30],[-430,-28,-30]],'#536e7d');
  line([[-300,20,-31],[-240,-35,-31],[-190,-72,-31],[-130,-35,-31],[-70,20,-31]],'#d7e4eb',4);
  // Punch body and pointed nose; motion is driven by the same cycle progress slider.
- const punchY=235-contact*145+release*145,tipHalf=Math.max(12,Math.min(44,punchHeight*.22)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
+ const punchY=235-contact*145+release*145,tipHalf=Math.max(8,Math.min(44,Math.tan(punchAngle*Math.PI/360)*35)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
  // Sheet geometry: the bend develops progressively around the die centre.
@@ -255,7 +255,7 @@ function drawPhysicalBend(){
  x.fillStyle='#eaf6fb';x.fillRect(24,22,320,42);x.fillStyle='#17445a';x.font='bold 15px system-ui';x.fillText(view==='section'?'SECCIÓN DE CONTACTO':view==='front'?'VISTA FRONTAL':'VISTA ISOMÉTRICA DE SEGUIMIENTO',36,49);
  const phaseLabel=phase<.12?'APROXIMACIÓN':phase<.67?'CONTACTO / PLEGADO':phase<.84?'RETENCIÓN':'RETORNO';$('pp58PhysStepLabel').textContent=phaseLabel;$('pp58PhysActive').textContent=phase<.12?'Punzón acercándose':phase<.84?'Punzón + chapa + matriz':'Retorno y liberación';$('pp58PhysOrder').textContent=order.length?('P'+(idx+1)+' · '+(stepNumber+1)+'/'+order.length):'Sin pliegues definidos';$('pp58PhysAngle').textContent=angle+'°';$('pp58PhysThickness').textContent=t.toFixed(2)+' mm';
  $('pp58PhysStatus').textContent='Paso '+(stepNumber+1)+' · '+(punch?(punch.maker||'Utillaje')+' '+(punch.name||punch.id||'punzón'):'punzón genérico estimado')+' · '+(die?(die.maker||'Utillaje')+' '+(die.name||die.id||'matriz'):'matriz V estimada')+'. Geometría representada con los metadatos locales disponibles; no sustituye un perfil CAD oficial.';
- const status=$('pp58PhysStatus');if(status)status.textContent='Paso programado '+(idx+1)+' · V'+v+' · '+angle+'° · material '+String(s.project?.material||s.development?.material||'sin especificar')+'. Esquema visual de seguimiento; las dimensiones reales dependen de las referencias de punzón, matriz y topes seleccionadas.';
+ const status=$('pp58PhysStatus');if(status)status.textContent='Paso '+(stepNumber+1)+' · V'+v+' · objetivo '+angle+'° · '+(punch?(punch.maker||'')+' '+(punch.name||punch.id||'punzón'):'punzón genérico estimado')+' · '+(die?(die.maker||'')+' '+(die.name||die.id||'matriz'):'matriz V estimada')+' · material '+String(s.project?.material||s.development?.material||'sin especificar')+'. La representación usa metadatos locales; verifica el perfil CAD y las cotas oficiales antes de validar el plegado.';
 }
 function runPhysicalBend(){
  if(physRaf||!physPlaying||!$('pp58PhysicalCanvas')||document.hidden)return;
