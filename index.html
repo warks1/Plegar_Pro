@@ -1536,8 +1536,9 @@ function vEvaluation(v,base){
  let nDelta=Math.min(1,Math.abs(delta)/Math.max(.01,d.tolerance*3)),nForce=Math.min(1,r.force/Math.max(1,maxForce)),nRadius=Math.min(1,r.actualRadius/Math.max(.1,maxRadius));
  let priority=d.vPriority||'balanced',w=priority==='precision'?[.45,.15,.15,.25]:priority==='force'?[.2,.45,.1,.25]:priority==='marks'?[.2,.15,.1,.55]:priority==='radius'?[.2,.15,.45,.2]:[.25,.2,.15,.4];
  let markPenalty=markRisk==='Alto'?1:markRisk==='Medio'?.5:.1,score=Math.max(0,100*(1-(nDelta*w[0]+nForce*w[1]+nRadius*w[2]+Math.min(1,ratioError)*w[3]+markPenalty*.1)));
- let status=within&&flangeOk&&ratioOk&&forceOk&&radiusOk?'Compatible':(flangeOk&&ratioOk&&forceOk&&radiusOk?'Compatible':'Revisar');
- if(v===recommendedV&&flangeOk&&ratioOk&&forceOk&&radiusOk)status='Recomendada';
+ const physicalOk=flangeOk&&ratioOk&&forceOk&&radiusOk;
+ let status=!physicalOk?'Revisar':within?'Compatible':'Compatible · fuera de tolerancia';
+ if(v===recommendedV&&within&&physicalOk)status='Recomendada';
  return {...r,delta,status,within,flangeOk,ratioOk,forceOk,radiusOk,flangeMargin,markRisk,score,ratio,targetV,recommendedV,ratioError};
 }
 function renderVSelector(){
