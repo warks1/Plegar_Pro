@@ -3,8 +3,8 @@ const e = require('../pp65-expert-engines.js');
 const fs = require('node:fs');
 const html = fs.readFileSync(require('node:path').join(__dirname, '..', 'index.html'), 'utf8');
 const sw = fs.readFileSync(require('node:path').join(__dirname, '..', 'sw.js'), 'utf8');
-assert.ok(sw.includes("const CACHE='plegar-pro-v165-69'"), 'Service worker cache must be bumped when tooling profiles change');
-assert.ok(sw.includes("'./pp55-cad-precision.js?v=64.9.2'") && sw.includes("'./pp57-system-integration.js?v=146'"), 'Service worker must precache the current die profile scripts');
+assert.ok(sw.includes("const CACHE='plegar-pro-v166-69'"), 'Service worker cache must be bumped when tooling profiles change');
+assert.ok(sw.includes("'./pp55-cad-precision.js?v=64.9.2'") && sw.includes("'./pp57-system-integration.js?v=147'"), 'Service worker must precache the current die profile scripts');
 assert.ok(html.includes("$('resetSettings').onclick=()=>{state.settings={theme:'light'"), 'Reset settings must preserve the approved light default theme');
 assert.ok(html.includes("year=new Date().getFullYear(),holder=o.copyrightHolder||'AMS'"), 'Software copyright footer must default to AMS rather than the configured contact name');
 assert.ok(html.includes('<style id="pp70-program2d-clear-canvas">'), '2D editor must keep its bend-selection overlay fix');
@@ -14,7 +14,7 @@ const runtime = fs.readFileSync(require('node:path').join(__dirname, '..', 'pp57
 assert.ok(runtime.includes('touch-action:none;user-select:none;-webkit-user-select:none'), '3D machine canvas must allow touch rotation without browser panning');
 assert.ok(runtime.includes("cv.addEventListener('lostpointercapture',endDrag)"), '3D machine drag state must clear when pointer capture is lost');
 assert.ok(runtime.includes('drag.pointerId===e.pointerId'), '3D machine drag must track the active pointer');
-assert.ok(html.includes('src="./pp57-system-integration.js?v=146"'), 'HTML must load the updated touch-safe 3D runtime');
+assert.ok(html.includes('src="./pp57-system-integration.js?v=147"'), 'HTML must load the updated touch-safe 3D runtime');
 const tooling = fs.readFileSync(require('node:path').join(__dirname, '..', 'pp55-cad-precision.js'), 'utf8');
 assert.ok(tooling.includes('[[-125,-65],[-42,-65],[0,-25],[42,-65],[125,-65],[125,55],[-125,55]]'), 'Axonometric die cavity must open from the upper working face and point into the body');
 assert.ok(runtime.includes('[[-half2*2,height],[-half2*.55,height],[0,height*.62],[half2*.55,height],[half2*2,height],[half2*2,0],[-half2*2,0]]'), 'Engineering twin die cavity must open toward the upper working face');
@@ -22,6 +22,8 @@ assert.ok(runtime.includes('Carenados y detalles de fabricación'), 'Machine twi
 assert.ok(runtime.includes('Cilindros hidráulicos, vástagos cromados'), 'Machine twin must render hydraulic cylinders and chrome rods');
 assert.ok(runtime.includes('Consola CNC articulada'), 'Machine twin must include a CNC operator console');
 assert.ok(runtime.includes('Mesa de trabajo segmentada'), 'Machine twin must include a detailed segmented work table');
+assert.ok(runtime.includes("if(model==='trumpf')"), 'Machine twin must draw a distinct angular Trumpf-style body treatment');
+assert.ok(runtime.includes("else if(model==='bystronic')"), 'Machine twin must draw a distinct Bystronic-style body treatment');
 
 assert.equal(e.VERSION, '65.2');
 assert.ok(Math.abs(e.bendAllowance({thickness:2,insideRadius:2,angleDeg:90,kFactor:.33}) - Math.PI*(2+.66)/2) < 1e-10);
