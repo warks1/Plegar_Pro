@@ -289,3 +289,18 @@ assert.match(html, /id="pp70-program2d-clear-canvas"/);
 assert.match(html, /#program2d #overlayP2\{display:none!important;visibility:hidden!important;pointer-events:none!important\}/);
 assert.match(html, /#program2d #canvasP2\{position:relative;z-index:1;pointer-events:auto;touch-action:pan-y\}/);
 assert.match(sw, /plegar-pro-v152-[0-9]+/);
+
+
+// Visual regression guards for the approved light industrial interface.
+// These assertions protect user-facing layout constraints without deleting
+// CSS cascade layers whose functional impact has not been browser-verified.
+assert.match(html, /#program2d #overlayP2\{display:none!important;visibility:hidden!important;pointer-events:none!important\}/,
+  'the informational overlay must not cover fold-selection geometry in the 2D programming view');
+assert.match(html, /--pp-ui-bg:#edf3f7;--pp-ui-panel:#fff;--pp-ui-panel2:#f5f9fc/,
+  'the final interface layer must retain light, readable panel tokens');
+assert.match(html, /#mainSidebar \.nav button\{[\s\S]*?animation:pp3dMetalReveal \.14s ease-out both!important;transition:background-color \.12s ease,border-color \.12s ease,color \.12s ease,transform \.12s ease!important/,
+  'sidebar motion must remain brief and avoid slow hover animations');
+assert.match(html, /body\{min-width:0;overflow-x:hidden\}/,
+  'the document must not introduce horizontal overflow on phones');
+assert.match(html, /@media\(max-width:900px\)\{[\s\S]*?#mainSidebar\.side\{position:fixed!important;inset:0 auto 0 0!important;width:min\(300px,88vw\)!important/,
+  'the sidebar must switch to a bounded drawer on mobile');
