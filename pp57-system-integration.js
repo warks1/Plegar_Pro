@@ -224,7 +224,7 @@ function drawPhysicalBend(){
  poly([[-430,20,-30],[-430,20,30],[-430,-28,30],[-430,-28,-30]],'#536e7d');
  line([[-300,20,-31],[-240,-35,-31],[-190,-72,-31],[-130,-35,-31],[-70,20,-31]],'#d7e4eb',4);
  // Punch body and pointed nose; motion is driven by the same cycle progress slider.
- const punchY=235-contact*145+release*145,tipHalf=Math.max(8,Math.min(44,Math.tan(punchAngle*Math.PI/360)*35)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
+ const punchY=259-contact*145+release*145,tipHalf=Math.max(8,Math.min(44,Math.tan(punchAngle*Math.PI/360)*35)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
  // Chapa dinámica: apoyada sobre los hombros de la matriz, llega al tope trasero y se curva al bajar el punzón.
