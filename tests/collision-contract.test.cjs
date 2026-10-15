@@ -293,8 +293,8 @@ assert.match(sw, /plegar-pro-v152-[0-9]+/);
 
 // CSS cascade hygiene: named style layers must remain uniquely identifiable so
 // later cleanup can target a layer without accidentally removing another block.
-const styleBlocks = [...html.matchAll(/<style\\b([^>]*)>([\\s\\S]*?)<\\/style>/gi)];
-const styleIds = styleBlocks.map(([, attrs]) => (attrs.match(/\\bid=["']([^"']+)["']/i) || [])[1]).filter(Boolean);
+const styleBlocks = [...html.matchAll(/<style\b([^>]*)>([\s\S]*?)<\/style>/gi)];
+const styleIds = styleBlocks.map(([, attrs]) => (attrs.match(/\bid=["']([^"']+)["']/i) || [])[1]).filter(Boolean);
 assert.ok(styleBlocks.length >= 20, 'the inline stylesheet audit must cover the current UI cascade');
 assert.equal(new Set(styleIds).size, styleIds.length, 'named CSS layers must not reuse an id');
 for (const id of ['pp70-program2d-clear-canvas', 'pp649-stability-core', 'pp70-light-readable-panels']) {
