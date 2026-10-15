@@ -228,15 +228,16 @@ function drawPhysicalBend(){
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
  // Sheet geometry: the bend develops progressively around the die centre.
- const flatHalf=185,innerR=Math.max(4,t*2.2),bendA=(Math.PI-Math.min(150,Math.max(30,angle))*Math.PI/180)*contact;
- const arcR=42,depth=Math.sin(Math.min(Math.PI/2,bendA))*arcR;
- const sheetPts=[[-flatHalf,29,5],[-38,29,5]];
- // Perfil lateral: la zona central baja hacia la garganta de la matriz; nunca se arquea hacia arriba.
- for(let j=0;j<=16;j++){
-  const u=-1+2*j/16,xp=u*arcR,yp=29-depth*(1-u*u);
-  sheetPts.push([xp,yp,5]);
+ const flatHalf=185,innerR=Math.max(4,t*2.2),turn=(Math.PI-Math.min(150,Math.max(30,angle))*Math.PI/180)*contact;
+ const arcR=42,halfTurn=turn/2,tx=arcR*Math.sin(halfTurn),ty=arcR*(1-Math.cos(halfTurn));
+ const legSlope=Math.tan(Math.min(Math.PI/3,halfTurn))*.48;
+ // Dos tramos rectos tangentes enlazados por un arco central: perfil de chapa plegada, no una parábola.
+ const sheetPts=[[-flatHalf,29+(flatHalf-tx)*legSlope,5],[-tx,29+ty,5]];
+ for(let j=0;j<=24;j++){
+  const a=Math.PI+halfTurn-(turn*j/24);
+  sheetPts.push([arcR*Math.cos(a),29+arcR-arcR*Math.cos(a),5]);
  }
- sheetPts.push([38,29,5],[flatHalf,29,5]);
+ sheetPts.push([tx,29+ty,5],[flatHalf,29+(flatHalf-tx)*legSlope,5]);
  line(sheetPts,'#128bc4',Math.max(5,t*2.2));
  line(sheetPts.map(p=>[p[0],p[1]+Math.max(1,t*2.2),p[2]+1]),'#e0f7ff',1.8);
  // Backgauge fingers: behind the tooling, with adjustable-looking reference and contact pads.
