@@ -231,10 +231,10 @@ function drawPhysicalBend(){
  const flatHalf=185,innerR=Math.max(4,t*2.2),bendA=(Math.PI-Math.min(150,Math.max(30,angle)) * Math.PI/180)*contact;
  const startPt=[-flatHalf,29,5],leftTangent=[-38,29,5],rightTangent=[38,29,5],arcR=42;
  const sheetPts=[startPt,leftTangent];
- for(let j=0;j<=12;j++){const a=Math.PI-Math.PI*j/12;sheetPts.push([Math.cos(a)*arcR,29+Math.sin(a)*arcR*contact,5])}
+ for(let j=0;j<=12;j++){const a=Math.PI-Math.PI*j/12;sheetPts.push([Math.cos(a)*arcR,29-Math.sin(a)*arcR*contact,5])}
  sheetPts.push([flatHalf,29,5]);
  if(contact>.03){
-  const apexY=29+Math.sin(Math.min(Math.PI/2,bendA))*arcR;
+  const apexY=29-Math.sin(Math.min(Math.PI/2,bendA))*arcR;
   sheetPts.splice(0,sheetPts.length,[-flatHalf,29,5],[-38,29,5]);
   for(let j=0;j<=12;j++){const a=Math.PI-Math.PI*j/12;sheetPts.push([Math.cos(a)*arcR,29+Math.sin(a)*arcR*contact,5])}
   sheetPts.push([38,29,5],[flatHalf,29,5]);
