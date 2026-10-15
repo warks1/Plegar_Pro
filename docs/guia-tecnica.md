@@ -16,6 +16,7 @@ Módulos externos detectados en el repositorio:
 - `pp62-contrast-playback-fix.js`: contraste y reproducción.
 - `pp63-v85-parametric-model.js`: modelo paramétrico de referencia V85.
 - `pp64-ai-voice.js`: funciones de voz/ayuda.
+- `pp65-expert-engines.js`: BA/BD, fuerza estimada, validación dimensional y visualización wireframe 3D; expone `window.PP65ExpertEngines`.
 
 La lista efectiva debe confirmarse en el `index.html` de la rama que se vaya a publicar; los nombres de módulos internos no equivalen a la versión comercial de la aplicación.
 
@@ -102,3 +103,9 @@ Plegar Pro solo debe considerarse listo para una versión estable cuando:
 4. La secuencia de plegado coincide entre programación, reproducción y colisiones.
 5. Las limitaciones de precisión y seguridad quedan visibles para el usuario.
 6. Las referencias de máquinas y herramientas usadas para una liberación industrial se han contrastado con documentación oficial.
+
+## Motores expertos PP65
+
+El kernel PP65 mantiene funciones de cálculo puras para poder probarlas sin navegador: BA, BD, desarrollo por deducción, estimación de fuerza y validaciones de rango/capacidad. Las longitudes se expresan en mm y la resistencia en MPa. La fuerza es una aproximación de plegado al aire; requiere confirmar el material, abertura V, longitud efectiva, carga por metro y tabla del fabricante.
+
+La comprobación AABB solo es una fase amplia de detección de solapamientos de envolventes; no sustituye a una intersección exacta de sólidos. El visor wireframe es una vista 3D esquemática e interactiva, no una holografía física ni un CAD oficial. No debe usarse para certificar colisiones ni liberar programas CNC.
