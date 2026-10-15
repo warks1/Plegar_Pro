@@ -77,6 +77,7 @@
     const s=appState();
     if(!s) { conflicts.push({source,reason:'master-state-unavailable',at:now()});return {ok:false,reason:'master-state-unavailable',revision}; }
     syncing=true;
+    const acceptedFields=[];
     try {
       for(const [key,value] of Object.entries(allowed)) {
         if(key==='bendOrder') {
@@ -85,6 +86,7 @@
           for(const item of value) { const i=Number(item);if(Number.isInteger(i)&&i>=0&&i<n&&!seen.has(i)){seen.add(i);valid.push(i);} }
           for(let i=0;i<n;i++)if(!seen.has(i))valid.push(i);
           s.bendOrder=valid.slice(0,n);
+          acceptedFields.push(key);
         } else if(key==='thickness'||key==='bendLength'||key==='activeStep') {
           const n=number(value);if(n===null) {conflicts.push({source,key,reason:'non-finite-number',at:now()});continue;}
           if(key==='thickness'&&n<=0||key==='bendLength'&&n<=0||key==='activeStep'&&n<0) {conflicts.push({source,key,reason:'out-of-range',value:n,at:now()});continue;}
@@ -94,17 +96,20 @@
           }
           else if(key==='bendLength') { if('bendLength' in s)s.bendLength=n;else if('length' in s)s.length=n;else s.bendLength=n; }
           else { if('thickness' in s)s.thickness=n;else if('sheetThickness' in s)s.sheetThickness=n;else s.thickness=n; }
+          acceptedFields.push(key);
         } else if(key==='machine'||key==='material') {
           if(typeof value!=='string'||!value.trim()) {conflicts.push({source,key,reason:'invalid-value',at:now()});continue;}
           const aliases=key==='machine'?['machine','machineId','selectedMachine']:['material','materialName','selectedMaterial'];
           const target=aliases.find(name=>name in s)||key;
           s[target]=value.trim();
+          acceptedFields.push(key);
         }
       }
+      if(!acceptedFields.length)return {ok:false,reason:'no-valid-fields',revision};
       revision++;
       const snap=snapshot();
       for(const [id,adapter] of adapters) if(id!==String(source)) safe(()=>adapter.apply?.(snap,{source:String(source||'unknown'),revision}));
-      emit('commit',{source:String(source||'unknown'),snapshot:snap,changed:Object.keys(allowed)});
+      emit('commit',{source:String(source||'unknown'),snapshot:snap,changed:acceptedFields.slice()});
       return {ok:true,revision,snapshot:snap};
     } finally { syncing=false; }
   }
