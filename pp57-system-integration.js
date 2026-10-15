@@ -227,21 +227,22 @@ function drawPhysicalBend(){
  const punchY=235-contact*145+release*145,tipHalf=Math.max(8,Math.min(44,Math.tan(punchAngle*Math.PI/360)*35)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
- // Sheet geometry: the bend develops progressively around the die centre.
- const flatHalf=185,innerR=Math.max(4,t*2.2),turn=(Math.PI-Math.min(150,Math.max(30,angle))*Math.PI/180)*contact;
- const arcR=42,halfTurn=turn/2,tx=arcR*Math.sin(halfTurn);
- const legSlope=Math.tan(Math.min(Math.PI/3,halfTurn))*.48;
- // Dos alas rectas tangentes y arco central: el centro baja en pantalla al aumentar el plegado.
- const sheetPts=[[-flatHalf,29+(flatHalf-tx)*legSlope,5],[-tx,29,5]];
- for(let j=0;j<=24;j++){
-  const phi=-halfTurn+turn*j/24;
-  sheetPts.push([arcR*Math.sin(phi),29-arcR*(Math.cos(phi)-Math.cos(halfTurn)),5]);
+ // Chapa dinámica: apoyada sobre los hombros de la matriz, llega al tope trasero y se curva al bajar el punzón.
+ // En reposo tiene una ligera ampolla; durante el contacto, el centro entra en la V y las dos alas suben.
+ const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bulge=7+contact*48,centreDrop=contact*47;
+ const sheetPts=[];
+ for(let j=0;j<=64;j++){
+  const u=-1+2*j/64,ax=Math.abs(u),xpos=u*flatHalf;
+  const py=34+bulge*(ax*ax)-centreDrop*(1-ax*ax);
+  sheetPts.push([xpos,py,5]);
  }
- sheetPts.push([tx,29,5],[flatHalf,29+(flatHalf-tx)*legSlope,5]);
- line(sheetPts,'#128bc4',Math.max(5,t*2.2));
- line(sheetPts.map(p=>[p[0],p[1]+Math.max(1,t*2.2),p[2]+1]),'#e0f7ff',1.8);
+ line(sheetPts,'#087fb5',Math.max(5,thicknessPx));
+ line(sheetPts.map(p=>[p[0],p[1]+thicknessPx,p[2]+1]),'#e0f7ff',1.8);
+ // Línea de contacto sobre la matriz: cambia con el descenso real del punzón.
+ const contactPts=[[-72,20,6],[-48,20-contact*5,6],[-24,20-contact*11,6],[0,20-contact*14,6],[24,20-contact*11,6],[48,20-contact*5,6],[72,20,6]];
+ line(contactPts,'rgba(8,127,181,.28)',2);
  // Backgauge fingers: behind the tooling, with adjustable-looking reference and contact pads.
- const gaugeX=-310, gaugeY=105;
+ const gaugeX=-310, gaugeY=180;
  poly([[gaugeX-28,gaugeY+30,90],[gaugeX+28,gaugeY+30,90],[gaugeX+18,gaugeY-95,90],[gaugeX-18,gaugeY-95,90]],'#536f80','#2f4c5e');
  poly([[gaugeX-52,gaugeY-95,90],[gaugeX+52,gaugeY-95,90],[gaugeX+52,gaugeY-112,90],[gaugeX-52,gaugeY-112,90]],'#d1dfe6','#526c7b');
  poly([[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]],'#e5a34b','#91612d');
