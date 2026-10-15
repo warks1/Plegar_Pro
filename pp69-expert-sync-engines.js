@@ -110,6 +110,53 @@
     for(const [id,adapter] of adapters) safe(()=>adapter.apply?.(snap,{source:'master-state-observer',revision}));
     emit('master-change',{source:'observer',previousSignature:previous,snapshot:snap});
   }
+  const DOM_FIELDS = Object.freeze({
+    material:['material','progMaterial','p2Material','p3Material','devMaterial','quoteMaterial'],
+    thickness:['thickness','progThickness','p2Thickness','p3Thickness','devThickness','curveThickness','dcThickness','pp527Thickness','quoteThickness','visualThickness'],
+    bendLength:['importBendLength','progBendLength','p2BendLength','p3BendLength','devBendLength','dcBendLength','pp524BendLength'],
+    machine:['machine','s3Machine','pp530MachineSelect']
+  });
+  const DOM_OWNER = Object.freeze({
+    material:{material:'dashboard',progMaterial:'program',p2Material:'program2d',p3Material:'program3d',devMaterial:'development',quoteMaterial:'quotes'},
+    thickness:{thickness:'dashboard',progThickness:'program',p2Thickness:'program2d',p3Thickness:'program3d',devThickness:'development',curveThickness:'curve',dcThickness:'devcalculator',pp527Thickness:'technical',quoteThickness:'quotes',visualThickness:'machineTwin'},
+    bendLength:{importBendLength:'import',progBendLength:'program',p2BendLength:'program2d',p3BendLength:'program3d',devBendLength:'development',dcBendLength:'devcalculator',pp524BendLength:'machineTwin'},
+    machine:{machine:'dashboard',s3Machine:'sim3d',pp530MachineSelect:'tooling'}
+  });
+  function mirrorControls(snap, source) {
+    if(typeof document==='undefined')return;
+    syncing=true;
+    try {
+      for(const [field,ids] of Object.entries(DOM_FIELDS)) {
+        const value=snap[field]; if(value===null||value===undefined)continue;
+        for(const id of ids) {
+          const el=document.getElementById(id);if(!el||el.id===source||document.activeElement===el)continue;
+          if(el.tagName==='SELECT' && !Array.from(el.options||[]).some(o=>o.value===String(value)))continue;
+          if(String(el.value)!==String(value))el.value=String(value);
+        }
+      }
+    } finally { syncing=false; }
+  }
+  function installDomBridge() {
+    if(typeof document==='undefined'||document.__pp69BridgeInstalled)return;
+    document.__pp69BridgeInstalled=true;
+    const capture=e=>{
+      if(syncing||!e.target||!e.target.id)return;
+      const el=e.target, id=el.id;
+      for(const [field,ids] of Object.entries(DOM_FIELDS)) {
+        if(!ids.includes(id))continue;
+        let value=el.value;
+        if(field==='thickness'||field==='bendLength')value=number(value);
+        const owner=DOM_OWNER[field]?.[id]||id;
+        publish(owner,{[field]:value});
+        break;
+      }
+    };
+    document.addEventListener('change',capture,true);
+    document.addEventListener('input',capture,true);
+    for(const id of ['dashboard','import','program','program2d','program3d','development','curve','devcalculator','quotes','machineTwin','sim3d','tooling','technical']) {
+      register(id,{apply:(snap,meta)=>mirrorControls(snap,meta?.source===id?'':null)});
+    }
+  }
   function status() { return Object.freeze({version:VERSION,revision,modules:[...adapters.keys()],listeners:listeners.size,conflicts:conflicts.slice(-25),snapshot:snapshot()}); }
   const api=Object.freeze({version:VERSION,fields:FIELDS,register,subscribe,publish,snapshot,canonicalOrder,status,check});
   root.PP69Sync=api;
@@ -118,7 +165,7 @@
     root.addEventListener('plegarpro:sync-request',e=>{const d=e.detail||{};if(d.source&&d.patch)publish(d.source,d.patch);});
   }
   if(typeof document!=='undefined') {
-    const start=()=>{check(); if(typeof root.setInterval==='function')root.setInterval(check,350);};
+    const start=()=>{installDomBridge();check(); if(typeof root.setInterval==='function')root.setInterval(check,350);};
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
   }
 })(typeof window!=='undefined'?window:globalThis);
