@@ -77,6 +77,24 @@ function drawTwin(now){
  }else{
   for(let i=0;i<5;i++){const yy=95-i*34;box(-493,yy,-180,25,3,3,'#8fa5b1','#526d7b');box(468,yy,-180,25,3,3,'#8fa5b1','#526d7b');}
  }
+ // Panelería frontal: juntas de puertas, rejillas de ventilación, pilotos y fijaciones.
+ for(const side of [-1,1]){
+  const seam=side<0?-446:446;
+  const seamPts=side<0? [{x:-446,y:78,z:-181},{x:-446,y:-86,z:-181}]:[{x:446,y:78,z:-181},{x:446,y:-86,z:-181}];
+  const sp=seamPts.map(P);x.beginPath();x.moveTo(sp[0].x,sp[0].y);x.lineTo(sp[1].x,sp[1].y);x.strokeStyle='#647c89';x.lineWidth=2;x.stroke();
+  for(let k=0;k<5;k++){
+   const yy=52-k*18,slat=[{x:side<0?-493:467,y:yy,z:-182},{x:side<0?-468:492,y:yy-5,z:-182},{x:side<0?-468:492,y:yy-9,z:-182},{x:side<0?-493:467,y:yy-4,z:-182}];
+   poly(slat,'#536a77','#d5e0e6');
+  }
+  const lamp=P({x:side<0?-482:482,y:118,z:-183});x.beginPath();x.arc(lamp.x,lamp.y,5,0,Math.PI*2);x.fillStyle=accent;x.fill();x.strokeStyle='#f7fcff';x.lineWidth=1.5;x.stroke();
+  for(const yy of [165,-118]){const bolt=P({x:side<0?-480:480,y:yy,z:-183});x.beginPath();x.arc(bolt.x,bolt.y,3.5,0,Math.PI*2);x.fillStyle='#304653';x.fill();x.strokeStyle='#e5eef2';x.lineWidth=1;x.stroke();}
+ }
+ // Nervios frontales de la viga y estaciones de amarre del portautillaje.
+ for(let i=0;i<13;i++){
+  const bx=-360+i*60,topY=166;
+  const q1=P({x:bx,y:topY,z:-178}),q2=P({x:bx+3,y:topY-23,z:-178});
+  x.beginPath();x.moveTo(q1.x,q1.y);x.lineTo(q2.x,q2.y);x.strokeStyle='#536d7c';x.lineWidth=2;x.stroke();
+ }
  // Tapa superior mecanizada y guías lineales del eje Y.
  box(-410,242,-125,820,18,250,model==='trumpf'?'#d7dfe3':'#eef3f5','#6c8290');
  box(-390,222,-145,780,14,18,'#526d7d','#314d5e');
