@@ -88,12 +88,17 @@
         } else if(key==='thickness'||key==='bendLength'||key==='activeStep') {
           const n=number(value);if(n===null) {conflicts.push({source,key,reason:'non-finite-number',at:now()});continue;}
           if(key==='thickness'&&n<=0||key==='bendLength'&&n<=0||key==='activeStep'&&n<0) {conflicts.push({source,key,reason:'out-of-range',value:n,at:now()});continue;}
-          if(key==='activeStep') { if('activeStep' in s)s.activeStep=n;else if('currentStep' in s)s.currentStep=n;else s.stepIndex=n; }
+          if(key==='activeStep') {
+            const step=Math.min(bendCount(s),Math.max(0,Math.floor(n)));
+            if('activeStep' in s)s.activeStep=step;else if('currentStep' in s)s.currentStep=step;else s.stepIndex=step;
+          }
           else if(key==='bendLength') { if('bendLength' in s)s.bendLength=n;else if('length' in s)s.length=n;else s.bendLength=n; }
           else { if('thickness' in s)s.thickness=n;else if('sheetThickness' in s)s.sheetThickness=n;else s.thickness=n; }
         } else if(key==='machine'||key==='material') {
           if(typeof value!=='string'||!value.trim()) {conflicts.push({source,key,reason:'invalid-value',at:now()});continue;}
-          s[key]=value.trim();
+          const aliases=key==='machine'?['machine','machineId','selectedMachine']:['material','materialName','selectedMaterial'];
+          const target=aliases.find(name=>name in s)||key;
+          s[target]=value.trim();
         }
       }
       revision++;
