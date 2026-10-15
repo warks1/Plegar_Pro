@@ -137,7 +137,7 @@
     } finally { syncing=false; }
   }
   function installDomBridge() {
-    if(typeof document==='undefined'||document.__pp69BridgeInstalled)return;
+    if(typeof document==='undefined'||typeof document.addEventListener!=='function'||document.__pp69BridgeInstalled)return;
     document.__pp69BridgeInstalled=true;
     const capture=e=>{
       if(syncing||!e.target||!e.target.id)return;
@@ -152,7 +152,6 @@
       }
     };
     document.addEventListener('change',capture,true);
-    document.addEventListener('input',capture,true);
     for(const id of ['dashboard','import','program','program2d','program3d','development','curve','devcalculator','quotes','machineTwin','sim3d','tooling','technical']) {
       register(id,{apply:(snap,meta)=>mirrorControls(snap,meta?.source===id?'':null)});
     }
