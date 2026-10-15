@@ -124,7 +124,8 @@ function mount(){
  ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>$('pp65-canvas').addEventListener(ev,()=>drag=null));
  calc();drawWireframe($('pp65-canvas'),{rotation:rot,pitch,scale});
 }
-const api={VERSION,bendAllowance,bendDeduction,flatLength,pressForce,validateDimensions,aabb,aabbIntersection,drawWireframe};
+function recommendDieOpening({thickness, factor=8, available=[6,8,10,12,14,16,18,20,22,24,25,28,30,32,35,36,40,50]}){const t=Number(thickness),f=Number(factor);if(!Number.isFinite(t)||t<=0)throw new RangeError('thickness must be > 0');if(!Number.isFinite(f)||f<=0)throw new RangeError('factor must be > 0');const values=[...new Set((Array.isArray(available)?available:[]).map(Number).filter(v=>Number.isFinite(v)&&v>0))].sort((a,b)=>a-b);if(!values.length)throw new RangeError('available must contain positive V openings');const targetV=t*f;const recommendedV=values.reduce((best,v)=>Math.abs(v-targetV)<Math.abs(best-targetV)?v:best,values[0]);return {thickness:t,factor:f,targetV,recommendedV,ratio:recommendedV/t,difference:recommendedV-targetV};}
+const api={VERSION,bendAllowance,bendDeduction,flatLength,pressForce,validateDimensions,recommendDieOpening,aabb,aabbIntersection,drawWireframe};
 if(typeof window!=='undefined'){window.PP65ExpertEngines=api;const start=()=>{try{mount()}catch(e){console.error('[PP65] Mount failed',e)}};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();}
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })();
