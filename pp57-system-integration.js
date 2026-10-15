@@ -198,12 +198,13 @@ function physicalSequence(){
  const s=S()||{},b=Array.isArray(s.bends)?s.bends:[],n=Math.max(0,b.length-1),raw=Array.isArray(s.bendOrder)?s.bendOrder:null;
  let order=raw&&raw.length?raw.filter((v,i)=>Number.isInteger(v)&&v>=0&&v<n&&raw.indexOf(v)===i):Array.from({length:n},(_,i)=>i);
  for(let i=0;i<n;i++)if(!order.includes(i))order.push(i);
- const idx=order[Math.min(order.length-1,Math.floor(physProgress*Math.max(0,order.length-1)))]??0;
- return {s,b,order,idx,bend:b[idx]||{},n};
+ const stepCount=Math.max(1,order.length),stepPos=physProgress>=1?stepCount:physProgress*stepCount,stepNumber=Math.min(stepCount-1,Math.floor(stepPos)),localPhase=physProgress>=1?1:stepPos-stepNumber;
+ const idx=order[stepNumber]??0;
+ return {s,b,order,idx,bend:b[idx]||{},n,localPhase,stepNumber};
 }
 function drawPhysicalBend(){
- const cv=$('pp58PhysicalCanvas');if(!cv)return;const x=cv.getContext('2d'),w=cv.width,h=cv.height,{s,b,order,idx,bend,n}=physicalSequence();
- const t=Math.max(.1,Number(s.project?.thickness||s.development?.thickness||1)),angle=Math.max(30,Math.min(150,Number(bend.angle)||90)),v=Math.max(6,Number(bend.v||s.project?.selectedV||16)),phase=Math.max(0,Math.min(1,physProgress)),contact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?(phase-.82)/.18:0;
+ const cv=$('pp58PhysicalCanvas');if(!cv)return;const x=cv.getContext('2d'),w=cv.width,h=cv.height,{s,b,order,idx,bend,n,localPhase,stepNumber}=physicalSequence();
+ const t=Math.max(.1,Number(s.project?.thickness||s.development?.thickness||1)),angle=Math.max(30,Math.min(150,Number(bend.angle)||90)),v=Math.max(6,Number(bend.v||s.project?.selectedV||16)),phase=Math.max(0,Math.min(1,localPhase)),contact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?(phase-.82)/.18:0;
  x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#f9fdff');bg.addColorStop(1,'#d9e9f2');x.fillStyle=bg;x.fillRect(0,0,w,h);
  x.strokeStyle='#d3e3eb';x.lineWidth=1;for(let i=20;i<w;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}for(let i=20;i<h;i+=40){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke()}
  const view=$('pp58PhysView')?.value||'iso',cx=w*.52,base=h*.66,sc=view==='front'?1.02:view==='section'?1.18:1.0,rot=view==='iso'?rotation*.08:0;
@@ -246,7 +247,7 @@ function drawPhysicalBend(){
  const contactP=P(0,29+contact*18,7);x.beginPath();x.arc(contactP.x,contactP.y,14+contact*18,0,Math.PI*2);x.fillStyle='rgba(18,139,196,'+(.05+contact*.12)+')';x.fill();
  label('PUNZÓN',w*.43,75);label('MATRIZ V'+v,w*.43,h*.82);label('TOPE TRASERO',w*.08,h*.35);label('CHAPA · CONTACTO '+Math.round(contact*100)+'%',w*.63,h*.35);
  x.fillStyle='#eaf6fb';x.fillRect(24,22,320,42);x.fillStyle='#17445a';x.font='bold 15px system-ui';x.fillText(view==='section'?'SECCIÓN DE CONTACTO':view==='front'?'VISTA FRONTAL':'VISTA ISOMÉTRICA DE SEGUIMIENTO',36,49);
- const phaseLabel=phase<.12?'APROXIMACIÓN':phase<.67?'CONTACTO / PLEGADO':phase<.84?'RETENCIÓN':'RETORNO';$('pp58PhysStepLabel').textContent=phaseLabel;$('pp58PhysActive').textContent=phase<.12?'Punzón acercándose':phase<.84?'Punzón + chapa + matriz':'Retorno y liberación';$('pp58PhysOrder').textContent=order.length?('P'+(idx+1)+' · '+(Math.min(order.length,Math.floor(phase*order.length)+1))+'/'+order.length):'Sin pliegues definidos';$('pp58PhysAngle').textContent=angle+'°';$('pp58PhysThickness').textContent=t.toFixed(2)+' mm';
+ const phaseLabel=phase<.12?'APROXIMACIÓN':phase<.67?'CONTACTO / PLEGADO':phase<.84?'RETENCIÓN':'RETORNO';$('pp58PhysStepLabel').textContent=phaseLabel;$('pp58PhysActive').textContent=phase<.12?'Punzón acercándose':phase<.84?'Punzón + chapa + matriz':'Retorno y liberación';$('pp58PhysOrder').textContent=order.length?('P'+(idx+1)+' · '+(stepNumber+1)+'/'+order.length):'Sin pliegues definidos';$('pp58PhysAngle').textContent=angle+'°';$('pp58PhysThickness').textContent=t.toFixed(2)+' mm';
  const status=$('pp58PhysStatus');if(status)status.textContent='Paso programado '+(idx+1)+' · V'+v+' · '+angle+'° · material '+String(s.project?.material||s.development?.material||'sin especificar')+'. Esquema visual de seguimiento; las dimensiones reales dependen de las referencias de punzón, matriz y topes seleccionadas.';
 }
 function runPhysicalBend(){
