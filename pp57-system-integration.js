@@ -218,7 +218,7 @@ function drawPhysicalBend(){
  poly([[-430,20,-30],[-430,20,30],[-430,-28,30],[-430,-28,-30]],'#536e7d');
  line([[-300,20,-31],[-240,-35,-31],[-190,-72,-31],[-130,-35,-31],[-70,20,-31]],'#d7e4eb',4);
  // Punch body and pointed nose; motion is driven by the same cycle progress slider.
- const punchY=235-contact*145+release*42;
+ const punchY=235-contact*145+release*145;
  poly([[-100,punchY,0],[100,punchY,0],[72,punchY-80,0],[22,punchY-143,0],[0,punchY-151,0],[-22,punchY-143,0],[-72,punchY-80,0]],'#718c9b','#334f60');
  line([[-22,punchY-143,1],[0,punchY-151,1],[22,punchY-143,1]],'#edf5f8',3);
  // Sheet geometry: the bend develops progressively around the die centre.
