@@ -1,0 +1,124 @@
+/* PP69 · Motores de sincronización experta entre módulos Plegar Pro.
+ * Sin dependencia obligatoria de ningún módulo; contrato público y eventos versionados.
+ * La geometría y las decisiones CNC siguen siendo responsabilidad de sus motores especializados.
+ */
+(function (root) {
+  'use strict';
+  const VERSION = '69.1';
+  const FIELDS = Object.freeze(['material','thickness','bendLength','machine','bendOrder','activeStep']);
+  const adapters = new Map();
+  const listeners = new Set();
+  const conflicts = [];
+  let revision = 0, lastSignature = '', syncing = false;
+  const now = () => Date.now();
+  const safe = fn => { try { return fn(); } catch (_) { return undefined; } };
+  function appState() {
+    return safe(() => typeof state !== 'undefined' && state && typeof state === 'object' ? state : null) || root.PLEGAR_PRO_STATE || null;
+  }
+  function readFirst(obj, keys) {
+    if (!obj) return undefined;
+    for (const key of keys) if (obj[key] !== undefined && obj[key] !== null) return obj[key];
+    return undefined;
+  }
+  function number(v) { const n = Number(v); return Number.isFinite(n) ? n : null; }
+  function bendCount(s) {
+    const a = s && Array.isArray(s.bends) ? s.bends : [];
+    if (a.length) return Math.max(0, a.length - 1);
+    const order = s && Array.isArray(s.bendOrder) ? s.bendOrder : [];
+    return order.length;
+  }
+  function canonicalOrder(s = appState()) {
+    const count = bendCount(s);
+    if (!count) return [];
+    const raw = s && Array.isArray(s.bendOrder) ? s.bendOrder : [];
+    const out = [], seen = new Set();
+    for (const value of raw) {
+      const n = Number(value);
+      if (Number.isInteger(n) && n >= 0 && n < count && !seen.has(n)) { seen.add(n); out.push(n); }
+    }
+    const rank = i => safe(() => root.PLEGAR_PRO_V54?.orderIndex?.(i));
+    const remaining = Array.from({length:count}, (_,i)=>i).filter(i=>!seen.has(i));
+    remaining.sort((a,b) => {
+      const ra=number(rank(a)), rb=number(rank(b));
+      return (ra===null?a:ra)-(rb===null?b:rb);
+    });
+    return out.concat(remaining).slice(0,count);
+  }
+  function snapshot() {
+    const s=appState() || {};
+    const machine = readFirst(s,['machine','machineId','selectedMachine']);
+    const material = readFirst(s,['material','materialName','selectedMaterial']);
+    const thickness = number(readFirst(s,['thickness','sheetThickness','selectedThickness']));
+    const bendLength = number(readFirst(s,['bendLength','length','sheetLength']));
+    const order=canonicalOrder(s);
+    const activeStep=number(readFirst(s,['activeStep','currentStep','bendStep','stepIndex']));
+    return Object.freeze({version:VERSION,revision,at:now(),machine:machine??null,material:material??null,thickness,bendLength,bendOrder:order,activeStep, bendCount:bendCount(s)});
+  }
+  function signature(s) { return JSON.stringify([s.machine,s.material,s.thickness,s.bendLength,s.bendOrder,s.activeStep,s.bendCount]); }
+  function emit(type, detail) {
+    const payload=Object.freeze({type,version:VERSION,revision,at:now(),...detail});
+    if (typeof root.dispatchEvent==='function' && typeof root.CustomEvent==='function') safe(()=>root.dispatchEvent(new root.CustomEvent('plegarpro:sync',{detail:payload})));
+    for(const fn of [...listeners]) safe(()=>fn(payload));
+    return payload;
+  }
+  function register(id, adapter) {
+    if(!id || !adapter || typeof adapter!=='object') throw new TypeError('Se requiere id y adaptador de módulo');
+    adapters.set(String(id),adapter);
+    safe(()=>adapter.apply?.(snapshot(),{source:'initialization',revision}));
+    return () => adapters.delete(String(id));
+  }
+  function subscribe(fn) { if(typeof fn!=='function') throw new TypeError('El suscriptor debe ser una función');listeners.add(fn);return()=>listeners.delete(fn); }
+  function publish(source, patch) {
+    if(syncing) return {ok:false,reason:'reentrant-sync',revision};
+    if(!patch || typeof patch!=='object') return {ok:false,reason:'invalid-patch',revision};
+    const allowed={};
+    for(const key of FIELDS) if(Object.prototype.hasOwnProperty.call(patch,key)) allowed[key]=patch[key];
+    if(!Object.keys(allowed).length) return {ok:false,reason:'no-supported-fields',revision};
+    const s=appState();
+    if(!s) { conflicts.push({source,reason:'master-state-unavailable',at:now()});return {ok:false,reason:'master-state-unavailable',revision}; }
+    syncing=true;
+    try {
+      for(const [key,value] of Object.entries(allowed)) {
+        if(key==='bendOrder') {
+          if(!Array.isArray(value)) return {ok:false,reason:'invalid-bend-order',revision};
+          const n=bendCount(s), seen=new Set(), valid=[];
+          for(const item of value) { const i=Number(item);if(Number.isInteger(i)&&i>=0&&i<n&&!seen.has(i)){seen.add(i);valid.push(i);} }
+          for(let i=0;i<n;i++)if(!seen.has(i))valid.push(i);
+          s.bendOrder=valid.slice(0,n);
+        } else if(key==='thickness'||key==='bendLength'||key==='activeStep') {
+          const n=number(value);if(n===null) {conflicts.push({source,key,reason:'non-finite-number',at:now()});continue;}
+          if(key==='thickness'&&n<=0||key==='bendLength'&&n<=0||key==='activeStep'&&n<0) {conflicts.push({source,key,reason:'out-of-range',value:n,at:now()});continue;}
+          if(key==='activeStep') { if('activeStep' in s)s.activeStep=n;else if('currentStep' in s)s.currentStep=n;else s.stepIndex=n; }
+          else if(key==='bendLength') { if('bendLength' in s)s.bendLength=n;else if('length' in s)s.length=n;else s.bendLength=n; }
+          else { if('thickness' in s)s.thickness=n;else if('sheetThickness' in s)s.sheetThickness=n;else s.thickness=n; }
+        } else if(key==='machine'||key==='material') {
+          if(typeof value!=='string'||!value.trim()) {conflicts.push({source,key,reason:'invalid-value',at:now()});continue;}
+          s[key]=value.trim();
+        }
+      }
+      revision++;
+      const snap=snapshot();
+      for(const [id,adapter] of adapters) if(id!==String(source)) safe(()=>adapter.apply?.(snap,{source:String(source||'unknown'),revision}));
+      emit('commit',{source:String(source||'unknown'),snapshot:snap,changed:Object.keys(allowed)});
+      return {ok:true,revision,snapshot:snap};
+    } finally { syncing=false; }
+  }
+  function check() {
+    const snap=snapshot(), sig=signature(snap);
+    if(sig===lastSignature)return;
+    const previous=lastSignature;lastSignature=sig;revision++;
+    for(const [id,adapter] of adapters) safe(()=>adapter.apply?.(snap,{source:'master-state-observer',revision}));
+    emit('master-change',{source:'observer',previousSignature:previous,snapshot:snap});
+  }
+  function status() { return Object.freeze({version:VERSION,revision,modules:[...adapters.keys()],listeners:listeners.size,conflicts:conflicts.slice(-25),snapshot:snapshot()}); }
+  const api=Object.freeze({version:VERSION,fields:FIELDS,register,subscribe,publish,snapshot,canonicalOrder,status,check});
+  root.PP69Sync=api;
+  if(typeof root.addEventListener==='function') {
+    root.addEventListener('plegarpro:module-ready',e=>{const d=e.detail||{};if(d.id&&d.adapter)register(d.id,d.adapter);});
+    root.addEventListener('plegarpro:sync-request',e=>{const d=e.detail||{};if(d.source&&d.patch)publish(d.source,d.patch);});
+  }
+  if(typeof document!=='undefined') {
+    const start=()=>{check(); if(typeof root.setInterval==='function')root.setInterval(check,350);};
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+  }
+})(typeof window!=='undefined'?window:globalThis);
