@@ -3,7 +3,7 @@
 'use strict';
 const $=id=>document.getElementById(id), KEY='plegarPro.v58';
 let prefs={};try{prefs=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
-let raf=0,start=0,paused=false,zoom=1,rotation=0,drag=null;
+let raf=0,start=0,paused=false,zoom=1,rotation=0,drag=null,twinInView=false,twinVisibilityReady=false,twinObserver=null;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const S=()=>{try{return typeof state!=='undefined'?state:null}catch(e){return null}};
 const T=()=>Array.isArray(window.tools)?window.tools:[];
@@ -26,7 +26,25 @@ function addMachine(){
  $('pp58Home').onclick=()=>{$('pp58Camera').value='iso';$('pp58Zoom').value='1';rotation=0;drawTwin(performance.now())};
  $('pp58Cycle').onclick=()=>{start=performance.now();paused=false;$('pp58Pause').textContent='Ⅱ Pausar animación';runTwin()};
  const cv=$('pp58Twin');cv.addEventListener('pointerdown',e=>{if(e.isPrimary===false)return;drag={x:e.clientX,y:e.clientY,r:rotation,pointerId:e.pointerId};try{cv.setPointerCapture(e.pointerId)}catch(_){}});cv.addEventListener('pointermove',e=>{if(drag&&drag.pointerId===e.pointerId){rotation=drag.r+(e.clientX-drag.x)*.008;drawTwin(performance.now())}});const endDrag=e=>{if(!drag||!e||drag.pointerId===e.pointerId)drag=null};cv.addEventListener('pointerup',endDrag);cv.addEventListener('pointercancel',endDrag);cv.addEventListener('lostpointercapture',endDrag);
- runTwin();
+ setupTwinVisibility();runTwin();
+}
+function setupTwinVisibility(){
+ const canvas=$('pp58Twin');if(!canvas)return;
+ if(!twinVisibilityReady){
+  twinVisibilityReady=true;
+  document.addEventListener('visibilitychange',()=>{
+   if(document.hidden){if(raf)cancelAnimationFrame(raf);raf=0;}
+   else runTwin();
+  });
+ }
+ if('IntersectionObserver'in window){
+  if(twinObserver)twinObserver.disconnect();
+  twinObserver=new IntersectionObserver(entries=>{
+   const entry=entries[entries.length-1];twinInView=!!entry?.isIntersecting&&entry.intersectionRatio>0;
+   if(twinInView)runTwin();else{if(raf)cancelAnimationFrame(raf);raf=0;}
+  },{threshold:0.01});
+  twinObserver.observe(canvas);
+ }else twinInView=true;
 }
 function drawTwin(now){
  const c=$('pp58Twin');if(!c)return;const x=c.getContext('2d'),w=c.width,h=c.height;if(!start)start=now;
@@ -134,11 +152,13 @@ function drawTwin(now){
  $('pp58Phase').textContent=phase<.2?'Aproximación':phase<.47?'Plegado en carrera':phase<.68?'Retención':'Retorno de trancha';$('pp58Ram').textContent=down>.12?'Eje Y · carrera descendente':'Eje Y · posición superior';$('pp58Piece').textContent=S()?.project?.ref||'Sin referencia';$('pp58ModelLabel').textContent=model==='trumpf'?'Estilo TruBend V85':model==='bystronic'?'Estilo Bystronic 100 t':'Bastidor industrial';
 }
 function runTwin(){
- if(raf||paused||!$('pp58Twin'))return;
+ const canvas=$('pp58Twin');
+ if(raf||paused||!canvas||document.hidden||(!twinInView&&'IntersectionObserver'in window))return;
+ if(!canvas.getClientRects().length)return;
  if(!start)start=performance.now();
  const loop=t=>{
   raf=0;
-  if(paused||!$('pp58Twin'))return;
+  if(paused||!$('pp58Twin')||document.hidden||(!twinInView&&'IntersectionObserver'in window)||!$('pp58Twin').getClientRects().length){raf=0;return;}
   try{
    drawTwin(t);
    const status=$('pp58TwinStatus');
