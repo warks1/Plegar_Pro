@@ -14,6 +14,7 @@ assert.match(collision, /for\(const k of \['s2Step','s3Step','p3Active','machine
 const twin = fs.readFileSync('pp59-engineering-upgrade.js', 'utf8');
 const runtime = fs.readFileSync('pp61-runtime-integrity.js', 'utf8');
 assert.ok(runtime.includes("el.dataset.syncOk=String(!/^Error\\b/i.test(String(message||'')))"), 'runtime synchronization errors must not be marked as verified');
+assert.match(runtime, /catch\(error\)\{\s*lastSyncError=String\(error\?\.stack\|\|error\);\s*updateStatus\('Error de sincronización · revisa consola'\)/, 'syncAll exceptions must set the visible synchronization state to error before rethrowing');
 const sw = fs.readFileSync('sw.js', 'utf8');
 assert.match(html, /Corrección definitiva del menú lateral/);
 assert.match(html, /grid-template-columns:258px minmax\(0,1fr\)!important/);
@@ -131,7 +132,7 @@ assert.match(twin, /source:'pp59',step:pos,foldIndex:executionOrder\(\)\[pos\]\?
 assert.match(runtime, /else if\(source==='pp59'&&Number\.isFinite\(Number\(detail\.travel\)\)\)/, 'runtime must map twin ram travel into the collision review');
 assert.match(runtime, /travel\.dispatchEvent\(new Event\('input',\{bubbles:true\}\)\)/, 'collision view must redraw when synchronized travel changes');
 assert.match(html, /pp59-engineering-upgrade\.js\?v=156/);
-assert.match(html, /pp61-runtime-integrity\.js\?v=62\.8/);
+assert.match(html, /pp61-runtime-integrity\.js\?v=62\.9/);
 assert.match(html, /const meta=titles\[page\]\|\|\[/, 'navigation must tolerate dynamic pages without title metadata');
 assert.match(html, /Error al actualizar el módulo/, 'navigation failures must be surfaced instead of silently swallowed');
 assert.match(html, /window\.__PP_CLICK_TRACKER__=\{has:function\(el\)\{return ppClickBound\.has\(el\)\}\}/, 'button audit must account for addEventListener click handlers');
@@ -142,7 +143,7 @@ assert.match(html, /\.page#dashboard \.quick button small\{display:block;color:#
 assert.match(collision, /Sin matrices disponibles para V/, 'empty die catalogs must show a clear explanatory option');
 assert.match(collision, /\.pp56-controls select option\{background:#fff!important;color:#173246!important\}/, 'collision selectors must keep readable option text');
 
-assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.8/);
+assert.match(sw, /pp61-runtime-integrity\.js\?v=62\.9/);
 assert.match(sw, /plegar-pro-v[0-9]+-[0-9]+/);
 assert.match(twin, /collisionCertification|officialVerified|profilePointsMm/);
 
