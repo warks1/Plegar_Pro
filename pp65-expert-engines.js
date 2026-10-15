@@ -2,7 +2,7 @@
 'use strict';
 /* PP65 Expert Engineering Kernel — independent, testable calculations and visualization.
    All lengths are millimetres; this module does not certify a CNC program. */
-const VERSION='65.1';
+const VERSION='65.2';
 const finite=(n,name)=>{const v=Number(n);if(!Number.isFinite(v))throw new TypeError(name+' must be finite');return v};
 const positive=(n,name,allowZero=false)=>{const v=finite(n,name);if(allowZero?v<0:v<=0)throw new RangeError(name+(allowZero?' must be >= 0':' must be > 0'));return v};
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
