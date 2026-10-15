@@ -19,6 +19,7 @@ jobs:
             node --check "$file"
           done
           node tests/expert-engines.test.cjs
+          node tests/solid-contact.test.cjs
       - name: Test V85 and Bystronic 3D reference meshes and prism collisions
         run: |
           node <<'NODE'
