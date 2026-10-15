@@ -583,13 +583,16 @@ jobs:
                   activePage: document.querySelector('.page.active')?.id || 'unknown'
                 }));
                 narrowViewportAudit.push({ requestedWidth: width, ...result });
+                if (result.activePage !== pageId) {
+                  throw new Error('Requested module did not become active at narrow viewport: ' + JSON.stringify(narrowViewportAudit));
+                }
                 if (result.scrollWidth > result.width + 2) {
                   throw new Error('Horizontal document overflow at narrow viewport: ' + JSON.stringify(narrowViewportAudit));
                 }
               }
             }
             if (errors.length) throw new Error('Browser runtime errors: ' + errors.join(' | '));
-            console.log(JSON.stringify({ startupMs: splashMs, machineCanvas: 'visible', cameraPreference: savedCamera, machineOrder, collisionOrder, collisionSheetAnimates: true, mobile, runtimeErrors: errors.length }));
+            console.log(JSON.stringify({ startupMs: splashMs, machineCanvas: 'visible', cameraPreference: savedCamera, machineOrder, collisionOrder, collisionSheetAnimates: true, mobile, narrowViewportAudit, runtimeErrors: errors.length }));
             await browser.close();
           })().catch(error => { console.error(error); process.exit(1); });
           NODE
