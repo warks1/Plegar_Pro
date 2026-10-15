@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const e = require('../pp65-expert-engines.js');
 const fs = require('node:fs');
 const html = fs.readFileSync(require('node:path').join(__dirname, '..', 'index.html'), 'utf8');
+assert.ok(html.includes("$('resetSettings').onclick=()=>{state.settings={theme:'light'"), 'Reset settings must preserve the approved light default theme');
 
 assert.equal(e.VERSION, '65.2');
 assert.ok(Math.abs(e.bendAllowance({thickness:2,insideRadius:2,angleDeg:90,kFactor:.33}) - Math.PI*(2+.66)/2) < 1e-10);
