@@ -24,6 +24,14 @@ assert.equal(window.PLEGAR_PRO_STATE.thickness,3);
 assert.deepEqual(Array.from(window.PLEGAR_PRO_STATE.bendOrder),[1,0,2]);
 assert.ok(applied>=3,'registered modules receive initial and committed snapshots');
 assert.equal(events,1);
+// Adapters must not be able to recursively commit while a publish is being fanned out.
+let nestedPublish=null;
+sync.register('reentrant-guard',{apply:(snapshot,meta)=>{
+  if(meta?.source==='program2d') nestedPublish=sync.publish('reentrant-guard',{activeStep:2});
+}});
+sync.publish('program2d',{activeStep:0});
+assert.equal(nestedPublish?.ok,false);
+assert.equal(nestedPublish?.reason,'reentrant-sync');
 // Alias-only master states must update the field actually read by snapshot().
 delete window.PLEGAR_PRO_STATE.machine;
 window.PLEGAR_PRO_STATE.selectedMachine='Old machine';
