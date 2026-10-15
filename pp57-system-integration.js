@@ -3,7 +3,7 @@
 'use strict';
 const $=id=>document.getElementById(id), KEY='plegarPro.v58';
 let prefs={};try{prefs=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
-let raf=0,start=0,paused=false,zoom=1,rotation=0,drag=null,twinInView=false,twinVisibilityReady=false,twinObserver=null;
+let raf=0,start=0,paused=false,zoom=1,rotation=0,drag=null,twinInView=false,twinVisibilityReady=false,twinObserver=null,physRaf=0,physPlaying=false,physLast=0,physProgress=0;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const S=()=>{try{return typeof state!=='undefined'?state:null}catch(e){return null}};
 const T=()=>Array.isArray(window.tools)?window.tools:[];
@@ -177,6 +177,84 @@ function runTwin(){
  };
  raf=requestAnimationFrame(loop);
 }
+
+function addPhysicalBendSimulation(){
+ const host=$('sim3d');if(!host||$('pp58PhysicalBend'))return;
+ const card=document.createElement('section');card.id='pp58PhysicalBend';card.className='card pp58card';
+ card.innerHTML='<div class="pp58head"><div><span class="pp58kicker">BEND FOLLOW · 3D</span><h2>Seguimiento físico del plegado</h2><p>Vista ampliada de punzón, matriz, tope trasero y chapa durante el contacto. La secuencia utiliza el orden de plegado del programa activo.</p></div><b id="pp58PhysStepLabel">LISTO</b></div><div class="pp58controls"><div><label>Seguimiento del ciclo</label><input id="pp58PhysProgress" type="range" min="0" max="100" step="1" value="0"></div><div><label>Velocidad de reproducción</label><select id="pp58PhysSpeed"><option value="0.5">Lenta · 0,5×</option><option value="1" selected>Normal · 1×</option><option value="1.5">Rápida · 1,5×</option></select></div><div><label>Vista del conjunto</label><select id="pp58PhysView"><option value="iso">Isométrica de seguimiento</option><option value="section">Sección de contacto</option><option value="front">Frontal de herramientas</option></select></div></div><canvas id="pp58PhysicalCanvas" class="pp58canvas" width="1440" height="660" aria-label="Seguimiento visual del punzón, matriz, tope y chapa"></canvas><div class="pp58metrics"><div class="pp58metric"><small>ELEMENTO ACTIVO</small><b id="pp58PhysActive">Punzón + chapa</b></div><div class="pp58metric"><small>ORDEN DE PLEGADO</small><b id="pp58PhysOrder">Sin secuencia</b></div><div class="pp58metric"><small>ÁNGULO OBJETIVO</small><b id="pp58PhysAngle">90°</b></div><div class="pp58metric"><small>ESPESOR DE CHAPA</small><b id="pp58PhysThickness">— mm</b></div></div><div class="actions"><button class="btn" id="pp58PhysPlay">▶ Reproducir ciclo</button><button class="btn secondary" id="pp58PhysPrev">◀ Paso anterior</button><button class="btn secondary" id="pp58PhysNext">Paso siguiente ▶</button><button class="btn secondary" id="pp58PhysReset">Restablecer</button></div><div class="pp58status" id="pp58PhysStatus">Modelo visual esquemático sincronizado con la secuencia activa. Verifica perfiles, medidas y topes reales con los datos del utillaje antes de usarlo para validar una operación.</div>';
+ host.appendChild(card);
+ $('pp58PhysProgress').addEventListener('input',()=>{physProgress=Number($('pp58PhysProgress').value)/100;drawPhysicalBend()});
+ $('pp58PhysView').addEventListener('change',drawPhysicalBend);
+ $('pp58PhysPlay').onclick=()=>{physPlaying=!physPlaying;$('pp58PhysPlay').textContent=physPlaying?'Ⅱ Pausar ciclo':'▶ Reproducir ciclo';physLast=0;if(physPlaying)runPhysicalBend();else if(physRaf){cancelAnimationFrame(physRaf);physRaf=0}};
+ $('pp58PhysPrev').onclick=()=>{physProgress=Math.max(0,physProgress-.1);$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend()};
+ $('pp58PhysNext').onclick=()=>{physProgress=Math.min(1,physProgress+.1);$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend()};
+ $('pp58PhysReset').onclick=()=>{physPlaying=false;physProgress=0;physLast=0;if(physRaf)cancelAnimationFrame(physRaf);physRaf=0;$('pp58PhysProgress').value='0';$('pp58PhysPlay').textContent='▶ Reproducir ciclo';drawPhysicalBend()};
+ const canvas=$('pp58PhysicalCanvas');canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,r:rotation,pointerId:e.pointerId,physical:true};try{canvas.setPointerCapture(e.pointerId)}catch(_){}});
+ canvas.addEventListener('pointermove',e=>{if(drag?.physical&&drag.pointerId===e.pointerId){rotation=drag.r+(e.clientX-drag.x)*.008;drawPhysicalBend()}});
+ const end=e=>{if(drag?.physical&&(!e||drag.pointerId===e.pointerId))drag=null};canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
+ drawPhysicalBend();
+}
+function physicalSequence(){
+ const s=S()||{},b=Array.isArray(s.bends)?s.bends:[],n=Math.max(0,b.length-1),raw=Array.isArray(s.bendOrder)?s.bendOrder:null;
+ let order=raw&&raw.length?raw.filter((v,i)=>Number.isInteger(v)&&v>=0&&v<n&&raw.indexOf(v)===i):Array.from({length:n},(_,i)=>i);
+ for(let i=0;i<n;i++)if(!order.includes(i))order.push(i);
+ const idx=order[Math.min(order.length-1,Math.floor(physProgress*Math.max(0,order.length-1)))]??0;
+ return {s,b,order,idx,bend:b[idx]||{},n};
+}
+function drawPhysicalBend(){
+ const cv=$('pp58PhysicalCanvas');if(!cv)return;const x=cv.getContext('2d'),w=cv.width,h=cv.height,{s,b,order,idx,bend,n}=physicalSequence();
+ const t=Math.max(.1,Number(s.project?.thickness||s.development?.thickness||1)),angle=Math.max(30,Math.min(150,Number(bend.angle)||90)),v=Math.max(6,Number(bend.v||s.project?.selectedV||16)),phase=Math.max(0,Math.min(1,physProgress)),contact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?(phase-.82)/.18:0;
+ x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#f9fdff');bg.addColorStop(1,'#d9e9f2');x.fillStyle=bg;x.fillRect(0,0,w,h);
+ x.strokeStyle='#d3e3eb';x.lineWidth=1;for(let i=20;i<w;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}for(let i=20;i<h;i+=40){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke()}
+ const view=$('pp58PhysView')?.value||'iso',cx=w*.52,base=h*.66,sc=view==='front'?1.02:view==='section'?1.18:1.0,rot=view==='iso'?rotation*.08:0;
+ const P=(px,py,pz=0)=>({x:cx+(px*Math.cos(rot)-pz*Math.sin(rot))*sc,y:base-(py-(px*Math.sin(rot)+pz*Math.cos(rot))*.16)*sc});
+ const poly=(pts,fill,stroke='#526f80')=>{x.beginPath();pts.forEach((p,i)=>{const q=P(p[0],p[1],p[2]||0);i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y)});x.closePath();const g=x.createLinearGradient(cx-280,base-200,cx+280,base+80);g.addColorStop(0,'#f3f7f9');g.addColorStop(.4,fill);g.addColorStop(1,'#526a78');x.fillStyle=g;x.fill();x.strokeStyle=stroke;x.lineWidth=2;x.stroke()};
+ const line=(pts,color,width=3)=>{x.beginPath();pts.forEach((p,i)=>{const q=P(p[0],p[1],p[2]||0);i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y)});x.strokeStyle=color;x.lineWidth=width;x.lineJoin='round';x.lineCap='round';x.stroke()};
+ const label=(txt,px,py,color='#17445a')=>{x.fillStyle=color;x.font='bold 19px system-ui';x.fillText(txt,px,py)};
+ // Table and die body, with an open V channel and highlighted shoulders.
+ poly([[-430,20,-30],[-300,20,-30],[-240,-35,-30],[-190,-72,-30],[-130,-35,-30],[-70,20,-30],[430,20,-30],[430,-28,-30],[-430,-28,-30]],'#879eab','#405b6a');
+ poly([[-430,20,30],[-300,20,30],[-240,-35,30],[-190,-72,30],[-130,-35,30],[-70,20,30],[430,20,30],[430,-28,30],[-430,-28,30]],'#a9bbc5','#405b6a');
+ poly([[-430,20,-30],[-430,20,30],[-430,-28,30],[-430,-28,-30]],'#536e7d');
+ line([[-300,20,-31],[-240,-35,-31],[-190,-72,-31],[-130,-35,-31],[-70,20,-31]],'#d7e4eb',4);
+ // Punch body and pointed nose; motion is driven by the same cycle progress slider.
+ const punchY=235-contact*145+release*42;
+ poly([[-100,punchY,0],[100,punchY,0],[72,punchY-80,0],[22,punchY-143,0],[0,punchY-151,0],[-22,punchY-143,0],[-72,punchY-80,0]],'#718c9b','#334f60');
+ line([[-22,punchY-143,1],[0,punchY-151,1],[22,punchY-143,1]],'#edf5f8',3);
+ // Sheet geometry: the bend develops progressively around the die centre.
+ const flatHalf=185,innerR=Math.max(4,t*2.2),bendA=(Math.PI-Math.min(150,Math.max(30,angle)) * Math.PI/180)*contact;
+ const startPt=[-flatHalf,29,5],leftTangent=[-38,29,5],rightTangent=[38,29,5],arcR=42;
+ const sheetPts=[startPt,leftTangent];
+ for(let j=0;j<=12;j++){const a=Math.PI+(Math.PI-bendA)*j/12;sheetPts.push([Math.cos(a)*arcR,29+Math.sin(a)*arcR,5])}
+ sheetPts.push([flatHalf,29,5]);
+ if(contact>.03){
+  const apexY=29+Math.sin(Math.min(Math.PI/2,bendA))*arcR;
+  sheetPts.splice(0,sheetPts.length,[-flatHalf,29,5],[-38,29,5]);
+  for(let j=0;j<=12;j++){const a=Math.PI+(Math.PI-bendA)*j/12;sheetPts.push([Math.cos(a)*arcR,29+Math.sin(a)*arcR,5])}
+  sheetPts.push([38,29,5],[flatHalf,29,5]);
+ }
+ line(sheetPts,'#128bc4',Math.max(5,t*2.2));
+ line(sheetPts.map(p=>[p[0],p[1]+Math.max(1,t*2.2),p[2]+1]),'#e0f7ff',1.8);
+ // Backgauge fingers: behind the tooling, with adjustable-looking reference and contact pads.
+ const gaugeX=-310, gaugeY=105;
+ poly([[gaugeX-28,gaugeY+30,90],[gaugeX+28,gaugeY+30,90],[gaugeX+18,gaugeY-95,90],[gaugeX-18,gaugeY-95,90]],'#536f80','#2f4c5e');
+ poly([[gaugeX-52,gaugeY-95,90],[gaugeX+52,gaugeY-95,90],[gaugeX+52,gaugeY-112,90],[gaugeX-52,gaugeY-112,90]],'#d1dfe6','#526c7b');
+ poly([[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]],'#e5a34b','#91612d');
+ // Secondary finger gives a sense of machine width; visibility stays separately labelled.
+ poly([[gaugeX+410,gaugeY+30,90],[gaugeX+466,gaugeY+30,90],[gaugeX+456,gaugeY-95,90],[gaugeX+420,gaugeY-95,90]],'#536f80','#2f4c5e');
+ poly([[gaugeX+386,gaugeY-95,90],[gaugeX+490,gaugeY-95,90],[gaugeX+490,gaugeY-112,90],[gaugeX+386,gaugeY-112,90]],'#d1dfe6','#526c7b');
+ // Work-zone glow shows the contact path, not a safety-certified collision envelope.
+ const contactP=P(0,29+contact*18,7);x.beginPath();x.arc(contactP.x,contactP.y,14+contact*18,0,Math.PI*2);x.fillStyle='rgba(18,139,196,'+(.05+contact*.12)+')';x.fill();
+ label('PUNZÓN',w*.43,75);label('MATRIZ V'+v,w*.43,h*.82);label('TOPE TRASERO',w*.08,h*.35);label('CHAPA · CONTACTO '+Math.round(contact*100)+'%',w*.63,h*.35);
+ x.fillStyle='#eaf6fb';x.fillRect(24,22,320,42);x.fillStyle='#17445a';x.font='bold 15px system-ui';x.fillText(view==='section'?'SECCIÓN DE CONTACTO':view==='front'?'VISTA FRONTAL':'VISTA ISOMÉTRICA DE SEGUIMIENTO',36,49);
+ const phaseLabel=phase<.12?'APROXIMACIÓN':phase<.67?'CONTACTO / PLEGADO':phase<.84?'RETENCIÓN':'RETORNO';$('pp58PhysStepLabel').textContent=phaseLabel;$('pp58PhysActive').textContent=phase<.12?'Punzón acercándose':phase<.84?'Punzón + chapa + matriz':'Retorno y liberación';$('pp58PhysOrder').textContent=order.length?('P'+(idx+1)+' · '+(Math.min(order.length,Math.floor(phase*order.length)+1))+'/'+order.length):'Sin pliegues definidos';$('pp58PhysAngle').textContent=angle+'°';$('pp58PhysThickness').textContent=t.toFixed(2)+' mm';
+ const status=$('pp58PhysStatus');if(status)status.textContent='Paso programado '+(idx+1)+' · V'+v+' · '+angle+'° · material '+String(s.project?.material||s.development?.material||'sin especificar')+'. Esquema visual de seguimiento; las dimensiones reales dependen de las referencias de punzón, matriz y topes seleccionadas.';
+}
+function runPhysicalBend(){
+ if(physRaf||!physPlaying||!$('pp58PhysicalCanvas')||document.hidden)return;
+ const tick=now=>{physRaf=0;if(!physPlaying||document.hidden)return;if(!physLast)physLast=now;physProgress+=((now-physLast)/8500)*Number($('pp58PhysSpeed')?.value||1);physLast=now;if(physProgress>=1){physProgress=0}if($('pp58PhysProgress'))$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend();physRaf=requestAnimationFrame(tick)};
+ physRaf=requestAnimationFrame(tick);
+}
+
 function addToolDetail(){
  const host=$('tooling')?.querySelector('.grid');if(!host||$('pp58ToolCard'))return;
  const c=document.createElement('section');c.className='card pp58card';c.id='pp58ToolCard';
@@ -248,9 +326,9 @@ function addSync(){
  let pending=false;document.addEventListener('input',e=>{const el=e.target;if(!el?.id||!fields[el.id])return;const s=S();if(!s)return;const key=fields[el.id],v=key==='specialGeometry'?!!el.checked:el.value;if(key==='material')s.project.material=v;if(key==='thickness')s.project.thickness=Math.max(.1,Number(String(v).replace(',','.'))||1);if(key==='sheetLength'){s.programMeta=s.programMeta||{};s.programMeta.sheetLength=Math.max(1,Number(String(v).replace(',','.'))||1200)}if(key==='bendLength'){s.programMeta=s.programMeta||{};s.programMeta.bendLength=Math.max(1,Number(String(v).replace(',','.'))||1000)}if(key==='sheetWidth'){s.programMeta=s.programMeta||{};s.programMeta.sheetWidth=String(v).trim()?Math.max(1,Number(String(v).replace(',','.'))||1):null}if(key==='specialGeometry'){s.programMeta=s.programMeta||{};s.programMeta.specialGeometry=!!v}if(!pending){pending=true;requestAnimationFrame(()=>{pending=false;syncLinked();if(typeof drawAll==='function')drawAll()})}},true);
  document.addEventListener('change',e=>{if(!e.target?.id||!fields[e.target.id])return;setTimeout(()=>{try{if(typeof window.syncAll==='function')window.syncAll();if(typeof window.autoSave==='function')window.autoSave()}catch(e){}},0)},true);
 }
-function init(){if(!$('settings')||!$('tooling'))return;style();addMachine();window.setTimeout(addMachine,500);addToolDetail();addDatabase();addOffice();addSettings();addSync();hookSync();syncLinked();window.PLEGAR_PRO_V58={audit:()=>({version:'58.0',tools:T().length,modules:['program','program2d','program3d','sim2d','sim3d','development','curve','vcompare','collisions','tooling','office','settings'].filter(id=>!!$(id)),sync:!!window.syncAll?.__pp58}),refresh:()=>{hookSync();syncLinked();window.syncAll?.();drawTool();drawTwin(performance.now())}};document.documentElement.dataset.ppVersion='58.0'}
+function init(){if(!$('settings')||!$('tooling'))return;style();addMachine();window.setTimeout(addMachine,500);addPhysicalBendSimulation();addToolDetail();addDatabase();addOffice();addSettings();addSync();hookSync();syncLinked();window.PLEGAR_PRO_V58={audit:()=>({version:'58.0',tools:T().length,modules:['program','program2d','program3d','sim2d','sim3d','development','curve','vcompare','collisions','tooling','office','settings'].filter(id=>!!$(id)),sync:!!window.syncAll?.__pp58}),refresh:()=>{hookSync();syncLinked();window.syncAll?.();drawTool();drawTwin(performance.now())}};document.documentElement.dataset.ppVersion='58.0'}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(init,650),{once:true});else setTimeout(init,650);
-window.addEventListener('pageshow',()=>setTimeout(()=>{if(!$('pp58Twin')){addMachine();window.setTimeout(addMachine,500);window.setTimeout(addMachine,1400)}else{const card=$('pp58TwinCard');if(card){card.style.display='';card.hidden=false;card.removeAttribute('aria-hidden')}const stage=$('pp55MachineCanvas')?.closest('.pp55-stage');if(stage)stage.style.display='none';hookSync();syncLinked();drawTool();drawTwin(performance.now())}},450));
+window.addEventListener('pageshow',()=>setTimeout(()=>{if(!$('pp58Twin')){addMachine();window.setTimeout(addMachine,500);window.setTimeout(addMachine,1400)}else{const card=$('pp58TwinCard');if(card){card.style.display='';card.hidden=false;card.removeAttribute('aria-hidden')}const stage=$('pp55MachineCanvas')?.closest('.pp55-stage');if(stage)stage.style.display='none';hookSync();syncLinked();drawTool();drawTwin(performance.now());addPhysicalBendSimulation();drawPhysicalBend()}},450));
 // Recuperación de arranque: PP55 puede montar la tarjeta base después del primer init.
 let machineBootAttempts=0,machineObserver=null,machineRetryTimer=0;
 function ensureMachine(){
