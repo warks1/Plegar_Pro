@@ -36,4 +36,6 @@ assert.equal(die2.recommendedV,16);
 assert.equal(die2.ratio,8);
 assert.equal(e.recommendDieOpening({thickness:3}).recommendedV,24);
 assert.equal(e.recommendDieOpening({thickness:2.5}).recommendedV,20);
+const uiCatalog=[6,8,10,12,14,16,18,20,22,24,25,28,30,32,35,36,40,50];
+assert.equal(e.recommendDieOpening({thickness:2.5,available:uiCatalog}).recommendedV,20);
 assert.throws(()=>e.recommendDieOpening({thickness:0}),/thickness/);
