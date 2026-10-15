@@ -57,6 +57,47 @@ function drawTwin(now){
  const bend=down>.05?Math.PI/2*down:.035,p1=P({x:-345,y:-30,z:0}),p2=P({x:-100,y:-30,z:0}),p3=P({x:0,y:-30+Math.sin(bend)*92,z:0}),p4=P({x:100,y:-30,z:0}),p5=P({x:345,y:-30,z:0});
  x.beginPath();x.moveTo(p1.x,p1.y);x.lineTo(p2.x,p2.y);x.quadraticCurveTo((p2.x+p3.x)/2,p3.y-6,p3.x,p3.y);x.quadraticCurveTo((p3.x+p4.x)/2,p3.y-6,p4.x,p4.y);x.lineTo(p5.x,p5.y);x.strokeStyle='#1686c2';x.lineWidth=10;x.lineJoin='round';x.stroke();x.strokeStyle='#d8f2ff';x.lineWidth=3;x.stroke();
  box(-420,-235,-200,840,24,400,'#465d6a','#2e4653');
+ // Carenados y detalles de fabricación: paneles de fundición, nervios, tornillería y resguardos.
+ const accent=model==='trumpf'?'#e4c52d':model==='bystronic'?'#11a8a2':'#1596c0';
+ const shell=model==='trumpf'?'#d5dce0':model==='bystronic'?'#e8eef1':'#c7d4dc';
+ poly([{x:-510,y:185,z:-174},{x:-445,y:185,z:-174},{x:-430,y:120,z:-174},{x:-430,y:-95,z:-174},{x:-485,y:-135,z:-174},{x:-510,y:-105,z:-174}],shell,'#657d8a');
+ poly([{x:445,y:185,z:-174},{x:510,y:185,z:-174},{x:510,y:-105,z:-174},{x:485,y:-135,z:-174},{x:430,y:-95,z:-174},{x:430,y:120,z:-174}],shell,'#657d8a');
+ poly([{x:-498,y:142,z:-176},{x:-462,y:142,z:-176},{x:-462,y:-85,z:-176},{x:-498,y:-105,z:-176}],accent,'#526b79');
+ poly([{x:462,y:142,z:-176},{x:498,y:142,z:-176},{x:498,y:-105,z:-176},{x:462,y:-85,z:-176}],accent,'#526b79');
+ // Tapa superior mecanizada y guías lineales del eje Y.
+ box(-410,242,-125,820,18,250,model==='trumpf'?'#d7dfe3':'#eef3f5','#6c8290');
+ box(-390,222,-145,780,14,18,'#526d7d','#314d5e');
+ box(-390,222,127,780,14,18,'#526d7d','#314d5e');
+ // Cilindros hidráulicos, vástagos cromados y soportes superiores.
+ cyl(-330,0,190,266,24);cyl(330,0,190,266,24);
+ cyl(-330,0,218,272,9);cyl(330,0,218,272,9);
+ box(-365,205,-35,70,18,70,'#879ba6','#435d6b');box(295,205,-35,70,18,70,'#879ba6','#435d6b');
+ // Frente de la trancha: banda de acabado, juntas y segmentos de fijación del portautillaje.
+ box(-420,105-down*112,-104,840,10,12,accent,'#526d7b');
+ for(let i=0;i<11;i++){const bx=-380+i*76;box(bx,72-down*112,-108,44,8,10,'#d5e0e6','#536c7a');}
+ // Mesa de trabajo segmentada y línea de referencia longitudinal.
+ box(-430,-83,-112,860,12,224,'#8499a5','#405b6a');
+ box(-410,-69,-116,820,4,8,'#d7e1e6','#718793');
+ for(let i=0;i<17;i++){const bx=-400+i*50;box(bx,-65,-118,2,5,12,'#425d6c','#334b59');}
+ // Resguardos laterales y escala de alineación; no sustituyen protecciones reales de seguridad.
+ box(-445,-15,150,18,230,18,'#d4e0e6','#637d8b');box(427,-15,150,18,230,18,'#d4e0e6','#637d8b');
+ for(let i=0;i<9;i++){const bx=-385+i*96;box(bx,-59,-125,2,7,3,'#eef5f8','#738b98');}
+ // Consola CNC articulada en el lateral derecho, con pantalla y teclas dibujadas en su cara.
+ box(470,55,175,46,112,38,'#536e7e','#2d4655');
+ poly([{x:478,y:145,z:215},{x:510,y:145,z:215},{x:510,y:88,z:215},{x:478,y:88,z:215}], '#152c39','#8299a6');
+ poly([{x:482,y:139,z:218},{x:506,y:139,z:218},{x:506,y:96,z:218},{x:482,y:96,z:218}], '#8ed7e9','#d6f7ff');
+ poly([{x:485,y:134,z:220},{x:503,y:134,z:220},{x:503,y:121,z:220},{x:485,y:121,z:220}], '#174d66','#c5f4ff');
+ for(let i=0;i<3;i++)for(let j=0;j<2;j++){const q=P({x:486+j*10,y:112-i*7,z:221});x.beginPath();x.arc(q.x,q.y,2.3,0,Math.PI*2);x.fillStyle='#e8f7fc';x.fill();}
+ // Pies, anclajes y panel inferior de servicio.
+ box(-490,-250,-150,125,18,285,'#314a58','#203845');box(365,-250,-150,125,18,285,'#314a58','#203845');
+ box(-470,-225,-152,85,7,290,'#8fa3ae','#425b69');box(385,-225,-152,85,7,290,'#8fa3ae','#425b69');
+ poly([{x:-395,y:-155,z:-180},{x:-275,y:-155,z:-180},{x:-275,y:-205,z:-180},{x:-395,y:-205,z:-180}], '#dce5e9','#6c8491');
+ poly([{x:275,y:-155,z:-180},{x:395,y:-155,z:-180},{x:395,y:-205,z:-180},{x:275,y:-205,z:-180}], '#dce5e9','#6c8491');
+ // Tornillos de fijación proyectados sobre las placas frontales.
+ for(const side of [-1,1])for(const yy of [155,90,20,-60,-105]){const q=P({x:side*477,y:yy,z:-179});x.beginPath();x.arc(q.x,q.y,4.2,0,Math.PI*2);x.fillStyle='#314b5a';x.fill();x.strokeStyle='#d8e3e8';x.lineWidth=1;x.stroke();x.beginPath();x.moveTo(q.x-2,q.y);x.lineTo(q.x+2,q.y);x.stroke();}
+ // Iluminación de zona de trabajo y guía de profundidad, mantenidas fuera del área de contacto.
+ const ledA=P({x:-350,y:-48,z:-128}),ledB=P({x:350,y:-48,z:-128});
+ x.beginPath();x.moveTo(ledA.x,ledA.y);x.lineTo(ledB.x,ledB.y);x.strokeStyle='#8ee6f4';x.lineWidth=3;x.globalAlpha=.85;x.stroke();x.globalAlpha=1;
  const label=(txt,px,py)=>{x.fillStyle='#17445a';x.font='bold 18px system-ui';x.fillText(txt,px,py)};label('BASTIDOR',w*.08,h*.22);label('TRANCHA MÓVIL',w*.36,h*.22);label('PORTAPUNZÓN / PUNZÓN',w*.57,h*.4);label('CHAPA EN PROCESO',w*.37,h*.73);label('MATRIZ V',w*.59,h*.78);
  x.fillStyle='#eaf6fb';x.fillRect(24,22,280,42);x.fillStyle='#16445b';x.font='bold 15px system-ui';x.fillText(model==='trumpf'?'ESTILO TRUBEND V85':model==='bystronic'?'ESTILO BYSTRONIC 100 T':'PLEGADORA INDUSTRIAL',36,49);
  $('pp58Phase').textContent=phase<.2?'Aproximación':phase<.47?'Plegado en carrera':phase<.68?'Retención':'Retorno de trancha';$('pp58Ram').textContent=down>.12?'Eje Y · carrera descendente':'Eje Y · posición superior';$('pp58Piece').textContent=S()?.project?.ref||'Sin referencia';$('pp58ModelLabel').textContent=model==='trumpf'?'Estilo TruBend V85':model==='bystronic'?'Estilo Bystronic 100 t':'Bastidor industrial';
