@@ -4,7 +4,7 @@
  */
 (function (root) {
   'use strict';
-  const VERSION = '69.1';
+  const VERSION = '69.2';
   const FIELDS = Object.freeze(['material','thickness','bendLength','machine','bendOrder','activeStep']);
   const adapters = new Map();
   const listeners = new Set();
