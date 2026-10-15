@@ -4,6 +4,9 @@ const fs = require('node:fs');
 const html = fs.readFileSync(require('node:path').join(__dirname, '..', 'index.html'), 'utf8');
 assert.ok(html.includes("$('resetSettings').onclick=()=>{state.settings={theme:'light'"), 'Reset settings must preserve the approved light default theme');
 assert.ok(html.includes("year=new Date().getFullYear(),holder=o.copyrightHolder||'AMS'"), 'Software copyright footer must default to AMS rather than the configured contact name');
+assert.ok(html.includes('<style id="pp70-program2d-clear-canvas">'), '2D editor must keep its bend-selection overlay fix');
+assert.ok(html.includes('#program2d #overlayP2{display:none!important;visibility:hidden!important;pointer-events:none!important}'), '2D information overlay must not obstruct bend selection');
+assert.ok(html.includes('#program2d #canvasP2{position:relative;z-index:1;pointer-events:auto;touch-action:pan-y}'), '2D canvas must remain interactive for pointer and touch bend selection');
 
 assert.equal(e.VERSION, '65.2');
 assert.ok(Math.abs(e.bendAllowance({thickness:2,insideRadius:2,angleDeg:90,kFactor:.33}) - Math.PI*(2+.66)/2) < 1e-10);
