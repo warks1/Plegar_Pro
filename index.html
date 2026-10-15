@@ -1417,7 +1417,7 @@ function populateP3(){
 }
 function loadP3Fields(){if($('overlayProgram'))$('overlayProgram').innerHTML=`VISTA EN TIEMPO REAL<br>${state.project.material} · ${(+state.project.thickness).toFixed(2)} mm<br>${state.bends.length} pliegues · Desarrollo ${calcProgramDevelopment().flat.toFixed(2)} mm`;let b=state.bends[sim.p3Active];if(!b)return;$('p3Leg').value=b.leg;$('p3Angle').value=b.angle;$('p3Radius').value=b.radius;$('p3V').value=b.v;$('p3Gauge').value=b.gauge}
 function renderQualityOptions(){$('qBend').innerHTML=state.bends.map((b,i)=>`<option value="${i}">${bendSummary(b,i)}</option>`).join('')}
-const STANDARD_VS=[6,8,10,12,16,22,24,32,36,40,50];
+const STANDARD_VS=[6,8,10,12,14,16,18,20,22,24,25,28,30,32,35,36,40,50];
 function ensureDevelopment(){
  if(!state.development)state.development={material:state.project.material||'S235',thickness:state.project.thickness||2,kfactor:state.project.kfactor||.42,referenceV:16,punchRadius:1,punchAngle:88,bendLength:1000,tolerance:.5,dimensionType:'exterior',selectedVs:[12,16,22,24,32],bends:deep(state.bends.map(b=>({leg:b.leg,angle:b.angle,radius:b.radius})))};
  state.development.bends=state.development.bends||[];state.development.selectedVs=state.development.selectedVs||[state.development.referenceV||16];state.development.saved=state.development.saved||[];state.development.sort=state.development.sort||'v';
@@ -1537,7 +1537,7 @@ function vEvaluation(v,base){
  let priority=d.vPriority||'balanced',w=priority==='precision'?[.45,.15,.15,.25]:priority==='force'?[.2,.45,.1,.25]:priority==='marks'?[.2,.15,.1,.55]:priority==='radius'?[.2,.15,.45,.2]:[.25,.2,.15,.4];
  let markPenalty=markRisk==='Alto'?1:markRisk==='Medio'?.5:.1,score=Math.max(0,100*(1-(nDelta*w[0]+nForce*w[1]+nRadius*w[2]+Math.min(1,ratioError)*w[3]+markPenalty*.1)));
  let status=within&&flangeOk&&ratioOk&&forceOk&&radiusOk?'Compatible':(flangeOk&&ratioOk&&forceOk&&radiusOk?'Compatible':'Revisar');
- if(v===recommendedV&&flangeOk&&forceOk&&radiusOk)status='Recomendada';
+ if(v===recommendedV&&flangeOk&&ratioOk&&forceOk&&radiusOk)status='Recomendada';
  return {...r,delta,status,within,flangeOk,ratioOk,forceOk,radiusOk,flangeMargin,markRisk,score,ratio,targetV,recommendedV,ratioError};
 }
 function renderVSelector(){
@@ -3407,7 +3407,7 @@ html body .pp56-seq-step[aria-current="true"]{background:linear-gradient(145deg,
 
 <script src="./pp64-ai-voice.js?v=1"></script>
 <script src="./pp62-contrast-playback-fix.js?v=62.3"></script>
-<script src="./pp65-expert-engines.js?v=65.1"></script>
+<script src="./pp65-expert-engines.js?v=65.2"></script>
 <script src="./pp69-expert-sync-engines.js?v=69.1"></script>
 
 
