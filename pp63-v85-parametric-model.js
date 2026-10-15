@@ -117,16 +117,32 @@ function crossSectionOverlap(a,b){
  for(const x of trisA)for(const y of trisB)if(trianglesOverlapArea(x,y))return true;
  return false;
 }
+function segmentsTouch(a,b,c,d,eps=1e-8){
+ if(properEdgesCross(a,b,c,d))return true;
+ return onSegment(a,b,c,eps)||onSegment(a,b,d,eps)||onSegment(c,d,a,eps)||onSegment(c,d,b,eps);
+}
+function crossSectionContact(a,b){
+ const A=a?.section,B=b?.section;if(!A||!B||A.length<3||B.length<3)return false;
+ if(crossSectionOverlap(a,b))return true;
+ for(let i=0;i<A.length;i++)for(let j=0;j<B.length;j++){
+  if(segmentsTouch(A[i],A[(i+1)%A.length],B[j],B[(j+1)%B.length]))return true;
+ }
+ return false;
+}
 /*
- * For prismatic solids whose cross-sections are constant along Z, this is an
- * exact 3D intersection test for the modeled prisms: Z intervals must overlap
- * AND their 2D cross-sections must intersect/contain one another.
+ * For prismatic solids with constant cross-sections along Z, positive-volume
+ * intersection and boundary contact are reported separately. This avoids
+ * confusing an exact touch at a die/punch face with geometric penetration.
  */
 function intersectPrisms(a,b){
- if(!a||!b)return {intersects:false,reason:'invalid-mesh'};
- const zOverlap=Math.min(a.zMax,b.zMax)-Math.max(a.zMin,b.zMin);
+ if(!a||!b)return {intersects:false,touching:false,contact:false,reason:'invalid-mesh'};
+ const rawZOverlap=Math.min(a.zMax,b.zMax)-Math.max(a.zMin,b.zMin);
+ const zOverlap=rawZOverlap>1e-8;
  const sectionOverlap=crossSectionOverlap(a,b);
- return {intersects:zOverlap>1e-8&&sectionOverlap,zOverlapMm:Math.max(0,zOverlap),sectionOverlap,method:'3D-prism intersection (Z interval + cross-section polygon intersection)',geometryStatus:'PARAMETRIC_ESTIMATE_NOT_OEM_CAD'};
+ const sectionContact=crossSectionContact(a,b);
+ const intersects=zOverlap&&sectionOverlap;
+ const touching=!intersects&&rawZOverlap>=-1e-8&&sectionContact;
+ return {intersects,touching,contact:intersects||touching,zOverlapMm:Math.max(0,rawZOverlap),sectionOverlap,sectionContact,method:'3D-prism positive-volume intersection plus boundary-contact classification',geometryStatus:'PARAMETRIC_ESTIMATE_NOT_OEM_CAD'};
 }
-window.PP63V85Model={SPEC,BYSTRONIC,resolveSpec,machineMesh,boxMesh,prismMesh,segmentPrism,bounds,intersectPrisms};
+window.PP63V85Model={SPEC,BYSTRONIC,resolveSpec,machineMesh,boxMesh,prismMesh,segmentPrism,bounds,intersectPrisms,crossSectionOverlap,crossSectionContact};
 })();
