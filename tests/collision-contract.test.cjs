@@ -281,7 +281,7 @@ assert.match(collision, /function drawCybTouchProfile\(/, 'collision view must i
 assert.match(collision, /if\(camera==='cybtouch'\)\{drawCybTouchProfile\(/, 'CybTouch 2D profile must be the active default view');
 assert.ok(collision.includes('const diePath=') && collision.includes('dieDepthPx=dieHalfPx/Math.tan(dieAngle*Math.PI/360)'), 'Touch HMI must render a concave V whose depth follows the selected die angle');
 assert.match(collision, /const sheetCenterY=restY\+\(dieApexY-thicknessPx\*\.8-restY\)\*travel/, 'sheet centreline must use the same normalized ram travel as the punch; do not apply a second easing curve');
-assert.match(collision, /const targetTipY=dieApexY-Math\.max\(1,thicknessPx\*\.8\)/, 'punch nose must stop relative to the V apex and sheet thickness');
+assert.match(collision, /const targetTipY=dieApexY-Math\\.max\\(1,thicknessPx\\*1\\.3\\)/, 'punch nose must stop at the upper sheet surface relative to the V apex and sheet thickness');
 assert.match(collision, /const railW=66,topH=84,bottomH=92/, 'CybTouch-style header, toolbar and viewport must have separate layout regions');
 assert.match(collision, /x\.fillRect\(xx,51,slotW-3,24\)/, 'fold sequence tabs must sit in the top control strip');
 assert.doesNotMatch(collision, /BYSTRONIC TOUCH 15/, 'collision HMI must not be mislabeled as Bystronic');
