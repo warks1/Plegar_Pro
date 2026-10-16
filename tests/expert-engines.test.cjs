@@ -34,6 +34,7 @@ assert.ok(runtime.includes('dieApexY=20-vDepth,dieBaseY=Math.min(-28,dieApexY-18
 assert.ok(runtime.includes('const sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*contact;'), 'Physical sheet bend must stop near the V apex rather than pass through the die');
 assert.ok(runtime.includes('const punchTipY=sheetCenterY+Math.max(2,thicknessPx*.65),punchY=punchTipY+punchHeight+8'), 'Punch tip must track the sheet surface without penetrating it');
 assert.ok(runtime.includes('sheetDrop=down*74') && runtime.includes('y:-30-sheetDrop,z:0'), 'Machine twin sheet center must descend in sync with the ram into the V channel');
+assert.ok(runtime.includes("Math.sin((phase-.68)/.32*Math.PI);"), 'Machine twin must complete the full stroke so the sheet reaches the V working zone');
 assert.ok(runtime.includes('box(-405,-172,-100,810,32,200') && runtime.includes('{x:0,y:-110,z:-82}'), 'Machine twin V die must be a concave channel, not an inverted central ridge');
 assert.ok(runtime.includes("sc=(cam==='top'?.62:.68)*(Number($('pp58Zoom').value)||.85)"), 'Machine control panel camera must start wider to show the full press brake');
 assert.ok(runtime.includes("view==='profile'?.88"), 'Physical folding view must use a wider camera framing');
