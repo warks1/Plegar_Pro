@@ -23,12 +23,14 @@ assert.ok(bendRuntime.includes('const rankOf=i=>{') && bendRuntime.includes('con
 assert.ok(bendRuntime.includes('const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;'), 'physical follow-up must retain completed bends according to programmed sequence');
 assert.ok(bendRuntime.includes('const activeTurnProgress=phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1;'), 'active bend must progress and remain formed after punch retraction');
 assert.ok(bendRuntime.includes('const sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*contact;'), 'active bend vertex must stop near the V apex and rise when the punch retracts');
-assert.ok(bendRuntime.includes('const sheetPts=profilePts.map(p=>[p.x-activeVertex.x,p.y-activeVertex.y+sheetCenterY,5]);'), 'complete sheet must be positioned around the active bend over the V die');
+assert.ok(bendRuntime.includes('const sheetPts=[[-arm,outerY,5],[-innerX,outerY,5],[0,sheetCenterY,5],[innerX,outerY,5],[arm,outerY,5]];'), 'physical view must draw a local fold section rather than dragging the entire sheet profile through the die');
 assert.ok(bendRuntime.includes('const sheetRestY=20;'), 'backgauge reference must align with the sheet resting height');
 assert.ok(bendRuntime.includes('const gaugeX=-310, gaugeY=144;'), 'backgauge should remain behind the tooling');
 assert.ok(bendRuntime.includes('[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]'), 'backgauge contact pad should terminate at the sheet resting height');
 assert.ok(bendRuntime.includes('rawContact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?Math.max(0,Math.min(1,(phase-.82)/.18)):0;const contact=rawContact*(1-release);'), 'sheet contact must release in sync with punch retraction');
-assert.ok(bendRuntime.includes('const punchTipY=sheetCenterY+Math.max(2,thicknessPx*.65),punchY=punchTipY+punchHeight+8,tipHalf='), 'punch tip must track the upper sheet surface without crossing it');
+assert.ok(bendRuntime.includes('const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8,tipHalf='), 'ram motion must visibly descend onto the sheet and retract independently of sheet position');
+assert.ok(bendRuntime.includes('const targetTipY=dieApexY+Math.max(2,thicknessPx*1.3),restTipY=160;'), 'punch tip must stop at the top of the sheet inside the V opening');
+assert.ok(bendRuntime.includes('const bendTurn=Math.abs(signedBendTurn(angle,bend.direction));'), 'local fold must use the active programmed bend direction');
 const cycle = phase => {
   const rawContact = Math.max(0, Math.min(1, (phase - .12) / .55));
   const release = phase > .82 ? Math.max(0, Math.min(1, (phase - .82) / .18)) : 0;
