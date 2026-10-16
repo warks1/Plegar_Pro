@@ -320,7 +320,8 @@ function drawPhysicalBend(){
   profilePts.push({x:prev.x+Math.cos(profileHeading)*legLength,y:prev.y+Math.sin(profileHeading)*legLength});
   if(legIndex<b.length-1){
    const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;
-   const foldProgress=isCompleted?1:isActive?activeTurnProgress:0,turn=signedBendTurn(b[legIndex]?.angle,b[legIndex]?.direction)*foldProgress;
+   // This canvas uses a mathematical Y-up projection (P maps y to base-y*scale); invert the bend sign so the sheet turns down into the die, matching the Y-down collision HMI.
+   const foldProgress=isCompleted?1:isActive?activeTurnProgress:0,turn=-signedBendTurn(b[legIndex]?.angle,b[legIndex]?.direction)*foldProgress;
    turnByBend[legIndex]=turn;profileHeading+=turn;
   }
  }
