@@ -251,7 +251,7 @@ function physicalSequence(){
  const idx=order[stepNumber]??0,tools=T(),punch=tools[Number($('pp58PhysPunch')?.value)]||null,die=tools[Number($('pp58PhysDie')?.value)]||null;
  return {s,b,order,idx,bend:b[idx]||{},n,localPhase,stepNumber,punch,die};
 }
-function drawProgramProfile(b,activeIdx,order,stepNumber,activeAngle){
+function drawProgramProfile(b,activeIdx,order,stepNumber,activeAngle,phase=0){
  const cv=$('pp58PhysProfile');if(!cv)return;fitCanvas(cv,900,170);
  const c=cv.getContext('2d'),w=cv.width,h=cv.height;c.clearRect(0,0,w,h);
  c.fillStyle='#f7fbfd';c.fillRect(0,0,w,h);c.strokeStyle='#d8e7ee';c.lineWidth=1;
@@ -260,13 +260,18 @@ function drawProgramProfile(b,activeIdx,order,stepNumber,activeAngle){
  segments.forEach((seg,i)=>{
   const len=Math.max(10,Math.min(1000,Number(seg.leg)||100)),prev=pts[pts.length-1];
   pts.push({x:prev.x+Math.cos(heading)*len,y:prev.y+Math.sin(heading)*len});
-  if(i<segments.length-1){const dir=String(seg.direction||'').toLowerCase(),sign=/down|reverse|negative|back/.test(dir)?-1:/up|forward|positive/.test(dir)?1:(i%2===0?1:-1);heading+=sign*(180-Math.max(30,Math.min(150,Number(seg.angle)||90)))*Math.PI/180}
+  if(i<segments.length-1){
+   const seqPosition=order.indexOf(i),done=seqPosition>=0&&seqPosition<stepNumber,active=i===activeIdx;
+   const progress=done?1:active?(phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1):0;
+   const dir=String(seg.direction||'').toLowerCase(),sign=/down|reverse|negative|back/.test(dir)?-1:/up|forward|positive/.test(dir)?1:(i%2===0?1:-1);
+   heading+=sign*(180-Math.max(30,Math.min(150,Number(seg.angle)||90)))*Math.PI/180*progress;
+  }
  });
  const minX=Math.min(...pts.map(p=>p.x)),maxX=Math.max(...pts.map(p=>p.x)),minY=Math.min(...pts.map(p=>p.y)),maxY=Math.max(...pts.map(p=>p.y)),scale=Math.min((w-90)/Math.max(1,maxX-minX),(h-55)/Math.max(1,maxY-minY)),ox=(w-(maxX-minX)*scale)/2-minX*scale,oy=h*.62-(maxY+minY)*scale*.5;
  const q=pts.map(p=>({x:ox+p.x*scale,y:oy-p.y*scale}));
  c.fillStyle='#17445a';c.font='bold 13px system-ui';c.fillText('PASO '+(stepNumber+1)+' / '+Math.max(1,order.length)+' · P'+(activeIdx+1)+' · OBJETIVO '+activeAngle+'°',14,20);
- for(let i=0;i<q.length-1;i++){c.beginPath();c.moveTo(q[i].x,q[i].y);c.lineTo(q[i+1].x,q[i+1].y);c.strokeStyle=i===activeIdx?'#087fb5':i<activeIdx?'#23845d':'#8da7b5';c.lineWidth=i===activeIdx?5:3;c.lineCap='round';c.stroke();c.beginPath();c.arc(q[i+1].x,q[i+1].y,i===activeIdx?5:3,0,Math.PI*2);c.fillStyle=i===activeIdx?'#087fb5':i<activeIdx?'#23845d':'#8da7b5';c.fill()}
- c.fillStyle='#526f80';c.font='11px system-ui';c.fillText('Esquema acumulado a partir de longitudes y ángulos programados; no es un perfil CAD validado.',14,h-8);
+ for(let i=0;i<q.length-1;i++){const seqPosition=order.indexOf(i),done=seqPosition>=0&&seqPosition<stepNumber,active=i===activeIdx;c.beginPath();c.moveTo(q[i].x,q[i].y);c.lineTo(q[i+1].x,q[i+1].y);c.strokeStyle=active?'#087fb5':done?'#23845d':'#8da7b5';c.lineWidth=active?5:3;c.lineCap='round';c.stroke();c.beginPath();c.arc(q[i+1].x,q[i+1].y,active?5:3,0,Math.PI*2);c.fillStyle=active?'#087fb5':done?'#23845d':'#8da7b5';c.fill()}
+ c.fillStyle='#526f80';c.font='11px system-ui';c.fillText('Seguimiento acumulado: pliegues terminados en verde; pliegue actual en azul. No es un perfil CAD validado.',14,h-8);
 }
 function drawPhysicalBend(){
  const cv=$('pp58PhysicalCanvas');if(!cv)return;fitCanvas(cv,1440,660);const x=cv.getContext('2d'),w=cv.width,h=cv.height,{s,b,order,idx,bend,n,localPhase,stepNumber,punch,die}=physicalSequence();
@@ -335,7 +340,7 @@ function drawPhysicalBend(){
  x.fillStyle='#eaf6fb';x.fillRect(24,22,360,42);x.fillStyle='#17445a';x.font='bold 15px system-ui';x.fillText(view==='profile'?'PERFIL LATERAL · SEGUIMIENTO DEL PLEGADO':view==='section'?'SECCIÓN DE CONTACTO':view==='front'?'VISTA FRONTAL':'VISTA ISOMÉTRICA DE SEGUIMIENTO',36,49);
  const phaseLabel=phase<.12?'APROXIMACIÓN':phase<.67?'CONTACTO / PLEGADO':phase<.84?'RETENCIÓN':'RETORNO';$('pp58PhysStepLabel').textContent=phaseLabel;$('pp58PhysActive').textContent=phase<.12?'Punzón acercándose':phase<.84?'Punzón + chapa + matriz':'Retorno y liberación';$('pp58PhysOrder').textContent=order.length?('P'+(idx+1)+' · '+(stepNumber+1)+'/'+order.length+' · '+Math.max(1,Number(bend.leg)||100).toFixed(0)+' mm'):'Sin pliegues definidos';$('pp58PhysAngle').textContent=angle+'°';$('pp58PhysThickness').textContent=t.toFixed(2)+' mm';
  $('pp58PhysStatus').textContent='Paso '+(stepNumber+1)+' · '+(punch?(punch.maker||'Utillaje')+' '+(punch.name||punch.id||'punzón'):'punzón genérico estimado')+' · '+(die?(die.maker||'Utillaje')+' '+(die.name||die.id||'matriz'):'matriz V estimada')+'. Geometría representada con los metadatos locales disponibles; no sustituye un perfil CAD oficial.';
- drawProgramProfile(b,idx,order,stepNumber,angle);
+ drawProgramProfile(b,idx,order,stepNumber,angle,phase);
  const status=$('pp58PhysStatus');if(status)status.textContent='Paso '+(stepNumber+1)+' · V'+v+' · objetivo '+angle+'° · '+(punch?(punch.maker||'')+' '+(punch.name||punch.id||'punzón'):'punzón genérico estimado')+' · '+(die?(die.maker||'')+' '+(die.name||die.id||'matriz'):'matriz V estimada')+' · material '+String(s.project?.material||s.development?.material||'sin especificar')+'. La representación usa metadatos locales; verifica el perfil CAD y las cotas oficiales antes de validar el plegado.';
 }
 function runPhysicalBend(){
