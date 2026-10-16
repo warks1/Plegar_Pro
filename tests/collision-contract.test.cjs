@@ -111,7 +111,7 @@ assert.match(collision, /code===42&&vertices\.length/ , 'DXF LWPOLYLINE bulge ar
 assert.match(collision, /parseDxfProfileForTest\(text,unitFactor=1,type='Matriz'\)/, 'DXF parser must expose a testable profile audit');
 assert.match(collision, /\$\('pp56Step'\)\.onchange=\(\)=>setStep\(Number\(\$\('pp56Step'\)\.value\)\|\|0,true\)/);
 assert.match(sw, /\.\/pp59-engineering-upgrade\.js\?v=156/);
-assert.ok(sw.includes("'./pp55-cad-precision.js?v=64.9.1'"), 'offline cache must use the same versioned CAD URL as the page');
+assert.ok(sw.includes("'./pp55-cad-precision.js?v=64.9.2'"), 'offline cache must use the same versioned CAD URL as the page');
 assert.ok(sw.includes("'./pp60-graphics-runtime.js?v=64.9.1'"), 'offline cache must use the same versioned graphics URL as the page');
 assert.match(html, /pp61-runtime-integrity\.js\?v=62/);
 assert.match(sw, /pp61-runtime-integrity\.js\?v=62/);
