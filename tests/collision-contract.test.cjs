@@ -347,7 +347,7 @@ assert.match(html, /@media\(max-width:900px\)\{[\s\S]*?#mainSidebar\.side\{posit
 
 assert.ok(collision.includes('const halfV=vMm*scale/2'), 'la abertura V debe derivarse de milímetros y escala de perfil');
 assert.ok(collision.includes('dieDepthPx=dieHalfPx/Math.tan(dieAngle*Math.PI/360)'), 'la profundidad de la matriz debe respetar el ángulo seleccionado');
-assert.ok(collision.includes('const targetTipY=dieApexY-Math.max(1,thicknessPx*.8)'), 'el punzón debe detenerse respecto del vértice de la matriz');
+assert.ok(collision.includes('const targetTipY=dieApexY-Math.max(1,thicknessPx*1.3)'), 'la punta debe detenerse en la cara superior de la chapa, no atravesar su línea central');
 assert.ok(collision.includes('const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel'), 'el desplazamiento del punzón debe sincronizarse con la carrera');
 assert.ok(collision.includes('TOPE'), 'la vista TouchProfile debe mostrar topes traseros');
 assert.ok(collision.includes('PLEGAR PRO · TOUCH PROFILE'), 'la vista de perfil debe usar cabecera compacta tipo control CNC');
