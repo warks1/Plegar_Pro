@@ -21,17 +21,15 @@ assert.ok(physical.includes('const activeVertex=profilePts[Math.min(profilePts.l
 assert.ok(physical.includes('const sheetPath=[{...profilePts[0]}],pushSheet'), 'physical follow-up must draw the accumulated profile instead of a symmetric generic V');
 assert.ok(physical.includes('const halfSheet=Math.max(1,thicknessPx*.5),sheetTop=[],sheetBottom=[]'), 'physical renderer must model the sheet as a closed strip with local normals and visible thickness');
 assert.ok(physical.includes('poly(sheetTop.concat(sheetBottom.slice().reverse()),\'#9ebbc9\',\'#416b80\')'), 'sheet body must be filled as a metallic contour rather than a single thick line');
-assert.ok(physical.includes('const nearestContourPoint=contour=>contour.reduce'), 'contact must be sampled from the actual closed sheet surfaces near the active bend');
-assert.ok(physical.includes('const contactSurface=topCandidate[1]>=bottomCandidate[1]?topCandidate:bottomCandidate'), 'contact must select the upper-facing sheet surface rather than assuming a vertical normal');
-assert.ok(physical.includes('const activeSheetContactX=contactSurface[0],activeSheetContactY=contactSurface[1]'), 'contact marker must follow the actual surface point in both axes');
-assert.ok(physical.includes('const targetTipY=activeSheetContactY,restTipY=160'), 'punch tip target must use the measured surface height without a zoom-dependent offset');
+assert.ok(physical.includes('const activeSheetContactY=sheetCenterY+halfSheet'), 'restore the previous contact anchor used by the approved renderer');
+assert.ok(physical.includes('const sheetTopY=activeSheetContactY+Math.max(1,thicknessPx/(2*sc)),targetTipY=sheetTopY'), 'retain the previous punch-height offset from the restored renderer');
 assert.ok(!physical.includes('const contactPts=[[-130,20,6],[-60,-35,6],[0,-72,6],[60,-35,6],[130,20,6]]'), 'remove fixed generic V contact guide that contradicts the programmed sheet profile');
 assert.ok(physical.includes('turn=-signedBendTurn(b[legIndex]?.angle,b[legIndex]?.direction)*foldProgress'), 'physical renderer must invert mathematical bend sign so the sheet descends into the V die under the Y-up projection');
 assert.ok(physical.includes('heading-=signedBendTurn(seg.angle,seg.direction)*progress'), 'programmed profile preview must use the same downward bend sign as the physical renderer');
 assert.ok(collision.includes('const turn=-signedBendTurn(a[i]?.angle,a[i]?.direction);'), 'collision profile must bend downward into the V die using the same sign as the physical renderer');
 assert.ok(collision.includes('const theta=-signedBendTurn(a[i]?.angle,a[i]?.direction)*fraction;'), 'physical collision contour arcs must share the downward bend sign at every travel fraction');
 assert.ok(physical.includes('sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*ramTravel'), 'sheet vertical motion must use the exact same normalized ram travel as the punch');
-assert.ok(physical.includes('const targetTipY=activeSheetContactY,restTipY=160'), 'punch tip must reach the sampled upper surface at full travel independent of zoom');
+assert.ok(physical.includes('const sheetTopY=activeSheetContactY+Math.max(1,thicknessPx/(2*sc)),targetTipY=sheetTopY'), 'punch target must match the restored renderer geometry');
 assert.ok(physical.includes('contact=Math.max(0,Math.min(1,(ramTravel-.12)/.88))'), 'sheet contact indicator must derive from ram travel rather than a separate timing curve');
 assert.equal((physical.match(/const easeCycle=/g)||[]).length,1, 'physical cycle must define one shared ram easing function');
 
@@ -361,7 +359,5 @@ assert.ok(collision.includes('const punchTipY=restTipY+(targetTipY-restTipY)*ram
 assert.ok(collision.includes('TOPE'), 'la vista TouchProfile debe mostrar topes traseros');
 assert.ok(collision.includes('PLEGAR PRO · TOUCH PROFILE'), 'la vista de perfil debe usar cabecera compacta tipo control CNC');
 
-// Physical punch must share the sampled sheet-contact x coordinate, not just its height.
-assert.ok(physical.includes('shoulder=Math.max(42,Math.min(82,punchHeight*.55)),punchCenterX=activeSheetContactX'), 'punch center must be tied to the sampled active bend contact');
-assert.ok(physical.includes('].map(([px,py,pz])=>[px+punchCenterX,py,pz])'), 'punch outline must translate horizontally with the actual sheet contact');
-assert.ok(physical.includes('const contactP=P(activeSheetContactX,activeSheetContactY,contactSurface[2]+1)'), 'contact marker and punch center must share the same surface point');
+assert.ok(physical.includes('function addPhysicalBendSimulation(){\n // El control oficial de plegado visible es el HMI Cybelec de pp56.'), 'the secondary physical-bend control must remain disabled to avoid competing HMI panels');
+assert.ok(physical.includes("const duplicateCard=$('pp58PhysicalBend');\n if(duplicateCard)duplicateCard.remove();"), 'any stale duplicate physical panel must be removed when initialization or pageshow runs');
