@@ -344,7 +344,15 @@ function drawPhysicalBend(){
  const spanX=Math.max(1,Math.max(...sheetPath.map(q=>q.x))-Math.min(...sheetPath.map(q=>q.x))),spanY=Math.max(1,Math.max(...sheetPath.map(q=>q.y))-Math.min(...sheetPath.map(q=>q.y)));
  const profileScale=Math.min(1.2,620/spanX,240/spanY),sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*ramTravel;
  const sheetPts=sheetPath.map(q=>[(q.x-activeVertex.x)*profileScale,sheetCenterY+(q.y-activeVertex.y)*profileScale,5]);
- line(sheetPts,'#087fb5',Math.max(5,thicknessPx));line(sheetPts.map(p=>[p[0],p[1]+thicknessPx*.42,p[2]+1]),'#e0f7ff',1.8);
+ // La chapa es una banda cerrada con espesor, no solo una línea gruesa: el normal local sigue cada ala y cada radio.
+ const halfSheet=Math.max(1,thicknessPx*.5),sheetTop=[],sheetBottom=[];
+ for(let i=0;i<sheetPts.length;i++){
+  const a=sheetPts[Math.max(0,i-1)],z=sheetPts[Math.min(sheetPts.length-1,i+1)],dx=z[0]-a[0],dy=z[1]-a[1],L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;
+  sheetTop.push([sheetPts[i][0]+nx*halfSheet,sheetPts[i][1]+ny*halfSheet,sheetPts[i][2]+.8]);
+  sheetBottom.push([sheetPts[i][0]-nx*halfSheet,sheetPts[i][1]-ny*halfSheet,sheetPts[i][2]+.8]);
+ }
+ poly(sheetTop.concat(sheetBottom.slice().reverse()),'#9ebbc9','#416b80');
+ line(sheetTop,'#e8f8ff',1.8);line(sheetBottom,'#648da0',1.2);line(sheetPts,'#087fb5',1.4);
  profilePts.slice(1,-1).forEach((q,vi)=>{const m=[(q.x-activeVertex.x)*profileScale,sheetCenterY+(q.y-activeVertex.y)*profileScale,6],pt=P(m[0],m[1],m[2]);x.beginPath();x.arc(pt.x,pt.y,vi===idx?5:3,0,Math.PI*2);x.fillStyle=vi===idx?'#e5a34b':'#d8e7ed';x.fill();x.strokeStyle='#35586b';x.lineWidth=1;x.stroke()});
  // Línea de contacto sobre la matriz: cambia con el descenso real del punzón.
  const contactPts=[[-130,20,6],[-60,-35,6],[0,-72,6],[60,-35,6],[130,20,6]];
