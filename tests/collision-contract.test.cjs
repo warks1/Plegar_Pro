@@ -256,7 +256,7 @@ assert.match(twin, /plegarpro:playback-step/);
 assert.match(collision, /CYBELEC CybTouch 15 PS · CONTROL CNC/, 'collision HMI must use the requested CybTouch 15 reference');
 assert.match(collision, /function drawCybTouchProfile\(/, 'collision view must include the CybTouch-style 2D profile renderer');
 assert.match(collision, /if\(camera==='cybtouch'\)\{drawCybTouchProfile\(/, 'CybTouch 2D profile must be the active default view');
-assert.match(collision, /\[\[cx-half-72,top\],\[cx-half\*\.34,top\],\[cx,apex\]/, 'CybTouch profile must render a concave V-die cross-section');
+assert.match(collision, /const diePath=\[\[cx-halfV-74,top\],\[cx-halfV\*\.34,top\],\[cx,apex\]/, 'Touch HMI profile must render a concave V-die cross-section');
 assert.doesNotMatch(collision, /BYSTRONIC TOUCH 15/, 'collision HMI must not be mislabeled as Bystronic');
 assert.match(collision, /const hit=solid3D\.intersectPrisms\(seg,punchSolid\);return hit\.contact\?\?hit\.intersects/, 'active punch contact must classify tangency with a single geometry query');
 assert.match(collision, /const hit=solid3D\.intersectPrisms\(seg,dieSolid\);return hit\.contact\?\?hit\.intersects/, 'active die contact must classify tangency with a single geometry query');
