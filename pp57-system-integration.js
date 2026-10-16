@@ -240,10 +240,10 @@ function drawPhysicalBend(){
   const xpos=(-1+2*j/120)*flatHalf,ax=Math.abs(xpos);
   let py;
   if(ax<=bendHalf){
-   const q=ax/bendHalf,rest=20+8*(1-q);
+   const q=ax/bendHalf,rest=20+thicknessPx*.5+8*(1-q);
    // La chapa presenta una ligera ampolla antes del contacto y después sigue el perfil real de la V centrada.
    const vY=ax<=60?-72+(37/60)*ax:-35+(55/70)*(ax-60);
-   py=rest+(vY-rest)*contact;
+   py=rest+(vY+thicknessPx*.5-rest)*contact;
   }else{
    // Las alas permanecen rectas y giran desde los hombros de la matriz según el ángulo seleccionado.
    py=20+(ax-bendHalf)*wingSlope;
@@ -251,7 +251,7 @@ function drawPhysicalBend(){
   sheetPts.push([xpos,py,5]);
  }
  line(sheetPts,'#087fb5',Math.max(5,thicknessPx));
- line(sheetPts.map(p=>[p[0],p[1]+thicknessPx,p[2]+1]),'#e0f7ff',1.8);
+ line(sheetPts.map(p=>[p[0],p[1]+thicknessPx*.5,p[2]+1]),'#e0f7ff',1.8);
  // Línea de contacto sobre la matriz: cambia con el descenso real del punzón.
  const contactPts=[[-130,20,6],[-60,-35,6],[0,-72,6],[60,-35,6],[130,20,6]];
  line(contactPts,'rgba(8,127,181,.28)',2);
