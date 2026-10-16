@@ -310,8 +310,7 @@ function drawPhysicalBend(){
  // Secondary finger gives a sense of machine width; visibility stays separately labelled.
  poly([[gaugeX+410,gaugeY+30,90],[gaugeX+466,gaugeY+30,90],[gaugeX+456,gaugeY-95,90],[gaugeX+420,gaugeY-95,90]],'#536f80','#2f4c5e');
  poly([[gaugeX+386,gaugeY-95,90],[gaugeX+490,gaugeY-95,90],[gaugeX+490,gaugeY-112,90],[gaugeX+386,gaugeY-112,90]],'#d1dfe6','#526c7b');
- // Chapa dinámica: apoyada sobre los hombros de la matriz, llega al tope trasero y se curva al bajar el punzón.
- // En reposo tiene una ligera ampolla; durante el contacto, el centro entra en la V y las dos alas suben.
+ // Sección lateral CNC: chapa plana en aproximación; el vértice baja dentro de la abertura de la V y las alas giran alrededor del pliegue activo.
  const thicknessPx=Math.max(3,Math.min(8,t*2.2));
  // SEGUIMIENTO FÍSICO ACUMULATIVO: reconstruye el perfil completo de la pieza a partir
  // de las patas programadas. Los pliegues ya ejecutados permanecen; el actual se forma
@@ -328,16 +327,23 @@ function drawPhysicalBend(){
    profileHeading+=signedBendTurn(b[legIndex]?.angle,b[legIndex]?.direction)*foldProgress;
   }
  }
- const activeVertex=profilePts[Math.min(profilePts.length-1,Math.max(0,idx+1))]||{x:0,y:0};
  const sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*contact;
- const sheetPts=profilePts.map(p=>[p.x-activeVertex.x,p.y-activeVertex.y+sheetCenterY,5]);
+ const bendTurn=Math.abs(signedBendTurn(angle,bend.direction));
+ const halfOpen=Math.PI/2-(bendTurn*Math.PI/360)*contact;
+ const arm=Math.max(vHalf+24,Math.min(150,Number(bend.leg)||100));
+ const innerX=arm*Math.sin(halfOpen),outerY=sheetCenterY+arm*Math.cos(halfOpen);
+ // Dibujar el pliegue local evita trasladar la pieza completa a través del sólido de la matriz.
+ const sheetPts=[[-arm,outerY,5],[-innerX,outerY,5],[0,sheetCenterY,5],[innerX,outerY,5],[arm,outerY,5]];
  line(sheetPts,'#087fb5',Math.max(5,thicknessPx));
- line(sheetPts.map(p=>[p[0],p[1]+thicknessPx*.5,p[2]+1]),'#e0f7ff',1.8);
+ line(sheetPts.map(p=>[p[0],p[1]+thicknessPx*.42,p[2]+1]),'#e0f7ff',1.8);
  // Línea de contacto sobre la matriz: cambia con el descenso real del punzón.
  const contactPts=[[-130,20,6],[-60,-35,6],[0,-72,6],[60,-35,6],[130,20,6]];
  line(contactPts,'rgba(8,127,181,.28)',2);
  // Punch body and pointed nose; motion is driven by the same cycle progress slider.
- const punchTipY=sheetCenterY+Math.max(2,thicknessPx*.65),punchY=punchTipY+punchHeight+8,tipHalf=Math.max(2,Math.min(24,Math.tan(punchAngle*Math.PI/360)*8)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
+ const easeCycle=q=>{q=Math.max(0,Math.min(1,q));return q*q*(3-2*q)};
+ const ramTravel=phase<.12?.12*easeCycle(phase/.12):phase<.67?.12+.88*easeCycle((phase-.12)/.55):phase<.82?1:1-easeCycle((phase-.82)/.18);
+ const targetTipY=dieApexY+Math.max(2,thicknessPx*1.3),restTipY=160;
+ const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8,tipHalf=Math.max(2,Math.min(24,Math.tan(punchAngle*Math.PI/360)*8)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
  // Work-zone glow shows the contact path, not a safety-certified collision envelope.
@@ -346,7 +352,7 @@ function drawPhysicalBend(){
  const railX=24,railY=h-42,railW=Math.max(120,w-48),railN=Math.max(1,order.length),slot=railW/railN;
  x.fillStyle='#e5f1f6';x.fillRect(railX,railY-13,railW,26);
  for(let k=0;k<railN;k++){const foldIdx=order[k]??k,fb=b[foldIdx]||{},fx=railX+slot*(k+.5);x.fillStyle=k<stepNumber?'#23845d':k===stepNumber?'#087fb5':'#a9bdc8';x.beginPath();x.arc(fx,railY,Math.max(4,Math.min(9,slot*.22)),0,Math.PI*2);x.fill();x.fillStyle=k===stepNumber?'#073e58':'#315366';x.font='bold 12px system-ui';x.textAlign='center';x.fillText('P'+(foldIdx+1),fx,railY-15);x.font='10px system-ui';x.fillText((Number(fb.angle)||90)+'°',fx,railY+20)}x.textAlign='start';
- x.fillStyle='#eaf6fb';x.fillRect(24,22,360,42);x.fillStyle='#17445a';x.font='bold 15px system-ui';x.fillText(view==='profile'?'PERFIL LATERAL · SEGUIMIENTO DEL PLEGADO':view==='section'?'SECCIÓN DE CONTACTO':view==='front'?'VISTA FRONTAL':'VISTA ISOMÉTRICA DE SEGUIMIENTO',36,49);
+ x.fillStyle='#eaf6fb';x.fillRect(24,22,360,42);x.fillStyle='#17445a';x.font='bold 15px system-ui';x.fillText(view==='profile'?'CNC 2D · SECUENCIA DE PLEGADO':view==='section'?'SECCIÓN DE CONTACTO':view==='front'?'VISTA FRONTAL':'VISTA ISOMÉTRICA DE SEGUIMIENTO',36,49);
  const phaseLabel=phase<.12?'APROXIMACIÓN':phase<.67?'CONTACTO / PLEGADO':phase<.84?'RETENCIÓN':'RETORNO';$('pp58PhysStepLabel').textContent=phaseLabel;$('pp58PhysActive').textContent=phase<.12?'Punzón acercándose':phase<.84?'Punzón + chapa + matriz':'Retorno y liberación';$('pp58PhysOrder').textContent=order.length?('P'+(idx+1)+' · '+(stepNumber+1)+'/'+order.length+' · '+Math.max(1,Number(bend.leg)||100).toFixed(0)+' mm'):'Sin pliegues definidos';$('pp58PhysAngle').textContent=angle+'°';$('pp58PhysThickness').textContent=t.toFixed(2)+' mm';
  $('pp58PhysStatus').textContent='Paso '+(stepNumber+1)+' · '+(punch?(punch.maker||'Utillaje')+' '+(punch.name||punch.id||'punzón'):'punzón genérico estimado')+' · '+(die?(die.maker||'Utillaje')+' '+(die.name||die.id||'matriz'):'matriz V estimada')+'. Geometría representada con los metadatos locales disponibles; no sustituye un perfil CAD oficial.';
  drawProgramProfile(b,idx,order,stepNumber,angle,phase);
