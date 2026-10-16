@@ -32,7 +32,7 @@ assert.ok(runtime.includes('const profilePts=[{x:0,y:0}];let profileHeading=0;')
 assert.ok(runtime.includes('const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;'), 'Physical follow-up must retain previously completed folds');
 assert.ok(runtime.includes('const sheetCenterY=20-74*contact;'), 'Physical follow-up must lower the sheet into the die channel during punch contact');
 assert.ok(runtime.includes('const punchY=(-54+thicknessPx+punchHeight+8)+(1-contact)*74'), 'Physical follow-up punch must descend into the die with the sheet instead of remaining above it');
-assert.ok(runtime.includes('sheetDrop=Math.sin(bend)*48') && runtime.includes('y:-30-sheetDrop,z:0'), 'Machine twin sheet center must descend into the die while the ram moves down');
+assert.ok(runtime.includes('sheetDrop=down*48') && runtime.includes('y:-30-sheetDrop,z:0'), 'Machine twin sheet center must descend into the die while the ram moves down');
 assert.ok(runtime.includes("sc=(cam==='top'?.62:.68)*(Number($('pp58Zoom').value)||.85)"), 'Machine control panel camera must start wider to show the full press brake');
 assert.ok(runtime.includes("view==='profile'?.88"), 'Physical folding view must use a wider camera framing');
 assert.ok(runtime.includes('Consola CNC articulada'), 'Machine twin must include a CNC operator console');
