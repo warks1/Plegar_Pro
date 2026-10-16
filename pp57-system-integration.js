@@ -68,7 +68,7 @@ function setupTwinVisibility(){
 }
 function drawTwin(now){
  const c=$('pp58Twin');if(!c)return;fitCanvas(c,1440,760);const x=c.getContext('2d'),w=c.width,h=c.height;if(!start)start=now;
- const phase=((now-start)/5200*(Number($('pp58Speed')?.value||1))%1),down=phase<.2?0:phase<.47?Math.sin((phase-.2)/.27*Math.PI):phase<.68?0:Math.sin((phase-.68)/.32*Math.PI)*.8;
+ const phase=((now-start)/5200*(Number($('pp58Speed')?.value||1))%1),down=phase<.2?0:phase<.47?Math.sin((phase-.2)/.27*Math.PI):phase<.68?0:Math.sin((phase-.68)/.32*Math.PI);
  x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#fcfeff');bg.addColorStop(1,'#dcebf3');x.fillStyle=bg;x.fillRect(0,0,w,h);x.strokeStyle='#d1e1ea';for(let i=0;i<w;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}for(let i=0;i<h;i+=40){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke()}
  const cam=$('pp58Camera').value,model=$('pp58Model').value,sc=(cam==='top'?.62:.68)*(Number($('pp58Zoom').value)||.85),rot=cam==='front'?0:cam==='side'?Math.PI/2:cam==='top'?0:rotation-.42,ox=w*.5,oy=h*.65;
  function P(p){let a=rot,xx=p.x*Math.cos(a)-p.z*Math.sin(a),zz=p.x*Math.sin(a)+p.z*Math.cos(a);return{x:ox+xx*sc,y:oy-(p.y-zz*.34)*sc}}
