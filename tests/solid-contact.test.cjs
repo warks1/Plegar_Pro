@@ -57,3 +57,10 @@ assert.equal(distant.touching, false);
 
 assert.equal(m.intersectPrisms(null, rect(0,0,1,1)).contact, false);
 console.log('PP66 solid penetration/contact classification tests passed');
+
+assert.ok(bendRuntime.includes('function fitCanvas(canvas,baseWidth,baseHeight)'), 'render canvases must adapt to tablet width');
+assert.ok(bendRuntime.includes('if(t-twinLastDraw<33)'), 'machine twin should cap redraws to reduce tablet stutter');
+assert.ok(bendRuntime.includes('if(now-physLastDraw>=40)'), 'physical simulation should cap redraw frequency');
+assert.ok(bendRuntime.includes("window.addEventListener('plegarpro:machine-travel'"), 'physical simulation must follow collision machine travel');
+assert.ok(bendRuntime.includes("window.addEventListener('plegarpro:playback-step'"), 'physical simulation must follow shared step changes');
+assert.ok(bendRuntime.includes("x.fillText((Number(fb.angle)||90)+'°',fx,railY+20)"), 'sequence rail must identify each bend and its angle');
