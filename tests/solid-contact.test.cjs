@@ -68,6 +68,6 @@ assert.ok(bendRuntime.includes("x.fillText((Number(fb.angle)||90)+'°',fx,railY+
 assert.ok(bendRuntime.includes('id="pp58PhysProfile"'), 'physical following must include an accumulated piece profile preview');
 assert.ok(bendRuntime.includes('function drawProgramProfile(b,activeIdx,order,stepNumber,activeAngle,phase=0)'), 'piece preview must derive its shape from programmed legs and angles');
 assert.ok(bendRuntime.includes('n=Math.max(0,b.length-1)'), 'physical sequence must exclude the terminal leg from bend steps');
-assert.ok(bendRuntime.includes('window.PLEGAR_PRO_COLLISIONS?.getOrder?.()'), 'physical playback must use the collision engine canonical bend order');
-assert.ok(bendRuntime.includes('window.PLEGAR_PRO_V54,ra=api?.orderIndex?.(a),rb=api?.orderIndex?.(b)'), 'physical playback fallback must respect the shared programmed-order ranking');
+assert.ok(bendRuntime.includes('const rankOf=i=>{') && bendRuntime.includes('const raw=Array.from({length:n},(_,i)=>i).sort((a,b)=>rankOf(a)-rankOf(b));'), 'physical playback must use the same programmed bend order as 2D and 3D');
+assert.ok(!bendRuntime.includes('window.PLEGAR_PRO_COLLISIONS?.getOrder?.()'), 'collision review cursor must not override the shape or order of the programmed part');
 assert.ok(bendRuntime.includes("drawProgramProfile(b,idx,order,stepNumber,angle,phase)"), 'active physical step must refresh the accumulated profile');
