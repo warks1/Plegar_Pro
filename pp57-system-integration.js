@@ -267,13 +267,13 @@ function drawProgramProfile(b,activeIdx,order,stepNumber,activeAngle,phase=0){
  for(let x=20;x<w;x+=40){c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke()}
  const segments=(b||[]).slice(0,Math.max(1,b.length)),pts=[{x:0,y:0}];let heading=0;
  segments.forEach((seg,i)=>{
-  const len=Math.max(10,Math.min(1000,Number(seg.leg)||100)),prev=pts[pts.length-1];
+  const len=Math.max(1,Number(seg.leg)||0),prev=pts[pts.length-1];
   pts.push({x:prev.x+Math.cos(heading)*len,y:prev.y+Math.sin(heading)*len});
   if(i<segments.length-1){
    const seqPosition=order.indexOf(i),done=seqPosition>=0&&seqPosition<stepNumber,active=i===activeIdx;
    const progress=done?1:active?(phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1):0;
-   const rawDirection=seg.direction,dir=String(rawDirection??'').toLowerCase(),numericDirection=Number(rawDirection),hasNumericDirection=rawDirection!==undefined&&rawDirection!==null&&rawDirection!==''&&Number.isFinite(numericDirection),sign=hasNumericDirection?(numericDirection<0?-1:1):/down|reverse|negative|back/.test(dir)?-1:/up|forward|positive/.test(dir)?1:1;
-   heading+=sign*(180-Math.max(30,Math.min(150,Number(seg.angle)||90)))*Math.PI/180*progress;
+   const direction=Number(seg.direction)||1;
+   heading+=direction*(180-(Number(seg.angle)||90))*Math.PI/180*progress;
   }
  });
  const minX=Math.min(...pts.map(p=>p.x)),maxX=Math.max(...pts.map(p=>p.x)),minY=Math.min(...pts.map(p=>p.y)),maxY=Math.max(...pts.map(p=>p.y)),scale=Math.min((w-90)/Math.max(1,maxX-minX),(h-55)/Math.max(1,maxY-minY)),ox=(w-(maxX-minX)*scale)/2-minX*scale,oy=h*.62-(maxY+minY)*scale*.5;
@@ -284,7 +284,7 @@ function drawProgramProfile(b,activeIdx,order,stepNumber,activeAngle,phase=0){
 }
 function drawPhysicalBend(){
  const cv=$('pp58PhysicalCanvas');if(!cv)return;fitCanvas(cv,1440,660);const x=cv.getContext('2d'),w=cv.width,h=cv.height,{s,b,order,idx,bend,n,localPhase,stepNumber,punch,die}=physicalSequence();
- const t=Math.max(.1,Number(s.project?.thickness||s.development?.thickness||1)),angle=Math.max(30,Math.min(150,Number(bend.angle)||90)),punchAngle=Math.max(20,Math.min(90,Number(punch?.angle)||30)),punchHeight=Math.max(20,Math.min(260,Number(punch?.height)||120)),v=Math.max(6,Number(die?.v||bend.v||s.project?.selectedV||16)),dieAngle=Math.max(30,Math.min(120,Number(die?.angle)||88)),phase=Math.max(0,Math.min(1,localPhase)),rawContact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?Math.max(0,Math.min(1,(phase-.82)/.18)):0;const contact=rawContact*(1-release);
+ const t=Math.max(.1,Number(s.project?.thickness||s.development?.thickness||1)),angle=Number(bend.angle)||90,punchAngle=Math.max(20,Math.min(90,Number(punch?.angle)||30)),punchHeight=Math.max(20,Math.min(260,Number(punch?.height)||120)),v=Math.max(6,Number(die?.v||bend.v||s.project?.selectedV||16)),dieAngle=Math.max(30,Math.min(120,Number(die?.angle)||88)),phase=Math.max(0,Math.min(1,localPhase)),rawContact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?Math.max(0,Math.min(1,(phase-.82)/.18)):0;const contact=rawContact*(1-release);
  x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#f9fdff');bg.addColorStop(1,'#d9e9f2');x.fillStyle=bg;x.fillRect(0,0,w,h);
  x.strokeStyle='#d3e3eb';x.lineWidth=1;for(let i=20;i<w;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}for(let i=20;i<h;i+=40){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke()}
  const view=$('pp58PhysView')?.value||'profile',cx=view==='profile'?w*.53:w*.52,base=h*.69,sc=view==='front'?1.02:view==='section'?1.18:view==='profile'?1.22:1.0,rot=view==='iso'?rotation*.08:0;
@@ -316,16 +316,15 @@ function drawPhysicalBend(){
  const activeTurnProgress=phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1;
  const profilePts=[{x:0,y:0}];let profileHeading=0;
  for(let legIndex=0;legIndex<b.length;legIndex++){
-  const legLength=Math.max(10,Math.min(1000,Number(b[legIndex]?.leg)||100));
+  const legLength=Math.max(1,Number(b[legIndex]?.leg)||0);
   const prev=profilePts[profilePts.length-1];
   profilePts.push({x:prev.x+Math.cos(profileHeading)*legLength,y:prev.y+Math.sin(profileHeading)*legLength});
   if(legIndex<b.length-1){
    const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;
    const foldProgress=isCompleted?1:isActive?activeTurnProgress:0;
-   const foldAngle=Math.max(30,Math.min(150,Number(b[legIndex]?.angle)||90));
-   const rawDirection=b[legIndex]?.direction,dir=String(rawDirection??'').toLowerCase(),numericDirection=Number(rawDirection),hasNumericDirection=rawDirection!==undefined&&rawDirection!==null&&rawDirection!==''&&Number.isFinite(numericDirection);
-   const foldSign=hasNumericDirection?(numericDirection<0?-1:1):/down|reverse|negative|back/.test(dir)?-1:/up|forward|positive/.test(dir)?1:1;
-   profileHeading+=foldSign*(180-foldAngle)*Math.PI/180*foldProgress;
+   const foldAngle=Number(b[legIndex]?.angle)||90;
+   const foldDirection=Number(b[legIndex]?.direction)||1;
+   profileHeading+=foldDirection*(180-foldAngle)*Math.PI/180*foldProgress;
   }
  }
  const activeVertex=profilePts[Math.min(profilePts.length-1,Math.max(0,idx+1))]||{x:0,y:0};
