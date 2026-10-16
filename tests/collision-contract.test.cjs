@@ -20,6 +20,7 @@ assert.ok(collision.includes('const diePath='), 'Touch HMI must draw a concave V
 assert.ok(physical.includes('const activeVertex=profilePts[Math.min(profilePts.length-1,Math.max(1,idx+1))]'), 'physical follow-up must anchor the sheet at the active programmed bend vertex');
 assert.ok(physical.includes('const sheetPath=[{...profilePts[0]}],pushSheet'), 'physical follow-up must draw the accumulated profile instead of a symmetric generic V');
 assert.ok(physical.includes('turn=-signedBendTurn(b[legIndex]?.angle,b[legIndex]?.direction)*foldProgress'), 'physical renderer must invert mathematical bend sign so the sheet descends into the V die under the Y-up projection');
+assert.ok(physical.includes('heading-=signedBendTurn(seg.angle,seg.direction)*progress'), 'programmed profile preview must use the same downward bend sign as the physical renderer');
 
 assert.ok(runtime.includes("el.dataset.syncOk=String(!/^Error\\b/i.test(String(message||'')))"), 'runtime synchronization errors must not be marked as verified');
 assert.match(runtime, /catch\(error\)\{\s*lastSyncError=String\(error\?\.stack\|\|error\);\s*updateStatus\('Error de sincronización · revisa consola'\)/, 'syncAll exceptions must set the visible synchronization state to error before rethrowing');
