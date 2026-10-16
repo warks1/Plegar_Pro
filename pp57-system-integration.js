@@ -202,48 +202,14 @@ function runTwin(){
 }
 
 function addPhysicalBendSimulation(){
- const host=$('sim3d');if(!host||$('pp58PhysicalBend'))return;
- const card=document.createElement('section');card.id='pp58PhysicalBend';card.className='card pp58card';
- card.innerHTML='<div class="pp58head"><div><span class="pp58kicker">BEND FOLLOW · 3D</span><h2>Seguimiento físico del plegado</h2><p>Vista ampliada de punzón, matriz, tope trasero y chapa durante el contacto. La secuencia utiliza el orden de plegado del programa activo.</p></div><b id="pp58PhysStepLabel">LISTO</b></div><div class="pp58controls"><div><label>Seguimiento del ciclo</label><input id="pp58PhysProgress" type="range" min="0" max="100" step="1" value="0"></div><div><label>Punzón instalado</label><select id="pp58PhysPunch"></select></div><div><label>Matriz instalada</label><select id="pp58PhysDie"></select></div><div><label>Velocidad de reproducción</label><select id="pp58PhysSpeed"><option value="0.5">Lenta · 0,5×</option><option value="1" selected>Normal · 1×</option><option value="1.5">Rápida · 1,5×</option></select></div><div><label>Vista del conjunto</label><select id="pp58PhysView"><option value="profile" selected>Perfil lateral · plegado</option><option value="iso">Isométrica</option><option value="section">Sección de contacto</option><option value="front">Frontal de herramientas</option></select></div></div><canvas id="pp58PhysicalCanvas" class="pp58canvas" width="1440" height="660" aria-label="Vista de perfil lateral del punzón, matriz, tope trasero y chapa durante el plegado"></canvas><h3>Perfil acumulado de la pieza · pliegue activo resaltado</h3><canvas id="pp58PhysProfile" class="pp58canvas" width="900" height="170" aria-label="Perfil esquemático acumulado de la pieza y paso de plegado activo"></canvas><div class="pp58metrics"><div class="pp58metric"><small>ELEMENTO ACTIVO</small><b id="pp58PhysActive">Punzón + chapa</b></div><div class="pp58metric"><small>ORDEN DE PLEGADO</small><b id="pp58PhysOrder">Sin secuencia</b></div><div class="pp58metric"><small>ÁNGULO OBJETIVO</small><b id="pp58PhysAngle">90°</b></div><div class="pp58metric"><small>ESPESOR DE CHAPA</small><b id="pp58PhysThickness">— mm</b></div></div><div class="actions"><button class="btn" id="pp58PhysPlay">▶ Reproducir ciclo</button><button class="btn secondary" id="pp58PhysPrev">◀ Paso anterior</button><button class="btn secondary" id="pp58PhysNext">Paso siguiente ▶</button><button class="btn secondary" id="pp58PhysReset">Restablecer</button></div><div class="pp58status" id="pp58PhysStatus">Modelo visual esquemático sincronizado con la secuencia activa. Verifica perfiles, medidas y topes reales con los datos del utillaje antes de usarlo para validar una operación.</div>';
- host.appendChild(card);
- const punchSel=$('pp58PhysPunch'),dieSel=$('pp58PhysDie'),tools=T();
- const punches=tools.map((t,i)=>({t,i})).filter(a=>/punz|punch|gooseneck|recto/i.test(String(a.t.type||a.t.name||'')));
- const dies=tools.map((t,i)=>({t,i})).filter(a=>/matriz|die|matrix/i.test(String(a.t.type||a.t.name||'')));
- punchSel.innerHTML='<option value="-1">Punzón genérico · estimado</option>'+punches.map(a=>'<option value="'+a.i+'">'+esc((a.t.maker||'')+' · '+(a.t.name||a.t.id||a.t.type||'Punzón'))+'</option>').join('');
- dieSel.innerHTML='<option value="-1">Matriz en V · estimada</option>'+dies.map(a=>'<option value="'+a.i+'">'+esc((a.t.maker||'')+' · '+(a.t.name||a.t.id||a.t.type||'Matriz'))+'</option>').join('');
- ['pp58PhysPunch','pp58PhysDie'].forEach(id=>$(id).addEventListener('change',drawPhysicalBend));
- $('pp58PhysProgress').addEventListener('input',()=>{physPlaying=false;if(physRaf)cancelAnimationFrame(physRaf);physRaf=0;$('pp58PhysPlay').textContent='▶ Reproducir ciclo';physProgress=Number($('pp58PhysProgress').value)/100;drawPhysicalBend()});
- $('pp58PhysView').addEventListener('change',drawPhysicalBend);
- $('pp58PhysPlay').onclick=()=>{physPlaying=!physPlaying;$('pp58PhysPlay').textContent=physPlaying?'Ⅱ Pausar ciclo':'▶ Reproducir ciclo';physLast=0;if(physPlaying)runPhysicalBend();else if(physRaf){cancelAnimationFrame(physRaf);physRaf=0}};
- $('pp58PhysPrev').onclick=()=>{const q=physicalSequence(),count=Math.max(1,q.order.length),step=Math.max(0,q.stepNumber-1);physProgress=step/count;$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend()};
- $('pp58PhysNext').onclick=()=>{const q=physicalSequence(),count=Math.max(1,q.order.length),step=Math.min(count-1,q.stepNumber+1);physProgress=step/count;$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend()};
- $('pp58PhysReset').onclick=()=>{physPlaying=false;physProgress=0;physLast=0;if(physRaf)cancelAnimationFrame(physRaf);physRaf=0;$('pp58PhysProgress').value='0';$('pp58PhysPlay').textContent='▶ Reproducir ciclo';drawPhysicalBend()};
- const canvas=$('pp58PhysicalCanvas');fitCanvas(canvas,1440,660);fitCanvas($('pp58PhysProfile'),900,170);canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,r:rotation,pointerId:e.pointerId,physical:true};try{canvas.setPointerCapture(e.pointerId)}catch(_){}});
- canvas.addEventListener('pointermove',e=>{if(drag?.physical&&drag.pointerId===e.pointerId){rotation=drag.r+(e.clientX-drag.x)*.008;drawPhysicalBend()}});
- const end=e=>{if(drag?.physical&&(!e||drag.pointerId===e.pointerId))drag=null};canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
- drawPhysicalBend();
- window.addEventListener('plegarpro:playback-step',e=>{
-  const d=e.detail||{},q=physicalSequence(),count=Math.max(1,q.order.length);
-  if(d.source==='physical')return;
-  const pos=d.complete?1:Math.max(0,Math.min(count-1,Number(d.step)||0));
-  physPlaying=false;if(physRaf)cancelAnimationFrame(physRaf);physRaf=0;
-  physProgress=d.complete?1:(pos+.5)/count;
-  if($('pp58PhysProgress'))$('pp58PhysProgress').value=String(Math.round(physProgress*100));
-  if($('pp58PhysPlay'))$('pp58PhysPlay').textContent='▶ Reproducir ciclo';
-  drawPhysicalBend();
- });
- window.addEventListener('plegarpro:machine-travel',e=>{
-  const d=e.detail||{},q=physicalSequence(),count=Math.max(1,q.order.length);
-  if(d.source!=='collisions'||!q.order.length)return;
-  const pos=q.order.indexOf(Number(d.foldIndex));if(pos<0)return;
-  physPlaying=false;if(physRaf)cancelAnimationFrame(physRaf);physRaf=0;
-  physProgress=(pos+Math.max(0,Math.min(100,Number(d.travel)||0))/100)/count;
-  if($('pp58PhysProgress'))$('pp58PhysProgress').value=String(Math.round(physProgress*100));
-  if($('pp58PhysPlay'))$('pp58PhysPlay').textContent='▶ Reproducir ciclo';
-  drawPhysicalBend();
- });
- window.addEventListener('resize',()=>{fitKnownCanvases();drawTwin(performance.now());drawPhysicalBend()},{passive:true});
+ // El control oficial de plegado visible es el HMI Cybelec de pp56.
+ // Retira el panel paralelo antiguo para evitar dos controles y dos ciclos independientes.
+ const duplicateCard=$('pp58PhysicalBend');
+ if(duplicateCard)duplicateCard.remove();
+ if(physRaf){cancelAnimationFrame(physRaf);physRaf=0;}
+ physPlaying=false;
 }
+
 function physicalSequence(){
  const s=S()||{},b=Array.isArray(s.bends)?s.bends:[],n=Math.max(0,b.length-1);
  // Follow the exact execution ranking used by the existing 2D and 3D
@@ -354,25 +320,18 @@ function drawPhysicalBend(){
  poly(sheetTop.concat(sheetBottom.slice().reverse()),'#9ebbc9','#416b80');
  line(sheetTop,'#e8f8ff',1.8);line(sheetBottom,'#648da0',1.2);line(sheetPts,'#087fb5',1.4);
  profilePts.slice(1,-1).forEach((q,vi)=>{const m=[(q.x-activeVertex.x)*profileScale,sheetCenterY+(q.y-activeVertex.y)*profileScale,6],pt=P(m[0],m[1],m[2]);x.beginPath();x.arc(pt.x,pt.y,vi===idx?5:3,0,Math.PI*2);x.fillStyle=vi===idx?'#e5a34b':'#d8e7ed';x.fill();x.strokeStyle='#35586b';x.lineWidth=1;x.stroke()});
- // Localiza la superficie real de la banda en el entorno del pliegue activo.
- // Se comparan ambas caras de la chapa y se toma el punto más alto (lado del punzón)
- // entre los puntos más próximos al eje del pliegue; así el contacto sigue el radio y el ángulo.
- const nearestContourPoint=contour=>contour.reduce((best,p)=>Math.abs(p[0])<Math.abs(best[0])?p:best,contour[0]||[0,sheetCenterY,5]);
- const topCandidate=nearestContourPoint(sheetTop),bottomCandidate=nearestContourPoint(sheetBottom);
- const contactSurface=topCandidate[1]>=bottomCandidate[1]?topCandidate:bottomCandidate;
- const activeSheetContactX=contactSurface[0],activeSheetContactY=contactSurface[1];
- const contactAnchor=P(activeSheetContactX,activeSheetContactY,contactSurface[2]+1);
+ // El contacto se calcula en el vértice activo de la chapa deformada; no se dibuja una V ficticia fija.
+ const activeSheetContactY=sheetCenterY+halfSheet;
+ const contactAnchor=P(0,activeSheetContactY,7);
  x.beginPath();x.arc(contactAnchor.x,contactAnchor.y,5+contact*7,0,Math.PI*2);
  x.strokeStyle='rgba(8,127,181,'+(.2+contact*.45)+')';x.lineWidth=2;x.stroke();
- // La punta del punzón comparte la coordenada vertical de la superficie superior calculada.
- // No se añade una corrección fija por escala: eso desplazaba el contacto según el zoom.
- const targetTipY=activeSheetContactY,restTipY=160;
- const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8,tipHalf=Math.max(2,Math.min(24,Math.tan(punchAngle*Math.PI/360)*8)),shoulder=Math.max(42,Math.min(82,punchHeight*.55)),punchCenterX=activeSheetContactX;
- const punchOutline=[[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]].map(([px,py,pz])=>[px+punchCenterX,py,pz]);
- poly(punchOutline,'#718c9b','#334f60');
- line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]].map(([px,py,pz])=>[px+punchCenterX,py,pz]),'#edf5f8',3);
+ // Punch body and pointed nose; motion is driven by the same cycle progress slider.
+ const sheetTopY=activeSheetContactY+Math.max(1,thicknessPx/(2*sc)),targetTipY=sheetTopY,restTipY=160;
+ const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8,tipHalf=Math.max(2,Math.min(24,Math.tan(punchAngle*Math.PI/360)*8)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
+ poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
+ line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
  // Work-zone glow shows the contact path, not a safety-certified collision envelope.
- const contactP=P(activeSheetContactX,activeSheetContactY,contactSurface[2]+1);x.beginPath();x.arc(contactP.x,contactP.y,9+contact*13,0,Math.PI*2);x.fillStyle='rgba(18,139,196,'+(.05+contact*.12)+')';x.fill();
+ const contactP=P(0,activeSheetContactY,7);x.beginPath();x.arc(contactP.x,contactP.y,9+contact*13,0,Math.PI*2);x.fillStyle='rgba(18,139,196,'+(.05+contact*.12)+')';x.fill();
  label('PUNZÓN '+(punch?.name||punch?.id||'GENÉRICO'),w*.43,75);label('MATRIZ V'+v+' · '+dieAngle+'°',w*.43,h*.82);label('TOPE TRASERO · REFERENCIA '+sheetRestY,w*.08,h*.35);label('CHAPA · CONTACTO '+Math.round(contact*100)+'%',w*.63,h*.35);
  const railX=24,railY=h-42,railW=Math.max(120,w-48),railN=Math.max(1,order.length),slot=railW/railN;
  x.fillStyle='#e5f1f6';x.fillRect(railX,railY-13,railW,26);
