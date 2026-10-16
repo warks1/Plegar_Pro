@@ -28,12 +28,12 @@ assert.ok(runtime.includes('Carenados y detalles de fabricación'), 'Machine twi
 assert.ok(runtime.includes('Cilindros hidráulicos, vástagos cromados'), 'Machine twin must render hydraulic cylinders and chrome rods');
 assert.ok(runtime.includes('function drawProgramProfile(b,activeIdx,order,stepNumber,activeAngle,phase=0)'), 'physical preview must animate the full profile using programmed order and phase');
 assert.ok(runtime.includes('const seqPosition=order.indexOf(i),done=seqPosition>=0&&seqPosition<stepNumber,active=i===activeIdx;'), 'physical preview must highlight bends in programmed order');
-assert.ok(runtime.includes('const profilePts=[{x:0,y:0}];let profileHeading=0;'), 'Physical follow-up must rebuild the whole sheet from programmed legs');
+assert.ok(runtime.includes('const profilePts=[{x:0,y:0}],turnByBend=[];let profileHeading=0;'), 'Physical follow-up must rebuild the whole sheet from programmed legs');
 assert.ok(runtime.includes('const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;'), 'Physical follow-up must retain previously completed folds');
 assert.ok(runtime.includes('dieApexY=20-vDepth,dieBaseY=Math.min(-28,dieApexY-18)'), 'Physical V die must have a calculated open channel and solid material beneath its apex');
 assert.ok(runtime.includes('const sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*contact;'), 'Physical sheet bend must stop near the V apex rather than pass through the die');
 assert.ok(runtime.includes('const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8'), 'Punch must travel independently down to the sheet and return with the ram');
-assert.ok(runtime.includes('const sheetPts=[[-arm,outerY,5],[-innerX,outerY,5],[0,sheetCenterY,5],[innerX,outerY,5],[arm,outerY,5]];'), 'Physical view must show the active bend section rather than the full profile crossing the die');
+assert.ok(runtime.includes('const sheetPts=sheetPath.map(q=>[(q.x-activeVertex.x)*profileScale,sheetCenterY+(q.y-activeVertex.y)*profileScale,5]);'), 'Physical view must render the accumulated sheet profile anchored on the active bend, not a symmetric generic V');
 assert.ok(runtime.includes('sheetDrop=down*74') && runtime.includes('y:-30-sheetDrop,z:0'), 'Machine twin sheet center must descend in sync with the ram into the V channel');
 assert.ok(runtime.includes("Math.sin((phase-.68)/.32*Math.PI);"), 'Machine twin must complete the full stroke so the sheet reaches the V working zone');
 assert.ok(runtime.includes('box(-405,-172,-100,810,32,200') && runtime.includes('{x:0,y:-110,z:-82}'), 'Machine twin V die must be a concave channel, not an inverted central ridge');
