@@ -15,7 +15,17 @@ assert.ok(bendRuntime.includes('const gaugeX=-310, gaugeY=144;'), 'backgauge sho
 assert.ok(bendRuntime.includes('[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]'), 'backgauge contact pad should terminate at the sheet resting height');
 assert.ok(bendRuntime.includes('const wingSlope=Math.tan(Math.max(0,Math.min(Math.PI/3,(180-angle)*Math.PI/360)))*contact;'), 'wing rotation must be driven by the selected bend angle and contact progress');
 assert.ok(bendRuntime.includes('for(let j=0;j<=160;j++)'), 'sheet profile must be sampled finely enough for continuous bending');
-assert.ok(bendRuntime.includes('const punchY=(-72+thicknessPx+punchHeight+8)+(1-contact)*145+release*145'), 'punch travel must terminate at the sheet surface at the V apex');
+assert.ok(bendRuntime.includes('rawContact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?Math.max(0,Math.min(1,(phase-.82)/.18)):0;const contact=rawContact*(1-release);'), 'sheet contact must release in sync with punch retraction');
+assert.ok(bendRuntime.includes('const punchY=(-72+thicknessPx+punchHeight+8)+(1-contact)*145,tipHalf='), 'punch travel must retract as sheet contact returns to zero');
+const cycle = phase => {
+  const rawContact = Math.max(0, Math.min(1, (phase - .12) / .55));
+  const release = phase > .82 ? Math.max(0, Math.min(1, (phase - .82) / .18)) : 0;
+  return { contact: rawContact * (1 - release), release };
+};
+assert.equal(cycle(0).contact, 0, 'sheet starts flat before punch approach');
+assert.ok(cycle(.67).contact > .99, 'sheet reaches full bend during the press stroke');
+assert.ok(cycle(.82).contact > .99, 'sheet stays bent through the hold phase');
+assert.equal(cycle(1).contact, 0, 'sheet must return to resting shape when punch is fully retracted');
 const rect = (x1,y1,x2,y2,z1=0,z2=10,name='rect') =>
   m.prismMesh([{x:x1,y:y1},{x:x2,y:y1},{x:x2,y:y2},{x:x1,y:y2}],z1,z2,name);
 
