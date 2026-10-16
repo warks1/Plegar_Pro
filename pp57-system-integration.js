@@ -274,7 +274,8 @@ function drawProgramProfile(b,activeIdx,order,stepNumber,activeAngle,phase=0){
   if(i<segments.length-1){
    const seqPosition=order.indexOf(i),done=seqPosition>=0&&seqPosition<stepNumber,active=i===activeIdx;
    const progress=done?1:active?(phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1):0;
-   heading+=signedBendTurn(seg.angle,seg.direction)*progress;
+   // La miniatura comparte la proyección Y-up del perfil físico: el giro debe entrar en la abertura de la matriz.
+   heading-=signedBendTurn(seg.angle,seg.direction)*progress;
   }
  });
  const minX=Math.min(...pts.map(p=>p.x)),maxX=Math.max(...pts.map(p=>p.x)),minY=Math.min(...pts.map(p=>p.y)),maxY=Math.max(...pts.map(p=>p.y)),scale=Math.min((w-90)/Math.max(1,maxX-minX),(h-55)/Math.max(1,maxY-minY)),ox=(w-(maxX-minX)*scale)/2-minX*scale,oy=h*.62-(maxY+minY)*scale*.5;
