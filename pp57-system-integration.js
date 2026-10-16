@@ -354,16 +354,18 @@ function drawPhysicalBend(){
  poly(sheetTop.concat(sheetBottom.slice().reverse()),'#9ebbc9','#416b80');
  line(sheetTop,'#e8f8ff',1.8);line(sheetBottom,'#648da0',1.2);line(sheetPts,'#087fb5',1.4);
  profilePts.slice(1,-1).forEach((q,vi)=>{const m=[(q.x-activeVertex.x)*profileScale,sheetCenterY+(q.y-activeVertex.y)*profileScale,6],pt=P(m[0],m[1],m[2]);x.beginPath();x.arc(pt.x,pt.y,vi===idx?5:3,0,Math.PI*2);x.fillStyle=vi===idx?'#e5a34b':'#d8e7ed';x.fill();x.strokeStyle='#35586b';x.lineWidth=1;x.stroke()});
- // Línea de contacto sobre la matriz: cambia con el descenso real del punzón.
- const contactPts=[[-130,20,6],[-60,-35,6],[0,-72,6],[60,-35,6],[130,20,6]];
- line(contactPts,'rgba(8,127,181,.28)',2);
+ // El contacto se calcula en el vértice activo de la chapa deformada; no se dibuja una V ficticia fija.
+ const activeSheetContactY=sheetCenterY+halfSheet;
+ const contactAnchor=P(0,activeSheetContactY,7);
+ x.beginPath();x.arc(contactAnchor.x,contactAnchor.y,5+contact*7,0,Math.PI*2);
+ x.strokeStyle='rgba(8,127,181,'+(.2+contact*.45)+')';x.lineWidth=2;x.stroke();
  // Punch body and pointed nose; motion is driven by the same cycle progress slider.
- const sheetTopY=dieApexY+Math.max(2,thicknessPx*.65+Math.max(5,thicknessPx)/(2*sc)),targetTipY=sheetTopY,restTipY=160;
+ const sheetTopY=activeSheetContactY+Math.max(1,thicknessPx/(2*sc)),targetTipY=sheetTopY,restTipY=160;
  const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8,tipHalf=Math.max(2,Math.min(24,Math.tan(punchAngle*Math.PI/360)*8)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
  // Work-zone glow shows the contact path, not a safety-certified collision envelope.
- const contactP=P(0,29+contact*18,7);x.beginPath();x.arc(contactP.x,contactP.y,14+contact*18,0,Math.PI*2);x.fillStyle='rgba(18,139,196,'+(.05+contact*.12)+')';x.fill();
+ const contactP=P(0,activeSheetContactY,7);x.beginPath();x.arc(contactP.x,contactP.y,9+contact*13,0,Math.PI*2);x.fillStyle='rgba(18,139,196,'+(.05+contact*.12)+')';x.fill();
  label('PUNZÓN '+(punch?.name||punch?.id||'GENÉRICO'),w*.43,75);label('MATRIZ V'+v+' · '+dieAngle+'°',w*.43,h*.82);label('TOPE TRASERO · REFERENCIA '+sheetRestY,w*.08,h*.35);label('CHAPA · CONTACTO '+Math.round(contact*100)+'%',w*.63,h*.35);
  const railX=24,railY=h-42,railW=Math.max(120,w-48),railN=Math.max(1,order.length),slot=railW/railN;
  x.fillStyle='#e5f1f6';x.fillRect(railX,railY-13,railW,26);
