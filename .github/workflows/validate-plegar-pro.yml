@@ -56,9 +56,9 @@ jobs:
           grep -Fq './pp61-runtime-integrity.js' index.html
           grep -Fq './pp62-contrast-playback-fix.js' index.html
           grep -Fq './pp65-expert-engines.js?v=65.2' index.html
-          grep -Fq './pp69-expert-sync-engines.js?v=69.2' index.html
-          grep -Fq './pp69-expert-sync-engines.js?v=69.2' sw.js
-          grep -Fq "const VERSION = '69.2';" pp69-expert-sync-engines.js
+          grep -Fq './pp69-expert-sync-engines.js?v=69.3' index.html
+          grep -Fq './pp69-expert-sync-engines.js?v=69.3' sw.js
+          grep -Fq "const VERSION = '69.3';" pp69-expert-sync-engines.js
           grep -Fq 'PP69 expert synchronization engine tests passed' tests/expert-sync-engines.test.cjs
           grep -Fq './pp65-expert-engines.js?v=65.2' sw.js
           grep -Fq 'pp65-expert-engines.js' index.html
