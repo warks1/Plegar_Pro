@@ -303,8 +303,8 @@ function drawPhysicalBend(){
   let py;
   if(ax<=bendHalf){
    const q=ax/bendHalf,rest=20+thicknessPx*.5+8*(1-q);
-   // La chapa sigue los dos flancos de la V con espesor visible y una pequeña ampolla en reposo.
-   const vY=ax<=kneeHalf?-72+(37/kneeHalf)*ax:-35+(55/(bendHalf-kneeHalf))*(ax-kneeHalf);
+   // Curva de chapa suavizada: no copia los quiebros rectos del contorno de la matriz; representa una flexión aproximada alrededor del punzón.
+   const qDie=ax/bendHalf,vY=20-92*Math.pow(Math.max(0,1-qDie),.9);
    py=rest+(vY+thicknessPx*.5-rest)*contact;
   }else{
    // Alas rectas; la rotación aumenta con el contacto y parte del hombro real de la matriz.
