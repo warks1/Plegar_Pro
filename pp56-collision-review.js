@@ -277,7 +277,7 @@ function pp56ToolKind(t){return [t?.type,t?.name,t?.category,t?.toolType,t?.role
   const restSheet=restModel.map(q=>({x:cx+(q.x-restAnchor.x)*scale,y:restY+(q.y-restAnchor.y)*scale}));
   const rightEdge=restSheet.reduce((best,q)=>q.x>best.x?q:best,restSheet[0]||{x:cx+100,y:restY});
   const gaugeX=clamp(rightEdge.x-4,cx+halfV+26,wx+ww-28),gaugeY=restY;
-  const sheetCenterY=restY+(dieApexY-thicknessPx*.8-restY)*easing(travel);
+  const sheetCenterY=restY+(dieApexY-thicknessPx*.8-restY)*travel;
   const sheet=model.map(q=>({x:cx+(q.x-active.x)*scale,y:sheetCenterY+(q.y-active.y)*scale}));
   const sheetTop=[],sheetBottom=[];
   for(let i=0;i<sheet.length;i++){
