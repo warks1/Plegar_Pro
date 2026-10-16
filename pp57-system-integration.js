@@ -350,7 +350,7 @@ function drawPhysicalBend(){
  const contactPts=[[-130,20,6],[-60,-35,6],[0,-72,6],[60,-35,6],[130,20,6]];
  line(contactPts,'rgba(8,127,181,.28)',2);
  // Punch body and pointed nose; motion is driven by the same cycle progress slider.
- const targetTipY=dieApexY+Math.max(2,thicknessPx*1.3),restTipY=160;
+ const sheetTopY=dieApexY+Math.max(2,thicknessPx*.65+Math.max(5,thicknessPx)/(2*sc)),targetTipY=sheetTopY,restTipY=160;
  const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8,tipHalf=Math.max(2,Math.min(24,Math.tan(punchAngle*Math.PI/360)*8)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
