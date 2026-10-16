@@ -16,13 +16,13 @@ assert.ok(bendRuntime.includes('const foldAngle=Number(b[legIndex]?.angle)||90;'
 assert.ok(bendRuntime.includes('const rankOf=i=>{') && bendRuntime.includes('const raw=Array.from({length:n},(_,i)=>i).sort((a,b)=>rankOf(a)-rankOf(b));'), 'physical follow-up sequence must match the bend ranking shared by 2D/3D');
 assert.ok(bendRuntime.includes('const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;'), 'physical follow-up must retain completed bends according to programmed sequence');
 assert.ok(bendRuntime.includes('const activeTurnProgress=phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1;'), 'active bend must progress and remain formed after punch retraction');
-assert.ok(bendRuntime.includes('const sheetCenterY=20-92*contact;'), 'active bend vertex must descend into the V and rise when the punch retracts');
+assert.ok(bendRuntime.includes('const sheetCenterY=20-74*contact;'), 'active bend vertex must descend into the V and rise when the punch retracts');
 assert.ok(bendRuntime.includes('const sheetPts=profilePts.map(p=>[p.x-activeVertex.x,p.y-activeVertex.y+sheetCenterY,5]);'), 'complete sheet must be positioned around the active bend over the V die');
 assert.ok(bendRuntime.includes('const sheetRestY=20;'), 'backgauge reference must align with the sheet resting height');
 assert.ok(bendRuntime.includes('const gaugeX=-310, gaugeY=144;'), 'backgauge should remain behind the tooling');
 assert.ok(bendRuntime.includes('[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]'), 'backgauge contact pad should terminate at the sheet resting height');
 assert.ok(bendRuntime.includes('rawContact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?Math.max(0,Math.min(1,(phase-.82)/.18)):0;const contact=rawContact*(1-release);'), 'sheet contact must release in sync with punch retraction');
-assert.ok(bendRuntime.includes('const punchY=(-72+thicknessPx+punchHeight+8)+(1-contact)*145,tipHalf='), 'punch travel must retract as sheet contact returns to zero');
+assert.ok(bendRuntime.includes('const punchY=(-54+thicknessPx+punchHeight+8)+(1-contact)*74,tipHalf='), 'punch travel must retract as sheet contact returns to zero');
 const cycle = phase => {
   const rawContact = Math.max(0, Math.min(1, (phase - .12) / .55));
   const release = phase > .82 ? Math.max(0, Math.min(1, (phase - .82) / .18)) : 0;
