@@ -90,13 +90,13 @@ assert.match(html, /Build a thin sheet-metal wall/);
 assert.match(html, /getSelectedToolProfiles/);
 
 // Keep the deployed offline shell wired to the same collision/twin modules.
-assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=173"><\/script>/, 'page and service worker must load the same collision module version');
+assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=174"><\/script>/, 'page and service worker must load the same collision module version');
 assert.match(html, /id="s3ZoomRange" type="range" min="0\.25" max="6"/, '3D simulation must expose a continuous extended zoom slider');
 assert.match(html, /id="canvasS3" width="1600" height="900"/, '3D simulation canvas must use the enlarged rendering viewport');
 assert.match(html, /#sim3d \.s3Stage\{min-height:clamp\(420px,72vh,900px\)/, '3D simulation viewport must use a larger responsive stage');
 assert.match(html, /Math\.min\(6,sim\[k\]\*\(d\/lastDistance\)\)/, '3D pinch zoom must allow up to 6x magnification');
 
-assert.match(sw, /\.\/pp56-collision-review\.js\?v=173/);
+assert.match(sw, /\.\/pp56-collision-review\.js\?v=174/);
 assert.match(collision, /function setStep\(n,forceSync=false\)/);
 assert.match(collision, /signature=o\.join\(','\),sequenceChanged=sel\.dataset\.sequence!==signature/ , 'a changed fold order must force a playback-sync event even when the selected step index stays the same');
 assert.match(collision, /setStep\(step,sequenceChanged\)/, 'sequence changes must propagate to 2D/3D and machine-twin playback');
