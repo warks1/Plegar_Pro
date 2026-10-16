@@ -25,6 +25,7 @@ assert.ok(collisionRuntime.includes('const targetTipY=dieApexY-Math.max(1,thickn
 assert.ok(collisionRuntime.includes("x.fillStyle='#dfe8ed';x.fill();"), 'the sheet must render as a filled body with visible thickness');
 assert.ok(collisionRuntime.includes('function drawCybTouchProfile(x,w,h,p)'), 'the original Cybelec-style HMI must render the physical section');
 assert.ok(collisionRuntime.includes('y:restY-(q.y-restAnchor.y)*scale') && collisionRuntime.includes('y:sheetCenterY-(q.y-active.y)*scale'), 'the physical HMI must project the Y-up part profile into screen coordinates so the V bends downward into the die');
+assert.ok(!collisionRuntime.includes('const easing=q=>'), 'the physical HMI must not retain the unused easing helper');
 const cycle = phase => {
   const rawContact = Math.max(0, Math.min(1, (phase - .12) / .55));
   const release = phase > .82 ? Math.max(0, Math.min(1, (phase - .82) / .18)) : 0;

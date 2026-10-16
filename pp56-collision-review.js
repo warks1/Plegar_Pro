@@ -232,7 +232,6 @@ function pp56ToolKind(t){return [t?.type,t?.name,t?.category,t?.toolType,t?.role
  function drawCybTouchProfile(x,w,h,p){
   const {travel:rawTravel,order,idx,b,t,v,toolAudit,punchAngle,punchRadius}=p;
   const travel=Math.max(0,Math.min(1,Number(rawTravel)||0)),clamp=(n,a,z)=>Math.max(a,Math.min(z,n));
-  const easing=q=>{q=clamp(q,0,1);return q*q*(3-2*q)};
   const dieAngle=clamp(Number(toolAudit.die?.angle||b.dieAngle||b.matrixAngle||88),30,150);
   const dieDepthMm=(Math.max(1,Number(v)||16)/2)/Math.tan(dieAngle*Math.PI/360);
   const model=profileModelPhysical(step,travel,toolAudit,v),restModel=profileModelPhysical(step,0,toolAudit,v);
