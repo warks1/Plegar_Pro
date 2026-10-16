@@ -294,11 +294,11 @@ function drawPhysicalBend(){
  const line=(pts,color,width=3)=>{x.beginPath();pts.forEach((p,i)=>{const q=P(p[0],p[1],p[2]||0);i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y)});x.strokeStyle=color;x.lineWidth=width;x.lineJoin='round';x.lineCap='round';x.stroke()};
  const label=(txt,px,py,color='#17445a')=>{x.fillStyle=color;x.font='bold 19px system-ui';x.fillText(txt,px,py)};
  // Matriz en V abierta: el contorno superior baja hacia el vértice; el volumen queda debajo de las caras.
- const vHalf=Math.max(24,Math.min(150,v*3)),vDepth=Math.max(16,vHalf/Math.tan(dieAngle*Math.PI/360)),dieApexY=20-vDepth;
- const dieProfile=[[-430,20],[-vHalf,20],[0,dieApexY],[vHalf,20],[430,20],[430,-28],[-430,-28]];
+ const vHalf=Math.max(24,Math.min(150,v*3)),vDepth=Math.max(16,vHalf/Math.tan(dieAngle*Math.PI/360)),dieApexY=20-vDepth,dieBaseY=Math.min(-28,dieApexY-18);
+ const dieProfile=[[-430,20],[-vHalf,20],[0,dieApexY],[vHalf,20],[430,20],[430,dieBaseY],[-430,dieBaseY]];
  poly(dieProfile.map(([px,py])=>[px,py,-30]),'#879eab','#405b6a');
  poly(dieProfile.map(([px,py])=>[px,py,30]),'#a9bbc5','#405b6a');
- poly([[-430,20,-30],[-430,20,30],[-430,-28,30],[-430,-28,-30]],'#536e7d');
+ poly([[-430,20,-30],[-430,20,30],[-430,dieBaseY,30],[-430,dieBaseY,-30]],'#536e7d');
  line([[-vHalf,20,-31],[0,dieApexY,-31],[vHalf,20,-31]],'#d7e4eb',4);
  // Topes traseros situados detrás de la matriz; sus dedos de apoyo quedan en la cota de la chapa.
  const gaugeX=-310, gaugeY=144;
