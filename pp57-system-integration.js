@@ -205,8 +205,6 @@ function addPhysicalBendSimulation(){
  // Retira el panel paralelo antiguo para evitar dos controles y dos ciclos independientes.
  const duplicateCard=$('pp58PhysicalBend');
  if(duplicateCard)duplicateCard.remove();
- if(physRaf){cancelAnimationFrame(physRaf);physRaf=0;}
- physPlaying=false;
 }
 
 function addToolDetail(){
