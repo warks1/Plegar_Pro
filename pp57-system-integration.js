@@ -23,8 +23,15 @@ function fitCanvas(canvas,baseWidth,baseHeight){
  if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}
  if(!canvas.dataset.pp58ResizeBound&&'ResizeObserver'in window){
   canvas.dataset.pp58ResizeBound='1';
-  const observer=new ResizeObserver(()=>fitCanvas(canvas,baseWidth,baseHeight));
-  observer.observe(canvas.parentElement||canvas);
+  const parent=canvas.parentElement||canvas;let resizeRaf=0,lastObservedWidth=-1;
+  const observer=new ResizeObserver(entries=>{
+   const entry=entries[entries.length-1],observedWidth=Math.round(entry?.contentRect?.width||parent.clientWidth||0);
+   if(Math.abs(observedWidth-lastObservedWidth)<2)return;
+   lastObservedWidth=observedWidth;
+   if(resizeRaf)cancelAnimationFrame(resizeRaf);
+   resizeRaf=requestAnimationFrame(()=>{resizeRaf=0;fitCanvas(canvas,baseWidth,baseHeight)});
+  });
+  canvas.__pp58ResizeObserver=observer;observer.observe(parent);
  }
 }
 function fitKnownCanvases(){fitCanvas($('pp58Twin'),1440,760);fitCanvas($('pp58PhysicalCanvas'),1440,660);fitCanvas($('pp58PhysProfile'),900,170)}
