@@ -62,7 +62,7 @@ function profileModel(progressStep=Infinity,progressTravel=1){
   pts.push({x:p.x+len*Math.cos(heading),y:p.y+len*Math.sin(heading)});
   if(i<folds){
    const rank=order.indexOf(i),fraction=rank<progressStep?1:rank===progressStep?Math.max(0,Math.min(1,progressTravel)):0;
-   const turn=signedBendTurn(a[i]?.angle,a[i]?.direction);
+   const turn=-signedBendTurn(a[i]?.angle,a[i]?.direction);
    heading+=turn*fraction;
   }
  }
@@ -72,7 +72,7 @@ function profileModelPhysical(progressStep=Infinity,progressTravel=1,toolAudit={
  const a=bs(),order=seq(),t=th(),folds=Math.max(0,a.length-1),bends=[];
  for(let i=0;i<folds;i++){
   const rank=order.indexOf(i),fraction=rank<progressStep?1:rank===progressStep?Math.max(0,Math.min(1,progressTravel)):0;
-  const theta=signedBendTurn(a[i]?.angle,a[i]?.direction)*fraction;
+  const theta=-signedBendTurn(a[i]?.angle,a[i]?.direction)*fraction;
   const inside=Math.max(Number(a[i]?.radius)||0,Number(toolAudit.punch?.radius)||0,Number(toolAudit.die?.radius)||0,Number(v)*.08,t*.16),radius=inside+t/2,distance=Math.abs(theta)>1e-5?radius*Math.tan(Math.min(Math.PI*.49,Math.abs(theta)/2)):0;
   bends.push({theta,radius,distance});
  }
