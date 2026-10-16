@@ -10,6 +10,10 @@ assert.ok(bendRuntime.includes('const flatHalf=355,thicknessPx=Math.max(3,Math.m
 assert.ok(bendRuntime.includes('const q=ax/bendHalf,rest=20+thicknessPx*.5+8*(1-q);'), 'resting sheet must have a small raised crown above the die');
 assert.ok(bendRuntime.includes('const qDie=ax/bendHalf,vY=20-92*Math.pow(Math.max(0,1-qDie),.9);'), 'sheet profile must use a smoothed bend curve rather than copy the die facets');
 assert.ok(bendRuntime.includes('py=rest+(vY+thicknessPx*.5-rest)*contact;'), 'sheet thickness must remain above the die surface during contact');
+assert.ok(bendRuntime.includes('const profilePts=[{x:0,y:0}];let profileHeading=0;'), 'physical follow-up must rebuild the complete programmed sheet profile');
+assert.ok(bendRuntime.includes('const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;'), 'physical follow-up must retain completed bends according to programmed sequence');
+assert.ok(bendRuntime.includes('const activeTurnProgress=phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1;'), 'active bend must progress and remain formed after punch retraction');
+assert.ok(bendRuntime.includes('const sheetPts=profilePts.map(p=>[p.x-activeVertex.x,p.y-activeVertex.y+20,5]);'), 'complete sheet must be positioned around the active bend over the V die');
 assert.ok(bendRuntime.includes('const sheetRestY=20;'), 'backgauge reference must align with the sheet resting height');
 assert.ok(bendRuntime.includes('const gaugeX=-310, gaugeY=144;'), 'backgauge should remain behind the tooling');
 assert.ok(bendRuntime.includes('[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]'), 'backgauge contact pad should terminate at the sheet resting height');
