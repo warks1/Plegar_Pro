@@ -90,9 +90,10 @@ function drawTwin(now){
  beam(175,70,model==='trumpf'?'#e1c84e':model==='bystronic'?'#d9e3e8':'#a9bbc5');beam(105-down*112,64,model==='trumpf'?'#dfc33e':model==='bystronic'?'#6c8797':'#527f95');box(-430,105-down*112,-100,860,64,200,'#5d8295','#36596d');
  function cyl(px,pz,y0,y1,r){let a=P({x:px,y:y0,z:pz}),b=P({x:px,y:y1,z:pz});x.lineCap='round';x.strokeStyle='#4e6877';x.lineWidth=r*2*sc;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();x.strokeStyle='#c7d6df';x.lineWidth=r*sc;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke()}
  cyl(-360,-90,180,240,32);cyl(360,-90,180,240,32);
- box(-395,34-down*48,-82,790,24,164,'#344f61','#233c4b');poly([{x:-390,y:34-down*48,z:-65},{x:390,y:34-down*48,z:-65},{x:320,y:-8-down*48,z:-42},{x:-320,y:-8-down*48,z:-42}],'#b9c8d2');poly([{x:-390,y:-8-down*48,z:-55},{x:390,y:-8-down*48,z:-55},{x:65,y:-17-down*48,z:-30},{x:-65,y:-17-down*48,z:-30}],'#8c9eaa');poly([{x:-65,y:-17-down*48,z:-30},{x:65,y:-17-down*48,z:-30},{x:0,y:-25-down*48,z:-20}],'#d9e2e8');
- box(-405,-112,-100,810,32,200,'#475e6e','#293f4d');poly([{x:-390,y:-80,z:-82},{x:-250,y:-80,z:-82},{x:-120,y:-38,z:-82},{x:-45,y:-5,z:-82},{x:45,y:-5,z:-82},{x:120,y:-38,z:-82},{x:250,y:-80,z:-82},{x:390,y:-80,z:-82},{x:390,y:-55,z:-82},{x:240,y:-55,z:-82},{x:115,y:-12,z:-82},{x:35,y:18,z:-82},{x:-35,y:18,z:-82},{x:-115,y:-12,z:-82},{x:-240,y:-55,z:-82},{x:-390,y:-55,z:-82}],'#8d9fa9');
- const bend=down>.05?Math.PI/2*down:.035,sheetDrop=down*48,p1=P({x:-345,y:-30,z:0}),p2=P({x:-100,y:-30-sheetDrop*.12,z:0}),p3=P({x:0,y:-30-sheetDrop,z:0}),p4=P({x:100,y:-30-sheetDrop*.12,z:0}),p5=P({x:345,y:-30,z:0});
+ box(-395,34-down*74,-82,790,24,164,'#344f61','#233c4b');poly([{x:-390,y:34-down*74,z:-65},{x:390,y:34-down*74,z:-65},{x:320,y:-8-down*74,z:-42},{x:-320,y:-8-down*74,z:-42}],'#b9c8d2');poly([{x:-390,y:-8-down*74,z:-55},{x:390,y:-8-down*74,z:-55},{x:65,y:-17-down*74,z:-30},{x:-65,y:-17-down*74,z:-30}],'#8c9eaa');poly([{x:-65,y:-17-down*74,z:-30},{x:65,y:-17-down*74,z:-30},{x:0,y:-25-down*74,z:-20}],'#d9e2e8');
+ // La V de la matriz es un canal cóncavo abierto hacia arriba, con caras a 90° aproximados; no una cresta invertida.
+ box(-405,-172,-100,810,32,200,'#475e6e','#293f4d');poly([{x:-390,y:-30,z:-82},{x:-80,y:-30,z:-82},{x:0,y:-110,z:-82},{x:80,y:-30,z:-82},{x:390,y:-30,z:-82},{x:390,y:-140,z:-82},{x:-390,y:-140,z:-82}],'#8d9fa9');
+ const bend=down>.05?Math.PI/2*down:.035,sheetDrop=down*74,p1=P({x:-345,y:-30,z:0}),p2=P({x:-100,y:-30-sheetDrop*.12,z:0}),p3=P({x:0,y:-30-sheetDrop,z:0}),p4=P({x:100,y:-30-sheetDrop*.12,z:0}),p5=P({x:345,y:-30,z:0});
  x.beginPath();x.moveTo(p1.x,p1.y);x.lineTo(p2.x,p2.y);x.quadraticCurveTo((p2.x+p3.x)/2,p3.y-6,p3.x,p3.y);x.quadraticCurveTo((p3.x+p4.x)/2,p3.y-6,p4.x,p4.y);x.lineTo(p5.x,p5.y);x.strokeStyle='#1686c2';x.lineWidth=10;x.lineJoin='round';x.stroke();x.strokeStyle='#d8f2ff';x.lineWidth=3;x.stroke();
  box(-420,-235,-200,840,24,400,'#465d6a','#2e4653');
  // Carenados y detalles de fabricación: paneles de fundición, nervios, tornillería y resguardos.
@@ -292,11 +293,13 @@ function drawPhysicalBend(){
  const poly=(pts,fill,stroke='#526f80')=>{x.beginPath();pts.forEach((p,i)=>{const q=P(p[0],p[1],p[2]||0);i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y)});x.closePath();const g=x.createLinearGradient(cx-280,base-200,cx+280,base+80);g.addColorStop(0,'#f3f7f9');g.addColorStop(.4,fill);g.addColorStop(1,'#526a78');x.fillStyle=g;x.fill();x.strokeStyle=stroke;x.lineWidth=2;x.stroke()};
  const line=(pts,color,width=3)=>{x.beginPath();pts.forEach((p,i)=>{const q=P(p[0],p[1],p[2]||0);i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y)});x.strokeStyle=color;x.lineWidth=width;x.lineJoin='round';x.lineCap='round';x.stroke()};
  const label=(txt,px,py,color='#17445a')=>{x.fillStyle=color;x.font='bold 19px system-ui';x.fillText(txt,px,py)};
- // Table and die body, with an open V channel and highlighted shoulders.
- poly([[-430,20,-30],[-130,20,-30],[-60,-35,-30],[0,-72,-30],[60,-35,-30],[130,20,-30],[430,20,-30],[430,-28,-30],[-430,-28,-30]],'#879eab','#405b6a');
- poly([[-430,20,30],[-130,20,30],[-60,-35,30],[0,-72,30],[60,-35,30],[130,20,30],[430,20,30],[430,-28,30],[-430,-28,30]],'#a9bbc5','#405b6a');
+ // Matriz en V abierta: el contorno superior baja hacia el vértice; el volumen queda debajo de las caras.
+ const vHalf=Math.max(24,Math.min(150,v*3)),vDepth=Math.max(16,vHalf/Math.tan(dieAngle*Math.PI/360)),dieApexY=20-vDepth;
+ const dieProfile=[[-430,20],[-vHalf,20],[0,dieApexY],[vHalf,20],[430,20],[430,-28],[-430,-28]];
+ poly(dieProfile.map(([px,py])=>[px,py,-30]),'#879eab','#405b6a');
+ poly(dieProfile.map(([px,py])=>[px,py,30]),'#a9bbc5','#405b6a');
  poly([[-430,20,-30],[-430,20,30],[-430,-28,30],[-430,-28,-30]],'#536e7d');
- line([[-130,20,-31],[-60,-35,-31],[0,-72,-31],[60,-35,-31],[130,20,-31]],'#d7e4eb',4);
+ line([[-vHalf,20,-31],[0,dieApexY,-31],[vHalf,20,-31]],'#d7e4eb',4);
  // Topes traseros situados detrás de la matriz; sus dedos de apoyo quedan en la cota de la chapa.
  const gaugeX=-310, gaugeY=144;
  // El plano superior del tope coincide con la cota de apoyo de la chapa en reposo.
@@ -328,7 +331,7 @@ function drawPhysicalBend(){
   }
  }
  const activeVertex=profilePts[Math.min(profilePts.length-1,Math.max(0,idx+1))]||{x:0,y:0};
- const sheetCenterY=20-74*contact;
+ const sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*contact;
  const sheetPts=profilePts.map(p=>[p.x-activeVertex.x,p.y-activeVertex.y+sheetCenterY,5]);
  line(sheetPts,'#087fb5',Math.max(5,thicknessPx));
  line(sheetPts.map(p=>[p[0],p[1]+thicknessPx*.5,p[2]+1]),'#e0f7ff',1.8);
@@ -336,7 +339,7 @@ function drawPhysicalBend(){
  const contactPts=[[-130,20,6],[-60,-35,6],[0,-72,6],[60,-35,6],[130,20,6]];
  line(contactPts,'rgba(8,127,181,.28)',2);
  // Punch body and pointed nose; motion is driven by the same cycle progress slider.
- const punchY=(-54+thicknessPx+punchHeight+8)+(1-contact)*74,tipHalf=Math.max(8,Math.min(44,Math.tan(punchAngle*Math.PI/360)*35)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
+ const punchTipY=sheetCenterY+Math.max(2,thicknessPx*.65),punchY=punchTipY+punchHeight+8,tipHalf=Math.max(2,Math.min(24,Math.tan(punchAngle*Math.PI/360)*8)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
  // Work-zone glow shows the contact path, not a safety-certified collision envelope.
