@@ -315,7 +315,8 @@ function drawPhysicalBend(){
   }
  }
  const activeVertex=profilePts[Math.min(profilePts.length-1,Math.max(0,idx+1))]||{x:0,y:0};
- const sheetPts=profilePts.map(p=>[p.x-activeVertex.x,p.y-activeVertex.y+20,5]);
+ const sheetCenterY=20-92*contact;
+ const sheetPts=profilePts.map(p=>[p.x-activeVertex.x,p.y-activeVertex.y+sheetCenterY,5]);
  line(sheetPts,'#087fb5',Math.max(5,thicknessPx));
  line(sheetPts.map(p=>[p[0],p[1]+thicknessPx*.5,p[2]+1]),'#e0f7ff',1.8);
  // Línea de contacto sobre la matriz: cambia con el descenso real del punzón.
