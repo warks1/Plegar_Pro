@@ -360,3 +360,8 @@ assert.ok(collision.includes('const targetTipY=dieApexY-Math.max(1,thicknessPx*1
 assert.ok(collision.includes('const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel'), 'el desplazamiento del punzón debe sincronizarse con la carrera');
 assert.ok(collision.includes('TOPE'), 'la vista TouchProfile debe mostrar topes traseros');
 assert.ok(collision.includes('PLEGAR PRO · TOUCH PROFILE'), 'la vista de perfil debe usar cabecera compacta tipo control CNC');
+
+// Physical punch must share the sampled sheet-contact x coordinate, not just its height.
+assert.ok(physical.includes('shoulder=Math.max(42,Math.min(82,punchHeight*.55)),punchCenterX=activeSheetContactX'), 'punch center must be tied to the sampled active bend contact');
+assert.ok(physical.includes('].map(([px,py,pz])=>[px+punchCenterX,py,pz])'), 'punch outline must translate horizontally with the actual sheet contact');
+assert.ok(physical.includes('const contactP=P(activeSheetContactX,activeSheetContactY,contactSurface[2]+1)'), 'contact marker and punch center must share the same surface point');
