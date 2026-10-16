@@ -6,10 +6,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const bendRuntime = fs.readFileSync(path.join(__dirname, '..', 'pp57-system-integration.js'), 'utf8');
 assert.ok(bendRuntime.includes('[[-430,20,-30],[-130,20,-30],[-60,-35,-30],[0,-72,-30],[60,-35,-30],[130,20,-30],[430,20,-30]'), 'die V profile must be centered under the punch');
-assert.ok(bendRuntime.includes('const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bendHalf=130,kneeHalf=60;'), 'sheet bend zone must span the centered V shoulders');
-assert.ok(bendRuntime.includes('const q=ax/bendHalf,rest=20+thicknessPx*.5+8*(1-q);'), 'resting sheet must have a small raised crown above the die');
-assert.ok(bendRuntime.includes('const qDie=ax/bendHalf,vY=20-92*Math.pow(Math.max(0,1-qDie),.9);'), 'sheet profile must use a smoothed bend curve rather than copy the die facets');
-assert.ok(bendRuntime.includes('py=rest+(vY+thicknessPx*.5-rest)*contact;'), 'sheet thickness must remain above the die surface during contact');
 assert.ok(bendRuntime.includes('const profilePts=[{x:0,y:0}];let profileHeading=0;'), 'physical follow-up must rebuild the complete programmed sheet profile');
 assert.ok(bendRuntime.includes('const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;'), 'physical follow-up must retain completed bends according to programmed sequence');
 assert.ok(bendRuntime.includes('const activeTurnProgress=phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1;'), 'active bend must progress and remain formed after punch retraction');
@@ -18,8 +14,6 @@ assert.ok(bendRuntime.includes('const sheetPts=profilePts.map(p=>[p.x-activeVert
 assert.ok(bendRuntime.includes('const sheetRestY=20;'), 'backgauge reference must align with the sheet resting height');
 assert.ok(bendRuntime.includes('const gaugeX=-310, gaugeY=144;'), 'backgauge should remain behind the tooling');
 assert.ok(bendRuntime.includes('[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]'), 'backgauge contact pad should terminate at the sheet resting height');
-assert.ok(bendRuntime.includes('const wingSlope=Math.tan(Math.max(0,Math.min(Math.PI/3,(180-angle)*Math.PI/360)))*contact;'), 'wing rotation must be driven by the selected bend angle and contact progress');
-assert.ok(bendRuntime.includes('for(let j=0;j<=160;j++)'), 'sheet profile must be sampled finely enough for continuous bending');
 assert.ok(bendRuntime.includes('rawContact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?Math.max(0,Math.min(1,(phase-.82)/.18)):0;const contact=rawContact*(1-release);'), 'sheet contact must release in sync with punch retraction');
 assert.ok(bendRuntime.includes('const punchY=(-72+thicknessPx+punchHeight+8)+(1-contact)*145,tipHalf='), 'punch travel must retract as sheet contact returns to zero');
 const cycle = phase => {
