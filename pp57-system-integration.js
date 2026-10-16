@@ -5,6 +5,7 @@ const $=id=>document.getElementById(id), KEY='plegarPro.v58';
 let prefs={};try{prefs=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
 let raf=0,start=0,paused=false,zoom=1,rotation=0,drag=null,twinInView=false,twinVisibilityReady=false,twinObserver=null,physRaf=0,physPlaying=false,physLast=0,physProgress=0,twinLastDraw=0,physLastDraw=0;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function signedBendTurn(angle,direction=1){const raw=Number(angle),a=Number.isFinite(raw)&&raw!==0?raw:90,sign=Number(direction)===-1?-1:1;return sign*Math.sign(a)*(180-Math.abs(a))*Math.PI/180}
 const S=()=>{try{return typeof state!=='undefined'?state:null}catch(e){return null}};
 const T=()=>Array.isArray(window.tools)?window.tools:[];
 const sources=[
@@ -273,8 +274,7 @@ function drawProgramProfile(b,activeIdx,order,stepNumber,activeAngle,phase=0){
   if(i<segments.length-1){
    const seqPosition=order.indexOf(i),done=seqPosition>=0&&seqPosition<stepNumber,active=i===activeIdx;
    const progress=done?1:active?(phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1):0;
-   const direction=Number(seg.direction)||1;
-   heading+=direction*(180-(Number(seg.angle)||90))*Math.PI/180*progress;
+   heading+=signedBendTurn(seg.angle,seg.direction)*progress;
   }
  });
  const minX=Math.min(...pts.map(p=>p.x)),maxX=Math.max(...pts.map(p=>p.x)),minY=Math.min(...pts.map(p=>p.y)),maxY=Math.max(...pts.map(p=>p.y)),scale=Math.min((w-90)/Math.max(1,maxX-minX),(h-55)/Math.max(1,maxY-minY)),ox=(w-(maxX-minX)*scale)/2-minX*scale,oy=h*.62-(maxY+minY)*scale*.5;
@@ -325,9 +325,7 @@ function drawPhysicalBend(){
   if(legIndex<b.length-1){
    const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;
    const foldProgress=isCompleted?1:isActive?activeTurnProgress:0;
-   const foldAngle=Number(b[legIndex]?.angle)||90;
-   const foldDirection=Number(b[legIndex]?.direction)||1;
-   profileHeading+=foldDirection*(180-foldAngle)*Math.PI/180*foldProgress;
+   profileHeading+=signedBendTurn(b[legIndex]?.angle,b[legIndex]?.direction)*foldProgress;
   }
  }
  const activeVertex=profilePts[Math.min(profilePts.length-1,Math.max(0,idx+1))]||{x:0,y:0};
