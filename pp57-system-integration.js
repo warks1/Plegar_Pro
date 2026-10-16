@@ -354,13 +354,19 @@ function drawPhysicalBend(){
  poly(sheetTop.concat(sheetBottom.slice().reverse()),'#9ebbc9','#416b80');
  line(sheetTop,'#e8f8ff',1.8);line(sheetBottom,'#648da0',1.2);line(sheetPts,'#087fb5',1.4);
  profilePts.slice(1,-1).forEach((q,vi)=>{const m=[(q.x-activeVertex.x)*profileScale,sheetCenterY+(q.y-activeVertex.y)*profileScale,6],pt=P(m[0],m[1],m[2]);x.beginPath();x.arc(pt.x,pt.y,vi===idx?5:3,0,Math.PI*2);x.fillStyle=vi===idx?'#e5a34b':'#d8e7ed';x.fill();x.strokeStyle='#35586b';x.lineWidth=1;x.stroke()});
- // El contacto se calcula en el vértice activo de la chapa deformada; no se dibuja una V ficticia fija.
- const activeSheetContactY=sheetCenterY+halfSheet;
- const contactAnchor=P(0,activeSheetContactY,7);
+ // Localiza la superficie real de la banda en el entorno del pliegue activo.
+ // Se comparan ambas caras de la chapa y se toma el punto más alto (lado del punzón)
+ // entre los puntos más próximos al eje del pliegue; así el contacto sigue el radio y el ángulo.
+ const nearestContourPoint=contour=>contour.reduce((best,p)=>Math.abs(p[0])<Math.abs(best[0])?p:best,contour[0]||[0,sheetCenterY,5]);
+ const topCandidate=nearestContourPoint(sheetTop),bottomCandidate=nearestContourPoint(sheetBottom);
+ const contactSurface=topCandidate[1]>=bottomCandidate[1]?topCandidate:bottomCandidate;
+ const activeSheetContactX=contactSurface[0],activeSheetContactY=contactSurface[1];
+ const contactAnchor=P(activeSheetContactX,activeSheetContactY,contactSurface[2]+1);
  x.beginPath();x.arc(contactAnchor.x,contactAnchor.y,5+contact*7,0,Math.PI*2);
  x.strokeStyle='rgba(8,127,181,'+(.2+contact*.45)+')';x.lineWidth=2;x.stroke();
- // Punch body and pointed nose; motion is driven by the same cycle progress slider.
- const sheetTopY=activeSheetContactY+Math.max(1,thicknessPx/(2*sc)),targetTipY=sheetTopY,restTipY=160;
+ // La punta del punzón comparte la coordenada vertical de la superficie superior calculada.
+ // No se añade una corrección fija por escala: eso desplazaba el contacto según el zoom.
+ const targetTipY=activeSheetContactY,restTipY=160;
  const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8,tipHalf=Math.max(2,Math.min(24,Math.tan(punchAngle*Math.PI/360)*8)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
