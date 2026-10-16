@@ -13,7 +13,7 @@ assert.ok(html.includes('#program2d #canvasP2{position:relative;z-index:1;pointe
 const collision = fs.readFileSync(require('node:path').join(__dirname, '..', 'pp56-collision-review.js'), 'utf8');
 const sheetDraw = collision.indexOf("x.beginPath();sheet.forEach((q,i)=>i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y));x.strokeStyle='#49d0ed';x.lineWidth=2.5;x.stroke();");
 const dieForeground = collision.indexOf('Render the solid die body in the foreground after the sheet');
-const punchDraw = collision.indexOf("const tipY=top-180+travel*(180+dieDepth-5)");
+const punchDraw = collision.indexOf("const thicknessPx=Math.max(3,Math.min(12,t*scale)),tipTargetY=sheetY-thicknessPx/2-1,tipY=top-180+travel*(tipTargetY-(top-180))");
 assert.ok(sheetDraw>=0 && dieForeground>sheetDraw && punchDraw>dieForeground, 'CybTouch profile must draw the sheet, mask it with the solid die body, and draw the moving punch last so the sheet cannot visually pass through solid die steel');
 assert.ok(collision.includes("x.lineTo(cx,apex);x.lineTo(cx+halfV*.34,top)"), 'CybTouch profile must retain an open V throat where the sheet can enter the die');
 const runtime = fs.readFileSync(require('node:path').join(__dirname, '..', 'pp57-system-integration.js'), 'utf8');
