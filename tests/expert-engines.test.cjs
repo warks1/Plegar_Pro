@@ -20,7 +20,7 @@ const runtime = fs.readFileSync(require('node:path').join(__dirname, '..', 'pp57
 assert.ok(runtime.includes('const rankOf=i=>{') && runtime.includes('const raw=Array.from({length:n},(_,i)=>i).sort((a,b)=>rankOf(a)-rankOf(b));'), 'physical follow-up must use the same programmed bend ranking as the 2D/3D simulators');
 assert.ok(!runtime.includes('window.PLEGAR_PRO_COLLISIONS?.getOrder?.()'), 'collision review order must not override the geometry order defined by the main simulations');
 assert.ok(runtime.includes('lastObservedWidth=-1') && runtime.includes('resizeRaf=requestAnimationFrame(()=>{resizeRaf=0;fitCanvas(canvas,baseWidth,baseHeight)})'), 'canvas ResizeObserver must coalesce resizes outside observer delivery to avoid notification loops');
-assert.ok(runtime.includes('heading+=signedBendTurn(seg.angle,seg.direction)*progress;'), 'profile preview must preserve signed programmed angles such as -90 degrees');
+assert.ok(runtime.includes('heading-=signedBendTurn(seg.angle,seg.direction)*progress;'), 'profile preview must preserve signed programmed angles such as -90 degrees');
 assert.ok(runtime.includes('turnByBend[legIndex]=turn;profileHeading+=turn;'), 'physical sheet must use the same signed-angle equation as the 2D/3D simulations');
 assert.ok(runtime.includes('angle=Number(bend.angle)||90'), 'physical step readout must preserve the programmed angle sign');
 assert.ok(runtime.includes('touch-action:none;user-select:none;-webkit-user-select:none'), '3D machine canvas must allow touch rotation without browser panning');
