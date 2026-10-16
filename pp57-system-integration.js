@@ -223,8 +223,10 @@ function drawPhysicalBend(){
  poly([[-430,20,30],[-130,20,30],[-60,-35,30],[0,-72,30],[60,-35,30],[130,20,30],[430,20,30],[430,-28,30],[-430,-28,30]],'#a9bbc5','#405b6a');
  poly([[-430,20,-30],[-430,20,30],[-430,-28,30],[-430,-28,-30]],'#536e7d');
  line([[-130,20,-31],[-60,-35,-31],[0,-72,-31],[60,-35,-31],[130,20,-31]],'#d7e4eb',4);
- // Backgauge fingers: behind the tooling, with adjustable-looking reference and contact pads.
+ // Topes traseros situados detrás de la matriz; sus dedos de apoyo quedan en la cota de la chapa.
  const gaugeX=-310, gaugeY=144;
+ // El plano superior del tope coincide con la cota de apoyo de la chapa en reposo.
+ const sheetRestY=20;
  poly([[gaugeX-28,gaugeY+30,90],[gaugeX+28,gaugeY+30,90],[gaugeX+18,gaugeY-95,90],[gaugeX-18,gaugeY-95,90]],'#536f80','#2f4c5e');
  poly([[gaugeX-52,gaugeY-95,90],[gaugeX+52,gaugeY-95,90],[gaugeX+52,gaugeY-112,90],[gaugeX-52,gaugeY-112,90]],'#d1dfe6','#526c7b');
  poly([[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]],'#e5a34b','#91612d');
@@ -233,19 +235,19 @@ function drawPhysicalBend(){
  poly([[gaugeX+386,gaugeY-95,90],[gaugeX+490,gaugeY-95,90],[gaugeX+490,gaugeY-112,90],[gaugeX+386,gaugeY-112,90]],'#d1dfe6','#526c7b');
  // Chapa dinámica: apoyada sobre los hombros de la matriz, llega al tope trasero y se curva al bajar el punzón.
  // En reposo tiene una ligera ampolla; durante el contacto, el centro entra en la V y las dos alas suben.
- const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bendHalf=130;
+ const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bendHalf=130,kneeHalf=60;
  const wingSlope=Math.tan(Math.max(0,Math.min(Math.PI/3,(180-angle)*Math.PI/360)))*contact;
  const sheetPts=[];
- for(let j=0;j<=120;j++){
-  const xpos=(-1+2*j/120)*flatHalf,ax=Math.abs(xpos);
+ for(let j=0;j<=160;j++){
+  const xpos=(-1+2*j/160)*flatHalf,ax=Math.abs(xpos);
   let py;
   if(ax<=bendHalf){
    const q=ax/bendHalf,rest=20+thicknessPx*.5+8*(1-q);
-   // La chapa presenta una ligera ampolla antes del contacto y después sigue el perfil real de la V centrada.
-   const vY=ax<=60?-72+(37/60)*ax:-35+(55/70)*(ax-60);
+   // La chapa sigue los dos flancos de la V con espesor visible y una pequeña ampolla en reposo.
+   const vY=ax<=kneeHalf?-72+(37/kneeHalf)*ax:-35+(55/(bendHalf-kneeHalf))*(ax-kneeHalf);
    py=rest+(vY+thicknessPx*.5-rest)*contact;
   }else{
-   // Las alas permanecen rectas y giran desde los hombros de la matriz según el ángulo seleccionado.
+   // Alas rectas; la rotación aumenta con el contacto y parte del hombro real de la matriz.
    py=20+(ax-bendHalf)*wingSlope;
   }
   sheetPts.push([xpos,py,5]);
@@ -261,7 +263,7 @@ function drawPhysicalBend(){
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
  // Work-zone glow shows the contact path, not a safety-certified collision envelope.
  const contactP=P(0,29+contact*18,7);x.beginPath();x.arc(contactP.x,contactP.y,14+contact*18,0,Math.PI*2);x.fillStyle='rgba(18,139,196,'+(.05+contact*.12)+')';x.fill();
- label('PUNZÓN '+(punch?.name||punch?.id||'GENÉRICO'),w*.43,75);label('MATRIZ V'+v+' · '+dieAngle+'°',w*.43,h*.82);label('TOPE TRASERO',w*.08,h*.35);label('CHAPA · CONTACTO '+Math.round(contact*100)+'%',w*.63,h*.35);
+ label('PUNZÓN '+(punch?.name||punch?.id||'GENÉRICO'),w*.43,75);label('MATRIZ V'+v+' · '+dieAngle+'°',w*.43,h*.82);label('TOPE TRASERO · REFERENCIA '+sheetRestY,w*.08,h*.35);label('CHAPA · CONTACTO '+Math.round(contact*100)+'%',w*.63,h*.35);
  x.fillStyle='#eaf6fb';x.fillRect(24,22,360,42);x.fillStyle='#17445a';x.font='bold 15px system-ui';x.fillText(view==='profile'?'PERFIL LATERAL · SEGUIMIENTO DEL PLEGADO':view==='section'?'SECCIÓN DE CONTACTO':view==='front'?'VISTA FRONTAL':'VISTA ISOMÉTRICA DE SEGUIMIENTO',36,49);
  const phaseLabel=phase<.12?'APROXIMACIÓN':phase<.67?'CONTACTO / PLEGADO':phase<.84?'RETENCIÓN':'RETORNO';$('pp58PhysStepLabel').textContent=phaseLabel;$('pp58PhysActive').textContent=phase<.12?'Punzón acercándose':phase<.84?'Punzón + chapa + matriz':'Retorno y liberación';$('pp58PhysOrder').textContent=order.length?('P'+(idx+1)+' · '+(stepNumber+1)+'/'+order.length):'Sin pliegues definidos';$('pp58PhysAngle').textContent=angle+'°';$('pp58PhysThickness').textContent=t.toFixed(2)+' mm';
  $('pp58PhysStatus').textContent='Paso '+(stepNumber+1)+' · '+(punch?(punch.maker||'Utillaje')+' '+(punch.name||punch.id||'punzón'):'punzón genérico estimado')+' · '+(die?(die.maker||'Utillaje')+' '+(die.name||die.id||'matriz'):'matriz V estimada')+'. Geometría representada con los metadatos locales disponibles; no sustituye un perfil CAD oficial.';
