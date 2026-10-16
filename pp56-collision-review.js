@@ -54,6 +54,7 @@ function collisionGeometry(stepIndex,foldIndex,travel,b,toolAudit,v){
  const flangeClearances=model.slice(0,-1).map((a,i)=>({i,d:Math.min(...punch.map(p=>distPointSegment(p,a,model[i+1])),...die.map(p=>distPointSegment(p,a,model[i+1])))})).filter(q=>q.i!==stepIndex);
  return {unit:'mm',solid3DCheck:{available:!!(solid3D?.prismMesh&&solid3D?.intersectPrisms),method:'3D prism mesh: sheet thickness extrusion + tool cross-section extrusion + Z overlap',machineReference:machineSpec?.id||'generic',machineBendingLengthMm:machineSpec?.bendingLengthMm||null,hitCount:solid3DHits.length,hits:solid3DHits,geometryStatus:machineSpec?.geometryStatus||'PARAMETRIC_ESTIMATE'},machineBodyCollisionCheck:{available:false,reason:'Machine envelope meshes are display-only estimates and are not tested against the sheet/tool swept volume',machineGeometryStatus:machineSpec?.geometryStatus||'PARAMETRIC_ESTIMATE_NOT_OEM_CAD'},profilePointCount:modelSource.length,priorFoldSegmentCount:new Set([...sheetHitPunch,...sheetHitDie]).size,priorFoldBendSegmentCount:priorFoldBendSegments.length,punchInterferenceSegments:[...new Set(sheetHitPunch)],dieInterferenceSegments:[...new Set(sheetHitDie)],priorFoldInterference:sheetHitPunch.length>0||sheetHitDie.length>0,activeBendContact:{checked:true,punchContourContact:activePunchContact,dieContourContact:activeDieContact,arcSegments:activeBendSegments.length,interpretation:'contacto geométrico 2D orientativo; no distingue por sí solo contacto correcto de penetración indebida'},toolProfileSource:{punch:measuredPunch?'imported DXF profile points in physical mm':'parametric estimate from catalog angle/radius/height/V',die:measuredDie?'imported DXF profile points in physical mm':'parametric estimate from catalog angle/radius/height/V'},officialGeometry:!!(toolAudit.punch?.officialVerified&&toolAudit.die?.officialVerified),travel:travel,tipClearanceMm:gap,dieOpeningMm:v,thicknessMm:t,method:'parametric prism intersection: 2D cross-section polygons plus Z-span overlap when the prism engine is available; 2D segment fallback otherwise; simplified tool contours; not OEM CAD or safety-certified',scope:'chronologically prior folded flanges only; active bend contour contact checked separately and is not proof of correct forming',activeBendIntersectionChecked:true};
 }
+function signedBendTurn(angle,direction=1){const raw=Number(angle),a=Number.isFinite(raw)&&raw!==0?raw:90,sign=Number(direction)===-1?-1:1;return sign*Math.sign(a)*(180-Math.abs(a))*Math.PI/180}
 function profileModel(progressStep=Infinity,progressTravel=1){
  const a=bs(),order=seq(),pts=[{x:0,y:0}],n=a.length,folds=Math.max(0,n-1);let heading=0;
  for(let i=0;i<n;i++){
@@ -61,8 +62,8 @@ function profileModel(progressStep=Infinity,progressTravel=1){
   pts.push({x:p.x+len*Math.cos(heading),y:p.y+len*Math.sin(heading)});
   if(i<folds){
    const rank=order.indexOf(i),fraction=rank<progressStep?1:rank===progressStep?Math.max(0,Math.min(1,progressTravel)):0;
-   const angle=Math.max(1,Math.min(179,Number(a[i]?.angle)||90)),direction=Number(a[i]?.direction)===-1?-1:1;
-   heading+=direction*(180-angle)*Math.PI/180*fraction;
+   const turn=signedBendTurn(a[i]?.angle,a[i]?.direction);
+   heading+=turn*fraction;
   }
  }
  return pts;
@@ -71,7 +72,7 @@ function profileModelPhysical(progressStep=Infinity,progressTravel=1,toolAudit={
  const a=bs(),order=seq(),t=th(),folds=Math.max(0,a.length-1),bends=[];
  for(let i=0;i<folds;i++){
   const rank=order.indexOf(i),fraction=rank<progressStep?1:rank===progressStep?Math.max(0,Math.min(1,progressTravel)):0;
-  const angle=Math.max(1,Math.min(179,Number(a[i]?.angle)||90)),direction=Number(a[i]?.direction)===-1?-1:1,theta=direction*(180-angle)*Math.PI/180*fraction;
+  const theta=signedBendTurn(a[i]?.angle,a[i]?.direction)*fraction;
   const inside=Math.max(Number(a[i]?.radius)||0,Number(toolAudit.punch?.radius)||0,Number(toolAudit.die?.radius)||0,Number(v)*.08,t*.16),radius=inside+t/2,distance=Math.abs(theta)>1e-5?radius*Math.tan(Math.min(Math.PI*.49,Math.abs(theta)/2)):0;
   bends.push({theta,radius,distance});
  }
