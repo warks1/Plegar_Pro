@@ -3,7 +3,7 @@ const e = require('../pp65-expert-engines.js');
 const fs = require('node:fs');
 const html = fs.readFileSync(require('node:path').join(__dirname, '..', 'index.html'), 'utf8');
 const sw = fs.readFileSync(require('node:path').join(__dirname, '..', 'sw.js'), 'utf8');
-assert.ok(sw.includes("const CACHE='plegar-pro-v191-84'"), 'Service worker cache must be bumped when tooling profiles change');
+assert.ok(sw.includes("const CACHE='plegar-pro-v191-85'"), 'Service worker cache must be bumped when tooling profiles change');
 assert.ok(sw.includes("'./pp55-cad-precision.js?v=64.9.2'") && sw.includes("'./pp57-system-integration.js?v=182'"), 'Service worker must precache the current die profile scripts');
 assert.ok(html.includes("$('resetSettings').onclick=()=>{state.settings={theme:'light'"), 'Reset settings must preserve the approved light default theme');
 assert.ok(html.includes("year=new Date().getFullYear(),holder=o.copyrightHolder||'AMS'"), 'Software copyright footer must default to AMS rather than the configured contact name');
