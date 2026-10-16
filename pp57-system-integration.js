@@ -367,11 +367,12 @@ function drawPhysicalBend(){
  // La punta del punzón comparte la coordenada vertical de la superficie superior calculada.
  // No se añade una corrección fija por escala: eso desplazaba el contacto según el zoom.
  const targetTipY=activeSheetContactY,restTipY=160;
- const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8,tipHalf=Math.max(2,Math.min(24,Math.tan(punchAngle*Math.PI/360)*8)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
- poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
- line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
+ const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8,tipHalf=Math.max(2,Math.min(24,Math.tan(punchAngle*Math.PI/360)*8)),shoulder=Math.max(42,Math.min(82,punchHeight*.55)),punchCenterX=activeSheetContactX;
+ const punchOutline=[[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]].map(([px,py,pz])=>[px+punchCenterX,py,pz]);
+ poly(punchOutline,'#718c9b','#334f60');
+ line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]].map(([px,py,pz])=>[px+punchCenterX,py,pz]),'#edf5f8',3);
  // Work-zone glow shows the contact path, not a safety-certified collision envelope.
- const contactP=P(0,activeSheetContactY,7);x.beginPath();x.arc(contactP.x,contactP.y,9+contact*13,0,Math.PI*2);x.fillStyle='rgba(18,139,196,'+(.05+contact*.12)+')';x.fill();
+ const contactP=P(activeSheetContactX,activeSheetContactY,contactSurface[2]+1);x.beginPath();x.arc(contactP.x,contactP.y,9+contact*13,0,Math.PI*2);x.fillStyle='rgba(18,139,196,'+(.05+contact*.12)+')';x.fill();
  label('PUNZÓN '+(punch?.name||punch?.id||'GENÉRICO'),w*.43,75);label('MATRIZ V'+v+' · '+dieAngle+'°',w*.43,h*.82);label('TOPE TRASERO · REFERENCIA '+sheetRestY,w*.08,h*.35);label('CHAPA · CONTACTO '+Math.round(contact*100)+'%',w*.63,h*.35);
  const railX=24,railY=h-42,railW=Math.max(120,w-48),railN=Math.max(1,order.length),slot=railW/railN;
  x.fillStyle='#e5f1f6';x.fillRect(railX,railY-13,railW,26);
