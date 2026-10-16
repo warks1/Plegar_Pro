@@ -312,30 +312,38 @@ function drawPhysicalBend(){
  poly([[gaugeX+386,gaugeY-95,90],[gaugeX+490,gaugeY-95,90],[gaugeX+490,gaugeY-112,90],[gaugeX+386,gaugeY-112,90]],'#d1dfe6','#526c7b');
  // Sección lateral CNC: chapa plana en aproximación; el vértice baja dentro de la abertura de la V y las alas giran alrededor del pliegue activo.
  const thicknessPx=Math.max(3,Math.min(8,t*2.2));
- // SEGUIMIENTO FÍSICO ACUMULATIVO: reconstruye el perfil completo de la pieza a partir
- // de las patas programadas. Los pliegues ya ejecutados permanecen; el actual se forma
- // durante el contacto y no se deshace cuando el punzón retorna. Los futuros quedan planos.
+ // Dibuja el perfil programado completo: pliegues previos cerrados, actual progresivo y futuros planos.
  const activeTurnProgress=phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1;
- const profilePts=[{x:0,y:0}];let profileHeading=0;
+ const profilePts=[{x:0,y:0}],turnByBend=[];let profileHeading=0;
  for(let legIndex=0;legIndex<b.length;legIndex++){
-  const legLength=Math.max(1,Number(b[legIndex]?.leg)||0);
-  const prev=profilePts[profilePts.length-1];
+  const legLength=Math.max(1,Number(b[legIndex]?.leg)||0),prev=profilePts[profilePts.length-1];
   profilePts.push({x:prev.x+Math.cos(profileHeading)*legLength,y:prev.y+Math.sin(profileHeading)*legLength});
   if(legIndex<b.length-1){
    const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;
-   const foldProgress=isCompleted?1:isActive?activeTurnProgress:0;
-   profileHeading+=signedBendTurn(b[legIndex]?.angle,b[legIndex]?.direction)*foldProgress;
+   const foldProgress=isCompleted?1:isActive?activeTurnProgress:0,turn=signedBendTurn(b[legIndex]?.angle,b[legIndex]?.direction)*foldProgress;
+   turnByBend[legIndex]=turn;profileHeading+=turn;
   }
  }
- const sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*contact;
- const bendTurn=Math.abs(signedBendTurn(angle,bend.direction));
- const halfOpen=Math.PI/2-(bendTurn*Math.PI/360)*contact;
- const arm=Math.max(vHalf+24,Math.min(150,Number(bend.leg)||100));
- const innerX=arm*Math.sin(halfOpen),outerY=sheetCenterY+arm*Math.cos(halfOpen);
- // Dibujar el pliegue local evita trasladar la pieza completa a través del sólido de la matriz.
- const sheetPts=[[-arm,outerY,5],[-innerX,outerY,5],[0,sheetCenterY,5],[innerX,outerY,5],[arm,outerY,5]];
- line(sheetPts,'#087fb5',Math.max(5,thicknessPx));
- line(sheetPts.map(p=>[p[0],p[1]+thicknessPx*.42,p[2]+1]),'#e0f7ff',1.8);
+ // Radios de esquina aproximados para que la chapa tenga un contorno metálico continuo.
+ const insideRadius=Math.max(.5,Number(punch?.radius)||0,Number(die?.radius)||0,t*.5),centreRadius=insideRadius+t*.5;
+ const sheetPath=[{...profilePts[0]}],pushSheet=q=>{const z=sheetPath[sheetPath.length-1];if(!z||Math.hypot(q.x-z.x,q.y-z.y)>1e-5)sheetPath.push(q)};
+ for(let vi=1;vi<profilePts.length-1;vi++){
+  const prev=profilePts[vi-1],corner=profilePts[vi],next=profilePts[vi+1],turn=Number(turnByBend[vi-1])||0;
+  const l1=Math.hypot(corner.x-prev.x,corner.y-prev.y),l2=Math.hypot(next.x-corner.x,next.y-corner.y);
+  if(Math.abs(turn)<.015||l1<1e-5||l2<1e-5){pushSheet({...corner});continue}
+  const ux=(corner.x-prev.x)/l1,uy=(corner.y-prev.y)/l1,vx=(next.x-corner.x)/l2,vy=(next.y-corner.y)/l2,tan=Math.tan(Math.abs(turn)/2);
+  const radius=Math.min(centreRadius,Math.min(l1,l2)*.44/Math.max(.001,tan)),trim=radius*tan,sign=Math.sign(turn);
+  const entry={x:corner.x-ux*trim,y:corner.y-uy*trim},exit={x:corner.x+vx*trim,y:corner.y+vy*trim};
+  const center={x:entry.x-uy*sign*radius,y:entry.y+ux*sign*radius},a0=Math.atan2(entry.y-center.y,entry.x-center.x),segments=Math.max(3,Math.min(16,Math.ceil(Math.abs(turn)/(Math.PI/18))));
+  pushSheet(entry);for(let j=1;j<=segments;j++){const a=a0+turn*j/segments;pushSheet({x:center.x+radius*Math.cos(a),y:center.y+radius*Math.sin(a),bendIndex:vi-1})}pushSheet(exit);
+ }
+ pushSheet({...profilePts[profilePts.length-1]});
+ const activeVertex=profilePts[Math.min(profilePts.length-1,Math.max(1,idx+1))]||profilePts[0];
+ const spanX=Math.max(1,Math.max(...sheetPath.map(q=>q.x))-Math.min(...sheetPath.map(q=>q.x))),spanY=Math.max(1,Math.max(...sheetPath.map(q=>q.y))-Math.min(...sheetPath.map(q=>q.y)));
+ const profileScale=Math.min(1.2,620/spanX,240/spanY),sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*contact;
+ const sheetPts=sheetPath.map(q=>[(q.x-activeVertex.x)*profileScale,sheetCenterY+(q.y-activeVertex.y)*profileScale,5]);
+ line(sheetPts,'#087fb5',Math.max(5,thicknessPx));line(sheetPts.map(p=>[p[0],p[1]+thicknessPx*.42,p[2]+1]),'#e0f7ff',1.8);
+ profilePts.slice(1,-1).forEach((q,vi)=>{const m=[(q.x-activeVertex.x)*profileScale,sheetCenterY+(q.y-activeVertex.y)*profileScale,6],pt=P(m[0],m[1],m[2]);x.beginPath();x.arc(pt.x,pt.y,vi===idx?5:3,0,Math.PI*2);x.fillStyle=vi===idx?'#e5a34b':'#d8e7ed';x.fill();x.strokeStyle='#35586b';x.lineWidth=1;x.stroke()});
  // Línea de contacto sobre la matriz: cambia con el descenso real del punzón.
  const contactPts=[[-130,20,6],[-60,-35,6],[0,-72,6],[60,-35,6],[130,20,6]];
  line(contactPts,'rgba(8,127,181,.28)',2);
