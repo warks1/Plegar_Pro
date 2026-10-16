@@ -11,6 +11,9 @@ assert.ok(bendRuntime.includes('const q=ax/bendHalf,rest=20+thicknessPx*.5+8*(1-
 assert.ok(bendRuntime.includes('const vY=ax<=kneeHalf?-72+(37/kneeHalf)*ax:-35+(55/(bendHalf-kneeHalf))*(ax-kneeHalf);'), 'sheet profile must follow the two real V-face segments');
 assert.ok(bendRuntime.includes('py=rest+(vY+thicknessPx*.5-rest)*contact;'), 'sheet thickness must remain above the die surface during contact');
 assert.ok(bendRuntime.includes('const sheetRestY=20;'), 'backgauge reference must align with the sheet resting height');
+assert.ok(bendRuntime.includes('const gaugeX=-310, gaugeY=144;'), 'backgauge should remain behind the tooling');
+assert.ok(bendRuntime.includes('[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,90],[gaugeX+34,gaugeY-124,90],[gaugeX-34,gaugeY-124,90]'), 'backgauge contact pad should terminate at the sheet resting height');
+assert.ok(bendRuntime.includes('const wingSlope=Math.tan(Math.max(0,Math.min(Math.PI/3,(180-angle)*Math.PI/360)))*contact;'), 'wing rotation must be driven by the selected bend angle and contact progress');
 assert.ok(bendRuntime.includes('for(let j=0;j<=160;j++)'), 'sheet profile must be sampled finely enough for continuous bending');
 assert.ok(bendRuntime.includes('const punchY=(-72+thicknessPx+punchHeight+8)+(1-contact)*145+release*145'), 'punch travel must terminate at the sheet surface at the V apex');
 const rect = (x1,y1,x2,y2,z1=0,z2=10,name='rect') =>
