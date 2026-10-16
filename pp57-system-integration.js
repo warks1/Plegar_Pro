@@ -295,23 +295,27 @@ function drawPhysicalBend(){
  poly([[gaugeX+386,gaugeY-95,90],[gaugeX+490,gaugeY-95,90],[gaugeX+490,gaugeY-112,90],[gaugeX+386,gaugeY-112,90]],'#d1dfe6','#526c7b');
  // Chapa dinámica: apoyada sobre los hombros de la matriz, llega al tope trasero y se curva al bajar el punzón.
  // En reposo tiene una ligera ampolla; durante el contacto, el centro entra en la V y las dos alas suben.
- const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bendHalf=130,kneeHalf=60;
- const wingSlope=Math.tan(Math.max(0,Math.min(Math.PI/3,(180-angle)*Math.PI/360)))*contact;
- const sheetPts=[];
- for(let j=0;j<=160;j++){
-  const xpos=(-1+2*j/160)*flatHalf,ax=Math.abs(xpos);
-  let py;
-  if(ax<=bendHalf){
-   const q=ax/bendHalf,rest=20+thicknessPx*.5+8*(1-q);
-   // Curva de chapa suavizada: no copia los quiebros rectos del contorno de la matriz; representa una flexión aproximada alrededor del punzón.
-   const qDie=ax/bendHalf,vY=20-92*Math.pow(Math.max(0,1-qDie),.9);
-   py=rest+(vY+thicknessPx*.5-rest)*contact;
-  }else{
-   // Alas rectas; la rotación aumenta con el contacto y parte del hombro real de la matriz.
-   py=20+(ax-bendHalf)*wingSlope;
+ const thicknessPx=Math.max(3,Math.min(8,t*2.2));
+ // SEGUIMIENTO FÍSICO ACUMULATIVO: reconstruye el perfil completo de la pieza a partir
+ // de las patas programadas. Los pliegues ya ejecutados permanecen; el actual se forma
+ // durante el contacto y no se deshace cuando el punzón retorna. Los futuros quedan planos.
+ const activeTurnProgress=phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1;
+ const profilePts=[{x:0,y:0}];let profileHeading=0;
+ for(let legIndex=0;legIndex<b.length;legIndex++){
+  const legLength=Math.max(10,Math.min(1000,Number(b[legIndex]?.leg)||100));
+  const prev=profilePts[profilePts.length-1];
+  profilePts.push({x:prev.x+Math.cos(profileHeading)*legLength,y:prev.y+Math.sin(profileHeading)*legLength});
+  if(legIndex<b.length-1){
+   const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;
+   const foldProgress=isCompleted?1:isActive?activeTurnProgress:0;
+   const foldAngle=Math.max(30,Math.min(150,Number(b[legIndex]?.angle)||90));
+   const dir=String(b[legIndex]?.direction||'').toLowerCase();
+   const foldSign=/down|reverse|negative|back/.test(dir)?-1:/up|forward|positive/.test(dir)?1:(legIndex%2===0?1:-1);
+   profileHeading+=foldSign*(180-foldAngle)*Math.PI/180*foldProgress;
   }
-  sheetPts.push([xpos,py,5]);
  }
+ const activeVertex=profilePts[Math.min(profilePts.length-1,Math.max(0,idx+1))]||{x:0,y:0};
+ const sheetPts=profilePts.map(p=>[p.x-activeVertex.x,p.y-activeVertex.y+20,5]);
  line(sheetPts,'#087fb5',Math.max(5,thicknessPx));
  line(sheetPts.map(p=>[p[0],p[1]+thicknessPx*.5,p[2]+1]),'#e0f7ff',1.8);
  // Línea de contacto sobre la matriz: cambia con el descenso real del punzón.
