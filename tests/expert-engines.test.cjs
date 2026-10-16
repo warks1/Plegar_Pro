@@ -20,7 +20,9 @@ assert.ok(tooling.includes('[[-125,-65],[-42,-65],[0,-25],[42,-65],[125,-65],[12
 assert.ok(runtime.includes('[[-half2*2,height],[-half2*.55,height],[0,height*.62],[half2*.55,height],[half2*2,height],[half2*2,0],[-half2*2,0]]'), 'Engineering twin die cavity must open toward the upper working face');
 assert.ok(runtime.includes('Carenados y detalles de fabricación'), 'Machine twin must retain detailed industrial body panels');
 assert.ok(runtime.includes('Cilindros hidráulicos, vástagos cromados'), 'Machine twin must render hydraulic cylinders and chrome rods');
-assert.ok(runtime.includes('const qDie=ax/bendHalf,vY=20-92*Math.pow(Math.max(0,1-qDie),.9);'), 'Physical sheet contour must use a smoothed bending curve rather than copy the die faceted contour');
+assert.ok(runtime.includes('const profilePts=[{x:0,y:0}];let profileHeading=0;'), 'Physical follow-up must rebuild the whole sheet from programmed legs');
+assert.ok(runtime.includes('const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;'), 'Physical follow-up must retain previously completed folds');
+assert.ok(runtime.includes('const sheetCenterY=20-92*contact;'), 'Physical follow-up must animate sheet descent and retraction separately from permanent fold angles');
 assert.ok(runtime.includes('Consola CNC articulada'), 'Machine twin must include a CNC operator console');
 assert.ok(runtime.includes('Mesa de trabajo segmentada'), 'Machine twin must include a detailed segmented work table');
 assert.ok(runtime.includes('Panelería frontal: juntas de puertas, rejillas de ventilación, pilotos y fijaciones'), 'Machine twin must render front panel seams, vents, indicators and fasteners');
