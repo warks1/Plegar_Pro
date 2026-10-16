@@ -256,7 +256,7 @@ assert.match(twin, /plegarpro:playback-step/);
 assert.match(collision, /CYBELEC CybTouch 15 PS · CONTROL CNC/, 'collision HMI must use the requested CybTouch 15 reference');
 assert.match(collision, /function drawCybTouchProfile\(/, 'collision view must include the CybTouch-style 2D profile renderer');
 assert.match(collision, /if\(camera==='cybtouch'\)\{drawCybTouchProfile\(/, 'CybTouch 2D profile must be the active default view');
-assert.ok(collision.includes('const diePath=') && collision.includes('const dieDepthPx=dieHalfPx/Math.tan(dieAngle*Math.PI/360)'), 'Touch HMI must render a concave V whose depth follows the selected die angle');
+assert.ok(collision.includes('const diePath=') && collision.includes('dieDepthPx=dieHalfPx/Math.tan(dieAngle*Math.PI/360)'), 'Touch HMI must render a concave V whose depth follows the selected die angle');
 assert.match(collision, /const sheetCenterY=restY\+\(dieApexY-thicknessPx\*\.8-restY\)\*easing\(travel\)/, 'sheet centreline must lower into the die while following the active fold');
 assert.match(collision, /const targetTipY=dieApexY-Math\.max\(1,thicknessPx\*\.8\)/, 'punch nose must stop relative to the V apex and sheet thickness');
 assert.match(collision, /const railW=66,topH=84,bottomH=92/, 'CybTouch-style header, toolbar and viewport must have separate layout regions');
