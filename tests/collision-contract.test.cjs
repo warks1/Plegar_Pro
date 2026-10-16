@@ -30,10 +30,10 @@ assert.match(html, /grid-template-columns:258px minmax\(0,1fr\)!important/);
 assert.match(html, /#mainSidebar \.nav\{display:flex!important;flex-direction:column!important/);
 assert.match(html, /#mainSidebar\.side\.open[\s\S]*transform:translateX\(0\)!important/);
 assert.match(sw, /plegar-pro-v[0-9]+-[0-9]+/);
-const physicalRendererVersion = html.match(/pp57-system-integration\\.js\\?v=(\\d+)/)?.[1];
+const physicalRendererVersion = html.match(/pp57-system-integration\.js\?v=(\d+)/)?.[1];
 assert.ok(physicalRendererVersion, 'physical renderer must be versioned in the main document');
 assert.ok(sw.includes('./pp57-system-integration.js?v='+physicalRendererVersion), 'offline cache must load the exact physical renderer version used by the main document');
-const collisionRendererVersion = html.match(/pp56-collision-review\\.js\\?v=(\\d+)/)?.[1];
+const collisionRendererVersion = html.match(/pp56-collision-review\.js\?v=(\d+)/)?.[1];
 assert.ok(collisionRendererVersion && sw.includes('./pp56-collision-review.js?v='+collisionRendererVersion), 'collision renderer version must match between the main document and offline cache');
 // Voice assistant delivery contract: UI script must be loaded and included in offline cache.
 assert.ok(html.includes('pp64-ai-voice.js?v=1'));
