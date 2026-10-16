@@ -22,7 +22,7 @@ assert.ok(collisionRuntime.includes('const theta=-signedBendTurn(a[i]?.angle,a[i
 assert.ok(collisionRuntime.includes('heading+=theta;'), 'sheet profile must accumulate each signed programmed bend');
 assert.ok(collisionRuntime.includes('const sheetCenterY=restY+(dieApexY-thicknessPx*.8-restY)*travel;'), 'sheet contact must follow the same normalized ram travel');
 assert.ok(collisionRuntime.includes('const targetTipY=dieApexY-Math.max(1,thicknessPx*1.3),ramTravel=travel;'), 'punch must stop at the sheet surface relative to the V apex');
-assert.ok(collisionRuntime.includes('x.fillStyle=\'#dfe8ed\';x.fill();'), 'the sheet must render as a filled body with visible thickness');
+assert.ok(collisionRuntime.includes("x.fillStyle='#dfe8ed';x.fill();"), 'the sheet must render as a filled body with visible thickness');
 assert.ok(collisionRuntime.includes('function drawCybTouchProfile(x,w,h,p)'), 'the original Cybelec-style HMI must render the physical section');
 const cycle = phase => {
   const rawContact = Math.max(0, Math.min(1, (phase - .12) / .55));
