@@ -31,7 +31,7 @@ assert.ok(runtime.includes('const seqPosition=order.indexOf(i),done=seqPosition>
 assert.ok(runtime.includes('const profilePts=[{x:0,y:0}],turnByBend=[];let profileHeading=0;'), 'Physical follow-up must rebuild the whole sheet from programmed legs');
 assert.ok(runtime.includes('const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;'), 'Physical follow-up must retain previously completed folds');
 assert.ok(runtime.includes('dieApexY=20-vDepth,dieBaseY=Math.min(-28,dieApexY-18)'), 'Physical V die must have a calculated open channel and solid material beneath its apex');
-assert.ok(runtime.includes('const sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*contact;'), 'Physical sheet bend must stop near the V apex rather than pass through the die');
+assert.ok(runtime.includes('sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*contact'), 'Physical sheet bend must stop near the V apex rather than pass through the die');
 assert.ok(runtime.includes('const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8'), 'Punch must travel independently down to the sheet and return with the ram');
 assert.ok(runtime.includes('const sheetPts=sheetPath.map(q=>[(q.x-activeVertex.x)*profileScale,sheetCenterY+(q.y-activeVertex.y)*profileScale,5]);'), 'Physical view must render the accumulated sheet profile anchored on the active bend, not a symmetric generic V');
 assert.ok(runtime.includes('sheetDrop=down*74') && runtime.includes('y:-30-sheetDrop,z:0'), 'Machine twin sheet center must descend in sync with the ram into the V channel');
