@@ -257,6 +257,10 @@ assert.match(collision, /CYBELEC CybTouch 15 PS · CONTROL CNC/, 'collision HMI 
 assert.match(collision, /function drawCybTouchProfile\(/, 'collision view must include the CybTouch-style 2D profile renderer');
 assert.match(collision, /if\(camera==='cybtouch'\)\{drawCybTouchProfile\(/, 'CybTouch 2D profile must be the active default view');
 assert.match(collision, /const diePath=\[\[cx-halfV-74,top\],\[cx-halfV\*\.34,top\],\[cx,apex\]/, 'Touch HMI profile must render a concave V-die cross-section');
+assert.match(collision, /const bendRadiusMm=.*contactClearance=.*sheetTargetY=apex-contactClearance/, 'sheet centreline must sit above the die apex by the bend-radius clearance');
+assert.match(collision, /tipTargetY=sheetY-thicknessPx\/2-1/, 'punch nose must track the upper sheet surface instead of passing through the sheet');
+assert.match(collision, /const wx=78,wy=126,ww=w-94,wh=h-206/, 'CybTouch-style header, sequence strip and machine viewport must not overlap');
+assert.match(collision, /x\.fillRect\(xx,76,slotW-5,38\)/, 'fold sequence cards must be below the top header');
 assert.doesNotMatch(collision, /BYSTRONIC TOUCH 15/, 'collision HMI must not be mislabeled as Bystronic');
 assert.match(collision, /const hit=solid3D\.intersectPrisms\(seg,punchSolid\);return hit\.contact\?\?hit\.intersects/, 'active punch contact must classify tangency with a single geometry query');
 assert.match(collision, /const hit=solid3D\.intersectPrisms\(seg,dieSolid\);return hit\.contact\?\?hit\.intersects/, 'active die contact must classify tangency with a single geometry query');
