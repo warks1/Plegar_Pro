@@ -4,7 +4,7 @@
  */
 (function (root) {
   'use strict';
-  const VERSION = '69.2';
+  const VERSION = '69.3';
   const FIELDS = Object.freeze(['material','thickness','bendLength','machine','bendOrder','activeStep']);
   const adapters = new Map();
   const listeners = new Set();
@@ -194,7 +194,7 @@
     root.addEventListener('plegarpro:sync-request',e=>{const d=e.detail||{};if(d.source&&d.patch)publish(d.source,d.patch);});
   }
   if(typeof document!=='undefined') {
-    const start=()=>{installDomBridge();installPlaybackBridge();check(); if(typeof root.setInterval==='function')root.setInterval(check,350);};
+    const start=()=>{installDomBridge();check(); if(typeof root.setInterval==='function')root.setInterval(check,350);};
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
   }
 })(typeof window!=='undefined'?window:globalThis);
