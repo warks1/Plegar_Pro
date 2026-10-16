@@ -14,6 +14,10 @@ assert.match(collision, /for\(const k of \['s2Step','s3Step','p3Active','machine
 const twin = fs.readFileSync('pp59-engineering-upgrade.js', 'utf8');
 const runtime = fs.readFileSync('pp61-runtime-integrity.js', 'utf8');
 const physical = fs.readFileSync('pp57-system-integration.js', 'utf8');
+const synchronization = fs.readFileSync('pp69-expert-sync-engines.js', 'utf8');
+assert.match(synchronization, /const VERSION = '69\\.3';/, 'PP69 version must match the isolated playback bridge fix');
+assert.match(synchronization, /const start=\(\)=>\{installDomBridge\(\);check\(\);/, 'PP69 keeps field synchronization active');
+assert.doesNotMatch(synchronization, /const start=\(\)=>\{installDomBridge\(\);installPlaybackBridge\(\);/, 'PP61 must remain the single playback-step synchronization authority');
 assert.ok(collision.includes('const model=profileModelPhysical(step,travel,toolAudit,v)'), 'Touch HMI must draw the actual programmed profile for the active step');
 assert.ok(collision.includes('legPts[legPts.length-1]'), 'flat active bend must anchor at the end of the active flange, not its start');
 assert.ok(collision.includes('const diePath='), 'Touch HMI must draw a concave V die');
@@ -115,13 +119,13 @@ assert.match(html, /Build a thin sheet-metal wall/);
 assert.match(html, /getSelectedToolProfiles/);
 
 // Keep the deployed offline shell wired to the same collision/twin modules.
-assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=179"><\/script>/, 'page and service worker must load the same collision module version');
+assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=181"><\/script>/, 'page and service worker must load the same collision module version');
 assert.match(html, /id="s3ZoomRange" type="range" min="0\.25" max="6"/, '3D simulation must expose a continuous extended zoom slider');
 assert.match(html, /id="canvasS3" width="1600" height="900"/, '3D simulation canvas must use the enlarged rendering viewport');
 assert.match(html, /#sim3d \.s3Stage\{min-height:clamp\(420px,72vh,900px\)/, '3D simulation viewport must use a larger responsive stage');
 assert.match(html, /Math\.min\(6,sim\[k\]\*\(d\/lastDistance\)\)/, '3D pinch zoom must allow up to 6x magnification');
 
-assert.match(sw, /\.\/pp56-collision-review\.js\?v=179/);
+assert.match(sw, /\.\/pp56-collision-review\.js\?v=181/);
 assert.match(collision, /function setStep\(n,forceSync=false\)/);
 assert.match(collision, /signature=o\.join\(','\),sequenceChanged=sel\.dataset\.sequence!==signature/ , 'a changed fold order must force a playback-sync event even when the selected step index stays the same');
 assert.match(collision, /setStep\(step,sequenceChanged\)/, 'sequence changes must propagate to 2D/3D and machine-twin playback');
