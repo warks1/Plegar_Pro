@@ -230,38 +230,165 @@ function pp56ToolKind(t){return [t?.type,t?.name,t?.category,t?.toolType,t?.role
  function refreshPunchOptions(){const sel=$('pp56PunchSelect');if(!sel)return;const order=seq(),all=bs(),idx=order[Math.min(step,Math.max(0,order.length-1))]??0,b=all[idx]||{},catalog=Array.isArray(window.tools)?window.tools:[],needle=String(b.punch||'').replace(/punz[oó]n\s*/i,'').trim().toLowerCase(),allPunches=catalog.filter(pp56IsPunch),matched=needle?allPunches.filter(t=>String(t.name||'').toLowerCase().includes(needle)||needle.includes(String(t.name||'').replace(/punz[oó]n\s*/i,'').trim().toLowerCase())):allPunches,matches=matched.length?matched:allPunches,prior=sel.value;sel.innerHTML='<option value="">'+(matches.length?'Seleccionar punzón…':'Sin punzones disponibles')+'</option>'+matches.map(t=>'<option value="'+String(t.id||t.ref||t.code||t.name).replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'">'+String(t.maker||'Fabricante sin identificar')+' · '+String(t.name||t.id||'Punzón')+(t.officialVerified?' · verificado':' · sin verificar')+'</option>').join('');if(prior&&matches.some(t=>String(t.id||t.ref||t.code||t.name)===prior))sel.value=prior;else if(matches.length===1)sel.value=String(matches[0].id||matches[0].ref||matches[0].code||matches[0].name);else sel.value='';}
  function refreshDieOptions(){const sel=$('pp56DieSelect');if(!sel)return;const order=seq(),all=bs(),idx=order[Math.min(step,Math.max(0,order.length-1))]??0,b=all[idx]||{},v=Math.max(6,Number(b.v||S()?.project?.selectedV||16)),catalog=Array.isArray(window.tools)?window.tools:[],matches=catalog.filter(t=>pp56IsDie(t)&&Number(t.v)===v),prior=sel.value;sel.innerHTML='<option value="">'+(matches.length?'Seleccionar matriz…':'Sin matrices disponibles para V'+v)+'</option>'+matches.map(t=>'<option value="'+String(t.id||t.ref||t.code||t.name).replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'">'+String(t.maker||'Fabricante sin identificar')+' · '+String(t.name||t.id||'Matriz')+(t.officialVerified?' · verificada':' · sin verificar')+'</option>').join('');const preferred=matches.find(t=>[t.name,t.id,t.ref,t.code].some(q=>String(q||'').trim().toLowerCase()===String(b.die||b.matrix||b.matriz||'').trim().toLowerCase()));if(prior&&matches.some(t=>String(t.id||t.ref||t.code||t.name)===prior))sel.value=prior;else if(preferred)sel.value=String(preferred.id||preferred.ref||preferred.code||preferred.name);else if(matches.length===1)sel.value=String(matches[0].id||matches[0].ref||matches[0].code||matches[0].name);else sel.value='';}
  function drawCybTouchProfile(x,w,h,p){
-  const {travel,order,idx,b,t,v,toolAudit,punchAngle,punchRadius}=p;
-  x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#f7fafc');bg.addColorStop(1,'#e2eaf0');x.fillStyle=bg;x.fillRect(0,0,w,h);
-  x.fillStyle='#173b50';x.fillRect(0,0,w,64);x.fillStyle='#f4fbff';x.font='900 19px system-ui';x.fillText('PLEGAR PRO',18,27);x.font='11px system-ui';x.fillStyle='#a9d6e7';x.fillText('SECUENCIA DE PLEGADO · CONTROL CNC',18,46);x.fillStyle='#48c3e3';x.fillRect(0,61,w,3);
-  const slots=Math.max(1,order.length),slotW=Math.min(54,(w-270)/slots),startX=Math.max(240,(w-slots*slotW)/2);
-  order.forEach((f,i)=>{const xx=startX+i*slotW,active=i===step;x.fillStyle=active?'#c7f0fa':'#d4e1e6';x.fillRect(xx,76,slotW-5,38);x.strokeStyle=active?'#087ea4':'#9eb5c0';x.lineWidth=active?2.5:1;x.strokeRect(xx,76,slotW-5,38);x.fillStyle='#17495e';x.font='900 15px system-ui';x.textAlign='center';x.fillText(String(i+1).padStart(2,'0'),xx+(slotW-5)/2,92);x.font='10px system-ui';x.fillText('P'+(f+1),xx+(slotW-5)/2,106);x.textAlign='left'});
-  x.fillStyle='#eaf0f3';x.fillRect(0,71,66,h-142);['↖','↕','⌕','▤','↶','✓'].forEach((g,i)=>{const yy=91+i*61;x.fillStyle=i===1?'#c4e8ef':'#d8e4e8';x.fillRect(10,yy,45,44);x.strokeStyle='#9db4bd';x.strokeRect(10,yy,45,44);x.fillStyle='#315d6a';x.font='bold 23px system-ui';x.textAlign='center';x.fillText(g,32,yy+29)});x.textAlign='left';
-  const wx=78,wy=126,ww=w-94,wh=h-206;x.save();x.beginPath();x.rect(wx,wy,ww,wh);x.clip();const workBg=x.createLinearGradient(wx,wy,wx,wy+wh);workBg.addColorStop(0,'#edf3f6');workBg.addColorStop(1,'#d8e3e9');x.fillStyle=workBg;x.fillRect(wx,wy,ww,wh);
-  x.strokeStyle='rgba(54,91,111,.12)';x.lineWidth=1;for(let gx=wx;gx<w;gx+=32){x.beginPath();x.moveTo(gx,wy);x.lineTo(gx,h-80);x.stroke()}for(let gy=wy;gy<h-80;gy+=32){x.beginPath();x.moveTo(wx,gy);x.lineTo(w-16,gy);x.stroke()}
-  const dieAngle=Math.max(30,Math.min(150,Number(toolAudit.die?.angle)||90)),halfV=Math.max(78,Math.min(172,v*4.6)),dieDepth=Math.max(48,Math.min(104,halfV/Math.tan(dieAngle*Math.PI/360))),top=h*.69,apex=top+dieDepth,bottom=Math.min(h-104,apex+84),cx=wx+ww*.52;
-  const diePath=[[cx-halfV-74,top],[cx-halfV*.34,top],[cx,apex],[cx+halfV*.34,top],[cx+halfV+74,top],[cx+halfV+74,bottom],[cx-halfV-74,bottom]];
-  x.beginPath();diePath.forEach((q,i)=>i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]));x.closePath();const dg=x.createLinearGradient(cx-halfV,top,cx+halfV,bottom);dg.addColorStop(0,'#163f52');dg.addColorStop(.25,'#2c7189');dg.addColorStop(.5,'#5b9caf');dg.addColorStop(.78,'#2a667b');dg.addColorStop(1,'#12394c');x.fillStyle=dg;x.fill();x.strokeStyle='#d4edf3';x.lineWidth=2.5;x.stroke();x.strokeStyle='#b9eaf5';x.lineWidth=3;x.beginPath();x.moveTo(cx-halfV*.34,top);x.lineTo(cx,apex);x.lineTo(cx+halfV*.34,top);x.stroke();
-  const gaugeY=top-2,gaugeXs=[cx+halfV*.48,cx+halfV*.78];gaugeXs.forEach((gx,i)=>{x.fillStyle='#667e8d';x.fillRect(gx-8,gaugeY-84,16,84);x.fillStyle='#a9bac5';x.fillRect(gx-22,gaugeY-4,44,10);x.fillStyle='#d9a55b';x.fillRect(gx-15,gaugeY-7,30,4);x.strokeStyle='#f5fbfd';x.strokeRect(gx-22,gaugeY-4,44,10);x.fillStyle='#25475b';x.font='bold 10px system-ui';x.fillText(i===0?'TOPE X':'TOPE Z',gx-27,gaugeY-94)});
-  x.fillStyle='#819aa5';x.fillRect(wx+25,bottom-4,ww-50,18);x.fillStyle='#b6c8d0';x.fillRect(wx+25,bottom+14,ww-50,13);x.strokeStyle='#e1edf1';x.strokeRect(wx+25,bottom-4,ww-50,31);
-  const model=profileModelPhysical(step,travel,toolAudit,v),xs=model.map(q=>q.x),ys=model.map(q=>q.y),spanX=Math.max(1,Math.max(...xs)-Math.min(...xs)),spanY=Math.max(1,Math.max(...ys)-Math.min(...ys)),scale=Math.max(.25,Math.min((ww-160)/spanX,(wh*.5)/spanY,3.2));
-  const arcs=model.map((q,i)=>({...q,i})).filter(q=>q.bendIndex===idx),legPts=model.map((q,i)=>({...q,i})).filter(q=>q.legIndex===idx);
-  const active=arcs.length?arcs[Math.floor(arcs.length/2)]:(legPts[legPts.length-1]||model[Math.min(idx,model.length-1)]||{x:0,y:0,i:0});
-  const bendRadiusMm=Math.max(Number(b.radius)||0,Number(toolAudit.punch?.radius)||0,Number(toolAudit.die?.radius)||0,v*.08,t*.16)+t/2,contactClearance=Math.max(4,Math.min(20,bendRadiusMm*scale)),sheetRestY=top-Math.max(2,t*scale*.5),sheetTargetY=apex-contactClearance,sheetY=sheetRestY+travel*(sheetTargetY-sheetRestY),sheet=model.map(q=>({x:cx+(q.x-active.x)*scale,y:sheetY-(q.y-active.y)*scale}));
-  const thickness=Math.max(4,Math.min(9,t*1.5)),upper=[],lower=[];
-  for(let i=0;i<sheet.length;i++){const a=sheet[Math.max(0,i-1)],z=sheet[Math.min(sheet.length-1,i+1)],dx=z.x-a.x,dy=z.y-a.y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;upper.push({x:sheet[i].x+nx*thickness/2,y:sheet[i].y+ny*thickness/2});lower.push({x:sheet[i].x-nx*thickness/2,y:sheet[i].y-ny*thickness/2})}
-  x.beginPath();upper.forEach((q,i)=>i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y));lower.slice().reverse().forEach(q=>x.lineTo(q.x,q.y));x.closePath();x.fillStyle='#a9cbd5';x.fill();x.strokeStyle='#effcff';x.lineWidth=1.5;x.stroke();x.beginPath();sheet.forEach((q,i)=>i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y));x.strokeStyle='#49d0ed';x.lineWidth=2.5;x.stroke();
-  // Render the solid die body in the foreground after the sheet. Its concave V contour masks sheet pixels that would otherwise appear to pass through solid steel; only the working throat remains visible.
-  x.save();x.beginPath();diePath.forEach((q,i)=>i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]));x.closePath();x.fillStyle=dg;x.fill();x.strokeStyle='#d4edf3';x.lineWidth=2.5;x.stroke();x.strokeStyle='#b9eaf5';x.lineWidth=3;x.beginPath();x.moveTo(cx-halfV*.34,top);x.lineTo(cx,apex);x.lineTo(cx+halfV*.34,top);x.stroke();x.restore();
-  const thicknessPx=Math.max(3,Math.min(12,t*scale)),tipTargetY=sheetY-thicknessPx/2-1,tipY=top-180+travel*(tipTargetY-(top-180)),tipHalf=Math.max(8,Math.min(58,Math.tan(punchAngle*Math.PI/360)*44)),tipR=Math.max(1.5,Math.min(7,punchRadius*1.6)),pTop=tipY-280,pShoulder=tipY-95;
-  x.fillStyle='#8198a3';x.fillRect(cx-170,tipY-180,340,30);x.fillStyle='#b6c8d0';x.fillRect(cx-185,tipY-150,370,15);x.strokeStyle='#edf5f7';x.strokeRect(cx-185,tipY-150,370,15);
-  x.beginPath();x.moveTo(cx-92,pTop);x.lineTo(cx+92,pTop);x.lineTo(cx+74,pShoulder);x.lineTo(cx+tipHalf,tipY-14);x.quadraticCurveTo(cx+tipR,tipY,cx,tipY+1);x.quadraticCurveTo(cx-tipR,tipY,cx-tipHalf,tipY-14);x.lineTo(cx-74,pShoulder);x.closePath();const pg=x.createLinearGradient(cx-90,pTop,cx+90,tipY);pg.addColorStop(0,'#f6d6a0');pg.addColorStop(.45,'#d99a4a');pg.addColorStop(1,'#86502c');x.fillStyle=pg;x.fill();x.strokeStyle='#fff0d1';x.lineWidth=2;x.stroke();
-  x.fillStyle='#173b50';x.font='bold 13px system-ui';x.fillText('PUNZÓN',Math.min(w-115,cx+108),pTop+18);x.fillText('MATRIZ V'+v,Math.min(w-115,cx+halfV+12),top+26);x.fillText('CHAPA',Math.min(w-100,Math.max(wx+10,cx+22)),Math.max(wy+22,sheetY-18));x.fillStyle='#f5c26b';x.beginPath();x.arc(cx,sheetY,5,0,Math.PI*2);x.fill();
-  x.fillStyle='#173b50';x.font='bold 12px system-ui';x.fillText('ÁNGULO '+(Number(b.angle)||90)+'° · ESPESOR '+t.toFixed(2)+' mm · '+mat(),wx+14,wy+24);x.restore();
-  x.fillStyle='#dce6ec';x.fillRect(0,h-70,w,70);x.fillStyle='#173b50';x.font='bold 13px system-ui';x.fillText('PLEGAR PRO · CONTROL DE PLEGADO',18,h-42);x.font='12px system-ui';x.fillStyle='#486679';x.fillText('PASO '+String(step+1).padStart(2,'0')+' · P'+(idx+1)+' · '+(travel>.88?'PLIEGUE COMPLETADO':travel>.04?'DESCENSO Y CONTACTO':'POSICIÓN DE INICIO'),18,h-20);x.textAlign='right';x.font='bold 12px system-ui';x.fillStyle='#173b50';x.fillText('AMS · PLEGAR PRO',w-18,h-28);x.textAlign='left';
+  const {travel:rawTravel,order,idx,b,t,v,toolAudit,punchAngle,punchRadius}=p;
+  const travel=Math.max(0,Math.min(1,Number(rawTravel)||0)),clamp=(n,a,z)=>Math.max(a,Math.min(z,n));
+  const easing=q=>{q=clamp(q,0,1);return q*q*(3-2*q)};
+  const dieAngle=clamp(Number(toolAudit.die?.angle||b.dieAngle||b.matrixAngle||88),30,150);
+  const dieDepthMm=(Math.max(1,Number(v)||16)/2)/Math.tan(dieAngle*Math.PI/360);
+  const model=profileModelPhysical(step,travel,toolAudit,v),restModel=profileModelPhysical(step,0,toolAudit,v);
+  const allPts=[...model,...restModel],xs=allPts.map(q=>q.x),ys=allPts.map(q=>q.y);
+  const spanX=Math.max(1,Math.max(...xs)-Math.min(...xs)),spanY=Math.max(1,Math.max(...ys)-Math.min(...ys));
+  const railW=66,topH=84,bottomH=92,wx=railW+8,wy=topH+5,ww=w-wx-16,workTop=wy+3,workBottom=h-bottomH-9;
+  const top=workBottom-Math.max(150,Math.round((workBottom-workTop)*.26)),cx=Math.round(wx+ww*.52);
+  const scale=Math.max(.12,Math.min((ww-230)/spanX,(top-workTop-70)/Math.max(35,spanY),2.4,150/Math.max(1,dieDepthMm)));
+  const tMm=Math.max(.1,Number(t)||1),thicknessPx=Math.max(2,Math.min(8,tMm*scale)),vMm=Math.max(1,Number(v)||16);
+  const halfV=vMm*scale/2,dieHalfPx=halfV,dieDepthPx=dieHalfPx/Math.tan(dieAngle*Math.PI/360);
+  let dieApexY=top+dieDepthPx;
+  const measuredDie=Array.isArray(toolAudit.die?.profilePointsMm)&&toolAudit.die.profilePointsMm.length>=6?toolAudit.die.profilePointsMm:null;
+  const dieBodyHalf=Math.min(ww/2-12,Math.max(halfV+42*scale,110*scale));
+  const dieBottom=Math.min(workBottom,dieApexY+Math.max(28,34*scale));
+  const fallbackDiePath=[[cx-dieBodyHalf,top],[cx-halfV,top],[cx,dieApexY],[cx+halfV,top],[cx+dieBodyHalf,top],[cx+dieBodyHalf,dieBottom],[cx-dieBodyHalf,dieBottom]];
+  const measuredDiePath=measuredDie?measuredDie.map(q=>[cx+(Number(q.x)-(Math.min(...measuredDie.map(p=>Number(p.x)||0))+Math.max(...measuredDie.map(p=>Number(p.x)||0)))/2)*scale,top+(Math.max(...measuredDie.map(p=>Number(p.y)||0))-Number(q.y))*scale]):null;
+  const diePath=measuredDiePath&&measuredDiePath.length>=6&&measuredDiePath.every(q=>q.every(Number.isFinite))?measuredDiePath:fallbackDiePath;
+  if(diePath===measuredDiePath&&measuredDiePath){
+    const nearApex=diePath.filter(q=>Math.abs(q[0]-cx)<=Math.max(8,halfV*.35));
+    if(nearApex.length)dieApexY=Math.max(top,...nearApex.map(q=>q[1]));
+  }
+  const drawPolygon=(pts,fill,stroke,width=1.4)=>{
+    if(!pts||pts.length<3)return;
+    x.beginPath();pts.forEach((q,i)=>i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]));x.closePath();
+    x.fillStyle=fill;x.fill();x.strokeStyle=stroke;x.lineWidth=width;x.stroke();
+  };
+  const drawDie=()=>{
+    if(!visible.die)return;
+    drawPolygon(diePath,'#89969e','#4b5c65',1.7);
+    if(!measuredDie){
+      x.beginPath();x.moveTo(cx-halfV,top);x.lineTo(cx,dieApexY);x.lineTo(cx+halfV,top);
+      x.strokeStyle='#5c6d75';x.lineWidth=2.2;x.stroke();
+      x.beginPath();x.moveTo(cx-halfV,top-1);x.lineTo(cx+halfV,top-1);x.strokeStyle='#c8d1d6';x.lineWidth=2;x.stroke();
+    }
+  };
+  const activePoint=profile=>{
+    const arcs=profile.map((q,i)=>({...q,i})).filter(q=>q.bendIndex===idx);
+    const legPts=profile.map((q,i)=>({...q,i})).filter(q=>q.legIndex===idx);
+    return arcs.length?arcs[Math.floor(arcs.length/2)]:(legPts[legPts.length-1]||profile[Math.min(idx,profile.length-1)]||{x:0,y:0});
+  };
+  const restAnchor=activePoint(restModel),active=activePoint(model),restY=top-thicknessPx*.6;
+  const restSheet=restModel.map(q=>({x:cx+(q.x-restAnchor.x)*scale,y:restY+(q.y-restAnchor.y)*scale}));
+  const rightEdge=restSheet.reduce((best,q)=>q.x>best.x?q:best,restSheet[0]||{x:cx+100,y:restY});
+  const gaugeX=clamp(rightEdge.x-4,cx+halfV+26,wx+ww-28),gaugeY=restY;
+  const sheetCenterY=restY+(dieApexY-thicknessPx*.8-restY)*easing(travel);
+  const sheet=model.map(q=>({x:cx+(q.x-active.x)*scale,y:sheetCenterY+(q.y-active.y)*scale}));
+  const sheetTop=[],sheetBottom=[];
+  for(let i=0;i<sheet.length;i++){
+    const a=sheet[Math.max(0,i-1)],z=sheet[Math.min(sheet.length-1,i+1)],dx=z.x-a.x,dy=z.y-a.y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;
+    sheetTop.push({x:sheet[i].x+nx*thicknessPx/2,y:sheet[i].y+ny*thicknessPx/2});
+    sheetBottom.push({x:sheet[i].x-nx*thicknessPx/2,y:sheet[i].y-ny*thicknessPx/2});
+  }
+  const activeAngle=Number(b.angle)||90,foldTurn=signedBendTurn(activeAngle,b.direction);
+  x.clearRect(0,0,w,h);x.fillStyle='#f2f3f6';x.fillRect(0,0,w,h);
+
+  // Cabecera numérica y pestañas de operación inspiradas en TouchProfile; área de trabajo turquesa y panel inferior claro.
+  x.fillStyle='#f7f7fa';x.fillRect(0,0,w,topH);x.strokeStyle='#c7cbd2';x.lineWidth=1;x.beginPath();x.moveTo(0,topH-.5);x.lineTo(w,topH-.5);x.stroke();
+  x.fillStyle='#1a3444';x.font='bold 11px system-ui';x.fillText('PLEGAR PRO · TOUCH PROFILE',wx+6,19);
+  x.font='bold 15px system-ui';x.fillText('000',wx+6,43);
+  x.font='11px system-ui';x.fillStyle='#4b5861';x.fillText(String(mat())+'  '+tMm.toFixed(2)+' mm',wx+55,43);
+  x.fillStyle='#172f40';x.font='bold 12px system-ui';x.fillText(activeAngle.toFixed(1)+'°',wx+165,43);
+  x.font='10px system-ui';x.fillStyle='#697780';x.fillText('PASO '+String(step+1).padStart(2,'0')+'/'+String(Math.max(1,order.length)).padStart(2,'0')+' · V'+vMm+' · '+dieAngle.toFixed(1)+'°',wx+220,43);
+  const slots=Math.max(1,order.length),seqStart=wx+Math.min(265,Math.max(205,ww*.18)),seqAvail=Math.max(120,w-seqStart-190),slotW=Math.max(23,Math.min(42,seqAvail/slots));
+  order.forEach((f,i)=>{
+    const xx=seqStart+i*slotW,activeStep=i===step;
+    x.fillStyle=activeStep?'#d8f0f4':'#e7e8ed';x.fillRect(xx,51,slotW-3,24);
+    x.strokeStyle=activeStep?'#187daa':'#b5c2ca';x.lineWidth=activeStep?2:1;x.strokeRect(xx,51,slotW-3,24);
+    x.fillStyle='#17364a';x.font='bold 11px system-ui';x.textAlign='center';x.fillText(String(i+1),xx+(slotW-3)/2,67);x.textAlign='left';
+  });
+  // Barra azul de herramientas, con símbolos claros como en una pantalla táctil CNC.
+  x.fillStyle='#2678b9';x.fillRect(0,topH,railW,h-topH-bottomH);
+  const icons=['◀','▶','↕','⌕','↶','▤','✓'];
+  icons.forEach((glyph,i)=>{
+    const iy=topH+18+i*67;if(iy+47>h-bottomH-4)return;
+    x.fillStyle=i===1?'#4b9bd2':'#216da7';x.fillRect(10,iy,46,45);
+    x.strokeStyle='#96c5e6';x.lineWidth=1;x.strokeRect(10.5,iy+.5,45,44);
+    x.fillStyle='#fff';x.font='bold 23px system-ui';x.textAlign='center';x.fillText(glyph,33,iy+29);x.textAlign='left';
+  });
+  x.fillStyle='#3b8995';x.fillRect(wx,wy,ww,workBottom-wy);
+  x.strokeStyle='#286d78';x.lineWidth=1;x.strokeRect(wx+.5,wy+.5,ww-1,workBottom-wy-1);
+  x.save();x.beginPath();x.rect(wx+1,wy+1,ww-2,workBottom-wy-2);x.clip();
+  if(visible.table){
+    x.fillStyle='#e4ebef';x.fillRect(wx+35,workBottom-7,ww-70,16);
+    x.fillStyle='#bdc9cf';x.fillRect(wx+35,workBottom+9,ww-70,8);
+    x.strokeStyle='#f3f8fa';x.strokeRect(wx+35,workBottom-7,ww-70,24);
+  }
+  if(visible.stops){
+    const drawGauge=gx=>{
+      x.fillStyle='#687e89';x.fillRect(gx-5,top-132,10,132);
+      x.fillStyle='#9aaeb7';x.fillRect(gx-18,top-8,33,9);
+      x.fillStyle='#d9a24c';x.fillRect(gx-14,top-9,24,3);
+      x.strokeStyle='#e5eef2';x.strokeRect(gx-18.5,top-8.5,33,9);
+      x.fillStyle='#f4fbfd';x.font='10px system-ui';x.fillText('TOPE',gx-20,top-140);
+    };
+    drawGauge(gaugeX-48);drawGauge(gaugeX);
+  }
+  drawDie();
+  // La chapa permanece apoyada en reposo y se curva alrededor del pliegue activo mientras baja el punzón.
+  x.beginPath();sheetTop.forEach((q,i)=>i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y));sheetBottom.slice().reverse().forEach(q=>x.lineTo(q.x,q.y));x.closePath();
+  x.fillStyle='#dfe8ed';x.fill();x.strokeStyle='#faffff';x.lineWidth=1.5;x.stroke();
+  x.beginPath();sheet.forEach((q,i)=>i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y));x.strokeStyle='#fff';x.lineWidth=Math.max(1.6,thicknessPx*.28);x.stroke();
+  x.beginPath();sheetBottom.forEach((q,i)=>i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y));x.strokeStyle='#78b4bf';x.lineWidth=1;x.stroke();
+  drawDie();
+
+  const measuredPunch=Array.isArray(toolAudit.punch?.profilePointsMm)&&toolAudit.punch.profilePointsMm.length>=3?toolAudit.punch.profilePointsMm:null;
+  const punchHeightMm=Math.max(20,Number(toolAudit.punch?.height)||95),punchHeightPx=clamp(punchHeightMm*scale,135,265);
+  const restTipY=top-Math.max(138,Math.min(255,(top-workTop)*.5));
+  const targetTipY=dieApexY-Math.max(1,thicknessPx*.8),ramTravel=travel;
+  const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel;
+  if(visible.ram){
+    const ramY=punchTipY-punchHeightPx-36;
+    x.fillStyle='#aab7be';x.fillRect(cx-100,ramY,200,25);x.fillStyle='#e4e9ec';x.fillRect(cx-100,ramY,200,5);
+    x.strokeStyle='#627680';x.lineWidth=1.3;x.strokeRect(cx-100,ramY,200,25);
+    x.fillStyle='#738894';x.fillRect(cx-73,ramY+25,146,9);
+  }
+  if(visible.punch){
+    if(measuredPunch){
+      const punchTop=measuredPunch.map(q=>[cx+Number(q.x)*scale,punchTipY-Number(q.y)*scale]);
+      drawPolygon(punchTop,'#9eaab2','#4f606a',1.4);
+    }else{
+      const rise=Math.max(28,Math.min(76,punchHeightPx*.34)),tipHalf=Math.max(2,Math.tan(clamp(Number(punchAngle)||30,10,150)*Math.PI/360)*rise),tipR=clamp(Math.max(Number(punchRadius)||0,.5)*scale,1.1,7);
+      const bodyHalf=Math.max(tipHalf+22,Math.min(92,punchHeightPx*.43)),shoulderY=punchTipY-rise,bodyTop=punchTipY-punchHeightPx;
+      x.beginPath();x.moveTo(cx-bodyHalf,bodyTop);x.lineTo(cx+bodyHalf,bodyTop);x.lineTo(cx+bodyHalf*.82,shoulderY);x.lineTo(cx+tipHalf,shoulderY);
+      x.lineTo(cx+tipHalf*.72,punchTipY-tipR);x.quadraticCurveTo(cx+tipR,punchTipY,cx,punchTipY+1);
+      x.quadraticCurveTo(cx-tipR,punchTipY,cx-tipHalf*.72,punchTipY-tipR);x.lineTo(cx-tipHalf,shoulderY);x.lineTo(cx-bodyHalf*.82,shoulderY);x.closePath();
+      const pg=x.createLinearGradient(cx-bodyHalf,bodyTop,cx+bodyHalf,punchTipY);pg.addColorStop(0,'#d4dadd');pg.addColorStop(.5,'#a6b2b9');pg.addColorStop(1,'#7f909a');x.fillStyle=pg;x.fill();x.strokeStyle='#52656f';x.lineWidth=1.5;x.stroke();
+    }
+  }
+  x.restore();
+  // Miniatura de perfil y teclas inferiores tipo HMI.
+  x.fillStyle='#eceef3';x.fillRect(0,h-bottomH,w,bottomH);x.strokeStyle='#bfc7cf';x.beginPath();x.moveTo(0,h-bottomH+.5);x.lineTo(w,h-bottomH+.5);x.stroke();
+  const miniX=wx+18,miniY=h-bottomH+25,miniW=Math.max(100,ww*.48),miniH=44;
+  x.fillStyle='#f7f8fa';x.fillRect(miniX,miniY,miniW,miniH);x.strokeStyle='#d0d7dc';x.strokeRect(miniX,miniY,miniW,miniH);
+  const nominal=profileModelPhysical(Infinity,1,toolAudit,v),nx=nominal.map(q=>q.x),ny=nominal.map(q=>q.y),nspanX=Math.max(1,Math.max(...nx)-Math.min(...nx)),nspanY=Math.max(1,Math.max(...ny)-Math.min(...ny)),nsc=Math.min((miniW-20)/nspanX,(miniH-10)/Math.max(10,nspanY),.9),nox=miniX+miniW/2-(Math.min(...nx)+Math.max(...nx))*nsc/2,noy=miniY+miniH/2+(Math.min(...ny)+Math.max(...ny))*nsc/2;
+  x.beginPath();nominal.forEach((q,i)=>i?x.lineTo(nox+q.x*nsc,noy-q.y*nsc):x.moveTo(nox+q.x*nsc,noy-q.y*nsc));x.strokeStyle='#7799a4';x.lineWidth=1.6;x.stroke();
+  x.fillStyle='#284656';x.font='bold 12px system-ui';x.fillText('P'+(idx+1)+'  ·  '+activeAngle.toFixed(1)+'°  ·  '+Math.round(travel*100)+'% CARRERA',miniX+miniW+18,h-bottomH+39);
+  x.font='10px system-ui';x.fillStyle='#61717a';x.fillText('CHAPA '+tMm.toFixed(2)+' mm  ·  MATRIZ V'+vMm+' / '+dieAngle.toFixed(1)+'°',miniX+miniW+18,h-bottomH+57);
+  const okX=w-95,okY=h-bottomH+19;x.fillStyle='#2aaa4c';x.fillRect(okX,okY,76,50);x.fillStyle='#fff';x.font='bold 13px system-ui';x.textAlign='center';x.fillText('OK',okX+38,okY+30);x.beginPath();x.arc(okX+38,okY+40,3,0,Math.PI*2);x.fill();x.textAlign='left';
+  x.fillStyle='#316578';x.font='10px system-ui';x.fillText('TOUCH PROFILE · REFERENCIA VISUAL',wx+18,h-12);
+  const readX=wx+ww-175,readY=wy+29;x.fillStyle='#245b68';x.fillRect(readX-8,readY-16,158,45);x.strokeStyle='#a8d5da';x.strokeRect(readX-8.5,readY-16.5,158,45);
+  x.fillStyle='#fff';x.font='bold 13px system-ui';x.fillText('ÁNGULO '+activeAngle.toFixed(1)+'°',readX,readY+1);
+  x.font='10px system-ui';x.fillText('PLIEGUE P'+(idx+1)+' · '+(foldTurn>=0?'D+':'D−'),readX,readY+17);
+  if(sheet.length>1){x.beginPath();x.arc(cx,sheetCenterY,Math.max(8,Math.min(17,10*scale)),Math.PI*1.05,Math.PI*1.95);x.strokeStyle='#fff4c4';x.lineWidth=1.5;x.stroke()}
   const g=collisionGeometry(step,idx,travel,b,toolAudit,v),hits=[...new Set([...(g.punchInterferenceSegments||[]),...(g.dieInterferenceSegments||[])])],contact=!!(g.activeBendContact?.punchContourContact||g.activeBendContact?.dieContourContact),status=$('pp56Status');
-  if(status){status.className='pp56-status '+(hits.length||g.priorFoldInterference?'danger':contact||step===0?'warn':'ok');status.textContent=(hits.length||g.priorFoldInterference?'INTERFERENCIA ESTIMADA · '+hits.map(i=>'P'+(i+1)).join(', '):contact?'CONTACTO GEOMÉTRICO EN EL PLIEGUE ACTIVO':step===0?'Primer paso: sin alas anteriores que comprobar':'Sin interferencia detectada en los segmentos evaluados')+' · Motor geométrico en mm: '+g.method+' · Alcance: '+g.scope+'. Verificación orientativa, no certificación.'}
-  const txt=(id,value)=>{const el=$(id);if(el)el.textContent=value};txt('pp56HmiStep',String(step+1).padStart(2,'0')+' / '+String(Math.max(1,order.length)).padStart(2,'0'));txt('pp56HmiFold','P'+(idx+1));txt('pp56HmiAngle',(Number(b.angle)||90)+'°');txt('pp56HmiV','V'+v);txt('pp56HmiThickness',t.toFixed(2)+' mm');txt('pp56StepNum',(step+1)+' / '+Math.max(1,order.length));txt('pp56Fold','P'+(idx+1));txt('pp56Angle',(Number(b.angle)||90)+'°');txt('pp56Th',t.toFixed(2)+' mm');txt('pp56PlaybackReadout','PASO '+String(step+1).padStart(2,'0')+' · '+(travel>.88?'PLIEGUE COMPLETADO':travel>.04?'DESCENSO':'LISTO'));txt('pp56TravelReadout','TRANCHA '+Math.round(travel*100)+' %');if(S())S().collisionReview={step,foldIndex:idx,travel,camera:'cybtouch',parts:{...visible},projectedClearancePx:null,visualContactState:'Perfil 2D Plegar Pro Touch HMI',toolAudit:{punch:toolAudit.punchLabel,die:toolAudit.dieLabel,punchAngle,punchRadius,punchVerified:toolAudit.punchVerified,dieVerified:toolAudit.dieVerified,punchAmbiguous:toolAudit.punchAmbiguous,punchCandidateCount:toolAudit.punchCandidateCount,dieAmbiguous:toolAudit.dieAmbiguous,dieCandidateCount:toolAudit.dieCandidateCount,collisionSolidUsesCatalogProfile:!!(toolAudit.punch?.profilePointsMm||toolAudit.die?.profilePointsMm)},collisionCertification:false,dimensionalCollisionEngine:true,collisionGeometry:g,collisionModelUnit:'mm',geometryMethod:g.method,interferenceSegments:hits,priorFoldInterference:g.priorFoldInterference};
- }
+  if(status){
+    status.className='pp56-status '+(hits.length||g.priorFoldInterference?'danger':contact||step===0?'warn':'ok');
+    status.textContent=(hits.length||g.priorFoldInterference?'INTERFERENCIA ESTIMADA · '+hits.map(i=>'P'+(i+1)).join(', '):contact?'CONTACTO GEOMÉTRICO EN EL PLIEGUE ACTIVO':step===0?'Primer paso: sin alas anteriores que comprobar':'Sin interferencia detectada en los segmentos evaluados')+' · Motor geométrico en mm: '+g.method+' · Alcance: '+g.scope+'. Verificación orientativa, no certificación.';
+  }
+  const txt=(id,value)=>{const el=$(id);if(el)el.textContent=value};
+  txt('pp56HmiStep',String(step+1).padStart(2,'0')+' / '+String(Math.max(1,order.length)).padStart(2,'0'));
+  txt('pp56HmiFold','P'+(idx+1));txt('pp56HmiAngle',activeAngle+'°');txt('pp56HmiV','V'+v);txt('pp56HmiThickness',t.toFixed(2)+' mm');
+  txt('pp56StepNum',(step+1)+' / '+Math.max(1,order.length));txt('pp56Fold','P'+(idx+1));txt('pp56Angle',activeAngle+'°');txt('pp56Th',t.toFixed(2)+' mm');
+  txt('pp56PlaybackReadout','PASO '+String(step+1).padStart(2,'0')+' · '+(travel>.88?'PLIEGUE COMPLETADO':travel>.04?'DESCENSO Y CONTACTO':'POSICIÓN DE INICIO'));
+  txt('pp56TravelReadout','TRANCHA '+Math.round(travel*100)+' %');
+  if(S())S().collisionReview={step,foldIndex:idx,travel,camera:'cybtouch',parts:{...visible},projectedClearancePx:null,visualContactState:'Perfil 2D Plegar Pro Touch HMI',selectedAngle:activeAngle,selectedDieAngle:dieAngle,selectedV:vMm,canonicalOrder:order.slice(),toolAudit:{punch:toolAudit.punchLabel,die:toolAudit.dieLabel,punchAngle,punchRadius,punchVerified:toolAudit.punchVerified,dieVerified:toolAudit.dieVerified,punchAmbiguous:toolAudit.punchAmbiguous,punchCandidateCount:toolAudit.punchCandidateCount,dieAmbiguous:toolAudit.dieAmbiguous,dieCandidateCount:toolAudit.dieCandidateCount,collisionSolidUsesCatalogProfile:!!(toolAudit.punch?.profilePointsMm||toolAudit.die?.profilePointsMm)},collisionCertification:false,dimensionalCollisionEngine:true,collisionGeometry:g,collisionModelUnit:'mm',geometryMethod:g.method,interferenceSegments:hits,priorFoldInterference:g.priorFoldInterference};
+}
 function drawCollision(){
  const c=$('pp56Collision');if(!c)return;const x=c.getContext('2d'),w=c.width,h=c.height;
  x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#fafdff');bg.addColorStop(.62,'#edf5fa');bg.addColorStop(1,'#dce8ef');x.fillStyle=bg;x.fillRect(0,0,w,h);
