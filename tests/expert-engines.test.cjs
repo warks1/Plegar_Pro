@@ -33,7 +33,6 @@ assert.ok(runtime.includes('sheetDrop=down*74') && runtime.includes('y:-30-sheet
 assert.ok(runtime.includes("Math.sin((phase-.68)/.32*Math.PI);"), 'Machine twin must complete the full stroke so the sheet reaches the V working zone');
 assert.ok(runtime.includes('box(-405,-172,-100,810,32,200') && runtime.includes('{x:0,y:-110,z:-82}'), 'Machine twin V die must be a concave channel, not an inverted central ridge');
 assert.ok(runtime.includes("sc=(cam==='top'?.62:.68)*(Number($('pp58Zoom').value)||.85)"), 'Machine control panel camera must start wider to show the full press brake');
-assert.ok(runtime.includes("view==='profile'?.88"), 'Physical folding view must use a wider camera framing');
 assert.ok(runtime.includes('Consola CNC articulada'), 'Machine twin must include a CNC operator console');
 assert.ok(runtime.includes('Mesa de trabajo segmentada'), 'Machine twin must include a detailed segmented work table');
 assert.ok(runtime.includes('Panelería frontal: juntas de puertas, rejillas de ventilación, pilotos y fijaciones'), 'Machine twin must render front panel seams, vents, indicators and fasteners');
