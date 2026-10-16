@@ -286,7 +286,7 @@ function drawProgramProfile(b,activeIdx,order,stepNumber,activeAngle,phase=0){
 }
 function drawPhysicalBend(){
  const cv=$('pp58PhysicalCanvas');if(!cv)return;fitCanvas(cv,1440,660);const x=cv.getContext('2d'),w=cv.width,h=cv.height,{s,b,order,idx,bend,n,localPhase,stepNumber,punch,die}=physicalSequence();
- const t=Math.max(.1,Number(s.project?.thickness||s.development?.thickness||1)),angle=Number(bend.angle)||90,punchAngle=Math.max(20,Math.min(90,Number(punch?.angle)||30)),punchHeight=Math.max(20,Math.min(260,Number(punch?.height)||120)),v=Math.max(6,Number(die?.v||bend.v||s.project?.selectedV||16)),dieAngle=Math.max(30,Math.min(120,Number(die?.angle)||88)),phase=Math.max(0,Math.min(1,localPhase)),rawContact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?Math.max(0,Math.min(1,(phase-.82)/.18)):0;const contact=rawContact*(1-release);
+ const t=Math.max(.1,Number(s.project?.thickness||s.development?.thickness||1)),angle=Number(bend.angle)||90,punchAngle=Math.max(20,Math.min(90,Number(punch?.angle)||30)),punchHeight=Math.max(20,Math.min(260,Number(punch?.height)||120)),v=Math.max(6,Number(die?.v||bend.v||s.project?.selectedV||16)),dieAngle=Math.max(30,Math.min(120,Number(die?.angle)||88)),phase=Math.max(0,Math.min(1,localPhase));const easeCycle=q=>{q=Math.max(0,Math.min(1,q));return q*q*(3-2*q)},ramTravel=phase<.12?.12*easeCycle(phase/.12):phase<.67?.12+.88*easeCycle((phase-.12)/.55):phase<.82?1:1-easeCycle((phase-.82)/.18),contact=Math.max(0,Math.min(1,(ramTravel-.12)/.88));
  x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#f9fdff');bg.addColorStop(1,'#d9e9f2');x.fillStyle=bg;x.fillRect(0,0,w,h);
  x.strokeStyle='#d3e3eb';x.lineWidth=1;for(let i=20;i<w;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}for(let i=20;i<h;i+=40){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke()}
  const view=$('pp58PhysView')?.value||'profile',cx=view==='profile'?w*.53:w*.52,base=h*.69,sc=view==='front'?.82:view==='section'?.9:view==='profile'?.88:.78,rot=view==='iso'?rotation*.08:0;
@@ -342,7 +342,7 @@ function drawPhysicalBend(){
  pushSheet({...profilePts[profilePts.length-1]});
  const activeVertex=profilePts[Math.min(profilePts.length-1,Math.max(1,idx+1))]||profilePts[0];
  const spanX=Math.max(1,Math.max(...sheetPath.map(q=>q.x))-Math.min(...sheetPath.map(q=>q.x))),spanY=Math.max(1,Math.max(...sheetPath.map(q=>q.y))-Math.min(...sheetPath.map(q=>q.y)));
- const profileScale=Math.min(1.2,620/spanX,240/spanY),sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*contact;
+ const profileScale=Math.min(1.2,620/spanX,240/spanY),sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*ramTravel;
  const sheetPts=sheetPath.map(q=>[(q.x-activeVertex.x)*profileScale,sheetCenterY+(q.y-activeVertex.y)*profileScale,5]);
  line(sheetPts,'#087fb5',Math.max(5,thicknessPx));line(sheetPts.map(p=>[p[0],p[1]+thicknessPx*.42,p[2]+1]),'#e0f7ff',1.8);
  profilePts.slice(1,-1).forEach((q,vi)=>{const m=[(q.x-activeVertex.x)*profileScale,sheetCenterY+(q.y-activeVertex.y)*profileScale,6],pt=P(m[0],m[1],m[2]);x.beginPath();x.arc(pt.x,pt.y,vi===idx?5:3,0,Math.PI*2);x.fillStyle=vi===idx?'#e5a34b':'#d8e7ed';x.fill();x.strokeStyle='#35586b';x.lineWidth=1;x.stroke()});
@@ -350,8 +350,6 @@ function drawPhysicalBend(){
  const contactPts=[[-130,20,6],[-60,-35,6],[0,-72,6],[60,-35,6],[130,20,6]];
  line(contactPts,'rgba(8,127,181,.28)',2);
  // Punch body and pointed nose; motion is driven by the same cycle progress slider.
- const easeCycle=q=>{q=Math.max(0,Math.min(1,q));return q*q*(3-2*q)};
- const ramTravel=phase<.12?.12*easeCycle(phase/.12):phase<.67?.12+.88*easeCycle((phase-.12)/.55):phase<.82?1:1-easeCycle((phase-.82)/.18);
  const targetTipY=dieApexY+Math.max(2,thicknessPx*1.3),restTipY=160;
  const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8,tipHalf=Math.max(2,Math.min(24,Math.tan(punchAngle*Math.PI/360)*8)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
