@@ -270,7 +270,7 @@ function drawProgramProfile(b,activeIdx,order,stepNumber,activeAngle,phase=0){
   if(i<segments.length-1){
    const seqPosition=order.indexOf(i),done=seqPosition>=0&&seqPosition<stepNumber,active=i===activeIdx;
    const progress=done?1:active?(phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1):0;
-   const dir=String(seg.direction||'').toLowerCase(),sign=/down|reverse|negative|back/.test(dir)?-1:/up|forward|positive/.test(dir)?1:(i%2===0?1:-1);
+   const rawDirection=seg.direction,dir=String(rawDirection??'').toLowerCase(),numericDirection=Number(rawDirection),hasNumericDirection=rawDirection!==undefined&&rawDirection!==null&&rawDirection!==''&&Number.isFinite(numericDirection),sign=hasNumericDirection?(numericDirection<0?-1:1):/down|reverse|negative|back/.test(dir)?-1:/up|forward|positive/.test(dir)?1:1;
    heading+=sign*(180-Math.max(30,Math.min(150,Number(seg.angle)||90)))*Math.PI/180*progress;
   }
  });
@@ -321,8 +321,8 @@ function drawPhysicalBend(){
    const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;
    const foldProgress=isCompleted?1:isActive?activeTurnProgress:0;
    const foldAngle=Math.max(30,Math.min(150,Number(b[legIndex]?.angle)||90));
-   const dir=String(b[legIndex]?.direction||'').toLowerCase();
-   const foldSign=/down|reverse|negative|back/.test(dir)?-1:/up|forward|positive/.test(dir)?1:(legIndex%2===0?1:-1);
+   const rawDirection=b[legIndex]?.direction,dir=String(rawDirection??'').toLowerCase(),numericDirection=Number(rawDirection),hasNumericDirection=rawDirection!==undefined&&rawDirection!==null&&rawDirection!==''&&Number.isFinite(numericDirection);
+   const foldSign=hasNumericDirection?(numericDirection<0?-1:1):/down|reverse|negative|back/.test(dir)?-1:/up|forward|positive/.test(dir)?1:1;
    profileHeading+=foldSign*(180-foldAngle)*Math.PI/180*foldProgress;
   }
  }
