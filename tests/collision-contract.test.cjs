@@ -15,7 +15,7 @@ const twin = fs.readFileSync('pp59-engineering-upgrade.js', 'utf8');
 const runtime = fs.readFileSync('pp61-runtime-integrity.js', 'utf8');
 const physical = fs.readFileSync('pp57-system-integration.js', 'utf8');
 const synchronization = fs.readFileSync('pp69-expert-sync-engines.js', 'utf8');
-assert.match(synchronization, /const VERSION = '69\\.3';/, 'PP69 version must match the isolated playback bridge fix');
+assert.match(synchronization, /const VERSION = '69\.3';/, 'PP69 version must match the isolated playback bridge fix');
 assert.match(synchronization, /const start=\(\)=>\{installDomBridge\(\);check\(\);/, 'PP69 keeps field synchronization active');
 assert.doesNotMatch(synchronization, /const start=\(\)=>\{installDomBridge\(\);installPlaybackBridge\(\);/, 'PP61 must remain the single playback-step synchronization authority');
 assert.ok(collision.includes('const model=profileModelPhysical(step,travel,toolAudit,v)'), 'Touch HMI must draw the actual programmed profile for the active step');
