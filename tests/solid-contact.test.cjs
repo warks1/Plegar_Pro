@@ -6,10 +6,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 const bendRuntime = fs.readFileSync(path.join(__dirname, '..', 'pp57-system-integration.js'), 'utf8');
 assert.ok(bendRuntime.includes('[[-430,20,-30],[-130,20,-30],[-60,-35,-30],[0,-72,-30],[60,-35,-30],[130,20,-30],[430,20,-30]'), 'die V profile must be centered under the punch');
-assert.ok(bendRuntime.includes('const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bendHalf=130;'), 'sheet bend zone must span the centered V shoulders');
+assert.ok(bendRuntime.includes('const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bendHalf=130,kneeHalf=60;'), 'sheet bend zone must span the centered V shoulders');
 assert.ok(bendRuntime.includes('const q=ax/bendHalf,rest=20+thicknessPx*.5+8*(1-q);'), 'resting sheet must have a small raised crown above the die');
-assert.ok(bendRuntime.includes('const vY=ax<=60?-72+(37/60)*ax:-35+(55/70)*(ax-60);'), 'sheet profile must follow the two real V-face segments');
+assert.ok(bendRuntime.includes('const vY=ax<=kneeHalf?-72+(37/kneeHalf)*ax:-35+(55/(bendHalf-kneeHalf))*(ax-kneeHalf);'), 'sheet profile must follow the two real V-face segments');
 assert.ok(bendRuntime.includes('py=rest+(vY+thicknessPx*.5-rest)*contact;'), 'sheet thickness must remain above the die surface during contact');
+assert.ok(bendRuntime.includes('const sheetRestY=20;'), 'backgauge reference must align with the sheet resting height');
+assert.ok(bendRuntime.includes('for(let j=0;j<=160;j++)'), 'sheet profile must be sampled finely enough for continuous bending');
 assert.ok(bendRuntime.includes('const punchY=(-72+thicknessPx+punchHeight+8)+(1-contact)*145+release*145'), 'punch travel must terminate at the sheet surface at the V apex');
 const rect = (x1,y1,x2,y2,z1=0,z2=10,name='rect') =>
   m.prismMesh([{x:x1,y:y1},{x:x2,y:y1},{x:x2,y:y2},{x:x1,y:y2}],z1,z2,name);
