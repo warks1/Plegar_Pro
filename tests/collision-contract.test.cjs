@@ -97,13 +97,13 @@ assert.match(html, /Build a thin sheet-metal wall/);
 assert.match(html, /getSelectedToolProfiles/);
 
 // Keep the deployed offline shell wired to the same collision/twin modules.
-assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=177"><\/script>/, 'page and service worker must load the same collision module version');
+assert.match(html, /<script src="\.\/pp56-collision-review\.js\?v=178"><\/script>/, 'page and service worker must load the same collision module version');
 assert.match(html, /id="s3ZoomRange" type="range" min="0\.25" max="6"/, '3D simulation must expose a continuous extended zoom slider');
 assert.match(html, /id="canvasS3" width="1600" height="900"/, '3D simulation canvas must use the enlarged rendering viewport');
 assert.match(html, /#sim3d \.s3Stage\{min-height:clamp\(420px,72vh,900px\)/, '3D simulation viewport must use a larger responsive stage');
 assert.match(html, /Math\.min\(6,sim\[k\]\*\(d\/lastDistance\)\)/, '3D pinch zoom must allow up to 6x magnification');
 
-assert.match(sw, /\.\/pp56-collision-review\.js\?v=177/);
+assert.match(sw, /\.\/pp56-collision-review\.js\?v=178/);
 assert.match(collision, /function setStep\(n,forceSync=false\)/);
 assert.match(collision, /signature=o\.join\(','\),sequenceChanged=sel\.dataset\.sequence!==signature/ , 'a changed fold order must force a playback-sync event even when the selected step index stays the same');
 assert.match(collision, /setStep\(step,sequenceChanged\)/, 'sequence changes must propagate to 2D/3D and machine-twin playback');
@@ -256,11 +256,11 @@ assert.match(twin, /plegarpro:playback-step/);
 assert.match(collision, /CYBELEC CybTouch 15 PS · CONTROL CNC/, 'collision HMI must use the requested CybTouch 15 reference');
 assert.match(collision, /function drawCybTouchProfile\(/, 'collision view must include the CybTouch-style 2D profile renderer');
 assert.match(collision, /if\(camera==='cybtouch'\)\{drawCybTouchProfile\(/, 'CybTouch 2D profile must be the active default view');
-assert.match(collision, /const diePath=\[\[cx-halfV-74,top\],\[cx-halfV\*\.34,top\],\[cx,apex\]/, 'Touch HMI profile must render a concave V-die cross-section');
-assert.match(collision, /const bendRadiusMm=.*contactClearance=.*sheetTargetY=apex-contactClearance/, 'sheet centreline must sit above the die apex by the bend-radius clearance');
-assert.match(collision, /tipTargetY=sheetY-thicknessPx\/2-1/, 'punch nose must track the upper sheet surface instead of passing through the sheet');
-assert.match(collision, /const wx=78,wy=126,ww=w-94,wh=h-206/, 'CybTouch-style header, sequence strip and machine viewport must not overlap');
-assert.match(collision, /x\.fillRect\(xx,76,slotW-5,38\)/, 'fold sequence cards must be below the top header');
+assert.ok(collision.includes('const diePath=') && collision.includes('dieDepthPx=dieHalfPx/Math.tan(dieAngle*Math.PI/360)'), 'Touch HMI must render a concave V whose depth follows the selected die angle');
+assert.match(collision, /const sheetCenterY=restY\+\(dieApexY-thicknessPx\*\.8-restY\)\*easing\(travel\)/, 'sheet centreline must lower into the die while following the active fold');
+assert.match(collision, /const targetTipY=dieApexY-Math\.max\(1,thicknessPx\*\.8\)/, 'punch nose must stop relative to the V apex and sheet thickness');
+assert.match(collision, /const railW=66,topH=84,bottomH=92/, 'CybTouch-style header, toolbar and viewport must have separate layout regions');
+assert.match(collision, /x\.fillRect\(xx,51,slotW-3,24\)/, 'fold sequence tabs must sit in the top control strip');
 assert.doesNotMatch(collision, /BYSTRONIC TOUCH 15/, 'collision HMI must not be mislabeled as Bystronic');
 assert.match(collision, /const hit=solid3D\.intersectPrisms\(seg,punchSolid\);return hit\.contact\?\?hit\.intersects/, 'active punch contact must classify tangency with a single geometry query');
 assert.match(collision, /const hit=solid3D\.intersectPrisms\(seg,dieSolid\);return hit\.contact\?\?hit\.intersects/, 'active die contact must classify tangency with a single geometry query');
@@ -333,3 +333,10 @@ assert.match(html, /body\{min-width:0;overflow-x:hidden\}/,
   'the document must not introduce horizontal overflow on phones');
 assert.match(html, /@media\(max-width:900px\)\{[\s\S]*?#mainSidebar\.side\{position:fixed!important;inset:0 auto 0 0!important;width:min\(300px,88vw\)!important/,
   'the sidebar must switch to a bounded drawer on mobile');
+
+assert.ok(collision.includes('const halfV=vMm*scale/2'), 'la abertura V debe derivarse de milímetros y escala de perfil');
+assert.ok(collision.includes('dieDepthPx=dieHalfPx/Math.tan(dieAngle*Math.PI/360)'), 'la profundidad de la matriz debe respetar el ángulo seleccionado');
+assert.ok(collision.includes('const targetTipY=dieApexY-Math.max(1,thicknessPx*.8)'), 'el punzón debe detenerse respecto del vértice de la matriz');
+assert.ok(collision.includes('const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel'), 'el desplazamiento del punzón debe sincronizarse con la carrera');
+assert.ok(collision.includes('TOPE'), 'la vista TouchProfile debe mostrar topes traseros');
+assert.ok(collision.includes('PLEGAR PRO · TOUCH PROFILE'), 'la vista de perfil debe usar cabecera compacta tipo control CNC');
