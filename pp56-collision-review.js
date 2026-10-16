@@ -340,7 +340,7 @@ function pp56ToolKind(t){return [t?.type,t?.name,t?.category,t?.toolType,t?.role
   const measuredPunch=Array.isArray(toolAudit.punch?.profilePointsMm)&&toolAudit.punch.profilePointsMm.length>=3?toolAudit.punch.profilePointsMm:null;
   const punchHeightMm=Math.max(20,Number(toolAudit.punch?.height)||95),punchHeightPx=clamp(punchHeightMm*scale,135,265);
   const restTipY=top-Math.max(138,Math.min(255,(top-workTop)*.5));
-  const targetTipY=dieApexY-Math.max(1,thicknessPx*.8),ramTravel=travel;
+  const targetTipY=dieApexY-Math.max(1,thicknessPx*1.3),ramTravel=travel;
   const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel;
   if(visible.ram){
     const ramY=punchTipY-punchHeightPx-36;
