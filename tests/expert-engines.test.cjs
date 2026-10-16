@@ -30,9 +30,11 @@ assert.ok(runtime.includes('function drawProgramProfile(b,activeIdx,order,stepNu
 assert.ok(runtime.includes('const seqPosition=order.indexOf(i),done=seqPosition>=0&&seqPosition<stepNumber,active=i===activeIdx;'), 'physical preview must highlight bends in programmed order');
 assert.ok(runtime.includes('const profilePts=[{x:0,y:0}];let profileHeading=0;'), 'Physical follow-up must rebuild the whole sheet from programmed legs');
 assert.ok(runtime.includes('const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;'), 'Physical follow-up must retain previously completed folds');
-assert.ok(runtime.includes('const sheetCenterY=20-74*contact;'), 'Physical follow-up must lower the sheet into the die channel during punch contact');
-assert.ok(runtime.includes('const punchY=(-54+thicknessPx+punchHeight+8)+(1-contact)*74'), 'Physical follow-up punch must descend into the die with the sheet instead of remaining above it');
-assert.ok(runtime.includes('sheetDrop=down*48') && runtime.includes('y:-30-sheetDrop,z:0'), 'Machine twin sheet center must descend into the die while the ram moves down');
+assert.ok(runtime.includes('dieApexY=20-vDepth,dieBaseY=Math.min(-28,dieApexY-18)'), 'Physical V die must have a calculated open channel and solid material beneath its apex');
+assert.ok(runtime.includes('const sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*contact;'), 'Physical sheet bend must stop near the V apex rather than pass through the die');
+assert.ok(runtime.includes('const punchTipY=sheetCenterY+Math.max(2,thicknessPx*.65),punchY=punchTipY+punchHeight+8'), 'Punch tip must track the sheet surface without penetrating it');
+assert.ok(runtime.includes('sheetDrop=down*74') && runtime.includes('y:-30-sheetDrop,z:0'), 'Machine twin sheet center must descend in sync with the ram into the V channel');
+assert.ok(runtime.includes('box(-405,-172,-100,810,32,200') && runtime.includes('{x:0,y:-110,z:-82}'), 'Machine twin V die must be a concave channel, not an inverted central ridge');
 assert.ok(runtime.includes("sc=(cam==='top'?.62:.68)*(Number($('pp58Zoom').value)||.85)"), 'Machine control panel camera must start wider to show the full press brake');
 assert.ok(runtime.includes("view==='profile'?.88"), 'Physical folding view must use a wider camera framing');
 assert.ok(runtime.includes('Consola CNC articulada'), 'Machine twin must include a CNC operator console');
