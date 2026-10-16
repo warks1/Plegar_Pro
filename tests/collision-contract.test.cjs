@@ -21,6 +21,9 @@ assert.ok(physical.includes('const activeVertex=profilePts[Math.min(profilePts.l
 assert.ok(physical.includes('const sheetPath=[{...profilePts[0]}],pushSheet'), 'physical follow-up must draw the accumulated profile instead of a symmetric generic V');
 assert.ok(physical.includes('const halfSheet=Math.max(1,thicknessPx*.5),sheetTop=[],sheetBottom=[]'), 'physical renderer must model the sheet as a closed strip with local normals and visible thickness');
 assert.ok(physical.includes('poly(sheetTop.concat(sheetBottom.slice().reverse()),\'#9ebbc9\',\'#416b80\')'), 'sheet body must be filled as a metallic contour rather than a single thick line');
+assert.ok(physical.includes('const activeSheetContactY=sheetCenterY+halfSheet'), 'punch target and contact indicator must be anchored to the deformed sheet, not a fixed generic V');
+assert.ok(physical.includes('const sheetTopY=activeSheetContactY+Math.max(1,thicknessPx/(2*sc)),targetTipY=sheetTopY'), 'punch tip target must derive from the actual active sheet contact surface');
+assert.ok(!physical.includes('const contactPts=[[-130,20,6],[-60,-35,6],[0,-72,6],[60,-35,6],[130,20,6]]'), 'remove fixed generic V contact guide that contradicts the programmed sheet profile');
 assert.ok(physical.includes('turn=-signedBendTurn(b[legIndex]?.angle,b[legIndex]?.direction)*foldProgress'), 'physical renderer must invert mathematical bend sign so the sheet descends into the V die under the Y-up projection');
 assert.ok(physical.includes('heading-=signedBendTurn(seg.angle,seg.direction)*progress'), 'programmed profile preview must use the same downward bend sign as the physical renderer');
 assert.ok(collision.includes('const turn=-signedBendTurn(a[i]?.angle,a[i]?.direction);'), 'collision profile must bend downward into the V die using the same sign as the physical renderer');
