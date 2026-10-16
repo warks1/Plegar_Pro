@@ -14,7 +14,7 @@ jobs:
           node-version: 22
       - name: Check JavaScript syntax
         run: |
-          for file in pp54-engineering.js pp55-cad-precision.js pp56-collision-review.js pp57-system-integration.js pp59-engineering-upgrade.js pp60-graphics-runtime.js pp61-runtime-integrity.js pp62-contrast-playback-fix.js pp63-v85-parametric-model.js pp65-expert-engines.js pp69-expert-sync-engines.js sw.js; do
+          for file in pp54-engineering.js pp55-cad-precision.js pp56-collision-review.js pp57-system-integration.js pp59-engineering-upgrade.js pp60-graphics-runtime.js pp61-runtime-integrity.js pp62-contrast-playback-fix.js pp63-v85-parametric-model.js pp64-ai-voice.js pp65-expert-engines.js pp69-expert-sync-engines.js sw.js; do
             echo "Checking $file"
             node --check "$file"
           done
