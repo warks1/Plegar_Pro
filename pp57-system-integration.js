@@ -219,10 +219,10 @@ function drawPhysicalBend(){
  const line=(pts,color,width=3)=>{x.beginPath();pts.forEach((p,i)=>{const q=P(p[0],p[1],p[2]||0);i?x.lineTo(q.x,q.y):x.moveTo(q.x,q.y)});x.strokeStyle=color;x.lineWidth=width;x.lineJoin='round';x.lineCap='round';x.stroke()};
  const label=(txt,px,py,color='#17445a')=>{x.fillStyle=color;x.font='bold 19px system-ui';x.fillText(txt,px,py)};
  // Table and die body, with an open V channel and highlighted shoulders.
- poly([[-430,20,-30],[-300,20,-30],[-240,-35,-30],[-190,-72,-30],[-130,-35,-30],[-70,20,-30],[430,20,-30],[430,-28,-30],[-430,-28,-30]],'#879eab','#405b6a');
- poly([[-430,20,30],[-300,20,30],[-240,-35,30],[-190,-72,30],[-130,-35,30],[-70,20,30],[430,20,30],[430,-28,30],[-430,-28,30]],'#a9bbc5','#405b6a');
+ poly([[-430,20,-30],[-130,20,-30],[-60,-35,-30],[0,-72,-30],[60,-35,-30],[130,20,-30],[430,20,-30],[430,-28,-30],[-430,-28,-30]],'#879eab','#405b6a');
+ poly([[-430,20,30],[-130,20,30],[-60,-35,30],[0,-72,30],[60,-35,30],[130,20,30],[430,20,30],[430,-28,30],[-430,-28,30]],'#a9bbc5','#405b6a');
  poly([[-430,20,-30],[-430,20,30],[-430,-28,30],[-430,-28,-30]],'#536e7d');
- line([[-300,20,-31],[-240,-35,-31],[-190,-72,-31],[-130,-35,-31],[-70,20,-31]],'#d7e4eb',4);
+ line([[-130,20,-31],[-60,-35,-31],[0,-72,-31],[60,-35,-31],[130,20,-31]],'#d7e4eb',4);
  // Backgauge fingers: behind the tooling, with adjustable-looking reference and contact pads.
  const gaugeX=-310, gaugeY=144;
  poly([[gaugeX-28,gaugeY+30,90],[gaugeX+28,gaugeY+30,90],[gaugeX+18,gaugeY-95,90],[gaugeX-18,gaugeY-95,90]],'#536f80','#2f4c5e');
@@ -233,18 +233,19 @@ function drawPhysicalBend(){
  poly([[gaugeX+386,gaugeY-95,90],[gaugeX+490,gaugeY-95,90],[gaugeX+490,gaugeY-112,90],[gaugeX+386,gaugeY-112,90]],'#d1dfe6','#526c7b');
  // Chapa dinámica: apoyada sobre los hombros de la matriz, llega al tope trasero y se curva al bajar el punzón.
  // En reposo tiene una ligera ampolla; durante el contacto, el centro entra en la V y las dos alas suben.
- const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bendHalf=90;
+ const flatHalf=355,thicknessPx=Math.max(3,Math.min(8,t*2.2)),bendHalf=130;
  const wingSlope=Math.tan(Math.max(0,Math.min(Math.PI/3,(180-angle)*Math.PI/360)))*contact;
  const sheetPts=[];
- for(let j=0;j<=96;j++){
-  const u=-1+2*j/96,xpos=u*flatHalf,ax=Math.abs(xpos);
+ for(let j=0;j<=120;j++){
+  const xpos=(-1+2*j/120)*flatHalf,ax=Math.abs(xpos);
   let py;
   if(ax<=bendHalf){
-   const q=ax/bendHalf,smooth=(Math.sqrt(q*q+.0025)-.05)/(Math.sqrt(1.0025)-.05);
-   // La chapa sigue la V real de la matriz: plana en reposo y apoyada cerca de los hombros al plegar.
-   py=20-85*contact*(1-smooth);
+   const q=ax/bendHalf,rest=20+8*(1-q);
+   // La chapa presenta una ligera ampolla antes del contacto y después sigue el perfil real de la V centrada.
+   const vY=ax<=60?-72+(37/60)*ax:-35+(55/70)*(ax-60);
+   py=rest+(vY-rest)*contact;
   }else{
-   // Alas rectas que giran alrededor de los hombros; el ángulo final depende del pliegue seleccionado.
+   // Las alas permanecen rectas y giran desde los hombros de la matriz según el ángulo seleccionado.
    py=20+(ax-bendHalf)*wingSlope;
   }
   sheetPts.push([xpos,py,5]);
@@ -252,10 +253,10 @@ function drawPhysicalBend(){
  line(sheetPts,'#087fb5',Math.max(5,thicknessPx));
  line(sheetPts.map(p=>[p[0],p[1]+thicknessPx,p[2]+1]),'#e0f7ff',1.8);
  // Línea de contacto sobre la matriz: cambia con el descenso real del punzón.
- const contactPts=[[-90,20,6],[-65,-4*contact,6],[-40,-34*contact,6],[-15,-58*contact,6],[0,-65*contact,6],[15,-58*contact,6],[40,-34*contact,6],[65,-4*contact,6],[90,20,6]];
+ const contactPts=[[-130,20,6],[-60,-35,6],[0,-72,6],[60,-35,6],[130,20,6]];
  line(contactPts,'rgba(8,127,181,.28)',2);
  // Punch body and pointed nose; motion is driven by the same cycle progress slider.
- const punchY=(-64+punchHeight+8)+(1-contact)*145+release*145,tipHalf=Math.max(8,Math.min(44,Math.tan(punchAngle*Math.PI/360)*35)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
+ const punchY=(-72+thicknessPx+punchHeight+8)+(1-contact)*145+release*145,tipHalf=Math.max(8,Math.min(44,Math.tan(punchAngle*Math.PI/360)*35)),shoulder=Math.max(42,Math.min(82,punchHeight*.55));
  poly([[-100,punchY,0],[100,punchY,0],[76,punchY-shoulder,0],[tipHalf,punchY-punchHeight,0],[0,punchY-punchHeight-8,0],[-tipHalf,punchY-punchHeight,0],[-76,punchY-shoulder,0]],'#718c9b','#334f60');
  line([[-tipHalf,punchY-punchHeight,1],[0,punchY-punchHeight-8,1],[tipHalf,punchY-punchHeight,1]],'#edf5f8',3);
  // Work-zone glow shows the contact path, not a safety-certified collision envelope.
