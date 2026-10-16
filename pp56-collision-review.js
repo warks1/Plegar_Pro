@@ -274,11 +274,11 @@ function pp56ToolKind(t){return [t?.type,t?.name,t?.category,t?.toolType,t?.role
     return arcs.length?arcs[Math.floor(arcs.length/2)]:(legPts[legPts.length-1]||profile[Math.min(idx,profile.length-1)]||{x:0,y:0});
   };
   const restAnchor=activePoint(restModel),active=activePoint(model),restY=top-thicknessPx*.6;
-  const restSheet=restModel.map(q=>({x:cx+(q.x-restAnchor.x)*scale,y:restY+(q.y-restAnchor.y)*scale}));
+  const restSheet=restModel.map(q=>({x:cx+(q.x-restAnchor.x)*scale,y:restY-(q.y-restAnchor.y)*scale}));
   const rightEdge=restSheet.reduce((best,q)=>q.x>best.x?q:best,restSheet[0]||{x:cx+100,y:restY});
   const gaugeX=clamp(rightEdge.x-4,cx+halfV+26,wx+ww-28),gaugeY=restY;
   const sheetCenterY=restY+(dieApexY-thicknessPx*.8-restY)*travel;
-  const sheet=model.map(q=>({x:cx+(q.x-active.x)*scale,y:sheetCenterY+(q.y-active.y)*scale}));
+  const sheet=model.map(q=>({x:cx+(q.x-active.x)*scale,y:sheetCenterY-(q.y-active.y)*scale}));
   const sheetTop=[],sheetBottom=[];
   for(let i=0;i<sheet.length;i++){
     const a=sheet[Math.max(0,i-1)],z=sheet[Math.min(sheet.length-1,i+1)],dx=z.x-a.x,dy=z.y-a.y,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;
