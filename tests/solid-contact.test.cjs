@@ -8,6 +8,11 @@ const bendRuntime = fs.readFileSync(path.join(__dirname, '..', 'pp57-system-inte
 assert.ok(bendRuntime.includes('[[-430,20,-30],[-130,20,-30],[-60,-35,-30],[0,-72,-30],[60,-35,-30],[130,20,-30],[430,20,-30]'), 'die V profile must be centered under the punch');
 assert.ok(bendRuntime.includes('const profilePts=[{x:0,y:0}];let profileHeading=0;'), 'physical follow-up must rebuild the complete programmed sheet profile');
 assert.ok(bendRuntime.includes('profileHeading+=foldDirection*(180-foldAngle)*Math.PI/180*foldProgress;'), 'physical follow-up must preserve negative programmed bend angles instead of clamping them to positive angles');
+const omegaFixture=[{leg:60,angle:-90,direction:1},{leg:85,angle:90,direction:1},{leg:120,angle:90,direction:1},{leg:85,angle:90,direction:1},{leg:60,angle:90,direction:1}];
+const omegaProfile=[{x:0,y:0}];let omegaHeading=0;
+omegaFixture.forEach((b,i)=>{const p=omegaProfile[omegaProfile.length-1];omegaProfile.push({x:p.x+Math.cos(omegaHeading)*b.leg,y:p.y+Math.sin(omegaHeading)*b.leg});if(i<omegaFixture.length-1)omegaHeading+=(Number(b.direction)||1)*(180-(Number(b.angle)||90))*Math.PI/180});
+assert.deepEqual(omegaProfile.map(p=>[Math.round(p.x),Math.round(p.y)]),[[0,0],[60,0],[60,-85],[180,-85],[180,0],[120,0]],'Omega 60/85/120/85/60 with first signed angle -90 must retain its intended Omega contour');
+assert.ok(bendRuntime.includes('const foldAngle=Number(b[legIndex]?.angle)||90;')&&!bendRuntime.includes('Math.max(30,Math.min(150,Number(b[legIndex]?.angle)||90))'),'Omega profile must not clamp a negative bend angle to a positive 30-degree angle');
 assert.ok(bendRuntime.includes('const rankOf=i=>{') && bendRuntime.includes('const raw=Array.from({length:n},(_,i)=>i).sort((a,b)=>rankOf(a)-rankOf(b));'), 'physical follow-up sequence must match the bend ranking shared by 2D/3D');
 assert.ok(bendRuntime.includes('const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;'), 'physical follow-up must retain completed bends according to programmed sequence');
 assert.ok(bendRuntime.includes('const activeTurnProgress=phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1;'), 'active bend must progress and remain formed after punch retraction');
