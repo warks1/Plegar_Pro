@@ -22,6 +22,7 @@ assert.ok(physical.includes('const sheetPath=[{...profilePts[0]}],pushSheet'), '
 assert.ok(physical.includes('turn=-signedBendTurn(b[legIndex]?.angle,b[legIndex]?.direction)*foldProgress'), 'physical renderer must invert mathematical bend sign so the sheet descends into the V die under the Y-up projection');
 assert.ok(physical.includes('heading-=signedBendTurn(seg.angle,seg.direction)*progress'), 'programmed profile preview must use the same downward bend sign as the physical renderer');
 assert.ok(physical.includes('sheetCenterY=20+(dieApexY+Math.max(2,thicknessPx*.65)-20)*ramTravel'), 'sheet vertical motion must use the exact same normalized ram travel as the punch');
+assert.ok(physical.includes('sheetTopY=dieApexY+Math.max(2,thicknessPx*.65+Math.max(5,thicknessPx)/(2*sc)),targetTipY=sheetTopY'), 'punch tip must meet the rendered upper sheet surface at full travel, accounting for canvas scale and stroke thickness');
 assert.ok(physical.includes('contact=Math.max(0,Math.min(1,(ramTravel-.12)/.88))'), 'sheet contact indicator must derive from ram travel rather than a separate timing curve');
 assert.equal((physical.match(/const easeCycle=/g)||[]).length,1, 'physical cycle must define one shared ram easing function');
 
