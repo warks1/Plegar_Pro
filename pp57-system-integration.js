@@ -3,7 +3,7 @@
 'use strict';
 const $=id=>document.getElementById(id), KEY='plegarPro.v58';
 let prefs={};try{prefs=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
-let raf=0,start=0,paused=false,zoom=1,rotation=0,drag=null,twinInView=false,twinVisibilityReady=false,twinObserver=null,physRaf=0,physPlaying=false,physLast=0,physProgress=0;
+let raf=0,start=0,paused=false,zoom=1,rotation=0,drag=null,twinInView=false,twinVisibilityReady=false,twinObserver=null,physRaf=0,physPlaying=false,physLast=0,physProgress=0,twinLastDraw=0,physLastDraw=0;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const S=()=>{try{return typeof state!=='undefined'?state:null}catch(e){return null}};
 const T=()=>Array.isArray(window.tools)?window.tools:[];
@@ -15,6 +15,19 @@ const sources=[
 ];
 function msg(s){if(typeof window.toast==='function')window.toast(s);else console.info(s)}
 function dl(name,data,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:type||'application/json'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function fitCanvas(canvas,baseWidth,baseHeight){
+ if(!canvas)return;
+ const box=canvas.getBoundingClientRect(),cssWidth=Math.round(box.width||canvas.parentElement?.clientWidth||baseWidth);
+ if(cssWidth<2)return;
+ const width=Math.max(280,Math.min(1000,cssWidth)),height=Math.max(160,Math.round(width/(baseWidth/baseHeight)));
+ if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}
+ if(!canvas.dataset.pp58ResizeBound&&'ResizeObserver'in window){
+  canvas.dataset.pp58ResizeBound='1';
+  const observer=new ResizeObserver(()=>fitCanvas(canvas,baseWidth,baseHeight));
+  observer.observe(canvas.parentElement||canvas);
+ }
+}
+function fitKnownCanvases(){fitCanvas($('pp58Twin'),1440,760);fitCanvas($('pp58PhysicalCanvas'),1440,660)}
 function style(){if($('pp58style'))return;const s=document.createElement('style');s.id='pp58style';s.textContent='.pp58card{grid-column:1/-1;min-width:0;padding:clamp(14px,2vw,24px)!important;border:1px solid #a8cbdc!important;border-radius:17px!important;background:linear-gradient(145deg,#f9fcff,#e8f4fa)!important;color:#173246!important;box-shadow:0 12px 32px #0b2c4214!important}.pp58head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.pp58kicker{font-size:10px;font-weight:900;letter-spacing:.15em;color:#087fa5}.pp58controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:12px 0}.pp58controls label{display:block;font-size:12px;font-weight:750;margin-bottom:5px}.pp58controls input,.pp58controls select{width:100%;min-width:0;min-height:39px;border:1px solid #b7d0df!important;border-radius:9px;padding:8px;background:#fff!important;color:#173246!important}.pp58canvas{width:100%;height:auto;display:block;border:1px solid #bfd7e4;border-radius:12px;background:#f9fcff;touch-action:none;user-select:none;-webkit-user-select:none}.pp58metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin:12px 0}.pp58metric{border:1px solid #c5dce7;background:#fff;border-radius:11px;padding:12px;min-width:0}.pp58metric small{display:block;color:#5c7586;font-size:11px}.pp58metric b{display:block;font-size:clamp(14px,2vw,20px);margin-top:5px;overflow-wrap:anywhere}.pp58status{padding:12px;border-radius:11px;background:#e3f5fb;border:1px solid #b4dce9;color:#17465c;font-size:12px;line-height:1.5;margin:8px 0}.pp58toolgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(220px,.8fr);gap:12px}.pp58source{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid #d4e4ec}.pp58source a{color:#087da3;font-weight:800}.pp58checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}.pp58check{display:flex;gap:8px;align-items:center;padding:10px;background:#fff;border:1px solid #c8dce7;border-radius:9px}.pp58check input{width:auto}body:not(.light) .pp58card{background:linear-gradient(145deg,#122a3b,#0b1c29)!important;color:#e5f4fb!important;border-color:#2c5369!important}body:not(.light) .pp58metric,body:not(.light) .pp58check{background:#0c202e;border-color:#294b5d}body:not(.light) .pp58metric b{color:#e5f4fb}body:not(.light) .pp58controls input,body:not(.light) .pp58controls select{background:#081923!important;color:#e5f4fb!important}@media(max-width:740px){.pp58toolgrid{grid-template-columns:1fr}.pp58controls{grid-template-columns:repeat(2,minmax(0,1fr))}}';document.head.appendChild(s)}
 function addMachine(){
  const old=$('pp55MachineCanvas')?.closest('.pp55-card');if(!old)return;const existing=$('pp58TwinCard');if(existing){existing.style.display='';existing.hidden=false;existing.removeAttribute('aria-hidden');existing.setAttribute('aria-label','LIVE MACHINE PREVIEW · Gemelo digital de prensa plegadora');const stage=$('pp55MachineCanvas')?.closest('.pp55-stage');if(stage)stage.style.display='none';if(!paused&&!raf)runTwin();return;}
@@ -26,7 +39,7 @@ function addMachine(){
  $('pp58Home').onclick=()=>{$('pp58Camera').value='iso';$('pp58Zoom').value='1';rotation=0;drawTwin(performance.now())};
  $('pp58Cycle').onclick=()=>{start=performance.now();paused=false;$('pp58Pause').textContent='Ⅱ Pausar animación';runTwin()};
  const cv=$('pp58Twin');cv.addEventListener('pointerdown',e=>{if(e.isPrimary===false)return;drag={x:e.clientX,y:e.clientY,r:rotation,pointerId:e.pointerId};try{cv.setPointerCapture(e.pointerId)}catch(_){}});cv.addEventListener('pointermove',e=>{if(drag&&drag.pointerId===e.pointerId){rotation=drag.r+(e.clientX-drag.x)*.008;drawTwin(performance.now())}});const endDrag=e=>{if(!drag||!e||drag.pointerId===e.pointerId)drag=null};cv.addEventListener('pointerup',endDrag);cv.addEventListener('pointercancel',endDrag);cv.addEventListener('lostpointercapture',endDrag);
- setupTwinVisibility();runTwin();
+ fitCanvas($('pp58Twin'),1440,760);setupTwinVisibility();runTwin();
 }
 function setupTwinVisibility(){
  const canvas=$('pp58Twin');if(!canvas)return;
@@ -47,7 +60,7 @@ function setupTwinVisibility(){
  }else twinInView=true;
 }
 function drawTwin(now){
- const c=$('pp58Twin');if(!c)return;const x=c.getContext('2d'),w=c.width,h=c.height;if(!start)start=now;
+ const c=$('pp58Twin');if(!c)return;fitCanvas(c,1440,760);const x=c.getContext('2d'),w=c.width,h=c.height;if(!start)start=now;
  const phase=((now-start)/5200*(Number($('pp58Speed')?.value||1))%1),down=phase<.2?0:phase<.47?Math.sin((phase-.2)/.27*Math.PI):phase<.68?0:Math.sin((phase-.68)/.32*Math.PI)*.8;
  x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#fcfeff');bg.addColorStop(1,'#dcebf3');x.fillStyle=bg;x.fillRect(0,0,w,h);x.strokeStyle='#d1e1ea';for(let i=0;i<w;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}for(let i=0;i<h;i+=40){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke()}
  const cam=$('pp58Camera').value,model=$('pp58Model').value,sc=(cam==='top'?.7:.82)*(Number($('pp58Zoom').value)||1),rot=cam==='front'?0:cam==='side'?Math.PI/2:cam==='top'?0:rotation-.42,ox=w*.5,oy=h*.65;
@@ -160,6 +173,7 @@ function runTwin(){
   raf=0;
   if(paused||!$('pp58Twin')||document.hidden||(!twinInView&&'IntersectionObserver'in window)||!$('pp58Twin').getClientRects().length){raf=0;return;}
   try{
+   if(t-twinLastDraw<33){raf=requestAnimationFrame(loop);return;}twinLastDraw=t;
    drawTwin(t);
    const status=$('pp58TwinStatus');
    if(status&&status.dataset.renderError==='1'){
@@ -189,16 +203,37 @@ function addPhysicalBendSimulation(){
  punchSel.innerHTML='<option value="-1">Punzón genérico · estimado</option>'+punches.map(a=>'<option value="'+a.i+'">'+esc((a.t.maker||'')+' · '+(a.t.name||a.t.id||a.t.type||'Punzón'))+'</option>').join('');
  dieSel.innerHTML='<option value="-1">Matriz en V · estimada</option>'+dies.map(a=>'<option value="'+a.i+'">'+esc((a.t.maker||'')+' · '+(a.t.name||a.t.id||a.t.type||'Matriz'))+'</option>').join('');
  ['pp58PhysPunch','pp58PhysDie'].forEach(id=>$(id).addEventListener('change',drawPhysicalBend));
- $('pp58PhysProgress').addEventListener('input',()=>{physProgress=Number($('pp58PhysProgress').value)/100;drawPhysicalBend()});
+ $('pp58PhysProgress').addEventListener('input',()=>{physPlaying=false;if(physRaf)cancelAnimationFrame(physRaf);physRaf=0;$('pp58PhysPlay').textContent='▶ Reproducir ciclo';physProgress=Number($('pp58PhysProgress').value)/100;drawPhysicalBend()});
  $('pp58PhysView').addEventListener('change',drawPhysicalBend);
  $('pp58PhysPlay').onclick=()=>{physPlaying=!physPlaying;$('pp58PhysPlay').textContent=physPlaying?'Ⅱ Pausar ciclo':'▶ Reproducir ciclo';physLast=0;if(physPlaying)runPhysicalBend();else if(physRaf){cancelAnimationFrame(physRaf);physRaf=0}};
  $('pp58PhysPrev').onclick=()=>{const q=physicalSequence(),count=Math.max(1,q.order.length),step=Math.max(0,q.stepNumber-1);physProgress=step/count;$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend()};
  $('pp58PhysNext').onclick=()=>{const q=physicalSequence(),count=Math.max(1,q.order.length),step=Math.min(count-1,q.stepNumber+1);physProgress=step/count;$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend()};
  $('pp58PhysReset').onclick=()=>{physPlaying=false;physProgress=0;physLast=0;if(physRaf)cancelAnimationFrame(physRaf);physRaf=0;$('pp58PhysProgress').value='0';$('pp58PhysPlay').textContent='▶ Reproducir ciclo';drawPhysicalBend()};
- const canvas=$('pp58PhysicalCanvas');canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,r:rotation,pointerId:e.pointerId,physical:true};try{canvas.setPointerCapture(e.pointerId)}catch(_){}});
+ const canvas=$('pp58PhysicalCanvas');fitCanvas(canvas,1440,660);canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,r:rotation,pointerId:e.pointerId,physical:true};try{canvas.setPointerCapture(e.pointerId)}catch(_){}});
  canvas.addEventListener('pointermove',e=>{if(drag?.physical&&drag.pointerId===e.pointerId){rotation=drag.r+(e.clientX-drag.x)*.008;drawPhysicalBend()}});
  const end=e=>{if(drag?.physical&&(!e||drag.pointerId===e.pointerId))drag=null};canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
  drawPhysicalBend();
+ window.addEventListener('plegarpro:playback-step',e=>{
+  const d=e.detail||{},q=physicalSequence(),count=Math.max(1,q.order.length);
+  if(d.source==='physical')return;
+  const pos=d.complete?1:Math.max(0,Math.min(count-1,Number(d.step)||0));
+  physPlaying=false;if(physRaf)cancelAnimationFrame(physRaf);physRaf=0;
+  physProgress=d.complete?1:(pos+.5)/count;
+  if($('pp58PhysProgress'))$('pp58PhysProgress').value=String(Math.round(physProgress*100));
+  if($('pp58PhysPlay'))$('pp58PhysPlay').textContent='▶ Reproducir ciclo';
+  drawPhysicalBend();
+ });
+ window.addEventListener('plegarpro:machine-travel',e=>{
+  const d=e.detail||{},q=physicalSequence(),count=Math.max(1,q.order.length);
+  if(d.source!=='collisions'||!q.order.length)return;
+  const pos=q.order.indexOf(Number(d.foldIndex));if(pos<0)return;
+  physPlaying=false;if(physRaf)cancelAnimationFrame(physRaf);physRaf=0;
+  physProgress=(pos+Math.max(0,Math.min(100,Number(d.travel)||0))/100)/count;
+  if($('pp58PhysProgress'))$('pp58PhysProgress').value=String(Math.round(physProgress*100));
+  if($('pp58PhysPlay'))$('pp58PhysPlay').textContent='▶ Reproducir ciclo';
+  drawPhysicalBend();
+ });
+ window.addEventListener('resize',()=>{fitKnownCanvases();drawTwin(performance.now());drawPhysicalBend()},{passive:true});
 }
 function physicalSequence(){
  const s=S()||{},b=Array.isArray(s.bends)?s.bends:[],n=b.length,raw=Array.isArray(s.bendOrder)?s.bendOrder:null;
@@ -209,7 +244,7 @@ function physicalSequence(){
  return {s,b,order,idx,bend:b[idx]||{},n,localPhase,stepNumber,punch,die};
 }
 function drawPhysicalBend(){
- const cv=$('pp58PhysicalCanvas');if(!cv)return;const x=cv.getContext('2d'),w=cv.width,h=cv.height,{s,b,order,idx,bend,n,localPhase,stepNumber,punch,die}=physicalSequence();
+ const cv=$('pp58PhysicalCanvas');if(!cv)return;fitCanvas(cv,1440,660);const x=cv.getContext('2d'),w=cv.width,h=cv.height,{s,b,order,idx,bend,n,localPhase,stepNumber,punch,die}=physicalSequence();
  const t=Math.max(.1,Number(s.project?.thickness||s.development?.thickness||1)),angle=Math.max(30,Math.min(150,Number(bend.angle)||90)),punchAngle=Math.max(20,Math.min(90,Number(punch?.angle)||30)),punchHeight=Math.max(20,Math.min(260,Number(punch?.height)||120)),v=Math.max(6,Number(die?.v||bend.v||s.project?.selectedV||16)),dieAngle=Math.max(30,Math.min(120,Number(die?.angle)||88)),phase=Math.max(0,Math.min(1,localPhase)),rawContact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?Math.max(0,Math.min(1,(phase-.82)/.18)):0;const contact=rawContact*(1-release);
  x.clearRect(0,0,w,h);const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#f9fdff');bg.addColorStop(1,'#d9e9f2');x.fillStyle=bg;x.fillRect(0,0,w,h);
  x.strokeStyle='#d3e3eb';x.lineWidth=1;for(let i=20;i<w;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}for(let i=20;i<h;i+=40){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke()}
@@ -264,14 +299,17 @@ function drawPhysicalBend(){
  // Work-zone glow shows the contact path, not a safety-certified collision envelope.
  const contactP=P(0,29+contact*18,7);x.beginPath();x.arc(contactP.x,contactP.y,14+contact*18,0,Math.PI*2);x.fillStyle='rgba(18,139,196,'+(.05+contact*.12)+')';x.fill();
  label('PUNZÓN '+(punch?.name||punch?.id||'GENÉRICO'),w*.43,75);label('MATRIZ V'+v+' · '+dieAngle+'°',w*.43,h*.82);label('TOPE TRASERO · REFERENCIA '+sheetRestY,w*.08,h*.35);label('CHAPA · CONTACTO '+Math.round(contact*100)+'%',w*.63,h*.35);
+ const railX=24,railY=h-42,railW=Math.max(120,w-48),railN=Math.max(1,order.length),slot=railW/railN;
+ x.fillStyle='#e5f1f6';x.fillRect(railX,railY-13,railW,26);
+ for(let k=0;k<railN;k++){const foldIdx=order[k]??k,fb=b[foldIdx]||{},fx=railX+slot*(k+.5);x.fillStyle=k<stepNumber?'#23845d':k===stepNumber?'#087fb5':'#a9bdc8';x.beginPath();x.arc(fx,railY,Math.max(4,Math.min(9,slot*.22)),0,Math.PI*2);x.fill();x.fillStyle=k===stepNumber?'#073e58':'#315366';x.font='bold 12px system-ui';x.textAlign='center';x.fillText('P'+(foldIdx+1),fx,railY-15);x.font='10px system-ui';x.fillText((Number(fb.angle)||90)+'°',fx,railY+20)}x.textAlign='start';
  x.fillStyle='#eaf6fb';x.fillRect(24,22,360,42);x.fillStyle='#17445a';x.font='bold 15px system-ui';x.fillText(view==='profile'?'PERFIL LATERAL · SEGUIMIENTO DEL PLEGADO':view==='section'?'SECCIÓN DE CONTACTO':view==='front'?'VISTA FRONTAL':'VISTA ISOMÉTRICA DE SEGUIMIENTO',36,49);
- const phaseLabel=phase<.12?'APROXIMACIÓN':phase<.67?'CONTACTO / PLEGADO':phase<.84?'RETENCIÓN':'RETORNO';$('pp58PhysStepLabel').textContent=phaseLabel;$('pp58PhysActive').textContent=phase<.12?'Punzón acercándose':phase<.84?'Punzón + chapa + matriz':'Retorno y liberación';$('pp58PhysOrder').textContent=order.length?('P'+(idx+1)+' · '+(stepNumber+1)+'/'+order.length):'Sin pliegues definidos';$('pp58PhysAngle').textContent=angle+'°';$('pp58PhysThickness').textContent=t.toFixed(2)+' mm';
+ const phaseLabel=phase<.12?'APROXIMACIÓN':phase<.67?'CONTACTO / PLEGADO':phase<.84?'RETENCIÓN':'RETORNO';$('pp58PhysStepLabel').textContent=phaseLabel;$('pp58PhysActive').textContent=phase<.12?'Punzón acercándose':phase<.84?'Punzón + chapa + matriz':'Retorno y liberación';$('pp58PhysOrder').textContent=order.length?('P'+(idx+1)+' · '+(stepNumber+1)+'/'+order.length+' · '+Math.max(1,Number(bend.leg)||100).toFixed(0)+' mm'):'Sin pliegues definidos';$('pp58PhysAngle').textContent=angle+'°';$('pp58PhysThickness').textContent=t.toFixed(2)+' mm';
  $('pp58PhysStatus').textContent='Paso '+(stepNumber+1)+' · '+(punch?(punch.maker||'Utillaje')+' '+(punch.name||punch.id||'punzón'):'punzón genérico estimado')+' · '+(die?(die.maker||'Utillaje')+' '+(die.name||die.id||'matriz'):'matriz V estimada')+'. Geometría representada con los metadatos locales disponibles; no sustituye un perfil CAD oficial.';
  const status=$('pp58PhysStatus');if(status)status.textContent='Paso '+(stepNumber+1)+' · V'+v+' · objetivo '+angle+'° · '+(punch?(punch.maker||'')+' '+(punch.name||punch.id||'punzón'):'punzón genérico estimado')+' · '+(die?(die.maker||'')+' '+(die.name||die.id||'matriz'):'matriz V estimada')+' · material '+String(s.project?.material||s.development?.material||'sin especificar')+'. La representación usa metadatos locales; verifica el perfil CAD y las cotas oficiales antes de validar el plegado.';
 }
 function runPhysicalBend(){
  if(physRaf||!physPlaying||!$('pp58PhysicalCanvas')||document.hidden)return;
- const tick=now=>{physRaf=0;if(!physPlaying||document.hidden)return;if(!physLast)physLast=now;physProgress+=((now-physLast)/8500)*Number($('pp58PhysSpeed')?.value||1);physLast=now;if(physProgress>=1){physProgress=0}if($('pp58PhysProgress'))$('pp58PhysProgress').value=String(Math.round(physProgress*100));drawPhysicalBend();physRaf=requestAnimationFrame(tick)};
+ const tick=now=>{physRaf=0;if(!physPlaying||document.hidden)return;if(!physLast)physLast=now;physProgress+=((now-physLast)/8500)*Number($('pp58PhysSpeed')?.value||1);physLast=now;if(physProgress>=1){physProgress=0}if($('pp58PhysProgress'))$('pp58PhysProgress').value=String(Math.round(physProgress*100));if(now-physLastDraw>=40){physLastDraw=now;drawPhysicalBend()}physRaf=requestAnimationFrame(tick)};
  physRaf=requestAnimationFrame(tick);
 }
 
