@@ -30,7 +30,7 @@ assert.ok(bendRuntime.includes('[gaugeX-34,gaugeY-112,90],[gaugeX+34,gaugeY-112,
 assert.ok(bendRuntime.includes('rawContact=Math.max(0,Math.min(1,(phase-.12)/.55)),release=phase>.82?Math.max(0,Math.min(1,(phase-.82)/.18)):0;const contact=rawContact*(1-release);'), 'sheet contact must release in sync with punch retraction');
 assert.ok(bendRuntime.includes('const punchTipY=restTipY+(targetTipY-restTipY)*ramTravel,punchY=punchTipY+punchHeight+8,tipHalf='), 'ram motion must visibly descend onto the sheet and retract independently of sheet position');
 assert.ok(bendRuntime.includes('const targetTipY=dieApexY+Math.max(2,thicknessPx*1.3),restTipY=160;'), 'punch tip must stop at the top of the sheet inside the V opening');
-assert.ok(bendRuntime.includes('const bendTurn=Math.abs(signedBendTurn(angle,bend.direction));'), 'local fold must use the active programmed bend direction');
+assert.ok(bendRuntime.includes('turn=signedBendTurn(b[legIndex]?.angle,b[legIndex]?.direction)*foldProgress'), 'local fold must use the active programmed bend direction');
 const cycle = phase => {
   const rawContact = Math.max(0, Math.min(1, (phase - .12) / .55));
   const release = phase > .82 ? Math.max(0, Math.min(1, (phase - .82) / .18)) : 0;
