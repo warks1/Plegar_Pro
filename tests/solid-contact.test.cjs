@@ -7,6 +7,7 @@ const path = require('node:path');
 const bendRuntime = fs.readFileSync(path.join(__dirname, '..', 'pp57-system-integration.js'), 'utf8');
 assert.ok(bendRuntime.includes('[[-430,20,-30],[-130,20,-30],[-60,-35,-30],[0,-72,-30],[60,-35,-30],[130,20,-30],[430,20,-30]'), 'die V profile must be centered under the punch');
 assert.ok(bendRuntime.includes('const profilePts=[{x:0,y:0}];let profileHeading=0;'), 'physical follow-up must rebuild the complete programmed sheet profile');
+assert.ok(bendRuntime.includes('const rankOf=i=>{') && bendRuntime.includes('const raw=Array.from({length:n},(_,i)=>i).sort((a,b)=>rankOf(a)-rankOf(b));'), 'physical follow-up sequence must match the bend ranking shared by 2D/3D');
 assert.ok(bendRuntime.includes('const seqPosition=order.indexOf(legIndex),isCompleted=seqPosition>=0&&seqPosition<stepNumber,isActive=legIndex===idx;'), 'physical follow-up must retain completed bends according to programmed sequence');
 assert.ok(bendRuntime.includes('const activeTurnProgress=phase<.12?0:phase<.67?Math.max(0,Math.min(1,(phase-.12)/.55)):1;'), 'active bend must progress and remain formed after punch retraction');
 assert.ok(bendRuntime.includes('const sheetCenterY=20-92*contact;'), 'active bend vertex must descend into the V and rise when the punch retracts');
