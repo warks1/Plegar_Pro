@@ -244,14 +244,16 @@ function addPhysicalBendSimulation(){
 }
 function physicalSequence(){
  const s=S()||{},b=Array.isArray(s.bends)?s.bends:[],n=Math.max(0,b.length-1);
- // Use the collision engine's canonical sequence first. It includes the same
- // explicit order and fallback ranking used by the collision playback.
- let shared=null;
- try{const candidate=window.PLEGAR_PRO_COLLISIONS?.getOrder?.();if(Array.isArray(candidate))shared=candidate;}catch(_){}
- const stored=Array.isArray(s.bendOrder)?s.bendOrder:null,ranked=Array.from({length:n},(_,i)=>i).sort((a,b)=>{
-  try{const api=window.PLEGAR_PRO_V54,ra=api?.orderIndex?.(a),rb=api?.orderIndex?.(b);return (Number.isFinite(ra)?ra:a)-(Number.isFinite(rb)?rb:b)}catch(_){return a-b}
- });
- const raw=shared&&shared.length?shared:stored&&stored.length?stored:ranked;
+ // Follow the exact execution ranking used by the existing 2D and 3D
+ // simulators. Collision review may keep a separate playback cursor; it must
+ // never redefine the programmed Omega geometry or its bend order.
+ const stored=Array.isArray(s.bendOrder)?s.bendOrder:null;
+ const rankOf=i=>{
+  const explicit=stored?stored.indexOf(i):-1;if(explicit>=0)return explicit;
+  try{const r=window.PLEGAR_PRO_V54?.orderIndex?.(i);if(Number.isFinite(r))return r}catch(_){}
+  return i;
+ };
+ const raw=Array.from({length:n},(_,i)=>i).sort((a,b)=>rankOf(a)-rankOf(b));
  let order=raw.filter((v,i)=>Number.isInteger(v)&&v>=0&&v<n&&raw.indexOf(v)===i);
  for(let i=0;i<n;i++)if(!order.includes(i))order.push(i);
  const stepCount=Math.max(1,order.length),stepPos=physProgress>=1?stepCount:physProgress*stepCount,stepNumber=Math.min(stepCount-1,Math.floor(stepPos)),localPhase=physProgress>=1?1:stepPos-stepNumber;
