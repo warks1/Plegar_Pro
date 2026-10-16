@@ -18,6 +18,7 @@ const synchronization = fs.readFileSync('pp69-expert-sync-engines.js', 'utf8');
 assert.match(synchronization, /const VERSION = '69\.3';/, 'PP69 version must match the isolated playback bridge fix');
 assert.match(synchronization, /const start=\(\)=>\{installDomBridge\(\);check\(\);/, 'PP69 keeps field synchronization active');
 assert.doesNotMatch(synchronization, /const start=\(\)=>\{installDomBridge\(\);installPlaybackBridge\(\);/, 'PP61 must remain the single playback-step synchronization authority');
+assert.doesNotMatch(synchronization, /function installPlaybackBridge\(/, 'PP69 must not retain a second playback bridge implementation');
 assert.ok(collision.includes('const model=profileModelPhysical(step,travel,toolAudit,v)'), 'Touch HMI must draw the actual programmed profile for the active step');
 assert.ok(collision.includes('legPts[legPts.length-1]'), 'flat active bend must anchor at the end of the active flange, not its start');
 assert.ok(collision.includes('const diePath='), 'Touch HMI must draw a concave V die');
