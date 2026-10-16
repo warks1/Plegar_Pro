@@ -13,11 +13,12 @@ assert.match(collision, /previousSync=\{s2Step:typeof sim/ , 'sequence audit mus
 assert.match(collision, /for\(const k of \['s2Step','s3Step','p3Active','machineTravel'\]\)/, 'sequence audit must restore 2D/3D fold and ram-travel state after testing');
 const twin = fs.readFileSync('pp59-engineering-upgrade.js', 'utf8');
 const runtime = fs.readFileSync('pp61-runtime-integrity.js', 'utf8');
+const physical = fs.readFileSync('pp57-system-integration.js', 'utf8');
 assert.ok(collision.includes('const model=profileModelPhysical(step,travel,toolAudit,v)'), 'Touch HMI must draw the actual programmed profile for the active step');
 assert.ok(collision.includes('legPts[legPts.length-1]'), 'flat active bend must anchor at the end of the active flange, not its start');
 assert.ok(collision.includes('const diePath='), 'Touch HMI must draw a concave V die');
-assert.ok(runtime.includes('const activeVertex=profilePts[Math.min(profilePts.length-1,Math.max(1,idx+1))]'), 'physical follow-up must anchor the sheet at the active programmed bend vertex');
-assert.ok(runtime.includes('const sheetPath=[{...profilePts[0]}],pushSheet'), 'physical follow-up must draw the accumulated profile instead of a symmetric generic V');
+assert.ok(physical.includes('const activeVertex=profilePts[Math.min(profilePts.length-1,Math.max(1,idx+1))]'), 'physical follow-up must anchor the sheet at the active programmed bend vertex');
+assert.ok(physical.includes('const sheetPath=[{...profilePts[0]}],pushSheet'), 'physical follow-up must draw the accumulated profile instead of a symmetric generic V');
 
 assert.ok(runtime.includes("el.dataset.syncOk=String(!/^Error\\b/i.test(String(message||'')))"), 'runtime synchronization errors must not be marked as verified');
 assert.match(runtime, /catch\(error\)\{\s*lastSyncError=String\(error\?\.stack\|\|error\);\s*updateStatus\('Error de sincronización · revisa consola'\)/, 'syncAll exceptions must set the visible synchronization state to error before rethrowing');
